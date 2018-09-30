@@ -7,7 +7,7 @@ using System.Data.Entity;
 using System.Linq.Expressions;
 using StrumentiMusicaliSql.Model;
 
-namespace BitRexSql.Repo
+namespace StrumentiMusicaliSql.Repo
 {
     public class Repository<T> : IRepository<T>, IDisposable where T : class
     {

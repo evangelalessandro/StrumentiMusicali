@@ -6,19 +6,32 @@ using System.Threading.Tasks;
 using StrumentiMusicaliSql.Entity;
 using StrumentiMusicaliSql.Model;
 
-namespace BitRexSql.Repo
+namespace StrumentiMusicaliSql.Repo
 {
-    
-    namespace RepoAndUnitOfWork.Domain.Concrete
-    {
+     
         public class UnitOfWork : IDisposable
         {
             //Our database context 
             private ModelSm dbContext = new ModelSm();
 
-            //Private members corresponding to each concrete repository
-            private Repository<Articolo> _ArticoliRepository;
-             
+        //Private members corresponding to each concrete repository
+        private Repository<Categorie> _CategorieRepository;
+
+        public IRepository<Categorie> CategorieRepository
+        {
+            get
+            {
+                if (_CategorieRepository == null)
+                {
+                    _CategorieRepository = new Repository<Categorie>(dbContext);
+                }
+                return _CategorieRepository;
+            }
+
+        }
+
+        private Repository<Articolo> _ArticoliRepository;
+            
             public IRepository<Articolo> ArticoliRepository
             {
                 get
@@ -30,10 +43,11 @@ namespace BitRexSql.Repo
                     return _ArticoliRepository;
                 }
 
-            } 
-            
-            //Accessors for each private repository, creates repository if null
-            public IRepository<EventLog> EventLogRepository
+            }
+        private Repository<EventLog> _EventLogRepository;
+
+        //Accessors for each private repository, creates repository if null
+        public IRepository<EventLog> EventLogRepository
             {
                 get
                 {
@@ -73,5 +87,5 @@ namespace BitRexSql.Repo
             }
         }
 
-    }
+    
 }

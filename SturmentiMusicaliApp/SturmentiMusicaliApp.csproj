@@ -110,5 +110,11 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StrumentiMusicaliSql\StrumentiMusicaliSql.csproj">
+      <Project>{114b9db5-6a31-4d89-bbb8-7ae7dd1a25c6}</Project>
+      <Name>StrumentiMusicaliSql</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

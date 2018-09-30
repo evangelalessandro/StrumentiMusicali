@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.28010.2019
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SturmentiMusicaliApp", "SturmentiMusicaliApp\SturmentiMusicaliApp.csproj", "{E6A4D0F6-DC39-431E-A562-AC0C4465BEA4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{114B9DB5-6A31-4D89-BBB8-7AE7DD1A25C6} = {114B9DB5-6A31-4D89-BBB8-7AE7DD1A25C6}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicaliSql", "StrumentiMusicaliSql\StrumentiMusicaliSql.csproj", "{114B9DB5-6A31-4D89-BBB8-7AE7DD1A25C6}"
 EndProject

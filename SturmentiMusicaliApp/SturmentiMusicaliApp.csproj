@@ -116,5 +116,9 @@
       <Name>StrumentiMusicaliSql</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="References\System.Windows.Forms.Ribbon.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

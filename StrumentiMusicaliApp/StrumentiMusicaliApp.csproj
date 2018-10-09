@@ -92,17 +92,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -133,6 +134,15 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="References\System.Windows.Forms.Ribbon.dll" />
+    <None Include="Resources\Penna.png" />
+    <None Include="Resources\Cerca.png" />
+    <None Include="Resources\pin_16.png" />
+    <None Include="Resources\if_sign-add_299068.png" />
+    <None Include="Resources\if_pin_299069.png" />
+    <None Include="Resources\if_sign-error_299045.png" />
+    <None Include="Resources\if_Cog_cogwheel_gear_repr_options_setting_1886783.png" />
+    <None Include="Resources\if_Delete_dustbin_empty_recycle_recycling_remove_trash_1886812 %281%29.png" />
+    <None Include="Resources\if_Data_doc_folder_data_storage_file_storage_open_1886813 %281%29.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StrumentiMusicaliSql.Core;
 using StrumentiMusicaliSql.Entity;
 using StrumentiMusicaliSql.Model;
 
@@ -63,7 +64,15 @@ namespace StrumentiMusicaliSql.Repo
             //Method to save all changes to repositories
             public void Commit()
             {
-                dbContext.SaveChanges();
+				try
+				{
+					dbContext.SaveChanges();
+				}
+				catch (System.Data.Entity.Validation.DbEntityValidationException ex)
+				{
+					throw new MessageException(ex.EntityValidationErrors.First().ValidationErrors.Select(a => a.ErrorMessage).ToList());
+				}
+			
             }
 
             //IDisposible implementation

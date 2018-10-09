@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Linq.Expressions;
 using StrumentiMusicaliSql.Model;
+using StrumentiMusicaliSql.Entity;
 
 namespace StrumentiMusicaliSql.Repo
 {
@@ -34,7 +35,12 @@ namespace StrumentiMusicaliSql.Repo
 
         public virtual void Add(T entity)
         {
-            dbSet.Add(entity);
+			if (entity is Articolo)
+			{
+				(entity as Articolo).DataUltimaModifica = DateTime.Now;
+				(entity as Articolo).DataCreazione = DateTime.Now;
+			}
+			dbSet.Add(entity);
         }
 
         public virtual T GetById(Guid id)
@@ -44,7 +50,12 @@ namespace StrumentiMusicaliSql.Repo
 
         public virtual void Update(T entity)
         {
-            dbContext.Entry(entity).State = EntityState.Modified;
+			if (entity is Articolo)
+			{
+				(entity as Articolo).DataUltimaModifica = DateTime.Now;
+			}
+
+			dbContext.Entry(entity).State = EntityState.Modified;
         }
 
         public virtual void Delete(T entity)

@@ -1,4 +1,5 @@
-﻿using StrumentiMusicaliSql.Repo;
+﻿using StrumentiMusicaliSql.Core;
+using StrumentiMusicaliSql.Repo;
 using SturmentiMusicaliApp.Core;
 using System;
 using System.Collections.Generic;
@@ -15,22 +16,54 @@ namespace SturmentiMusicaliApp.Forms
 {
 	public partial class frmArticolo : Form
 	{
-		ArticoloItem _articolo = new ArticoloItem();
+		private bool modeEdit=false;
+		StrumentiMusicaliSql.Entity.Articolo _articolo = null;
 		public frmArticolo()
 			:base()
 		{
 			InitializeComponent();
+			if (_articolo==null)
+			{
+				_articolo = new StrumentiMusicaliSql.Entity.Articolo() { Testo = "Prova", Titolo = "titolo", Marca = "PRova" };
+				
+			}
+			
 			ribSave.Click += RibSave_Click;
 		}
 
 		private void RibSave_Click(object sender, EventArgs e)
 		{
+			this.txtID.Focus();
 			this.Validate();
-			using (var uof =new UnitOfWork())
+			try
 			{
-				uof.ArticoliRepository.Update(_articolo.ArticoloCS);
-				uof.Commit();
+				using (var uof = new UnitOfWork())
+				{
+					if (modeEdit)
+					{
+						uof.ArticoliRepository.Update(_articolo);
+					}
+					else
+					{
+						uof.ArticoliRepository.Add(_articolo);
+					}
+					uof.Commit();
+				}
+				//+ex  { "Convalida non riuscita per una o più entità. Per ulteriori dettagli, vedere la proprietà 'EntityValidationErrors'."}
+				//System.Exception { System.Data.Entity.Validation.DbEntityValidationException}
+
 			}
+			catch (MessageException ex)
+			{
+
+				MessageBox.Show(ex.Messages);
+			}
+			catch (Exception ex)
+			{
+
+				MessageBox.Show(ex.Message);
+			}
+			
 		}
 
 		 
@@ -38,18 +71,27 @@ namespace SturmentiMusicaliApp.Forms
 		public frmArticolo(ArticoloItem articolo )
 			:this()
 		{
-			_articolo = articolo;
+			_articolo = articolo.ArticoloCS;
+			modeEdit = true;
 
-			
-			
+
+
 		}
 		
 		private void frmArticolo_Load(object sender, EventArgs e)
 		{
-			var listControlWithTag = FindControlByType<Control>(this).Where(a => a.Tag != null && a.Tag.ToString().Length>0);
+			if (modeEdit == false)
+			{ 
+				_articolo = new StrumentiMusicaliSql.Entity.Articolo();
+				 
+			}
+			FillCombo();
 
+			var listControlWithTag = FindControlByType<Control>(this).Where(a => a.Tag != null && a.Tag.ToString().Length > 0);
 
-			foreach (var item in GetProperties(_articolo.ArticoloCS))
+			chkPrezzoARichiesta.CheckedChanged += ChkPrezzoARichiesta_CheckedChanged;
+
+			foreach (var item in GetProperties(_articolo))
 			{
 				var listByTag = listControlWithTag.Where(a => a.Tag.ToString() == item.Name);
 
@@ -57,26 +99,97 @@ namespace SturmentiMusicaliApp.Forms
 				{
 					if (cnt is TextBox)
 					{
-						cnt.DataBindings.Add("Text", _articolo.ArticoloCS, item.Name);
+						cnt.DataBindings.Add("Text", _articolo, item.Name);
 					}
 					else if (cnt is NumericUpDown)
 					{
-						cnt.DataBindings.Add("Value", _articolo.ArticoloCS, item.Name);
+						cnt.DataBindings.Add("Value", _articolo, item.Name);
 					}
 					else if (cnt is CheckBox)
 					{
-						cnt.DataBindings.Add("Checked", _articolo.ArticoloCS, item.Name);
+						cnt.DataBindings.Add("Checked", _articolo, item.Name);
 					}
-
+					else if (cnt is ComboBox)
+					{
+						cnt.DataBindings.Add("SelectedValue", _articolo, item.Name);
+					}
 				}
-				 
-			}
-			using (var uof =new UnitOfWork())
-			{
-				txtCategoria.Values = uof.CategorieRepository.Find(a => true).Select(a => a.ID.ToString() + " " +  a.Categoria +  " {" + a.Reparto + "}").ToList().ToArray();
+
 			}
 			
+
 		}
+
+		private void FillCombo()
+		{
+			using (var uof = new UnitOfWork())
+			{
+				_categoriList = uof.CategorieRepository.Find(a => true).Select(a => new CategoriaItem
+				{
+					ID = a.ID,
+					Descrizione = a.Categoria + " {" + a.Reparto + "}"
+				}).ToList();
+				cboCategoria.DataSource = _categoriList;
+				cboCategoria.DisplayMember = "Descrizione";
+				cboCategoria.ValueMember = "ID";
+			}
+		}
+
+		List<CategoriaItem> _categoriList = new List<CategoriaItem>();
+		string _lastFilter = "";
+		private void txtFiltroCategoria_TextChanged(object sender, EventArgs e)
+		{
+
+		 
+			var text = txtFiltroCategoria.Text;
+			if (_lastFilter == text)
+			{ return; }
+
+			if (text == string.Empty || text == null)
+			{
+				cboCategoria.DataSource = _categoriList; // cmbItems is a List of ComboBoxItem with some random numbers
+				cboCategoria.SelectedIndex = -1;
+				cboCategoria.MaxDropDownItems = 10;
+			}
+			else
+			{
+				string tempStr = text;
+
+				var data = (from m in _categoriList where m.Descrizione.ToLower().Contains(tempStr.ToLower()) select m).ToList();
+
+				cboCategoria.DataSource = data;
+				//cboCategoria.Items.Clear();
+
+				//foreach (var temp in data)
+				//{
+				//	cboCategoria.Items.Add(temp);
+				//}
+				cboCategoria.DroppedDown = true;
+				//Cursor.Current = Cursors.Default;
+				cboCategoria.SelectedIndex = -1;
+				if (data.Count() < 10 && data.Count() > 0)
+					cboCategoria.MaxDropDownItems = data.Count();
+
+				_lastFilter = text;
+			}
+		}
+		private void ribFilterCategorie_TextBoxTextChanged(object sender, EventArgs e)
+		{
+			
+		}
+		 
+		 
+		private void ChkPrezzoARichiesta_CheckedChanged(object sender, EventArgs e)
+		{
+			UpdateViewPrezzi();
+		}
+
+		private void UpdateViewPrezzi()
+		{
+			txtPrezzo.Enabled = !(chkPrezzoARichiesta.Checked);
+			txtPrezzoBarrato.Enabled = !(chkPrezzoARichiesta.Checked);	
+		}
+
 		public static List<T> FindControlByType<T>(Control mainControl, bool getAllChild = true) where T : Control
 		{
 			List<T> lt = new List<T>();
@@ -95,5 +208,7 @@ namespace SturmentiMusicaliApp.Forms
 				.Where(p => (p.Name != "EntityKey" && p.Name != "EntityState"))
 				.Select(p => p).ToList();
 		}
+
+		
 	}
 }

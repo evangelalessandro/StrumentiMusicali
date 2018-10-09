@@ -31,7 +31,15 @@ namespace StrumentiMusicaliSql.Entity
         public string UrlSchedaProdottoTurbo { get; set; }
         public bool BoxProposte { get; set; }
         public bool UsaAnnuncioTurbo { get; set; }
-    }
+		public DateTime DataCreazione { get; set; }
+		public DateTime DataUltimaModifica { get; set; }
+		public bool Pinned { get; set; }
+		public int Giacenza { get; set; }
+
+		public virtual ICollection<FotoArticolo> getFotoArticolo { get; set; } 
+
+		 
+	}
     public enum CondizioneArticolo
     {
         Nuovo=1,

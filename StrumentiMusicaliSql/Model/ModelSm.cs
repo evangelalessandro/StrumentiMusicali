@@ -12,19 +12,28 @@ namespace StrumentiMusicaliSql.Model
         public ModelSm()
             : base("name=ModelSm")
         {
-        }
 
-        public virtual DbSet<Articolo> Articoli { get; set; }
-        public virtual DbSet<Categorie> Categories { get; set; }
+			Database.SetInitializer<ModelSm>(new DropCreateDatabaseIfModelChanges<ModelSm>());
+		}
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+      
+
+		protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            Database.SetInitializer<ModelSm>(new DropCreateDatabaseIfModelChanges<ModelSm>());
-            modelBuilder.Entity<Articolo>().Property(e => e.Prezzo).HasPrecision(19, 2);
+			 
+
+			modelBuilder.Entity<Articolo>().ToTable("Articoli");
+			modelBuilder.Entity<Categorie>().ToTable("Categorie");
+			modelBuilder.Entity<FotoArticolo>().ToTable("FotoArticoli");
+			modelBuilder.Entity<Articolo>().Property(e => e.Prezzo).HasPrecision(19, 2);
             modelBuilder.Entity<Articolo>().Property(e => e.PrezzoBarrato).HasPrecision(19, 2);
                 
         }
-        public void FixEfProviderServicesProblem()
+		public virtual DbSet<Articolo> Articoli { get; set; }
+		public virtual DbSet<Categorie> Categorie { get; set; }
+		public virtual DbSet<EventLog> LogEventi { get; set; }
+		public virtual DbSet<FotoArticolo> FotoArticoli { get; set; }
+		public void FixEfProviderServicesProblem()
         {
             //The Entity Framework provider type 'System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer'
             //for the 'System.Data.SqlClient' ADO.NET provider could not be loaded. 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace StrumentiMusicaliSql.Entity
 {
-    class FotoArticolo
+    public class FotoArticolo
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

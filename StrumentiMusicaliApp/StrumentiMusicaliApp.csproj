@@ -65,16 +65,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="Core\ArticoloItem.cs" />
+    <Compile Include="Core\Events\ArticoloAdd.cs" />
+    <Compile Include="fmrMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="fmrMain.Designer.cs">
+      <DependentUpon>fmrMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AutoCompleteText.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\frmArticolo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmArticolo.Designer.cs">
+      <DependentUpon>frmArticolo.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="fmrMain.resx">
+      <DependentUpon>fmrMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmArticolo.resx">
+      <DependentUpon>frmArticolo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

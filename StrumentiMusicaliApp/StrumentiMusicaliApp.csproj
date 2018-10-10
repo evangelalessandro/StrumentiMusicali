@@ -152,6 +152,8 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="References\System.Windows.Forms.Ribbon.dll" />
+    <None Include="Resources\Upload_64.png" />
+    <None Include="Resources\Upload.png" />
     <None Include="Resources\error_64.png" />
     <None Include="Resources\Save.png" />
     <None Include="Resources\Settings.png" />

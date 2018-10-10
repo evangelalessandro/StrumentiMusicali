@@ -1,4 +1,4 @@
-﻿namespace SturmentiMusicaliApp
+﻿namespace StrumentiMusicaliApp
 {
     partial class fmrMain
     {
@@ -32,7 +32,14 @@
 			this.ribbon1 = new System.Windows.Forms.Ribbon();
 			this.ribbonTab1 = new System.Windows.Forms.RibbonTab();
 			this.ribbonPanel1 = new System.Windows.Forms.RibbonPanel();
+			this.ribAddArt = new System.Windows.Forms.RibbonButton();
+			this.ribEditArt = new System.Windows.Forms.RibbonButton();
+			this.ribDelete = new System.Windows.Forms.RibbonButton();
+			this.ribbonButton1 = new System.Windows.Forms.RibbonButton();
+			this.ribbonButton2 = new System.Windows.Forms.RibbonButton();
+			this.ribArtDuplicate = new System.Windows.Forms.RibbonButton();
 			this.ribbonPanel2 = new System.Windows.Forms.RibbonPanel();
+			this.ribCerca = new System.Windows.Forms.RibbonButton();
 			this.ribbonTab2 = new System.Windows.Forms.RibbonTab();
 			this.dgvMaster = new System.Windows.Forms.DataGridView();
 			this.pnlArticoli = new System.Windows.Forms.Panel();
@@ -40,10 +47,8 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.txtCerca = new System.Windows.Forms.TextBox();
 			this.splitter1 = new System.Windows.Forms.Splitter();
-			this.ribAddArt = new System.Windows.Forms.RibbonButton();
-			this.ribEditArt = new System.Windows.Forms.RibbonButton();
-			this.ribDelete = new System.Windows.Forms.RibbonButton();
-			this.ribCerca = new System.Windows.Forms.RibbonButton();
+			this.ribbonOrbOptionButton1 = new System.Windows.Forms.RibbonOrbOptionButton();
+			this.ribbonOrbOptionButton2 = new System.Windows.Forms.RibbonOrbOptionButton();
 			((System.ComponentModel.ISupportInitialize)(this.dgvMaster)).BeginInit();
 			this.pnlArticoli.SuspendLayout();
 			this.pnlCerca.SuspendLayout();
@@ -84,14 +89,78 @@
 			this.ribbonPanel1.Items.Add(this.ribAddArt);
 			this.ribbonPanel1.Items.Add(this.ribEditArt);
 			this.ribbonPanel1.Items.Add(this.ribDelete);
+			this.ribbonPanel1.Items.Add(this.ribArtDuplicate);
 			this.ribbonPanel1.Name = "ribbonPanel1";
 			this.ribbonPanel1.Text = "Comandi Articoli";
+			// 
+			// ribAddArt
+			// 
+			this.ribAddArt.Image = global::StrumentiMusicaliApp.Properties.Resources.Add;
+			this.ribAddArt.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Add;
+			this.ribAddArt.Name = "ribAddArt";
+			this.ribAddArt.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribAddArt.SmallImage")));
+			this.ribAddArt.Text = "Crea";
+			this.ribAddArt.Click += new System.EventHandler(this.ribAddArt_Click);
+			// 
+			// ribEditArt
+			// 
+			this.ribEditArt.Image = global::StrumentiMusicaliApp.Properties.Resources.Penna;
+			this.ribEditArt.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Penna;
+			this.ribEditArt.Name = "ribEditArt";
+			this.ribEditArt.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribEditArt.SmallImage")));
+			this.ribEditArt.Text = "Vedi\\Modifica";
+			this.ribEditArt.Click += new System.EventHandler(this.ribEditArt_Click);
+			// 
+			// ribDelete
+			// 
+			this.ribDelete.DropDownItems.Add(this.ribbonButton1);
+			this.ribDelete.DropDownItems.Add(this.ribbonButton2);
+			this.ribDelete.Image = global::StrumentiMusicaliApp.Properties.Resources.Delete;
+			this.ribDelete.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Delete;
+			this.ribDelete.Name = "ribDelete";
+			this.ribDelete.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribDelete.SmallImage")));
+			this.ribDelete.Text = "Elimina";
+			// 
+			// ribbonButton1
+			// 
+			this.ribbonButton1.Image = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.Image")));
+			this.ribbonButton1.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.LargeImage")));
+			this.ribbonButton1.Name = "ribbonButton1";
+			this.ribbonButton1.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.SmallImage")));
+			this.ribbonButton1.Text = "ribbonButton1";
+			// 
+			// ribbonButton2
+			// 
+			this.ribbonButton2.Image = ((System.Drawing.Image)(resources.GetObject("ribbonButton2.Image")));
+			this.ribbonButton2.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton2.LargeImage")));
+			this.ribbonButton2.Name = "ribbonButton2";
+			this.ribbonButton2.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton2.SmallImage")));
+			this.ribbonButton2.Text = "ribbonButton2";
+			// 
+			// ribArtDuplicate
+			// 
+			this.ribArtDuplicate.Image = global::StrumentiMusicaliApp.Properties.Resources.Duplicate;
+			this.ribArtDuplicate.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Duplicate;
+			this.ribArtDuplicate.Name = "ribArtDuplicate";
+			this.ribArtDuplicate.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribArtDuplicate.SmallImage")));
+			this.ribArtDuplicate.Text = "Duplica";
+			this.ribArtDuplicate.Click += new System.EventHandler(this.ribArtDuplicate_Click);
 			// 
 			// ribbonPanel2
 			// 
 			this.ribbonPanel2.Items.Add(this.ribCerca);
 			this.ribbonPanel2.Name = "ribbonPanel2";
 			this.ribbonPanel2.Text = "Altro";
+			// 
+			// ribCerca
+			// 
+			this.ribCerca.CheckOnClick = true;
+			this.ribCerca.FlashIntervall = 50;
+			this.ribCerca.Image = global::StrumentiMusicaliApp.Properties.Resources.Cerca;
+			this.ribCerca.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Cerca;
+			this.ribCerca.Name = "ribCerca";
+			this.ribCerca.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribCerca.SmallImage")));
+			this.ribCerca.Text = "Cerca";
 			// 
 			// ribbonTab2
 			// 
@@ -165,39 +234,21 @@
 			this.splitter1.TabIndex = 4;
 			this.splitter1.TabStop = false;
 			// 
-			// ribAddArt
+			// ribbonOrbOptionButton1
 			// 
-			this.ribAddArt.Image = ((System.Drawing.Image)(resources.GetObject("ribAddArt.Image")));
-			this.ribAddArt.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribAddArt.LargeImage")));
-			this.ribAddArt.Name = "ribAddArt";
-			this.ribAddArt.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribAddArt.SmallImage")));
-			this.ribAddArt.Text = "Crea";
-			this.ribAddArt.Click += new System.EventHandler(this.ribAddArt_Click);
+			this.ribbonOrbOptionButton1.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbOptionButton1.Image")));
+			this.ribbonOrbOptionButton1.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbOptionButton1.LargeImage")));
+			this.ribbonOrbOptionButton1.Name = "ribbonOrbOptionButton1";
+			this.ribbonOrbOptionButton1.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbOptionButton1.SmallImage")));
+			this.ribbonOrbOptionButton1.Text = "ribbonOrbOptionButton1";
 			// 
-			// ribEditArt
+			// ribbonOrbOptionButton2
 			// 
-			this.ribEditArt.Image = global::SturmentiMusicaliApp.Properties.Resources.Penna;
-			this.ribEditArt.LargeImage = global::SturmentiMusicaliApp.Properties.Resources.Penna;
-			this.ribEditArt.Name = "ribEditArt";
-			this.ribEditArt.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribEditArt.SmallImage")));
-			this.ribEditArt.Text = "Vedi\\Modifica";
-			this.ribEditArt.Click += new System.EventHandler(this.ribEditArt_Click);
-			// 
-			// ribDelete
-			// 
-			this.ribDelete.Image = ((System.Drawing.Image)(resources.GetObject("ribDelete.Image")));
-			this.ribDelete.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribDelete.LargeImage")));
-			this.ribDelete.Name = "ribDelete";
-			this.ribDelete.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribDelete.SmallImage")));
-			this.ribDelete.Text = "Elimina";
-			// 
-			// ribCerca
-			// 
-			this.ribCerca.Image = global::SturmentiMusicaliApp.Properties.Resources.Cerca;
-			this.ribCerca.LargeImage = global::SturmentiMusicaliApp.Properties.Resources.Cerca;
-			this.ribCerca.Name = "ribCerca";
-			this.ribCerca.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribCerca.SmallImage")));
-			this.ribCerca.Text = "Cerca";
+			this.ribbonOrbOptionButton2.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbOptionButton2.Image")));
+			this.ribbonOrbOptionButton2.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbOptionButton2.LargeImage")));
+			this.ribbonOrbOptionButton2.Name = "ribbonOrbOptionButton2";
+			this.ribbonOrbOptionButton2.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbOptionButton2.SmallImage")));
+			this.ribbonOrbOptionButton2.Text = "ribbonOrbOptionButton2";
 			// 
 			// fmrMain
 			// 
@@ -238,6 +289,11 @@
 		private System.Windows.Forms.Splitter splitter1;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox txtCerca;
+		private System.Windows.Forms.RibbonButton ribbonButton1;
+		private System.Windows.Forms.RibbonButton ribbonButton2;
+		private System.Windows.Forms.RibbonButton ribArtDuplicate;
+		private System.Windows.Forms.RibbonOrbOptionButton ribbonOrbOptionButton1;
+		private System.Windows.Forms.RibbonOrbOptionButton ribbonOrbOptionButton2;
 	}
 }
 

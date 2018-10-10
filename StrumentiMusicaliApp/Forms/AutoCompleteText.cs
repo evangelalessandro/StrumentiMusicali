@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SturmentiMusicaliApp.Forms
+namespace StrumentiMusicaliApp.Forms
 {
 	public class AutoCompleteTextBox : TextBox
 	{

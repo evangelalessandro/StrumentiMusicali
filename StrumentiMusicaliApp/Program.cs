@@ -1,10 +1,14 @@
-﻿using System;
+﻿using NLog;
+using NLog.Targets;
+using StrumentiMusicaliSql.Repo;
+using StrumentiMusicaliApp.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SturmentiMusicaliApp
+namespace StrumentiMusicaliApp
 {
     static class Program
     {
@@ -14,10 +18,13 @@ namespace SturmentiMusicaliApp
         [STAThread]
         static void Main()
         {
-         
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new fmrMain());
-        }
+
+			
+			using (var controller=new Controller())
+			{
+				
+			}
+		}
+		
     }
 }

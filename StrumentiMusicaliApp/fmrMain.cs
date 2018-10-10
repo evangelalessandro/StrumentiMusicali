@@ -1,7 +1,8 @@
-﻿using StrumentiMusicaliSql.Core;
+﻿using NLog;
+using StrumentiMusicaliSql.Core;
 using StrumentiMusicaliSql.Repo;
-using SturmentiMusicaliApp.Core;
-using SturmentiMusicaliApp.Core.Events;
+using StrumentiMusicaliApp.Core;
+using StrumentiMusicaliApp.Core.Events;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SturmentiMusicaliApp
+namespace StrumentiMusicaliApp
 {
     public partial class fmrMain : Form
     {
@@ -33,37 +34,36 @@ namespace SturmentiMusicaliApp
 
 		private void RibCerca_Click(object sender, EventArgs e)
 		{
+			 
 			bool visibleCerca = pnlCerca.Visible;
 			pnlCerca.Visible = !visibleCerca;
 			splitter1.Visible= !visibleCerca;
 			if (!visibleCerca)
 			{ 
 				pnlArticoli.Dock = DockStyle.Fill;
-				//pnlCerca.Dock = DockStyle.None;
 			}
 			else
 			{
-				//pnlArticoli.Dock = DockStyle.Bottom;
 				pnlCerca.Dock = DockStyle.Top;
 			}
+			UpdateButtonState();
 		}
 
 		private void DgvMaster_SelectionChanged(object sender, EventArgs e)
-		{
-			//throw new NotImplementedException();
+		{ 
 			UpdateButtonState();
 		}
 
 		private void UpdateButtonState()
 		{
 			ribEditArt.Enabled = dgvMaster.SelectedRows.Count > 0;
+			ribCerca.Checked = pnlCerca.Visible;
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			RefreshData();
 
-			EventAggregator.Instance().Subscribe<ArticoloAdd>(AggiungiArticolo);
 		}
 
 		private void RefreshData()
@@ -96,23 +96,21 @@ namespace SturmentiMusicaliApp
 		{
 			EventAggregator.Instance().Publish(new ArticoloAdd());
 		}
-		private void AggiungiArticolo(ArticoloAdd articoloAdd)
+
+
+		private void ribArtDuplicate_Click(object sender, EventArgs e)
 		{
-			using (var frm=new Forms.frmArticolo())
-			{
-				frm.ShowDialog();
-			}
+			EventAggregator.Instance().Publish(new ArticoloDuplicate());
+
 		}
 
 		private void ribEditArt_Click(object sender, EventArgs e)
-		{
-			//)
+		{ 
 			using (var frm = new Forms.frmArticolo((ArticoloItem)dgvMaster.SelectedRows[0].DataBoundItem))
 			{
 				frm.ShowDialog();
 			}
-
-			//var indice = ((ArticoloItem)dgvMaster.SelectedRows[0].DataBoundItem).ID;
+			 
 			var indice = dgvMaster.SelectedRows[0].Index;
 			RefreshData();
 			dgvMaster.Rows[indice].Selected = true;
@@ -121,7 +119,6 @@ namespace SturmentiMusicaliApp
 
 		}
 
-		 
 	}
 }
 

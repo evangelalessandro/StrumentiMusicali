@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StrumentiMusicaliApp.Core.Events
 {
-	public class ArticoloAdd
+	public class ArticoloDuplicate
 	{
 	}
 }

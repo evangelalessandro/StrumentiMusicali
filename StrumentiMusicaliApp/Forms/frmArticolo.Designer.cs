@@ -1,4 +1,4 @@
-﻿namespace SturmentiMusicaliApp.Forms
+﻿namespace StrumentiMusicaliApp.Forms
 {
 	partial class frmArticolo
 	{
@@ -53,13 +53,13 @@
 			this.ribbonTab1 = new System.Windows.Forms.RibbonTab();
 			this.ribbonPanel1 = new System.Windows.Forms.RibbonPanel();
 			this.ribSave = new System.Windows.Forms.RibbonButton();
-			this.cboCategoria = new System.Windows.Forms.ComboBox();
 			this.ribbonPanel2 = new System.Windows.Forms.RibbonPanel();
-			this.txtTesto = new SturmentiMusicaliApp.Forms.AutoCompleteTextBox();
-			this.txtTitolo = new SturmentiMusicaliApp.Forms.AutoCompleteTextBox();
-			this.txtMarca = new SturmentiMusicaliApp.Forms.AutoCompleteTextBox();
-			this.txtCondizione = new SturmentiMusicaliApp.Forms.AutoCompleteTextBox();
-			this.txtFiltroCategoria = new SturmentiMusicaliApp.Forms.AutoCompleteTextBox();
+			this.cboCategoria = new System.Windows.Forms.ComboBox();
+			this.txtTesto = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
+			this.txtTitolo = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
+			this.txtMarca = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
+			this.txtCondizione = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
+			this.txtFiltroCategoria = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
 			this.label9 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzo)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzoBarrato)).BeginInit();
@@ -331,11 +331,16 @@
 			// 
 			// ribSave
 			// 
-			this.ribSave.Image = ((System.Drawing.Image)(resources.GetObject("ribSave.Image")));
-			this.ribSave.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribSave.LargeImage")));
+			this.ribSave.Image = global::StrumentiMusicaliApp.Properties.Resources.Save;
+			this.ribSave.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Save;
 			this.ribSave.Name = "ribSave";
 			this.ribSave.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribSave.SmallImage")));
 			this.ribSave.Text = "Salva";
+			// 
+			// ribbonPanel2
+			// 
+			this.ribbonPanel2.Name = "ribbonPanel2";
+			this.ribbonPanel2.Text = "Filtra Categoria";
 			// 
 			// cboCategoria
 			// 
@@ -346,11 +351,6 @@
 			this.cboCategoria.Size = new System.Drawing.Size(317, 24);
 			this.cboCategoria.TabIndex = 26;
 			this.cboCategoria.Tag = "Categoria";
-			// 
-			// ribbonPanel2
-			// 
-			this.ribbonPanel2.Name = "ribbonPanel2";
-			this.ribbonPanel2.Text = "Filtra Categoria";
 			// 
 			// txtTesto
 			// 
@@ -491,11 +491,11 @@
 		private System.Windows.Forms.Ribbon ribbon1;
 		private System.Windows.Forms.RibbonTab ribbonTab1;
 		private System.Windows.Forms.RibbonPanel ribbonPanel1;
-		private System.Windows.Forms.RibbonButton ribSave;
 		private System.Windows.Forms.RibbonButton ribbonButton1;
 		private System.Windows.Forms.ComboBox cboCategoria;
 		private System.Windows.Forms.RibbonPanel ribbonPanel2;
 		private AutoCompleteTextBox txtFiltroCategoria;
 		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.RibbonButton ribSave;
 	}
 }

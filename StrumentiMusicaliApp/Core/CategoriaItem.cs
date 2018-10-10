@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SturmentiMusicaliApp.Core
+namespace StrumentiMusicaliApp.Core
 {
 	public class CategoriaItem
 	{

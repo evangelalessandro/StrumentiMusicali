@@ -1,6 +1,6 @@
 ﻿using StrumentiMusicaliSql.Core;
 using StrumentiMusicaliSql.Repo;
-using SturmentiMusicaliApp.Core;
+using StrumentiMusicaliApp.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,8 +11,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Tulpep.NotificationWindow;
 
-namespace SturmentiMusicaliApp.Forms
+namespace StrumentiMusicaliApp.Forms
 {
 	public partial class frmArticolo : Form
 	{
@@ -51,6 +52,11 @@ namespace SturmentiMusicaliApp.Forms
 				}
 				//+ex  { "Convalida non riuscita per una o più entità. Per ulteriori dettagli, vedere la proprietà 'EntityValidationErrors'."}
 				//System.Exception { System.Data.Entity.Validation.DbEntityValidationException}
+				PopupNotifier popup = new PopupNotifier();
+				popup.Image = StrumentiMusicaliApp.Properties.Resources.Info_64;
+				popup.TitleText = "Info";
+				popup.ContentText = "Salvataggio avvenuto con successo";
+				popup.Popup();
 
 			}
 			catch (MessageException ex)

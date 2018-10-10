@@ -1,18 +1,15 @@
 ﻿using NLog;
 using NLog.Targets;
+using StrumentiMusicaliApp.Core.Events;
 using StrumentiMusicaliSql.Core;
 using StrumentiMusicaliSql.Repo;
-using StrumentiMusicaliApp.Core.Events;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StrumentiMusicaliApp.Core
 {
-	public class Controller :IDisposable
+	public class Controller : IDisposable
 	{
 		private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
@@ -21,13 +18,42 @@ namespace StrumentiMusicaliApp.Core
 			ConfigureNLog();
 
 			EventAggregator.Instance().Subscribe<ArticoloAdd>(AggiungiArticolo);
-
+			EventAggregator.Instance().Subscribe<ArticoloDelete>(DeleteArticolo);
 			EventAggregator.Instance().Subscribe<ArticoloDuplicate>(DuplicaArticolo);
+			EventAggregator.Instance().Subscribe<ArticoloSelected>(ArticoloSelectedChange);
 			Application.ThreadException += Application_ThreadException;
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new fmrMain());
 		}
+
+		private void DeleteArticolo(ArticoloDelete obj)
+		{
+			try
+			{
+				using (var uof = new UnitOfWork())
+				{
+					
+					var item= uof.ArticoliRepository.Find(a => a.ID == obj.ItemSelected.ID).FirstOrDefault();
+					_logger.Info(string.Format("Cancellazione articolo /r/n{0} /r/n{1}", item.Titolo,item.ID));
+					uof.ArticoliRepository.Delete(item);
+					uof.Commit();
+				}
+				MessageManager.NotificaInfo("Cancellazione avvenuta correttamente!");
+				EventAggregator.Instance().Publish<ArticoliToUpdate>(new ArticoliToUpdate());
+			}
+			catch (Exception ex)
+			{
+				ExceptionManager.ManageError(ex);
+			}
+		}
+
+		private ArticoloSelected _ArticoloSelected;
+		private void ArticoloSelectedChange(ArticoloSelected obj)
+		{
+			_ArticoloSelected = obj;
+		}
+
 		public static void LogMethod(string level, string message, string exception, string stacktrace, string classLine)
 		{
 			try
@@ -61,12 +87,12 @@ namespace StrumentiMusicaliApp.Core
 
 		private void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
 		{
-			_logger.Error("Application_ThreadException",e.Exception);
+			_logger.Error("Application_ThreadException", e.Exception);
 		}
 
 		public void Dispose()
 		{
-			 
+
 		}
 
 		private void AggiungiArticolo(ArticoloAdd articoloAdd)
@@ -81,8 +107,40 @@ namespace StrumentiMusicaliApp.Core
 
 		private void DuplicaArticolo(ArticoloDuplicate obj)
 		{
-			_logger.Info("Duplica articolo");
+			try
+			{
+				using (var uof = new UnitOfWork())
+				{
+					var itemCurrent = _ArticoloSelected.ItemSelected.ArticoloCS;
+					uof.ArticoliRepository.Add(new StrumentiMusicaliSql.Entity.Articolo()
+					{
+						Categoria = itemCurrent.Categoria,
+						Condizione = itemCurrent.Condizione,
+						BoxProposte = itemCurrent.BoxProposte,
+						Giacenza = itemCurrent.Giacenza,
+						Marca = itemCurrent.Marca,
+						Prezzo = itemCurrent.Prezzo,
+						PrezzoARichiesta = itemCurrent.PrezzoARichiesta,
+						PrezzoBarrato = itemCurrent.PrezzoBarrato,
+						Testo = itemCurrent.Testo,
+						Titolo = itemCurrent.Titolo,
+						UsaAnnuncioTurbo = itemCurrent.UsaAnnuncioTurbo,
+						DataUltimaModifica = DateTime.Now
+					});
+					uof.Commit();
+				}
+				MessageManager.NotificaInfo("Duplicazione avvenuta co successo");
+				_logger.Info("Duplica articolo");
+				EventAggregator.Instance().Publish<ArticoliToUpdate>(new ArticoliToUpdate());
+
+				
+			}
+			catch (Exception ex)
+			{
+				ExceptionManager.ManageError(ex);
+			}
 		}
-	
+
+		
 	}
 }

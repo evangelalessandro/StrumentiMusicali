@@ -77,8 +77,14 @@
     <Compile Include="Core\ArticoloItem.cs" />
     <Compile Include="Core\CategoriaItem.cs" />
     <Compile Include="Core\Controller.cs" />
+    <Compile Include="Core\Events\ArticoloDelete.cs" />
     <Compile Include="Core\Events\ArticoloDuplicate.cs" />
     <Compile Include="Core\Events\ArticoloAdd.cs" />
+    <Compile Include="Core\Events\ArticoliUpdate.cs" />
+    <Compile Include="Core\Events\ArticoloSelected.cs" />
+    <Compile Include="Core\Events\Interfaces\ArticoloSelected.cs" />
+    <Compile Include="Core\ExceptionManager.cs" />
+    <Compile Include="Core\MessageManager.cs" />
     <Compile Include="fmrMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -146,6 +152,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="References\System.Windows.Forms.Ribbon.dll" />
+    <None Include="Resources\error_64.png" />
     <None Include="Resources\Save.png" />
     <None Include="Resources\Settings.png" />
     <None Include="Resources\pin_16.png" />

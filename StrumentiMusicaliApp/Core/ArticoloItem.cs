@@ -1,10 +1,6 @@
-﻿using StrumentiMusicaliSql.Entity;
-using StrumentiMusicaliApp.Properties;
+﻿using StrumentiMusicaliApp.Properties;
+using StrumentiMusicaliSql.Entity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StrumentiMusicaliApp.Core
 {
@@ -19,12 +15,12 @@ namespace StrumentiMusicaliApp.Core
 			get {
 				if (Pinned)
 				{
-					return null;// Resources.pin_16;
+					return Resources.pin_16;
 				}
-				return null;
+				return new System.Drawing.Bitmap(20,20);
 			}
-		} 
-		
+		}
+
 
 		public Articolo ArticoloCS { get; set; }
 

@@ -1,34 +1,29 @@
-﻿using StrumentiMusicaliSql.Core;
+﻿using StrumentiMusicaliApp.Core;
+using StrumentiMusicaliSql.Core;
 using StrumentiMusicaliSql.Repo;
-using StrumentiMusicaliApp.Core;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Tulpep.NotificationWindow;
 
 namespace StrumentiMusicaliApp.Forms
 {
 	public partial class frmArticolo : Form
 	{
-		private bool modeEdit=false;
-		StrumentiMusicaliSql.Entity.Articolo _articolo = null;
+		private bool modeEdit = false;
+		private StrumentiMusicaliSql.Entity.Articolo _articolo = null;
 		public frmArticolo()
-			:base()
+			: base()
 		{
 			InitializeComponent();
-			if (_articolo==null)
+			if (_articolo == null)
 			{
 				_articolo = new StrumentiMusicaliSql.Entity.Articolo() { Testo = "Prova", Titolo = "titolo", Marca = "PRova" };
-				
+
 			}
-			
+
 			ribSave.Click += RibSave_Click;
 		}
 
@@ -50,13 +45,7 @@ namespace StrumentiMusicaliApp.Forms
 					}
 					uof.Commit();
 				}
-				//+ex  { "Convalida non riuscita per una o più entità. Per ulteriori dettagli, vedere la proprietà 'EntityValidationErrors'."}
-				//System.Exception { System.Data.Entity.Validation.DbEntityValidationException}
-				PopupNotifier popup = new PopupNotifier();
-				popup.Image = StrumentiMusicaliApp.Properties.Resources.Info_64;
-				popup.TitleText = "Info";
-				popup.ContentText = "Salvataggio avvenuto con successo";
-				popup.Popup();
+				MessageManager.NotificaInfo("Salvataggio avvenuto con successo");
 
 			}
 			catch (MessageException ex)
@@ -69,13 +58,14 @@ namespace StrumentiMusicaliApp.Forms
 
 				MessageBox.Show(ex.Message);
 			}
-			
+
 		}
 
-		 
 
-		public frmArticolo(ArticoloItem articolo )
-			:this()
+
+
+		public frmArticolo(ArticoloItem articolo)
+			: this()
 		{
 			_articolo = articolo.ArticoloCS;
 			modeEdit = true;
@@ -83,13 +73,13 @@ namespace StrumentiMusicaliApp.Forms
 
 
 		}
-		
+
 		private void frmArticolo_Load(object sender, EventArgs e)
 		{
 			if (modeEdit == false)
-			{ 
+			{
 				_articolo = new StrumentiMusicaliSql.Entity.Articolo();
-				 
+
 			}
 			FillCombo();
 
@@ -122,7 +112,7 @@ namespace StrumentiMusicaliApp.Forms
 				}
 
 			}
-			
+
 
 		}
 
@@ -141,12 +131,12 @@ namespace StrumentiMusicaliApp.Forms
 			}
 		}
 
-		List<CategoriaItem> _categoriList = new List<CategoriaItem>();
-		string _lastFilter = "";
+		private List<CategoriaItem> _categoriList = new List<CategoriaItem>();
+		private string _lastFilter = "";
 		private void txtFiltroCategoria_TextChanged(object sender, EventArgs e)
 		{
 
-		 
+
 			var text = txtFiltroCategoria.Text;
 			if (_lastFilter == text)
 			{ return; }
@@ -181,10 +171,10 @@ namespace StrumentiMusicaliApp.Forms
 		}
 		private void ribFilterCategorie_TextBoxTextChanged(object sender, EventArgs e)
 		{
-			
+
 		}
-		 
-		 
+
+
 		private void ChkPrezzoARichiesta_CheckedChanged(object sender, EventArgs e)
 		{
 			UpdateViewPrezzi();
@@ -193,7 +183,7 @@ namespace StrumentiMusicaliApp.Forms
 		private void UpdateViewPrezzi()
 		{
 			txtPrezzo.Enabled = !(chkPrezzoARichiesta.Checked);
-			txtPrezzoBarrato.Enabled = !(chkPrezzoARichiesta.Checked);	
+			txtPrezzoBarrato.Enabled = !(chkPrezzoARichiesta.Checked);
 		}
 
 		public static List<T> FindControlByType<T>(Control mainControl, bool getAllChild = true) where T : Control
@@ -215,6 +205,6 @@ namespace StrumentiMusicaliApp.Forms
 				.Select(p => p).ToList();
 		}
 
-		
+
 	}
 }

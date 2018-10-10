@@ -1,29 +1,38 @@
-﻿using NLog;
+﻿using StrumentiMusicaliApp.Core;
+using StrumentiMusicaliApp.Core.Events;
 using StrumentiMusicaliSql.Core;
 using StrumentiMusicaliSql.Repo;
-using StrumentiMusicaliApp.Core;
-using StrumentiMusicaliApp.Core.Events;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StrumentiMusicaliApp
 {
-    public partial class fmrMain : Form
-    {
-        public fmrMain()
-        {
-            InitializeComponent();
+	public partial class fmrMain : Form
+	{
+		
+		public fmrMain()
+		{
+			InitializeComponent();
 			dgvMaster.SelectionChanged += DgvMaster_SelectionChanged;
 			ribCerca.Click += RibCerca_Click;
+			ribDelete.Click += ribDelete_Click;
 			UpdateButtonState();
 			txtCerca.KeyUp += TxtCerca_KeyUp;
+			EventAggregator.Instance().Subscribe<ArticoliToUpdate>(UpdateList);
+
+		}
+
+		private void ribDelete_Click(object sender, EventArgs e)
+		{
+			EventAggregator.Instance().Publish<ArticoloDelete>(new ArticoloDelete(GetCurrentItemSelected()));
+
+		}
+
+		private void UpdateList(ArticoliToUpdate obj)
+		{
+			RefreshData();
 		}
 
 		private void TxtCerca_KeyUp(object sender, KeyEventArgs e)
@@ -34,12 +43,12 @@ namespace StrumentiMusicaliApp
 
 		private void RibCerca_Click(object sender, EventArgs e)
 		{
-			 
+
 			bool visibleCerca = pnlCerca.Visible;
 			pnlCerca.Visible = !visibleCerca;
-			splitter1.Visible= !visibleCerca;
+			splitter1.Visible = !visibleCerca;
 			if (!visibleCerca)
-			{ 
+			{
 				pnlArticoli.Dock = DockStyle.Fill;
 			}
 			else
@@ -50,13 +59,27 @@ namespace StrumentiMusicaliApp
 		}
 
 		private void DgvMaster_SelectionChanged(object sender, EventArgs e)
-		{ 
+		{
 			UpdateButtonState();
+			
+			EventAggregator.Instance().Publish(new ArticoloSelected(GetCurrentItemSelected()));
+
+		}
+		private ArticoloItem GetCurrentItemSelected()
+		{
+			ArticoloItem item = null;
+			if (dgvMaster.SelectedRows.Count > 0)
+			{
+				item = (ArticoloItem)dgvMaster.SelectedRows[0].DataBoundItem;
+			}
+			return item;
 		}
 
 		private void UpdateButtonState()
 		{
 			ribEditArt.Enabled = dgvMaster.SelectedRows.Count > 0;
+			ribArtDuplicate.Enabled = dgvMaster.SelectedRows.Count > 0;
+			ribDelete.Enabled = dgvMaster.SelectedRows.Count > 0;
 			ribCerca.Checked = pnlCerca.Visible;
 		}
 
@@ -105,12 +128,12 @@ namespace StrumentiMusicaliApp
 		}
 
 		private void ribEditArt_Click(object sender, EventArgs e)
-		{ 
+		{
 			using (var frm = new Forms.frmArticolo((ArticoloItem)dgvMaster.SelectedRows[0].DataBoundItem))
 			{
 				frm.ShowDialog();
 			}
-			 
+
 			var indice = dgvMaster.SelectedRows[0].Index;
 			RefreshData();
 			dgvMaster.Rows[indice].Selected = true;

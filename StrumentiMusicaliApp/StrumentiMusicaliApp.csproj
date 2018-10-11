@@ -77,6 +77,7 @@
     <Compile Include="Core\ArticoloItem.cs" />
     <Compile Include="Core\CategoriaItem.cs" />
     <Compile Include="Core\Controller.cs" />
+    <Compile Include="Core\CursorHandler.cs" />
     <Compile Include="Core\Events\ArticoloDelete.cs" />
     <Compile Include="Core\Events\ArticoloDuplicate.cs" />
     <Compile Include="Core\Events\ArticoloAdd.cs" />

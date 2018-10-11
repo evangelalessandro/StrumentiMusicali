@@ -47,10 +47,12 @@ namespace StrumentiMusicaliSql.Migrations
                 c => new
                     {
                         ID = c.Guid(nullable: false, identity: true),
-                        ArticoloId = c.String(),
                         UrlFoto = c.String(nullable: false),
+                        Articolo_ID = c.String(maxLength: 50),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.ID)
+                .ForeignKey("dbo.Articoli", t => t.Articolo_ID)
+                .Index(t => t.Articolo_ID);
             
             CreateTable(
                 "dbo.EventLogs",
@@ -72,6 +74,8 @@ namespace StrumentiMusicaliSql.Migrations
         
         public override void Down()
         {
+            DropForeignKey("dbo.FotoArticoli", "Articolo_ID", "dbo.Articoli");
+            DropIndex("dbo.FotoArticoli", new[] { "Articolo_ID" });
             DropTable("dbo.EventLogs");
             DropTable("dbo.FotoArticoli");
             DropTable("dbo.Categorie");

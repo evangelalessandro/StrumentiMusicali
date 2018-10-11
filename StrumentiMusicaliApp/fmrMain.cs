@@ -11,7 +11,7 @@ namespace StrumentiMusicaliApp
 {
 	public partial class fmrMain : Form
 	{
-		
+
 		public fmrMain()
 		{
 			InitializeComponent();
@@ -33,8 +33,10 @@ namespace StrumentiMusicaliApp
 
 		private void ribDelete_Click(object sender, EventArgs e)
 		{
-			EventAggregator.Instance().Publish<ArticoloDelete>(new ArticoloDelete(GetCurrentItemSelected()));
-
+			using (var curs = new CursorHandler())
+			{
+				EventAggregator.Instance().Publish<ArticoloDelete>(new ArticoloDelete(GetCurrentItemSelected()));
+			}
 		}
 
 		private void UpdateList(ArticoliToUpdate obj)
@@ -68,7 +70,7 @@ namespace StrumentiMusicaliApp
 		private void DgvMaster_SelectionChanged(object sender, EventArgs e)
 		{
 			UpdateButtonState();
-			
+
 			EventAggregator.Instance().Publish(new ArticoloSelected(GetCurrentItemSelected()));
 
 		}
@@ -98,27 +100,30 @@ namespace StrumentiMusicaliApp
 
 		private void RefreshData()
 		{
-			var datoRicerca = txtCerca.Text;
-			using (var uof = new UnitOfWork())
+			using (var curs = new CursorHandler())
 			{
-				var list = uof.ArticoliRepository.Find(a => datoRicerca == "" || a.Titolo.Contains(datoRicerca)
-					|| a.Testo.Contains(datoRicerca)
-				).Select(a => new ArticoloItem
+				var datoRicerca = txtCerca.Text;
+				using (var uof = new UnitOfWork())
 				{
-					ID = a.ID,
-					Titolo = a.Titolo,
-					ArticoloCS = a
-					,
-					DataCreazione = a.DataCreazione,
-					DataModifica = a.DataUltimaModifica
-					,
-					Pinned = a.Pinned
-				}).ToList();
-				dgvMaster.DataSource = list;
+					var list = uof.ArticoliRepository.Find(a => datoRicerca == "" || a.Titolo.Contains(datoRicerca)
+						|| a.Testo.Contains(datoRicerca)
+					).Select(a => new ArticoloItem
+					{
+						ID = a.ID,
+						Titolo = a.Titolo,
+						ArticoloCS = a
+						,
+						DataCreazione = a.DataCreazione,
+						DataModifica = a.DataUltimaModifica
+						,
+						Pinned = a.Pinned
+					}).ToList();
+					dgvMaster.DataSource = list;
 
-				dgvMaster.Columns[0].Visible = false;
-				dgvMaster.Columns["Pinned"].Visible = false;
-				dgvMaster.Columns["ArticoloCS"].Visible = false;
+					dgvMaster.Columns[0].Visible = false;
+					dgvMaster.Columns["Pinned"].Visible = false;
+					dgvMaster.Columns["ArticoloCS"].Visible = false;
+				}
 			}
 		}
 
@@ -130,8 +135,10 @@ namespace StrumentiMusicaliApp
 
 		private void ribArtDuplicate_Click(object sender, EventArgs e)
 		{
-			EventAggregator.Instance().Publish(new ArticoloDuplicate());
-
+			using (var curs = new CursorHandler())
+			{
+				EventAggregator.Instance().Publish(new ArticoloDuplicate());
+			}
 		}
 
 		private void ribEditArt_Click(object sender, EventArgs e)

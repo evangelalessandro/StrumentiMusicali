@@ -13,7 +13,7 @@ namespace StrumentiMusicaliSql.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201810110959434_Init"; }
+            get { return "201810111017227_Init"; }
         }
         
         string IMigrationMetadata.Source

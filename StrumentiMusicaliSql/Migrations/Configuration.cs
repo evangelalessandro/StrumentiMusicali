@@ -11,7 +11,10 @@ namespace StrumentiMusicaliSql.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-        }
+			//AutomaticMigrationDataLossAllowed = true;
+			
+
+		}
 
         protected override void Seed(StrumentiMusicaliSql.Model.ModelSm context)
         {

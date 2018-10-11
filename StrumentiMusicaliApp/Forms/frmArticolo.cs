@@ -1,5 +1,6 @@
 ﻿using StrumentiMusicaliApp.Core;
 using StrumentiMusicaliSql.Core;
+using StrumentiMusicaliSql.Entity;
 using StrumentiMusicaliSql.Repo;
 using System;
 using System.Collections.Generic;
@@ -33,17 +34,20 @@ namespace StrumentiMusicaliApp.Forms
 			this.Validate();
 			try
 			{
-				using (var uof = new UnitOfWork())
+				using (var curs = new CursorHandler())
 				{
-					if (modeEdit)
+					using (var uof = new UnitOfWork())
 					{
-						uof.ArticoliRepository.Update(_articolo);
+						if (modeEdit)
+						{
+							uof.ArticoliRepository.Update(_articolo);
+						}
+						else
+						{
+							uof.ArticoliRepository.Add(_articolo);
+						}
+						uof.Commit();
 					}
-					else
-					{
-						uof.ArticoliRepository.Add(_articolo);
-					}
-					uof.Commit();
 				}
 				MessageManager.NotificaInfo("Salvataggio avvenuto con successo");
 
@@ -81,6 +85,7 @@ namespace StrumentiMusicaliApp.Forms
 				_articolo = new StrumentiMusicaliSql.Entity.Articolo();
 
 			}
+
 			FillCombo();
 
 			var listControlWithTag = FindControlByType<Control>(this).Where(a => a.Tag != null && a.Tag.ToString().Length > 0);
@@ -128,7 +133,22 @@ namespace StrumentiMusicaliApp.Forms
 				cboCategoria.DataSource = _categoriList;
 				cboCategoria.DisplayMember = "Descrizione";
 				cboCategoria.ValueMember = "ID";
+
+
+				txtMarca.Values = uof.ArticoliRepository.Find(a => true).Select(a => a.Marca).Distinct().ToList().ToArray();
+
+				cboCondizione.DataSource = Enum.GetNames(typeof(enCondizioneArticolo))
+					.Select(a => new
+					{
+						ID = (enCondizioneArticolo)Enum.Parse(typeof(enCondizioneArticolo), a)
+						,Descrizione = a
+					}).ToList();
+				cboCondizione.DisplayMember = "Descrizione";
+				cboCondizione.ValueMember = "ID";
+
 			}
+
+
 		}
 
 		private List<CategoriaItem> _categoriList = new List<CategoriaItem>();
@@ -154,12 +174,7 @@ namespace StrumentiMusicaliApp.Forms
 				var data = (from m in _categoriList where m.Descrizione.ToLower().Contains(tempStr.ToLower()) select m).ToList();
 
 				cboCategoria.DataSource = data;
-				//cboCategoria.Items.Clear();
 
-				//foreach (var temp in data)
-				//{
-				//	cboCategoria.Items.Add(temp);
-				//}
 				cboCategoria.DroppedDown = true;
 				//Cursor.Current = Cursors.Default;
 				cboCategoria.SelectedIndex = -1;
@@ -169,10 +184,7 @@ namespace StrumentiMusicaliApp.Forms
 				_lastFilter = text;
 			}
 		}
-		private void ribFilterCategorie_TextBoxTextChanged(object sender, EventArgs e)
-		{
 
-		}
 
 
 		private void ChkPrezzoARichiesta_CheckedChanged(object sender, EventArgs e)

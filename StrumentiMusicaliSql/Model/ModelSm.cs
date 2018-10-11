@@ -12,7 +12,6 @@ namespace StrumentiMusicaliSql.Model
         public ModelSm()
             : base("name=ModelSm")
         {
-
 			Database.SetInitializer<ModelSm>(new MigrateDatabaseToLatestVersion<ModelSm, Migrations.Configuration>());
 		}
 
@@ -20,8 +19,6 @@ namespace StrumentiMusicaliSql.Model
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-			 
-
 			modelBuilder.Entity<Articolo>().ToTable("Articoli");
 			modelBuilder.Entity<Categorie>().ToTable("Categorie");
 			modelBuilder.Entity<FotoArticolo>().ToTable("FotoArticoli");

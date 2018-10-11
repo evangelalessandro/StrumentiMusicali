@@ -2,9 +2,12 @@
 using NLog.Targets;
 using StrumentiMusicaliApp.Core.Events;
 using StrumentiMusicaliSql.Core;
+using StrumentiMusicaliSql.Entity;
 using StrumentiMusicaliSql.Repo;
 using System;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace StrumentiMusicaliApp.Core
@@ -21,10 +24,135 @@ namespace StrumentiMusicaliApp.Core
 			EventAggregator.Instance().Subscribe<ArticoloDelete>(DeleteArticolo);
 			EventAggregator.Instance().Subscribe<ArticoloDuplicate>(DuplicaArticolo);
 			EventAggregator.Instance().Subscribe<ArticoloSelected>(ArticoloSelectedChange);
+			EventAggregator.Instance().Subscribe<ImportArticoli>(ImportaCsvArticoli);
 			Application.ThreadException += Application_ThreadException;
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new fmrMain());
+		}
+
+		private void ImportaCsvArticoli(ImportArticoli obj)
+		{
+			try
+			{
+				using (OpenFileDialog res = new OpenFileDialog())
+				{
+					res.Title = "Seleziona file da importare";
+					//Filter
+					res.Filter = "File csv|*.csv;";
+
+					//When the user select the file
+					if (res.ShowDialog() == DialogResult.OK)
+					{
+						//Get the file's path
+						var fileName = res.FileName;
+
+
+
+						using (StreamReader sr = new StreamReader(fileName, Encoding.Default, true))
+						{
+							String line;
+							bool firstLine = true;
+							// Read and display lines from the file until the end of 
+							// the file is reached.
+							using (var uof = new UnitOfWork())
+							{
+
+								while ((line = sr.ReadLine()) != null)
+								{
+									if (!firstLine)
+									{
+										var dat = line.Split('§');
+										var cond = enCondizioneArticolo.Nuovo;
+										if (dat[2] == "N")
+										{
+											cond = enCondizioneArticolo.Nuovo;
+										}
+										else if (dat[2] == "U")
+										{
+											cond = enCondizioneArticolo.UsatoGarantito;
+										}
+										else if (dat[2] == "E")
+										{
+											cond = enCondizioneArticolo.ExDemo;
+										}
+										else
+										{
+											throw new Exception("Tipo dato non gestito o mancante nella condizione articolo.");
+										}
+										decimal prezzo = 0;
+										decimal prezzoBarrato = 0;
+										bool prezzoARichiesta = false;
+										var strPrezzo = dat[6];
+										if (strPrezzo == "NC")
+										{
+											prezzoARichiesta = true;
+										}
+										else if (strPrezzo.Contains(";"))
+										{
+											prezzo = decimal.Parse(strPrezzo.Split(';')[0]);
+											prezzoBarrato = decimal.Parse(strPrezzo.Split(';')[1]);
+										}
+										else
+										{
+											if (strPrezzo.Trim().Length>0)
+											{ 
+												prezzo = decimal.Parse(strPrezzo);
+											}
+										}
+										var artNew=(new StrumentiMusicaliSql.Entity.Articolo()
+										{
+											ID = (dat[0]),
+											Categoria = int.Parse(dat[1]),
+											Condizione = cond,
+											Giacenza = 1,
+											Marca = dat[3],
+											Titolo = dat[4],
+											Testo = dat[5].Replace("<br>", Environment.NewLine),
+											Prezzo= prezzo,
+											PrezzoARichiesta=prezzoARichiesta,
+											PrezzoBarrato=prezzoBarrato,
+											BoxProposte= bool.Parse( dat[9]) 
+
+										});
+										if (artNew.ID=="")
+										{
+											artNew.ID = "Luc" + DateTime.Now.Ticks.ToString();
+										}
+										uof.ArticoliRepository.Add(artNew);
+										var foto = dat[7];
+										if (foto.Length>0)
+										{
+											foreach (var item in foto.Split(';'))
+											{
+												var artFoto = new StrumentiMusicaliSql.Entity.FotoArticolo()
+												{
+													ArticoloId = artNew.ID,
+													UrlFoto = item
+												};
+												uof.FotoArticoloRepository.Add(artFoto);
+											} 
+										}
+										
+
+
+
+								}
+
+									firstLine = false;
+								}
+							}
+						}
+						EventAggregator.Instance().Publish<ArticoliToUpdate>(new ArticoliToUpdate());
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+
+
+			}
+
 		}
 
 		private void DeleteArticolo(ArticoloDelete obj)
@@ -33,9 +161,9 @@ namespace StrumentiMusicaliApp.Core
 			{
 				using (var uof = new UnitOfWork())
 				{
-					
-					var item= uof.ArticoliRepository.Find(a => a.ID == obj.ItemSelected.ID).FirstOrDefault();
-					_logger.Info(string.Format("Cancellazione articolo /r/n{0} /r/n{1}", item.Titolo,item.ID));
+
+					var item = uof.ArticoliRepository.Find(a => a.ID == obj.ItemSelected.ID).FirstOrDefault();
+					_logger.Info(string.Format("Cancellazione articolo /r/n{0} /r/n{1}", item.Titolo, item.ID));
 					uof.ArticoliRepository.Delete(item);
 					uof.Commit();
 				}
@@ -133,7 +261,7 @@ namespace StrumentiMusicaliApp.Core
 				_logger.Info("Duplica articolo");
 				EventAggregator.Instance().Publish<ArticoliToUpdate>(new ArticoliToUpdate());
 
-				
+
 			}
 			catch (Exception ex)
 			{
@@ -141,6 +269,6 @@ namespace StrumentiMusicaliApp.Core
 			}
 		}
 
-		
+
 	}
 }

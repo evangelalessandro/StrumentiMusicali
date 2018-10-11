@@ -82,6 +82,7 @@
     <Compile Include="Core\Events\ArticoloAdd.cs" />
     <Compile Include="Core\Events\ArticoliUpdate.cs" />
     <Compile Include="Core\Events\ArticoloSelected.cs" />
+    <Compile Include="Core\Events\ImportArticoli.cs" />
     <Compile Include="Core\Events\Interfaces\ArticoloSelected.cs" />
     <Compile Include="Core\ExceptionManager.cs" />
     <Compile Include="Core\MessageManager.cs" />
@@ -152,6 +153,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="References\System.Windows.Forms.Ribbon.dll" />
+    <None Include="Resources\Import.png" />
     <None Include="Resources\Upload_64.png" />
     <None Include="Resources\Upload.png" />
     <None Include="Resources\error_64.png" />

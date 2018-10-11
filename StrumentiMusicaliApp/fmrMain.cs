@@ -18,9 +18,16 @@ namespace StrumentiMusicaliApp
 			dgvMaster.SelectionChanged += DgvMaster_SelectionChanged;
 			ribCerca.Click += RibCerca_Click;
 			ribDelete.Click += ribDelete_Click;
+			ribImportArticoli.Click += RibImportArticoli_Click;
 			UpdateButtonState();
 			txtCerca.KeyUp += TxtCerca_KeyUp;
 			EventAggregator.Instance().Subscribe<ArticoliToUpdate>(UpdateList);
+
+		}
+
+		private void RibImportArticoli_Click(object sender, EventArgs e)
+		{
+			EventAggregator.Instance().Publish<ImportArticoli>(new ImportArticoli());
 
 		}
 

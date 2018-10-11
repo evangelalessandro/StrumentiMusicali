@@ -6,7 +6,7 @@ namespace StrumentiMusicaliApp.Core
 {
 	public class ArticoloItem
 	{
-		public Guid ID { get; set; }
+		public string ID { get; set; }
 		public string Titolo { get; set; }
 		public DateTime DataCreazione { get; set; }
 		public DateTime DataModifica { get; set; }

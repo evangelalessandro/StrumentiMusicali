@@ -3,7 +3,7 @@ namespace StrumentiMusicaliSql.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialCreate : DbMigration
+    public partial class Init : DbMigration
     {
         public override void Up()
         {
@@ -11,10 +11,10 @@ namespace StrumentiMusicaliSql.Migrations
                 "dbo.Articoli",
                 c => new
                     {
-                        ID = c.Guid(nullable: false, identity: true),
+                        ID = c.String(nullable: false, maxLength: 50),
                         Categoria = c.Int(nullable: false),
                         Condizione = c.Int(nullable: false),
-                        Marca = c.String(nullable: false, maxLength: 100),
+                        Marca = c.String(maxLength: 100),
                         Titolo = c.String(nullable: false, maxLength: 100),
                         Testo = c.String(nullable: false, maxLength: 2000),
                         Prezzo = c.Decimal(nullable: false, precision: 19, scale: 2),
@@ -43,16 +43,14 @@ namespace StrumentiMusicaliSql.Migrations
                 .PrimaryKey(t => t.ID);
             
             CreateTable(
-                "dbo.FotoArticoloes",
+                "dbo.FotoArticoli",
                 c => new
                     {
                         ID = c.Guid(nullable: false, identity: true),
+                        ArticoloId = c.String(),
                         UrlFoto = c.String(nullable: false),
-                        Articolo_ID = c.Guid(nullable: false),
                     })
-                .PrimaryKey(t => t.ID)
-                .ForeignKey("dbo.Articoli", t => t.Articolo_ID, cascadeDelete: true)
-                .Index(t => t.Articolo_ID);
+                .PrimaryKey(t => t.ID);
             
             CreateTable(
                 "dbo.EventLogs",
@@ -74,10 +72,8 @@ namespace StrumentiMusicaliSql.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.FotoArticoloes", "Articolo_ID", "dbo.Articoli");
-            DropIndex("dbo.FotoArticoloes", new[] { "Articolo_ID" });
             DropTable("dbo.EventLogs");
-            DropTable("dbo.FotoArticoloes");
+            DropTable("dbo.FotoArticoli");
             DropTable("dbo.Categorie");
             DropTable("dbo.Articoli");
         }

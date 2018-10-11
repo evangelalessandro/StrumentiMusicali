@@ -13,7 +13,7 @@ namespace StrumentiMusicaliSql.Model
             : base("name=ModelSm")
         {
 
-			Database.SetInitializer<ModelSm>(new DropCreateDatabaseIfModelChanges<ModelSm>());
+			Database.SetInitializer<ModelSm>(new MigrateDatabaseToLatestVersion<ModelSm, Migrations.Configuration>());
 		}
 
       

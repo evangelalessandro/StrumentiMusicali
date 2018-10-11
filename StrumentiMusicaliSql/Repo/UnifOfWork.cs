@@ -1,100 +1,103 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StrumentiMusicaliSql.Core;
+﻿using StrumentiMusicaliSql.Core;
 using StrumentiMusicaliSql.Entity;
 using StrumentiMusicaliSql.Model;
+using System;
+using System.Linq;
 
 namespace StrumentiMusicaliSql.Repo
 {
-     
-        public class UnitOfWork : IDisposable
-        {
-            //Our database context 
-            private ModelSm dbContext = new ModelSm();
 
-        //Private members corresponding to each concrete repository
-        private Repository<Categorie> _CategorieRepository;
+	public class UnitOfWork : IDisposable
+	{
+		//Our database context 
+		private ModelSm dbContext = new ModelSm();
 
-        public IRepository<Categorie> CategorieRepository
-        {
-            get
-            {
-                if (_CategorieRepository == null)
-                {
-                    _CategorieRepository = new Repository<Categorie>(dbContext);
-                }
-                return _CategorieRepository;
-            }
+		//Private members corresponding to each concrete repository
+		private Repository<Categorie> _CategorieRepository;
 
-        }
-
-        private Repository<Articolo> _ArticoliRepository;
-            
-            public IRepository<Articolo> ArticoliRepository
-            {
-                get
-                {
-                    if (_ArticoliRepository == null)
-                    {
-                        _ArticoliRepository = new Repository<Articolo>(dbContext);
-                    }
-                    return _ArticoliRepository;
-                }
-
-            }
-        private Repository<EventLog> _EventLogRepository;
-
-        //Accessors for each private repository, creates repository if null
-        public IRepository<EventLog> EventLogRepository
-            {
-                get
-                {
-                    if (_EventLogRepository == null)
-                    {
-                        _EventLogRepository = new Repository<EventLog>(dbContext);
-                    }
-                    return _EventLogRepository;
-                }
-
-            }
-
-            //Method to save all changes to repositories
-            public void Commit()
-            {
-				try
+		public IRepository<Categorie> CategorieRepository {
+			get {
+				if (_CategorieRepository == null)
 				{
-					dbContext.SaveChanges();
+					_CategorieRepository = new Repository<Categorie>(dbContext);
 				}
-				catch (System.Data.Entity.Validation.DbEntityValidationException ex)
+				return _CategorieRepository;
+			}
+
+		}
+
+		private Repository<Articolo> _ArticoliRepository;
+
+		public IRepository<Articolo> ArticoliRepository {
+			get {
+				if (_ArticoliRepository == null)
 				{
-					throw new MessageException(ex.EntityValidationErrors.First().ValidationErrors.Select(a => a.ErrorMessage).ToList());
+					_ArticoliRepository = new Repository<Articolo>(dbContext);
 				}
-			
-            }
+				return _ArticoliRepository;
+			}
 
-            //IDisposible implementation
-            private bool disposed = false;
+		}
+		private Repository<FotoArticolo> _FotoArticoloRepository;
 
-            protected virtual void Dispose(bool disposing)
-            {
-                if (!this.disposed)
-                {
-                    if (disposing)
-                    {
-                        dbContext.Dispose();
-                    }
-                }
-            }
+		public IRepository<FotoArticolo> FotoArticoloRepository {
+			get {
+				if (_FotoArticoloRepository == null)
+				{
+					_FotoArticoloRepository = new Repository<FotoArticolo>(dbContext);
+				}
+				return _FotoArticoloRepository;
+			}
 
-            public void Dispose()
-            {
-                Dispose(true);
-                GC.SuppressFinalize(this);
-            }
-        }
+		}
+		private Repository<EventLog> _EventLogRepository;
 
-    
+		//Accessors for each private repository, creates repository if null
+		public IRepository<EventLog> EventLogRepository {
+			get {
+				if (_EventLogRepository == null)
+				{
+					_EventLogRepository = new Repository<EventLog>(dbContext);
+				}
+				return _EventLogRepository;
+			}
+
+		}
+
+		//Method to save all changes to repositories
+		public void Commit()
+		{
+			try
+			{
+				dbContext.SaveChanges();
+			}
+			catch (System.Data.Entity.Validation.DbEntityValidationException ex)
+			{
+				throw new MessageException(ex.EntityValidationErrors.First().ValidationErrors.Select(a => a.ErrorMessage).ToList());
+			}
+
+		}
+
+		//IDisposible implementation
+		private bool disposed = false;
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!this.disposed)
+			{
+				if (disposing)
+				{
+					dbContext.Dispose();
+				}
+			}
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+	}
+
+
 }

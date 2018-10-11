@@ -59,13 +59,9 @@
     <Compile Include="Entity\Categorie.cs" />
     <Compile Include="Entity\EventLog.cs" />
     <Compile Include="Entity\FotoArticolo.cs" />
-    <Compile Include="Migrations\201810081311317_InitialCreate.cs" />
-    <Compile Include="Migrations\201810081311317_InitialCreate.Designer.cs">
-      <DependentUpon>201810081311317_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201810090735233_second.cs" />
-    <Compile Include="Migrations\201810090735233_second.Designer.cs">
-      <DependentUpon>201810090735233_second.cs</DependentUpon>
+    <Compile Include="Migrations\201810110959434_Init.cs" />
+    <Compile Include="Migrations\201810110959434_Init.Designer.cs">
+      <DependentUpon>201810110959434_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
@@ -79,11 +75,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201810081311317_InitialCreate.resx">
-      <DependentUpon>201810081311317_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201810090735233_second.resx">
-      <DependentUpon>201810090735233_second.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201810110959434_Init.resx">
+      <DependentUpon>201810110959434_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

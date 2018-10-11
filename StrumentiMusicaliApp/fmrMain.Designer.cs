@@ -34,13 +34,14 @@
 			this.ribbonPanel1 = new System.Windows.Forms.RibbonPanel();
 			this.ribbonPanel2 = new System.Windows.Forms.RibbonPanel();
 			this.ribbonTab2 = new System.Windows.Forms.RibbonTab();
+			this.ribPnlSetting = new System.Windows.Forms.RibbonPanel();
 			this.dgvMaster = new System.Windows.Forms.DataGridView();
 			this.pnlArticoli = new System.Windows.Forms.Panel();
 			this.pnlCerca = new System.Windows.Forms.Panel();
 			this.label1 = new System.Windows.Forms.Label();
 			this.txtCerca = new System.Windows.Forms.TextBox();
 			this.splitter1 = new System.Windows.Forms.Splitter();
-			this.ribPnlSetting = new System.Windows.Forms.RibbonPanel();
+			this.ribbonPanel3 = new System.Windows.Forms.RibbonPanel();
 			this.ribAddArt = new System.Windows.Forms.RibbonButton();
 			this.ribEditArt = new System.Windows.Forms.RibbonButton();
 			this.ribDelete = new System.Windows.Forms.RibbonButton();
@@ -49,6 +50,7 @@
 			this.ribArtDuplicate = new System.Windows.Forms.RibbonButton();
 			this.ribCerca = new System.Windows.Forms.RibbonButton();
 			this.ribInvioDati = new System.Windows.Forms.RibbonButton();
+			this.ribImportArticoli = new System.Windows.Forms.RibbonButton();
 			this.ribbonOrbOptionButton1 = new System.Windows.Forms.RibbonOrbOptionButton();
 			this.ribbonOrbOptionButton2 = new System.Windows.Forms.RibbonOrbOptionButton();
 			((System.ComponentModel.ISupportInitialize)(this.dgvMaster)).BeginInit();
@@ -112,7 +114,14 @@
 			// 
 			this.ribbonTab2.Name = "ribbonTab2";
 			this.ribbonTab2.Panels.Add(this.ribPnlSetting);
-			this.ribbonTab2.Text = "ribbonTab2";
+			this.ribbonTab2.Panels.Add(this.ribbonPanel3);
+			this.ribbonTab2.Text = "Import\\Export";
+			// 
+			// ribPnlSetting
+			// 
+			this.ribPnlSetting.Items.Add(this.ribInvioDati);
+			this.ribPnlSetting.Name = "ribPnlSetting";
+			this.ribPnlSetting.Text = "Invio articoli";
 			// 
 			// dgvMaster
 			// 
@@ -181,11 +190,11 @@
 			this.splitter1.TabIndex = 4;
 			this.splitter1.TabStop = false;
 			// 
-			// ribPnlSetting
+			// ribbonPanel3
 			// 
-			this.ribPnlSetting.Items.Add(this.ribInvioDati);
-			this.ribPnlSetting.Name = "ribPnlSetting";
-			this.ribPnlSetting.Text = "Invio articoli";
+			this.ribbonPanel3.Items.Add(this.ribImportArticoli);
+			this.ribbonPanel3.Name = "ribbonPanel3";
+			this.ribbonPanel3.Text = "Import";
 			// 
 			// ribAddArt
 			// 
@@ -258,6 +267,14 @@
 			this.ribInvioDati.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribInvioDati.SmallImage")));
 			this.ribInvioDati.Text = "Invio Dati";
 			// 
+			// ribImportArticoli
+			// 
+			this.ribImportArticoli.Image = global::StrumentiMusicaliApp.Properties.Resources.Import;
+			this.ribImportArticoli.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Import;
+			this.ribImportArticoli.Name = "ribImportArticoli";
+			this.ribImportArticoli.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribImportArticoli.SmallImage")));
+			this.ribImportArticoli.Text = "Import Articoli";
+			// 
 			// ribbonOrbOptionButton1
 			// 
 			this.ribbonOrbOptionButton1.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbOptionButton1.Image")));
@@ -321,6 +338,8 @@
 		private System.Windows.Forms.RibbonOrbOptionButton ribbonOrbOptionButton2;
 		private System.Windows.Forms.RibbonPanel ribPnlSetting;
 		private System.Windows.Forms.RibbonButton ribInvioDati;
+		private System.Windows.Forms.RibbonPanel ribbonPanel3;
+		private System.Windows.Forms.RibbonButton ribImportArticoli;
 	}
 }
 

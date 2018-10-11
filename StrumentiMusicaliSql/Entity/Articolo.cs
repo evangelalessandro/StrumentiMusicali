@@ -11,12 +11,12 @@ namespace StrumentiMusicaliSql.Entity
     public class Articolo
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid ID { get; set; }
+		[MaxLength(50), Required]
+		public string ID { get; set; }
         [Required]
         public int Categoria { get; set; }
-        public CondizioneArticolo Condizione { get; set; } = CondizioneArticolo.Nuovo;
-        [MaxLength(100),Required]
+        public enCondizioneArticolo Condizione { get; set; } = enCondizioneArticolo.Nuovo;
+        [MaxLength(100)]
         public string Marca { get; set; }
         [MaxLength(100), Required]
         public string Titolo { get; set; }
@@ -35,12 +35,11 @@ namespace StrumentiMusicaliSql.Entity
 		public DateTime DataUltimaModifica { get; set; }
 		public bool Pinned { get; set; }
 		public int Giacenza { get; set; }
-
-		public virtual ICollection<FotoArticolo> getFotoArticolo { get; set; } 
+		 
 
 		 
 	}
-    public enum CondizioneArticolo
+    public enum enCondizioneArticolo
     {
         Nuovo=1,
         ExDemo=3,

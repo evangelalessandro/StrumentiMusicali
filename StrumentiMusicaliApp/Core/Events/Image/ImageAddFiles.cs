@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 
 namespace StrumentiMusicaliApp.Core
 {
-	public class ImageAdd
+	public class ImageAddFiles
 	{
-		public ImageAdd(Articolo articolo)
+		public ImageAddFiles(Articolo articolo,List<string> files)
 		{
 			Articolo = articolo;
+			Files = files;
 		}
 		public Articolo Articolo { get; private set; }
+		public List<string> Files { get; private set; }
 	}
 }

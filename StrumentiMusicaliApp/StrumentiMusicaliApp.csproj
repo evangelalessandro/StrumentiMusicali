@@ -74,6 +74,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Events\Image\ImageAddFiles.cs" />
     <Compile Include="Core\Events\Image\ImageListUpdate.cs" />
     <Compile Include="Core\Events\Image\ImageOrderSet.cs" />
     <Compile Include="Core\Events\Items\ArticoloSave.cs" />

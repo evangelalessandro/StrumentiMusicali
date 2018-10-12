@@ -116,7 +116,7 @@ namespace StrumentiMusicaliApp.Forms
 			if (_values != null && word.Length > 0)
 			{
 				string[] matches = Array.FindAll(_values,
-												 x => (x.ToLower().Contains(word.ToLower())));
+												 x => (x != null && x.ToLower().Contains(word.ToLower())));
 				if (matches.Length > 0)
 				{
 					ShowListBox();

@@ -7,9 +7,12 @@ using StrumentiMusicaliSql.Repo;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace StrumentiMusicaliApp.Forms
@@ -21,6 +24,9 @@ namespace StrumentiMusicaliApp.Forms
 		private List<PictureBox> _imageList = new List<PictureBox>();
 		private string _lastFilter = "";
 		private bool modeEdit = false;
+		private System.Windows.Forms.PictureBox pb = new PictureBox();
+
+
 		public frmArticolo()
 			: base()
 		{
@@ -33,13 +39,43 @@ namespace StrumentiMusicaliApp.Forms
 
 			ribSave.Click += RibSave_Click;
 			PanelImage.AllowDrop = true;
-
+			ribRemoveImage.Click += RibRemoveImage_Click;
 			PanelImage.DragEnter += new DragEventHandler(PanelImage_DragEnter);
 			PanelImage.DragDrop += new DragEventHandler(PanelImage_DragDrop);
-
+			PanelImage.DragLeave += PanelImage_DragLeave;
 			diminuisciPrioritàToolStripMenuItem.Click += DiminuisciPrioritàToolStripMenuItem_Click;
 			aumentaPrioritàToolStripMenuItem.Click += AumentaPrioritàToolStripMenuItem_Click;
 			menuImpostaPrincipale.Click += MenuImpostaPrincipale_Click;
+			rimuoviImmagineToolStripMenuItem.Click += RimuoviImmagineToolStripMenuItem_Click;
+			thumbnail = new PictureBox();
+			thumbnail.SizeMode = PictureBoxSizeMode.StretchImage;
+			pb.Controls.Add(thumbnail);
+			thumbnail.Visible = false;
+			this.pb.Location = new System.Drawing.Point(0, 0);
+			this.pb.Name = "pb";
+			this.pb.Size = new System.Drawing.Size(292, 266);
+			this.pb.TabIndex = 0;
+			this.pb.TabStop = false;
+			this.pb.SizeMode = PictureBoxSizeMode.StretchImage;
+			pb.Controls.Add(thumbnail);
+			pb.BackColor = Color.Green;
+			PanelImage.Controls.Add(pb);
+		}
+
+		private void RimuoviImmagineToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			EventAggregator.Instance().Publish<ImageRemove>(new ImageRemove(_fotoArticoloSelected));
+		}
+
+		private void RibRemoveImage_Click(object sender, EventArgs e)
+		{
+			EventAggregator.Instance().Publish<ImageRemove>(new ImageRemove(_fotoArticoloSelected));
+		}
+
+		private void PanelImage_DragLeave(object sender, EventArgs e)
+		{
+			Debug.Print("PanelImage_DragLeave");
+			thumbnail.Visible = false;
 		}
 
 		private void RefreshImageList(ImageListUpdate obj)
@@ -162,19 +198,129 @@ namespace StrumentiMusicaliApp.Forms
 			EventAggregator.Instance().Publish<ImageOrderSet>(
 				new ImageOrderSet(enOperationOrder.ImpostaPrincipale, _fotoArticoloSelected));
 		}
-		private void PanelImage_DragDrop(object sender, DragEventArgs e)
+		protected bool GetFilename(out string filename, DragEventArgs e)
 		{
-			PictureBox data = (PictureBox)e.Data.GetData(typeof(PictureBox));
-			Point p = PanelImage.PointToClient(new Point(e.X, e.Y));
-			var item = PanelImage.GetChildAtPoint(p);
-			int index = PanelImage.Controls.GetChildIndex(item, false);
-			PanelImage.Controls.SetChildIndex(data, index);
-			PanelImage.Invalidate();
+			bool ret = false;
+			filename = String.Empty;
+
+			if ((e.AllowedEffect & DragDropEffects.Copy) == DragDropEffects.Copy)
+			{
+				Array data = ((IDataObject)e.Data).GetData("FileDrop") as Array;
+				if (data != null)
+				{
+					if ((data.Length == 1) && (data.GetValue(0) is String))
+					{
+						filename = ((string[])data)[0];
+						string ext = Path.GetExtension(filename).ToLower();
+						if ((ext == ".jpg") || (ext == ".png") || (ext == ".jpeg") || (ext == ".bmp"))
+						{
+							ret = true;
+						}
+					}
+				}
+			}
+			return ret;
 		}
 
+		private void PanelImage_DragDrop(object sender, DragEventArgs e)
+		{
+
+			Debug.WriteLine("OnDragDrop");
+			if (validData)
+			{
+				while (getImageThread.IsAlive)
+				{
+					Application.DoEvents();
+					Thread.Sleep(0);
+				}
+				thumbnail.Visible = false;
+				image = nextImage;
+
+				var list = new List<string>() { lastFilename };
+
+				EventAggregator.Instance().Publish<ImageAddFiles>(
+					new ImageAddFiles(_articolo, list));
+
+				//AdjustView();
+				if (pb.Image!=null)
+					pb.Image.Dispose();
+				Debug.Print("pb.Visible = false");
+				pb.Visible = false;
+			}
+
+			//PictureBox data = (PictureBox)e.Data.GetData(typeof(PictureBox));
+			//Point p = PanelImage.PointToClient(new Point(e.X, e.Y));
+			//var item = PanelImage.GetChildAtPoint(p);
+			//int index = PanelImage.Controls.GetChildIndex(item, false);
+			//PanelImage.Controls.SetChildIndex(data, index);
+			//PanelImage.Invalidate();
+		}
+		protected int lastX = 0;
+		protected int lastY = 0;
+		protected string lastFilename = String.Empty;
+		protected PictureBox thumbnail;
+		protected DragDropEffects effect;
+		protected bool validData;
+		protected Image image;
+		protected Image nextImage;
+		protected Thread getImageThread;
+		public delegate void AssignImageDlgt();
+
+		protected void LoadImage()
+		{
+			nextImage = new Bitmap(lastFilename);
+			this.Invoke(new AssignImageDlgt(AssignImage));
+		}
+		protected void SetThumbnailLocation(Point p)
+		{
+			if (thumbnail.Image == null)
+			{
+				thumbnail.Visible = false;
+			}
+			else
+			{
+				p.X -= thumbnail.Width / 2;
+				p.Y -= thumbnail.Height / 2;
+				thumbnail.Location = p;
+				thumbnail.Visible = true;
+			}
+		}
+
+		protected void AssignImage()
+		{
+			thumbnail.Width = 100;
+			// 100    iWidth
+			// ---- = ------
+			// tHeight  iHeight
+			thumbnail.Height = nextImage.Height * 100 / nextImage.Width;
+			SetThumbnailLocation(this.PointToClient(new Point(lastX, lastY)));
+			thumbnail.Image = nextImage;
+		}
 		private void PanelImage_DragEnter(object sender, DragEventArgs e)
 		{
-			e.Effect = DragDropEffects.Move;
+			string filename;
+			validData = GetFilename(out filename, e);
+			if (validData)
+			{
+				Debug.Print("Valid data PanelImage_DragEnter");
+				if (lastFilename != filename)
+				{
+					thumbnail.Image = null;
+					thumbnail.Visible = false;
+					lastFilename = filename;
+					getImageThread = new Thread(new ThreadStart(LoadImage));
+					getImageThread.Start();
+				}
+				else
+				{
+					thumbnail.Visible = true;
+				}
+				e.Effect = DragDropEffects.Copy;
+			}
+			else
+			{
+				e.Effect = DragDropEffects.None;
+			}
 		}
 		FotoArticolo _fotoArticoloSelected = null;
 		private void Pb_Click(object sender, EventArgs e)
@@ -255,11 +401,7 @@ namespace StrumentiMusicaliApp.Forms
 			EventAggregator.Instance().Publish<ImageAdd>(new ImageAdd(_articolo));
 		}
 
-		private void ribRemoveImage_Click(object sender, EventArgs e)
-		{
-			EventAggregator.Instance().Publish<ImageRemove>(new ImageRemove());
-		}
-
+		 
 		private void RibSave_Click(object sender, EventArgs e)
 		{
 			this.txtID.Focus();

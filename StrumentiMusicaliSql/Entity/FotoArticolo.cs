@@ -14,7 +14,9 @@ namespace StrumentiMusicaliSql.Entity
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid ID { get; set; }
 
-		public Articolo Articolo { get; set; }
+		public string ArticoloID { get; set; }
+
+		public virtual Articolo Articolo { get; set; }
 	 
         [Required]
         public string UrlFoto { get; set; }

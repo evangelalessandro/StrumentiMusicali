@@ -43,6 +43,8 @@
 			this.ribbonPanel1 = new System.Windows.Forms.RibbonPanel();
 			this.ribSave = new System.Windows.Forms.RibbonButton();
 			this.ribbonPanel2 = new System.Windows.Forms.RibbonPanel();
+			this.ribAddImage = new System.Windows.Forms.RibbonButton();
+			this.ribRemoveImage = new System.Windows.Forms.RibbonButton();
 			this.cboCategoria = new System.Windows.Forms.ComboBox();
 			this.label9 = new System.Windows.Forms.Label();
 			this.cboCondizione = new System.Windows.Forms.ComboBox();
@@ -53,7 +55,6 @@
 			this.txtTesto = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.txtPrezzoBarrato = new System.Windows.Forms.NumericUpDown();
 			this.txtPrezzo = new System.Windows.Forms.NumericUpDown();
@@ -67,21 +68,21 @@
 			this.chkBoxProposte = new System.Windows.Forms.CheckBox();
 			this.chkUsaAnnuncioTurbo = new System.Windows.Forms.CheckBox();
 			this.label7 = new System.Windows.Forms.Label();
-			this.ribAddImage = new System.Windows.Forms.RibbonButton();
-			this.ribRemoveImage = new System.Windows.Forms.RibbonButton();
+			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.PanelImage = new System.Windows.Forms.FlowLayoutPanel();
 			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.menuImpostaPrincipale = new System.Windows.Forms.ToolStripMenuItem();
 			this.diminuisciPrioritàToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aumentaPrioritàToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.rimuoviImmagineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.panel2.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
-			this.tabPage2.SuspendLayout();
 			this.panel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzoBarrato)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzo)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
+			this.tabPage2.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -184,8 +185,11 @@
 			// 
 			// ribbonButton1
 			// 
+			this.ribbonButton1.Image = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.Image")));
+			this.ribbonButton1.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.LargeImage")));
 			this.ribbonButton1.MaxSizeMode = System.Windows.Forms.RibbonElementSizeMode.Compact;
 			this.ribbonButton1.Name = "ribbonButton1";
+			this.ribbonButton1.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.SmallImage")));
 			this.ribbonButton1.Text = "ribbonButton1";
 			// 
 			// ribbonTab1
@@ -208,6 +212,7 @@
 			this.ribSave.Image = global::StrumentiMusicaliApp.Properties.Resources.Save;
 			this.ribSave.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Save;
 			this.ribSave.Name = "ribSave";
+			this.ribSave.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribSave.SmallImage")));
 			this.ribSave.Text = "Salva";
 			// 
 			// ribbonPanel2
@@ -218,6 +223,23 @@
 			this.ribbonPanel2.Items.Add(this.ribRemoveImage);
 			this.ribbonPanel2.Name = "ribbonPanel2";
 			this.ribbonPanel2.Text = "Immagini";
+			// 
+			// ribAddImage
+			// 
+			this.ribAddImage.Image = global::StrumentiMusicaliApp.Properties.Resources.Add;
+			this.ribAddImage.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Add;
+			this.ribAddImage.Name = "ribAddImage";
+			this.ribAddImage.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribAddImage.SmallImage")));
+			this.ribAddImage.Text = "Aggiungi";
+			this.ribAddImage.Click += new System.EventHandler(this.ribAddImage_Click);
+			// 
+			// ribRemoveImage
+			// 
+			this.ribRemoveImage.Image = global::StrumentiMusicaliApp.Properties.Resources.Delete;
+			this.ribRemoveImage.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Delete;
+			this.ribRemoveImage.Name = "ribRemoveImage";
+			this.ribRemoveImage.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribRemoveImage.SmallImage")));
+			this.ribRemoveImage.Text = "Rimuovi";
 			// 
 			// cboCategoria
 			// 
@@ -346,17 +368,6 @@
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Dati Articolo";
 			this.tabPage1.UseVisualStyleBackColor = true;
-			// 
-			// tabPage2
-			// 
-			this.tabPage2.Controls.Add(this.PanelImage);
-			this.tabPage2.Location = new System.Drawing.Point(4, 25);
-			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(747, 324);
-			this.tabPage2.TabIndex = 1;
-			this.tabPage2.Text = "Immagini";
-			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
 			// panel1
 			// 
@@ -524,23 +535,16 @@
 			this.label7.Tag = "";
 			this.label7.Text = "Usa Annuncio Turbo";
 			// 
-			// ribAddImage
+			// tabPage2
 			// 
-			this.ribAddImage.Image = global::StrumentiMusicaliApp.Properties.Resources.Add;
-			this.ribAddImage.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Add;
-			this.ribAddImage.Name = "ribAddImage";
-			this.ribAddImage.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribAddImage.SmallImage")));
-			this.ribAddImage.Text = "Aggiungi";
-			this.ribAddImage.Click += new System.EventHandler(this.ribAddImage_Click);
-			// 
-			// ribRemoveImage
-			// 
-			this.ribRemoveImage.Image = global::StrumentiMusicaliApp.Properties.Resources.Delete;
-			this.ribRemoveImage.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Delete;
-			this.ribRemoveImage.Name = "ribRemoveImage";
-			this.ribRemoveImage.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribRemoveImage.SmallImage")));
-			this.ribRemoveImage.Text = "Rimuovi";
-			this.ribRemoveImage.Click += new System.EventHandler(this.ribRemoveImage_Click);
+			this.tabPage2.Controls.Add(this.PanelImage);
+			this.tabPage2.Location = new System.Drawing.Point(4, 25);
+			this.tabPage2.Name = "tabPage2";
+			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage2.Size = new System.Drawing.Size(747, 324);
+			this.tabPage2.TabIndex = 1;
+			this.tabPage2.Text = "Immagini";
+			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
 			// PanelImage
 			// 
@@ -555,9 +559,10 @@
 			this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuImpostaPrincipale,
             this.diminuisciPrioritàToolStripMenuItem,
-            this.aumentaPrioritàToolStripMenuItem});
+            this.aumentaPrioritàToolStripMenuItem,
+            this.rimuoviImmagineToolStripMenuItem});
 			this.contextMenuStrip1.Name = "contextMenuStrip1";
-			this.contextMenuStrip1.Size = new System.Drawing.Size(206, 92);
+			this.contextMenuStrip1.Size = new System.Drawing.Size(206, 114);
 			// 
 			// menuImpostaPrincipale
 			// 
@@ -576,6 +581,13 @@
 			this.aumentaPrioritàToolStripMenuItem.Name = "aumentaPrioritàToolStripMenuItem";
 			this.aumentaPrioritàToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
 			this.aumentaPrioritàToolStripMenuItem.Text = "Aumenta priorità";
+			// 
+			// rimuoviImmagineToolStripMenuItem
+			// 
+			this.rimuoviImmagineToolStripMenuItem.Image = global::StrumentiMusicaliApp.Properties.Resources.Delete;
+			this.rimuoviImmagineToolStripMenuItem.Name = "rimuoviImmagineToolStripMenuItem";
+			this.rimuoviImmagineToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+			this.rimuoviImmagineToolStripMenuItem.Text = "Rimuovi Immagine";
 			// 
 			// frmArticolo
 			// 
@@ -596,12 +608,12 @@
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
 			this.tabPage1.PerformLayout();
-			this.tabPage2.ResumeLayout(false);
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzoBarrato)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzo)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
+			this.tabPage2.ResumeLayout(false);
 			this.contextMenuStrip1.ResumeLayout(false);
 			this.ResumeLayout(false);
 
@@ -653,5 +665,6 @@
 		private System.Windows.Forms.ToolStripMenuItem menuImpostaPrincipale;
 		private System.Windows.Forms.ToolStripMenuItem diminuisciPrioritàToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem aumentaPrioritàToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem rimuoviImmagineToolStripMenuItem;
 	}
 }

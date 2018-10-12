@@ -12,6 +12,7 @@ namespace StrumentiMusicaliSql.Model
         public ModelSm()
             : base("name=ModelSm")
         {
+			this.Configuration.LazyLoadingEnabled = true;
 			Database.SetInitializer<ModelSm>(new MigrateDatabaseToLatestVersion<ModelSm, Migrations.Configuration>());
 		}
 

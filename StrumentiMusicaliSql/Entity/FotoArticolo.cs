@@ -19,5 +19,8 @@ namespace StrumentiMusicaliSql.Entity
         [Required]
         public string UrlFoto { get; set; }
 
-    }
+		[Required]
+		public int Ordine { get; set; } = -1;
+
+	}
 }

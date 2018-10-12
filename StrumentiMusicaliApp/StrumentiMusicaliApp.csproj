@@ -74,26 +74,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\ArticoloItem.cs" />
-    <Compile Include="Core\CategoriaItem.cs" />
+    <Compile Include="Core\Events\Image\ImageListUpdate.cs" />
+    <Compile Include="Core\Events\Image\ImageOrderSet.cs" />
+    <Compile Include="Core\Events\Items\ArticoloSave.cs" />
+    <Compile Include="Core\Item\ArticoloItem.cs" />
+    <Compile Include="Core\Item\CategoriaItem.cs" />
     <Compile Include="Core\Controller.cs" />
-    <Compile Include="Core\CursorHandler.cs" />
-    <Compile Include="Core\Events\ArticoloDelete.cs" />
-    <Compile Include="Core\Events\ArticoloDuplicate.cs" />
-    <Compile Include="Core\Events\ArticoloAdd.cs" />
-    <Compile Include="Core\Events\ArticoliUpdate.cs" />
-    <Compile Include="Core\Events\ArticoloSelected.cs" />
-    <Compile Include="Core\Events\ImportArticoli.cs" />
+    <Compile Include="Core\Manager\CursorHandler.cs" />
+    <Compile Include="Core\Events\Image\ImageRemove.cs" />
+    <Compile Include="Core\Events\Items\ArticoloDelete.cs" />
+    <Compile Include="Core\Events\Items\ArticoloDuplicate.cs" />
+    <Compile Include="Core\Events\Items\ArticoloAdd.cs" />
+    <Compile Include="Core\Events\Items\ArticoliUpdate.cs" />
+    <Compile Include="Core\Events\Items\ArticoloSelected.cs" />
+    <Compile Include="Core\Events\Items\ImportArticoli.cs" />
     <Compile Include="Core\Events\Interfaces\ArticoloSelected.cs" />
-    <Compile Include="Core\ExceptionManager.cs" />
-    <Compile Include="Core\MessageManager.cs" />
+    <Compile Include="Core\Manager\ExceptionManager.cs" />
+    <Compile Include="Core\Events\Image\ImageAdd.cs" />
+    <Compile Include="Core\Manager\MessageManager.cs" />
     <Compile Include="fmrMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="fmrMain.Designer.cs">
       <DependentUpon>fmrMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AutoCompleteText.cs">
+    <Compile Include="CustomComponemts\AutoCompleteText.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\frmArticolo.cs">

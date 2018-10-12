@@ -19,7 +19,6 @@ namespace StrumentiMusicaliApp
 			ribCerca.Click += RibCerca_Click;
 			ribDelete.Click += ribDelete_Click;
 			ribImportArticoli.Click += RibImportArticoli_Click;
-			UpdateButtonState();
 			txtCerca.KeyUp += TxtCerca_KeyUp;
 			EventAggregator.Instance().Subscribe<ArticoliToUpdate>(UpdateList);
 
@@ -95,7 +94,7 @@ namespace StrumentiMusicaliApp
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			RefreshData();
-
+			UpdateButtonState();
 		}
 
 		private void RefreshData()

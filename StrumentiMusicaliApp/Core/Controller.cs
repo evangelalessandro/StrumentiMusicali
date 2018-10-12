@@ -1,10 +1,12 @@
 ﻿using NLog;
 using NLog.Targets;
 using StrumentiMusicaliApp.Core.Events;
+using StrumentiMusicaliApp.Core.Events.Image;
 using StrumentiMusicaliSql.Core;
 using StrumentiMusicaliSql.Entity;
 using StrumentiMusicaliSql.Repo;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,11 +26,164 @@ namespace StrumentiMusicaliApp.Core
 			EventAggregator.Instance().Subscribe<ArticoloDelete>(DeleteArticolo);
 			EventAggregator.Instance().Subscribe<ArticoloDuplicate>(DuplicaArticolo);
 			EventAggregator.Instance().Subscribe<ArticoloSelected>(ArticoloSelectedChange);
+			EventAggregator.Instance().Subscribe<ImageAdd>(AggiungiImmagine);
 			EventAggregator.Instance().Subscribe<ImportArticoli>(ImportaCsvArticoli);
+			EventAggregator.Instance().Subscribe<ArticoloSave>(SaveArticolo);
+			EventAggregator.Instance().Subscribe<ImageOrderSet>(OrderImage);
 			Application.ThreadException += Application_ThreadException;
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new fmrMain());
+		}
+
+		private void OrderImage(ImageOrderSet obj)
+		{
+			try
+			{
+				using (var curs = new CursorHandler())
+				{
+					using (var uof = new UnitOfWork())
+					{
+						var articolo = uof.FotoArticoloRepository.Find(
+							a => a.ID == obj.FotoArticolo.ID).Select(a=>a.Articolo).FirstOrDefault();
+						var list =uof.FotoArticoloRepository.Find(
+							a => a.Articolo.ID == articolo.ID).OrderBy(a=>a.Ordine).ToList();
+						foreach (var item in list)
+						{
+							if (item.ID==obj.FotoArticolo.ID)
+							{
+								switch (obj.TipoOperazione)
+								{
+									case enOperationOrder.ImpostaPrincipale:
+										item.Ordine = -1;
+										break;
+									case enOperationOrder.AumentaPriorita:
+										var itemToUpdate= list.Where(a => a.Ordine == item.Ordine - 1).FirstOrDefault();
+										if (itemToUpdate!=null)
+										{
+											itemToUpdate.Ordine++;
+										}
+										item.Ordine--;
+										break;
+									case enOperationOrder.DiminuisciPriorita:
+										var itemToUpdateTwo = list.Where(a => a.Ordine == item.Ordine + 1).FirstOrDefault();
+										if (itemToUpdateTwo != null)
+										{
+											itemToUpdateTwo.Ordine--;
+										}
+										item.Ordine++;
+										break;
+									default:
+										break;
+								}
+								 
+							}
+						}
+						var setOrdine = 0;
+						foreach (var item in list.OrderBy(a=>a.Ordine))
+						{
+							item.Ordine = setOrdine;
+							setOrdine++;
+							uof.FotoArticoloRepository.Update(item);
+						}
+
+						uof.Commit();
+					}
+				}
+				MessageManager.NotificaInfo("Salvataggio avvenuto con successo");
+				EventAggregator.Instance().Publish<ImageListUpdate>(new ImageListUpdate());
+
+			}
+			catch (MessageException ex)
+			{
+				MessageBox.Show(ex.Messages);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
+		}
+
+		public static string FolderFoto {
+			get {
+				return @"C:\Users\fastcode13042017\Downloads\Mercatino musicale\Immagini";
+				//return Path.Combine(Application.ExecutablePath, "Foto");
+			}
+		}
+		private void SaveArticolo(ArticoloSave arg)
+		{
+			try
+			{
+				using (var curs = new CursorHandler())
+				{
+					using (var uof = new UnitOfWork())
+					{
+						if (!string.IsNullOrEmpty( arg.Articolo.ID))
+						{
+							uof.ArticoliRepository.Update(arg.Articolo);
+						}
+						else
+						{
+							uof.ArticoliRepository.Add(arg.Articolo);
+						}
+						uof.Commit();
+					}
+				}
+				MessageManager.NotificaInfo("Salvataggio avvenuto con successo");
+
+			}
+			catch (MessageException ex)
+			{
+
+				MessageBox.Show(ex.Messages);
+			}
+			catch (Exception ex)
+			{
+
+				MessageBox.Show(ex.Message);
+			}
+		}
+		private void AggiungiImmagine(ImageAdd eventArg)
+		{
+			try
+			{
+				using (OpenFileDialog res = new OpenFileDialog())
+				{
+					res.Title = "Seleziona file da importare";
+					//Filter
+					res.Filter = "File jpg|*.jpg;Tutti i file|*.*;";
+					res.Multiselect = true;
+					//When the user select the file
+					if (res.ShowDialog() == DialogResult.OK)
+					{
+						AddImageList(eventArg, res.FileNames.ToList());
+					}
+				}
+
+			}
+			catch (Exception ex)
+			{
+				ExceptionManager.ManageError(ex);
+
+			}
+		}
+
+		private static void AddImageList(ImageAdd eventArg, List<string> fileNames)
+		{
+			using (var uof = new UnitOfWork())
+			{
+				foreach (var item in fileNames)
+				{
+					var newName = DateTime.Now.Ticks.ToString();
+					File.Copy(item, Path.Combine(FolderFoto, newName));
+					uof.FotoArticoloRepository.Add(new FotoArticolo() { Articolo = eventArg.Articolo, UrlFoto = newName });
+				}
+				uof.Commit();
+			}
+
+
+			EventAggregator.Instance().Publish<ImageListUpdate>(new ImageListUpdate());
+			MessageManager.NotificaInfo(string.Format(@"{0} Immagine\i aggiunta\e",fileNames.Count()));
 		}
 
 		private void ImportaCsvArticoli(ImportArticoli obj)
@@ -149,13 +304,16 @@ namespace StrumentiMusicaliApp.Core
 			var foto = dat[7];
 			if (foto.Length > 0)
 			{
+				int ordine = 0;
 				foreach (var item in foto.Split(';'))
 				{
 					var artFoto = new StrumentiMusicaliSql.Entity.FotoArticolo()
 					{
 						Articolo = artNew,
-						UrlFoto = item
+						UrlFoto = item,
+						Ordine = ordine
 					};
+					ordine++;
 					uof.FotoArticoloRepository.Add(artFoto);
 				}
 			}

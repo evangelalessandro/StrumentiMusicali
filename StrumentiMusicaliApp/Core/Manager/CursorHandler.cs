@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StrumentiMusicaliApp.Core
@@ -18,10 +14,24 @@ namespace StrumentiMusicaliApp.Core
 
 		public void Dispose()
 		{
-			if (_saved != null)
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+		~CursorHandler()
+		{
+			// Finalizer calls Dispose(false)
+			Dispose(false);
+		}
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
 			{
-				Cursor.Current = _saved;
-				_saved = null;
+				// free managed resources
+				if (_saved != null)
+				{
+					Cursor.Current = _saved;
+					_saved = null;
+				}
 			}
 		}
 

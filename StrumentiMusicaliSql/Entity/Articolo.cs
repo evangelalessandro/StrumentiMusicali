@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StrumentiMusicaliSql.Entity
 {
-    public class Articolo
+	public class Articolo
     {
         [Key]
 		[MaxLength(50), Required]
@@ -35,9 +30,13 @@ namespace StrumentiMusicaliSql.Entity
 		public DateTime DataUltimaModifica { get; set; }
 		public bool Pinned { get; set; }
 		public int Giacenza { get; set; }
-		 
 
-		 
+		[MaxLength(100)]
+		public string CodiceAbarre { get; set; }
+
+		public bool CaricainEcommerce { get; set; } = true;
+
+		public bool CaricainMercatino { get; set; } = true;
 	}
     public enum enCondizioneArticolo
     {

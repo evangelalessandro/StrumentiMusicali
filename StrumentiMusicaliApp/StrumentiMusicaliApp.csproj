@@ -48,6 +48,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.8.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.8.1\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
@@ -74,21 +80,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Controllers\BaseController.cs" />
+    <Compile Include="Core\Controllers\ControllerArticoli.cs" />
+    <Compile Include="Core\Controllers\ControllerImmagini.cs" />
     <Compile Include="Core\Events\Image\ImageAddFiles.cs" />
     <Compile Include="Core\Events\Image\ImageListUpdate.cs" />
     <Compile Include="Core\Events\Image\ImageOrderSet.cs" />
-    <Compile Include="Core\Events\Items\ArticoloSave.cs" />
+    <Compile Include="Core\Events\Articoli\ArticoloSave.cs" />
     <Compile Include="Core\Item\ArticoloItem.cs" />
     <Compile Include="Core\Item\CategoriaItem.cs" />
-    <Compile Include="Core\Controller.cs" />
+    <Compile Include="Core\Controllers\ControllerMaster.cs" />
     <Compile Include="Core\Manager\CursorHandler.cs" />
     <Compile Include="Core\Events\Image\ImageRemove.cs" />
-    <Compile Include="Core\Events\Items\ArticoloDelete.cs" />
-    <Compile Include="Core\Events\Items\ArticoloDuplicate.cs" />
-    <Compile Include="Core\Events\Items\ArticoloAdd.cs" />
-    <Compile Include="Core\Events\Items\ArticoliUpdate.cs" />
-    <Compile Include="Core\Events\Items\ArticoloSelected.cs" />
-    <Compile Include="Core\Events\Items\ImportArticoli.cs" />
+    <Compile Include="Core\Events\Articoli\ArticoloDelete.cs" />
+    <Compile Include="Core\Events\Articoli\ArticoloDuplicate.cs" />
+    <Compile Include="Core\Events\Articoli\ArticoloAdd.cs" />
+    <Compile Include="Core\Events\Articoli\ArticoliUpdate.cs" />
+    <Compile Include="Core\Events\Articoli\ArticoloSelected.cs" />
+    <Compile Include="Core\Events\Articoli\ImportArticoli.cs" />
     <Compile Include="Core\Events\Interfaces\ArticoloSelected.cs" />
     <Compile Include="Core\Manager\ExceptionManager.cs" />
     <Compile Include="Core\Events\Image\ImageAdd.cs" />
@@ -110,6 +119,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\ISettingsReader.cs" />
+    <Compile Include="Settings\UserSettings.cs" />
     <EmbeddedResource Include="fmrMain.resx">
       <DependentUpon>fmrMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -160,6 +171,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="References\System.Windows.Forms.Ribbon.dll" />
+    <None Include="Resources\Progress_Gif.gif" />
     <None Include="Resources\Import.png" />
     <None Include="Resources\Upload_64.png" />
     <None Include="Resources\Upload.png" />

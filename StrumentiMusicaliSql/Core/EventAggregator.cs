@@ -3,13 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StrumentiMusicaliSql.Core
 {
-    //Does used by EventAggregator to reserve subscription
-    public class Subscription<Tmessage> : IDisposable
+	//Does used by EventAggregator to reserve subscription
+	public class Subscription<Tmessage> : IDisposable
     {
         public readonly MethodInfo MethodInfo;
         private readonly EventAggregator EventAggregator;

@@ -1,16 +1,9 @@
-﻿using NLog;
-using NLog.Targets;
-using StrumentiMusicaliSql.Repo;
-using StrumentiMusicaliApp.Core;
+﻿using StrumentiMusicaliApp.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace StrumentiMusicaliApp
 {
-    static class Program
+	static class Program
     {
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
@@ -20,7 +13,7 @@ namespace StrumentiMusicaliApp
         {
 
 			
-			using (var controller=new Controller())
+			using (var controller=new ControllerMaster())
 			{
 				
 			}

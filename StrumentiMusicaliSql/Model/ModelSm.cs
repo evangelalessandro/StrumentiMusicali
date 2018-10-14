@@ -1,13 +1,10 @@
-using System;
 using System.Data.Entity;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using StrumentiMusicaliSql.Entity;
 
 namespace StrumentiMusicaliSql.Model
 {
-    
-    public partial class ModelSm : DbContext
+
+	public partial class ModelSm : DbContext
     {
         public ModelSm()
             : base("name=ModelSm")

@@ -7,18 +7,7 @@
 		/// </summary>
 		private System.ComponentModel.IContainer components = null;
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing && (components != null))
-			{
-				components.Dispose();
-			}
-			base.Dispose(disposing);
-		}
+		
 
 		#region Windows Form Designer generated code
 
@@ -40,19 +29,15 @@
 			this.ribbon1 = new System.Windows.Forms.Ribbon();
 			this.ribbonButton1 = new System.Windows.Forms.RibbonButton();
 			this.ribbonTab1 = new System.Windows.Forms.RibbonTab();
-			this.ribbonPanel1 = new System.Windows.Forms.RibbonPanel();
+			this.ribPanelStrumenti = new System.Windows.Forms.RibbonPanel();
 			this.ribSave = new System.Windows.Forms.RibbonButton();
-			this.ribbonPanel2 = new System.Windows.Forms.RibbonPanel();
+			this.ribPanelImmagini = new System.Windows.Forms.RibbonPanel();
 			this.ribAddImage = new System.Windows.Forms.RibbonButton();
 			this.ribRemoveImage = new System.Windows.Forms.RibbonButton();
 			this.cboCategoria = new System.Windows.Forms.ComboBox();
 			this.label9 = new System.Windows.Forms.Label();
 			this.cboCondizione = new System.Windows.Forms.ComboBox();
 			this.panel2 = new System.Windows.Forms.Panel();
-			this.txtFiltroCategoria = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
-			this.txtMarca = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
-			this.txtTitolo = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
-			this.txtTesto = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.panel1 = new System.Windows.Forms.Panel();
@@ -60,14 +45,11 @@
 			this.txtPrezzo = new System.Windows.Forms.NumericUpDown();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
-			this.label5 = new System.Windows.Forms.Label();
 			this.chkPrezzoARichiesta = new System.Windows.Forms.CheckBox();
 			this.label8 = new System.Windows.Forms.Label();
-			this.label6 = new System.Windows.Forms.Label();
 			this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
 			this.chkBoxProposte = new System.Windows.Forms.CheckBox();
 			this.chkUsaAnnuncioTurbo = new System.Windows.Forms.CheckBox();
-			this.label7 = new System.Windows.Forms.Label();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.PanelImage = new System.Windows.Forms.FlowLayoutPanel();
 			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -75,6 +57,17 @@
 			this.diminuisciPrioritàToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aumentaPrioritàToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.rimuoviImmagineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.chkCaricainEcommerce = new System.Windows.Forms.CheckBox();
+			this.chkCaricainMercatino = new System.Windows.Forms.CheckBox();
+			this.pnlTesto = new System.Windows.Forms.Panel();
+			this.cboReparto = new System.Windows.Forms.ComboBox();
+			this.label6 = new System.Windows.Forms.Label();
+			this.txtTesto = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
+			this.txtFiltroCategoria = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
+			this.txtMarca = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
+			this.txtTitolo = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
+			this.txtCodiceABarre = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
+			this.label5 = new System.Windows.Forms.Label();
 			this.panel2.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
@@ -84,12 +77,13 @@
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
 			this.tabPage2.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
+			this.pnlTesto.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// lblID
 			// 
 			this.lblID.AutoSize = true;
-			this.lblID.Location = new System.Drawing.Point(89, 14);
+			this.lblID.Location = new System.Drawing.Point(11, 10);
 			this.lblID.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.lblID.Name = "lblID";
 			this.lblID.Size = new System.Drawing.Size(21, 16);
@@ -98,7 +92,7 @@
 			// 
 			// txtID
 			// 
-			this.txtID.Location = new System.Drawing.Point(118, 10);
+			this.txtID.Location = new System.Drawing.Point(40, 7);
 			this.txtID.Margin = new System.Windows.Forms.Padding(4);
 			this.txtID.Name = "txtID";
 			this.txtID.ReadOnly = true;
@@ -109,7 +103,7 @@
 			// lblCategoria
 			// 
 			this.lblCategoria.AutoSize = true;
-			this.lblCategoria.Location = new System.Drawing.Point(43, 70);
+			this.lblCategoria.Location = new System.Drawing.Point(346, 76);
 			this.lblCategoria.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.lblCategoria.Name = "lblCategoria";
 			this.lblCategoria.Size = new System.Drawing.Size(67, 16);
@@ -119,7 +113,7 @@
 			// lblCondizione
 			// 
 			this.lblCondizione.AutoSize = true;
-			this.lblCondizione.Location = new System.Drawing.Point(442, 73);
+			this.lblCondizione.Location = new System.Drawing.Point(11, 47);
 			this.lblCondizione.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.lblCondizione.Name = "lblCondizione";
 			this.lblCondizione.Size = new System.Drawing.Size(75, 16);
@@ -129,7 +123,7 @@
 			// lblMarca
 			// 
 			this.lblMarca.AutoSize = true;
-			this.lblMarca.Location = new System.Drawing.Point(443, 14);
+			this.lblMarca.Location = new System.Drawing.Point(367, 10);
 			this.lblMarca.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.lblMarca.Name = "lblMarca";
 			this.lblMarca.Size = new System.Drawing.Size(46, 16);
@@ -139,7 +133,7 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(68, 107);
+			this.label1.Location = new System.Drawing.Point(11, 113);
 			this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(42, 16);
@@ -149,10 +143,12 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(8, 156);
-			this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label2.Dock = System.Windows.Forms.DockStyle.Left;
+			this.label2.Location = new System.Drawing.Point(5, 5);
+			this.label2.Margin = new System.Windows.Forms.Padding(10);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(43, 16);
+			this.label2.Padding = new System.Windows.Forms.Padding(10);
+			this.label2.Size = new System.Drawing.Size(63, 36);
 			this.label2.TabIndex = 10;
 			this.label2.Text = "Testo";
 			// 
@@ -176,7 +172,7 @@
 			// 
 			this.ribbon1.QuickAccessToolbar.Items.Add(this.ribbonButton1);
 			this.ribbon1.RibbonTabFont = new System.Drawing.Font("Trebuchet MS", 9F);
-			this.ribbon1.Size = new System.Drawing.Size(755, 150);
+			this.ribbon1.Size = new System.Drawing.Size(886, 150);
 			this.ribbon1.TabIndex = 25;
 			this.ribbon1.Tabs.Add(this.ribbonTab1);
 			this.ribbon1.TabsMargin = new System.Windows.Forms.Padding(12, 26, 20, 0);
@@ -195,17 +191,17 @@
 			// ribbonTab1
 			// 
 			this.ribbonTab1.Name = "ribbonTab1";
-			this.ribbonTab1.Panels.Add(this.ribbonPanel1);
-			this.ribbonTab1.Panels.Add(this.ribbonPanel2);
+			this.ribbonTab1.Panels.Add(this.ribPanelStrumenti);
+			this.ribbonTab1.Panels.Add(this.ribPanelImmagini);
 			this.ribbonTab1.Text = "Articolo";
 			// 
-			// ribbonPanel1
+			// ribPanelStrumenti
 			// 
-			this.ribbonPanel1.ButtonMoreEnabled = false;
-			this.ribbonPanel1.ButtonMoreVisible = false;
-			this.ribbonPanel1.Items.Add(this.ribSave);
-			this.ribbonPanel1.Name = "ribbonPanel1";
-			this.ribbonPanel1.Text = "Strumenti";
+			this.ribPanelStrumenti.ButtonMoreEnabled = false;
+			this.ribPanelStrumenti.ButtonMoreVisible = false;
+			this.ribPanelStrumenti.Items.Add(this.ribSave);
+			this.ribPanelStrumenti.Name = "ribPanelStrumenti";
+			this.ribPanelStrumenti.Text = "Strumenti";
 			// 
 			// ribSave
 			// 
@@ -215,14 +211,14 @@
 			this.ribSave.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribSave.SmallImage")));
 			this.ribSave.Text = "Salva";
 			// 
-			// ribbonPanel2
+			// ribPanelImmagini
 			// 
-			this.ribbonPanel2.ButtonMoreEnabled = false;
-			this.ribbonPanel2.ButtonMoreVisible = false;
-			this.ribbonPanel2.Items.Add(this.ribAddImage);
-			this.ribbonPanel2.Items.Add(this.ribRemoveImage);
-			this.ribbonPanel2.Name = "ribbonPanel2";
-			this.ribbonPanel2.Text = "Immagini";
+			this.ribPanelImmagini.ButtonMoreEnabled = false;
+			this.ribPanelImmagini.ButtonMoreVisible = false;
+			this.ribPanelImmagini.Items.Add(this.ribAddImage);
+			this.ribPanelImmagini.Items.Add(this.ribRemoveImage);
+			this.ribPanelImmagini.Name = "ribPanelImmagini";
+			this.ribPanelImmagini.Text = "Immagini";
 			// 
 			// ribAddImage
 			// 
@@ -245,16 +241,16 @@
 			// 
 			this.cboCategoria.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboCategoria.FormattingEnabled = true;
-			this.cboCategoria.Location = new System.Drawing.Point(118, 70);
+			this.cboCategoria.Location = new System.Drawing.Point(421, 73);
 			this.cboCategoria.Name = "cboCategoria";
-			this.cboCategoria.Size = new System.Drawing.Size(317, 24);
+			this.cboCategoria.Size = new System.Drawing.Size(436, 24);
 			this.cboCategoria.TabIndex = 4;
 			this.cboCategoria.Tag = "Categoria";
 			// 
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(11, 43);
+			this.label9.Location = new System.Drawing.Point(11, 76);
 			this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(99, 16);
@@ -265,14 +261,16 @@
 			// 
 			this.cboCondizione.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboCondizione.FormattingEnabled = true;
-			this.cboCondizione.Location = new System.Drawing.Point(524, 67);
+			this.cboCondizione.Location = new System.Drawing.Point(118, 42);
 			this.cboCondizione.Name = "cboCondizione";
-			this.cboCondizione.Size = new System.Drawing.Size(175, 24);
+			this.cboCondizione.Size = new System.Drawing.Size(202, 24);
 			this.cboCondizione.TabIndex = 5;
 			this.cboCondizione.Tag = "Condizione";
 			// 
 			// panel2
 			// 
+			this.panel2.Controls.Add(this.label6);
+			this.panel2.Controls.Add(this.cboReparto);
 			this.panel2.Controls.Add(this.cboCondizione);
 			this.panel2.Controls.Add(this.lblID);
 			this.panel2.Controls.Add(this.txtID);
@@ -288,60 +286,8 @@
 			this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel2.Location = new System.Drawing.Point(3, 3);
 			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(741, 146);
+			this.panel2.Size = new System.Drawing.Size(872, 146);
 			this.panel2.TabIndex = 31;
-			// 
-			// txtFiltroCategoria
-			// 
-			this.txtFiltroCategoria.Location = new System.Drawing.Point(118, 41);
-			this.txtFiltroCategoria.Margin = new System.Windows.Forms.Padding(4);
-			this.txtFiltroCategoria.MaxLength = 100;
-			this.txtFiltroCategoria.Name = "txtFiltroCategoria";
-			this.txtFiltroCategoria.Size = new System.Drawing.Size(317, 22);
-			this.txtFiltroCategoria.TabIndex = 3;
-			this.txtFiltroCategoria.Tag = "";
-			this.txtFiltroCategoria.Values = null;
-			this.txtFiltroCategoria.TextChanged += new System.EventHandler(this.txtFiltroCategoria_TextChanged);
-			// 
-			// txtMarca
-			// 
-			this.txtMarca.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtMarca.Location = new System.Drawing.Point(497, 11);
-			this.txtMarca.Margin = new System.Windows.Forms.Padding(4);
-			this.txtMarca.MaxLength = 100;
-			this.txtMarca.Name = "txtMarca";
-			this.txtMarca.Size = new System.Drawing.Size(231, 22);
-			this.txtMarca.TabIndex = 2;
-			this.txtMarca.Tag = "Marca";
-			this.txtMarca.Values = null;
-			// 
-			// txtTitolo
-			// 
-			this.txtTitolo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtTitolo.Location = new System.Drawing.Point(118, 107);
-			this.txtTitolo.Margin = new System.Windows.Forms.Padding(4);
-			this.txtTitolo.MaxLength = 100;
-			this.txtTitolo.Name = "txtTitolo";
-			this.txtTitolo.Size = new System.Drawing.Size(608, 22);
-			this.txtTitolo.TabIndex = 6;
-			this.txtTitolo.Tag = "Titolo";
-			this.txtTitolo.Values = null;
-			// 
-			// txtTesto
-			// 
-			this.txtTesto.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtTesto.Location = new System.Drawing.Point(59, 156);
-			this.txtTesto.Margin = new System.Windows.Forms.Padding(4);
-			this.txtTesto.Multiline = true;
-			this.txtTesto.Name = "txtTesto";
-			this.txtTesto.Size = new System.Drawing.Size(681, 62);
-			this.txtTesto.TabIndex = 7;
-			this.txtTesto.Tag = "Testo";
-			this.txtTesto.Values = null;
 			// 
 			// tabControl1
 			// 
@@ -351,50 +297,51 @@
 			this.tabControl1.Location = new System.Drawing.Point(0, 150);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(755, 353);
+			this.tabControl1.Size = new System.Drawing.Size(886, 394);
 			this.tabControl1.TabIndex = 29;
 			this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
 			// 
 			// tabPage1
 			// 
+			this.tabPage1.Controls.Add(this.pnlTesto);
 			this.tabPage1.Controls.Add(this.panel1);
 			this.tabPage1.Controls.Add(this.panel2);
-			this.tabPage1.Controls.Add(this.label2);
-			this.tabPage1.Controls.Add(this.txtTesto);
 			this.tabPage1.Location = new System.Drawing.Point(4, 25);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(747, 324);
+			this.tabPage1.Size = new System.Drawing.Size(878, 365);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Dati Articolo";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
 			// panel1
 			// 
+			this.panel1.Controls.Add(this.label5);
+			this.panel1.Controls.Add(this.txtCodiceABarre);
+			this.panel1.Controls.Add(this.chkCaricainMercatino);
+			this.panel1.Controls.Add(this.chkCaricainEcommerce);
 			this.panel1.Controls.Add(this.txtPrezzoBarrato);
 			this.panel1.Controls.Add(this.txtPrezzo);
 			this.panel1.Controls.Add(this.label3);
 			this.panel1.Controls.Add(this.label4);
-			this.panel1.Controls.Add(this.label5);
 			this.panel1.Controls.Add(this.chkPrezzoARichiesta);
 			this.panel1.Controls.Add(this.label8);
-			this.panel1.Controls.Add(this.label6);
 			this.panel1.Controls.Add(this.numericUpDown3);
 			this.panel1.Controls.Add(this.chkBoxProposte);
 			this.panel1.Controls.Add(this.chkUsaAnnuncioTurbo);
-			this.panel1.Controls.Add(this.label7);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.panel1.Location = new System.Drawing.Point(3, 225);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(741, 96);
+			this.panel1.Size = new System.Drawing.Size(872, 137);
 			this.panel1.TabIndex = 32;
+			this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
 			// 
 			// txtPrezzoBarrato
 			// 
 			this.txtPrezzoBarrato.DecimalPlaces = 2;
 			this.txtPrezzoBarrato.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Strikeout, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtPrezzoBarrato.ForeColor = System.Drawing.Color.Red;
-			this.txtPrezzoBarrato.Location = new System.Drawing.Point(417, 13);
+			this.txtPrezzoBarrato.Location = new System.Drawing.Point(118, 52);
 			this.txtPrezzoBarrato.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -419,7 +366,7 @@
             0,
             0});
 			this.txtPrezzo.Name = "txtPrezzo";
-			this.txtPrezzo.Size = new System.Drawing.Size(152, 29);
+			this.txtPrezzo.Size = new System.Drawing.Size(169, 29);
 			this.txtPrezzo.TabIndex = 8;
 			this.txtPrezzo.Tag = "Prezzo";
 			this.txtPrezzo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -428,7 +375,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(63, 22);
+			this.label3.Location = new System.Drawing.Point(19, 18);
 			this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(49, 16);
@@ -438,60 +385,40 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(317, 21);
+			this.label4.Location = new System.Drawing.Point(19, 60);
 			this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(93, 16);
+			this.label4.Size = new System.Drawing.Size(96, 16);
 			this.label4.TabIndex = 15;
-			this.label4.Text = "PrezzoBarrato";
-			// 
-			// label5
-			// 
-			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(593, 22);
-			this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(120, 16);
-			this.label5.TabIndex = 17;
-			this.label5.Tag = "";
-			this.label5.Text = "Prezzo A Richiesta";
+			this.label4.Text = "Prezzo Barrato";
 			// 
 			// chkPrezzoARichiesta
 			// 
 			this.chkPrezzoARichiesta.AutoSize = true;
-			this.chkPrezzoARichiesta.Location = new System.Drawing.Point(720, 24);
+			this.chkPrezzoARichiesta.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.chkPrezzoARichiesta.Location = new System.Drawing.Point(298, 17);
 			this.chkPrezzoARichiesta.Name = "chkPrezzoARichiesta";
-			this.chkPrezzoARichiesta.Size = new System.Drawing.Size(15, 14);
+			this.chkPrezzoARichiesta.Size = new System.Drawing.Size(139, 20);
 			this.chkPrezzoARichiesta.TabIndex = 10;
 			this.chkPrezzoARichiesta.Tag = "PrezzoARichiesta";
+			this.chkPrezzoARichiesta.Text = "Prezzo A Richiesta";
 			this.chkPrezzoARichiesta.UseVisualStyleBackColor = true;
 			// 
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(334, 62);
+			this.label8.Location = new System.Drawing.Point(45, 98);
 			this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(65, 16);
 			this.label8.TabIndex = 24;
 			this.label8.Text = "Giacenza";
 			// 
-			// label6
-			// 
-			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(23, 62);
-			this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(89, 16);
-			this.label6.TabIndex = 19;
-			this.label6.Tag = "";
-			this.label6.Text = "Box Proposte";
-			// 
 			// numericUpDown3
 			// 
 			this.numericUpDown3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.numericUpDown3.ForeColor = System.Drawing.SystemColors.WindowText;
-			this.numericUpDown3.Location = new System.Drawing.Point(417, 52);
+			this.numericUpDown3.Location = new System.Drawing.Point(118, 90);
 			this.numericUpDown3.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -507,33 +434,26 @@
 			// chkBoxProposte
 			// 
 			this.chkBoxProposte.AutoSize = true;
-			this.chkBoxProposte.Location = new System.Drawing.Point(118, 64);
+			this.chkBoxProposte.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.chkBoxProposte.Location = new System.Drawing.Point(733, 40);
 			this.chkBoxProposte.Name = "chkBoxProposte";
-			this.chkBoxProposte.Size = new System.Drawing.Size(15, 14);
+			this.chkBoxProposte.Size = new System.Drawing.Size(108, 20);
 			this.chkBoxProposte.TabIndex = 11;
 			this.chkBoxProposte.Tag = "BoxProposte";
+			this.chkBoxProposte.Text = "Box Proposte";
 			this.chkBoxProposte.UseVisualStyleBackColor = true;
 			// 
 			// chkUsaAnnuncioTurbo
 			// 
 			this.chkUsaAnnuncioTurbo.AutoSize = true;
-			this.chkUsaAnnuncioTurbo.Location = new System.Drawing.Point(290, 62);
+			this.chkUsaAnnuncioTurbo.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.chkUsaAnnuncioTurbo.Location = new System.Drawing.Point(692, 14);
 			this.chkUsaAnnuncioTurbo.Name = "chkUsaAnnuncioTurbo";
-			this.chkUsaAnnuncioTurbo.Size = new System.Drawing.Size(15, 14);
+			this.chkUsaAnnuncioTurbo.Size = new System.Drawing.Size(149, 20);
 			this.chkUsaAnnuncioTurbo.TabIndex = 12;
 			this.chkUsaAnnuncioTurbo.Tag = "UsaAnnuncioTurbo";
+			this.chkUsaAnnuncioTurbo.Text = "Usa Annuncio Turbo";
 			this.chkUsaAnnuncioTurbo.UseVisualStyleBackColor = true;
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(153, 60);
-			this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(130, 16);
-			this.label7.TabIndex = 21;
-			this.label7.Tag = "";
-			this.label7.Text = "Usa Annuncio Turbo";
 			// 
 			// tabPage2
 			// 
@@ -541,7 +461,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 25);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(747, 324);
+			this.tabPage2.Size = new System.Drawing.Size(878, 365);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Immagini";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -551,7 +471,7 @@
 			this.PanelImage.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.PanelImage.Location = new System.Drawing.Point(3, 3);
 			this.PanelImage.Name = "PanelImage";
-			this.PanelImage.Size = new System.Drawing.Size(741, 318);
+			this.PanelImage.Size = new System.Drawing.Size(872, 359);
 			this.PanelImage.TabIndex = 1;
 			// 
 			// contextMenuStrip1
@@ -562,7 +482,7 @@
             this.aumentaPrioritàToolStripMenuItem,
             this.rimuoviImmagineToolStripMenuItem});
 			this.contextMenuStrip1.Name = "contextMenuStrip1";
-			this.contextMenuStrip1.Size = new System.Drawing.Size(206, 114);
+			this.contextMenuStrip1.Size = new System.Drawing.Size(206, 92);
 			// 
 			// menuImpostaPrincipale
 			// 
@@ -589,16 +509,147 @@
 			this.rimuoviImmagineToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
 			this.rimuoviImmagineToolStripMenuItem.Text = "Rimuovi Immagine";
 			// 
+			// chkCaricainEcommerce
+			// 
+			this.chkCaricainEcommerce.AutoSize = true;
+			this.chkCaricainEcommerce.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.chkCaricainEcommerce.Location = new System.Drawing.Point(528, 14);
+			this.chkCaricainEcommerce.Name = "chkCaricainEcommerce";
+			this.chkCaricainEcommerce.Size = new System.Drawing.Size(158, 20);
+			this.chkCaricainEcommerce.TabIndex = 25;
+			this.chkCaricainEcommerce.Tag = "CaricainEcommerce";
+			this.chkCaricainEcommerce.Text = "Carica In Ecommerce ";
+			this.chkCaricainEcommerce.UseVisualStyleBackColor = true;
+			// 
+			// chkCaricainMercatino
+			// 
+			this.chkCaricainMercatino.AutoSize = true;
+			this.chkCaricainMercatino.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.chkCaricainMercatino.Location = new System.Drawing.Point(545, 40);
+			this.chkCaricainMercatino.Name = "chkCaricainMercatino";
+			this.chkCaricainMercatino.Size = new System.Drawing.Size(141, 20);
+			this.chkCaricainMercatino.TabIndex = 26;
+			this.chkCaricainMercatino.Tag = "CaricainMercatino";
+			this.chkCaricainMercatino.Text = "Carica in Mercatino";
+			this.chkCaricainMercatino.UseVisualStyleBackColor = true;
+			// 
+			// pnlTesto
+			// 
+			this.pnlTesto.Controls.Add(this.txtTesto);
+			this.pnlTesto.Controls.Add(this.label2);
+			this.pnlTesto.Cursor = System.Windows.Forms.Cursors.Default;
+			this.pnlTesto.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlTesto.Location = new System.Drawing.Point(3, 149);
+			this.pnlTesto.Name = "pnlTesto";
+			this.pnlTesto.Padding = new System.Windows.Forms.Padding(5);
+			this.pnlTesto.Size = new System.Drawing.Size(872, 76);
+			this.pnlTesto.TabIndex = 33;
+			// 
+			// cboReparto
+			// 
+			this.cboReparto.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cboReparto.FormattingEnabled = true;
+			this.cboReparto.Location = new System.Drawing.Point(421, 44);
+			this.cboReparto.Name = "cboReparto";
+			this.cboReparto.Size = new System.Drawing.Size(436, 24);
+			this.cboReparto.TabIndex = 29;
+			this.cboReparto.Tag = "Reparto";
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(356, 44);
+			this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(57, 16);
+			this.label6.TabIndex = 30;
+			this.label6.Text = "Reparto";
+			// 
+			// txtTesto
+			// 
+			this.txtTesto.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.txtTesto.Location = new System.Drawing.Point(68, 5);
+			this.txtTesto.Margin = new System.Windows.Forms.Padding(4);
+			this.txtTesto.Multiline = true;
+			this.txtTesto.Name = "txtTesto";
+			this.txtTesto.Size = new System.Drawing.Size(799, 66);
+			this.txtTesto.TabIndex = 7;
+			this.txtTesto.Tag = "Testo";
+			this.txtTesto.Values = null;
+			// 
+			// txtFiltroCategoria
+			// 
+			this.txtFiltroCategoria.Location = new System.Drawing.Point(118, 73);
+			this.txtFiltroCategoria.Margin = new System.Windows.Forms.Padding(4);
+			this.txtFiltroCategoria.MaxLength = 100;
+			this.txtFiltroCategoria.Name = "txtFiltroCategoria";
+			this.txtFiltroCategoria.Size = new System.Drawing.Size(204, 22);
+			this.txtFiltroCategoria.TabIndex = 3;
+			this.txtFiltroCategoria.Tag = "";
+			this.txtFiltroCategoria.Values = null;
+			this.txtFiltroCategoria.TextChanged += new System.EventHandler(this.txtFiltroCategoria_TextChanged);
+			// 
+			// txtMarca
+			// 
+			this.txtMarca.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtMarca.Location = new System.Drawing.Point(421, 7);
+			this.txtMarca.Margin = new System.Windows.Forms.Padding(4);
+			this.txtMarca.MaxLength = 100;
+			this.txtMarca.Name = "txtMarca";
+			this.txtMarca.Size = new System.Drawing.Size(436, 22);
+			this.txtMarca.TabIndex = 2;
+			this.txtMarca.Tag = "Marca";
+			this.txtMarca.Values = null;
+			// 
+			// txtTitolo
+			// 
+			this.txtTitolo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtTitolo.Location = new System.Drawing.Point(61, 110);
+			this.txtTitolo.Margin = new System.Windows.Forms.Padding(4);
+			this.txtTitolo.MaxLength = 100;
+			this.txtTitolo.Name = "txtTitolo";
+			this.txtTitolo.Size = new System.Drawing.Size(796, 22);
+			this.txtTitolo.TabIndex = 6;
+			this.txtTitolo.Tag = "Titolo";
+			this.txtTitolo.Values = null;
+			// 
+			// txtCodiceABarre
+			// 
+			this.txtCodiceABarre.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtCodiceABarre.Location = new System.Drawing.Point(421, 95);
+			this.txtCodiceABarre.Margin = new System.Windows.Forms.Padding(4);
+			this.txtCodiceABarre.MaxLength = 100;
+			this.txtCodiceABarre.Name = "txtCodiceABarre";
+			this.txtCodiceABarre.Size = new System.Drawing.Size(420, 22);
+			this.txtCodiceABarre.TabIndex = 27;
+			this.txtCodiceABarre.Tag = "CodiceAbarre";
+			this.txtCodiceABarre.Values = null;
+			// 
+			// label5
+			// 
+			this.label5.AutoSize = true;
+			this.label5.Location = new System.Drawing.Point(315, 98);
+			this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(98, 16);
+			this.label5.TabIndex = 28;
+			this.label5.Text = "Codice a Barre";
+			// 
 			// frmArticolo
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(755, 503);
+			this.ClientSize = new System.Drawing.Size(886, 544);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.ribbon1);
+			this.DoubleBuffered = true;
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.KeyPreview = true;
 			this.Margin = new System.Windows.Forms.Padding(4);
+			this.MaximumSize = new System.Drawing.Size(902, 583);
 			this.MinimumSize = new System.Drawing.Size(771, 542);
 			this.Name = "frmArticolo";
 			this.Text = " ";
@@ -607,7 +658,6 @@
 			this.panel2.PerformLayout();
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
-			this.tabPage1.PerformLayout();
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzoBarrato)).EndInit();
@@ -615,6 +665,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
 			this.tabPage2.ResumeLayout(false);
 			this.contextMenuStrip1.ResumeLayout(false);
+			this.pnlTesto.ResumeLayout(false);
+			this.pnlTesto.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -633,10 +685,10 @@
 		private AutoCompleteTextBox txtTesto;
 		private System.Windows.Forms.Ribbon ribbon1;
 		private System.Windows.Forms.RibbonTab ribbonTab1;
-		private System.Windows.Forms.RibbonPanel ribbonPanel1;
+		private System.Windows.Forms.RibbonPanel ribPanelStrumenti;
 		private System.Windows.Forms.RibbonButton ribbonButton1;
 		private System.Windows.Forms.ComboBox cboCategoria;
-		private System.Windows.Forms.RibbonPanel ribbonPanel2;
+		private System.Windows.Forms.RibbonPanel ribPanelImmagini;
 		private AutoCompleteTextBox txtFiltroCategoria;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.RibbonButton ribSave;
@@ -649,14 +701,11 @@
 		private System.Windows.Forms.NumericUpDown txtPrezzo;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.CheckBox chkPrezzoARichiesta;
 		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.NumericUpDown numericUpDown3;
 		private System.Windows.Forms.CheckBox chkBoxProposte;
 		private System.Windows.Forms.CheckBox chkUsaAnnuncioTurbo;
-		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.TabPage tabPage2;
 		private System.Windows.Forms.RibbonButton ribAddImage;
 		private System.Windows.Forms.RibbonButton ribRemoveImage;
@@ -666,5 +715,12 @@
 		private System.Windows.Forms.ToolStripMenuItem diminuisciPrioritàToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem aumentaPrioritàToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem rimuoviImmagineToolStripMenuItem;
+		private System.Windows.Forms.CheckBox chkCaricainEcommerce;
+		private System.Windows.Forms.CheckBox chkCaricainMercatino;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.ComboBox cboReparto;
+		private System.Windows.Forms.Panel pnlTesto;
+		private System.Windows.Forms.Label label5;
+		private AutoCompleteTextBox txtCodiceABarre;
 	}
 }

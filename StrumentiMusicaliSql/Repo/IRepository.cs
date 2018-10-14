@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StrumentiMusicaliSql.Repo
 {
-    public interface IRepository<T> : IDisposable where T : class
+	public interface IRepository<T> : IDisposable where T : class
     {
         //Method to get all rows in a table
         IEnumerable<T> DataSet { get; }

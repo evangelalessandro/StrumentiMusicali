@@ -1,12 +1,9 @@
 namespace StrumentiMusicaliSql.Migrations
 {
 	using StrumentiMusicaliSql.Entity;
-	using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
+	using System.Data.Entity.Migrations;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<StrumentiMusicaliSql.Model.ModelSm>
+	internal sealed class Configuration : DbMigrationsConfiguration<StrumentiMusicaliSql.Model.ModelSm>
     {
         public Configuration()
         {

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Linq.Expressions;
 using StrumentiMusicaliSql.Model;
@@ -10,7 +8,7 @@ using StrumentiMusicaliSql.Entity;
 
 namespace StrumentiMusicaliSql.Repo
 {
-    public class Repository<T> : IRepository<T>, IDisposable where T : class
+	public class Repository<T> : IRepository<T>, IDisposable where T : class
     {
         protected ModelSm dbContext;
 

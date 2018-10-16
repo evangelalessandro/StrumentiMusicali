@@ -1,6 +1,6 @@
-﻿using StrumentiMusicaliSql.Entity;
+﻿using StrumentiMusicali.Library.Entity;
 
-namespace StrumentiMusicaliApp.Core.Events.Articoli
+namespace StrumentiMusicali.App.Core.Events.Articoli
 {
 	public class ArticoloSave
 	{

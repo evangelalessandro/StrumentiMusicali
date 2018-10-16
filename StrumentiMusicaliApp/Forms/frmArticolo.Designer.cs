@@ -1,4 +1,4 @@
-﻿namespace StrumentiMusicaliApp.Forms
+﻿namespace StrumentiMusicali.App.Forms
 {
 	partial class frmArticolo
 	{
@@ -62,11 +62,11 @@
 			this.pnlTesto = new System.Windows.Forms.Panel();
 			this.cboReparto = new System.Windows.Forms.ComboBox();
 			this.label6 = new System.Windows.Forms.Label();
-			this.txtTesto = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
-			this.txtFiltroCategoria = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
-			this.txtMarca = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
-			this.txtTitolo = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
-			this.txtCodiceABarre = new StrumentiMusicaliApp.Forms.AutoCompleteTextBox();
+			this.txtTesto = new StrumentiMusicali.App.Forms.AutoCompleteTextBox();
+			this.txtFiltroCategoria = new StrumentiMusicali.App.Forms.AutoCompleteTextBox();
+			this.txtMarca = new StrumentiMusicali.App.Forms.AutoCompleteTextBox();
+			this.txtTitolo = new StrumentiMusicali.App.Forms.AutoCompleteTextBox();
+			this.txtCodiceABarre = new StrumentiMusicali.App.Forms.AutoCompleteTextBox();
 			this.label5 = new System.Windows.Forms.Label();
 			this.panel2.SuspendLayout();
 			this.tabControl1.SuspendLayout();
@@ -205,8 +205,8 @@
 			// 
 			// ribSave
 			// 
-			this.ribSave.Image = global::StrumentiMusicaliApp.Properties.Resources.Save;
-			this.ribSave.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Save;
+			this.ribSave.Image = global::StrumentiMusicali.App.Properties.Resources.Save;
+			this.ribSave.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Save;
 			this.ribSave.Name = "ribSave";
 			this.ribSave.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribSave.SmallImage")));
 			this.ribSave.Text = "Salva";
@@ -222,8 +222,8 @@
 			// 
 			// ribAddImage
 			// 
-			this.ribAddImage.Image = global::StrumentiMusicaliApp.Properties.Resources.Add;
-			this.ribAddImage.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Add;
+			this.ribAddImage.Image = global::StrumentiMusicali.App.Properties.Resources.Add;
+			this.ribAddImage.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Add;
 			this.ribAddImage.Name = "ribAddImage";
 			this.ribAddImage.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribAddImage.SmallImage")));
 			this.ribAddImage.Text = "Aggiungi";
@@ -231,8 +231,8 @@
 			// 
 			// ribRemoveImage
 			// 
-			this.ribRemoveImage.Image = global::StrumentiMusicaliApp.Properties.Resources.Delete;
-			this.ribRemoveImage.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Delete;
+			this.ribRemoveImage.Image = global::StrumentiMusicali.App.Properties.Resources.Delete;
+			this.ribRemoveImage.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Delete;
 			this.ribRemoveImage.Name = "ribRemoveImage";
 			this.ribRemoveImage.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribRemoveImage.SmallImage")));
 			this.ribRemoveImage.Text = "Rimuovi";
@@ -504,7 +504,7 @@
 			// 
 			// rimuoviImmagineToolStripMenuItem
 			// 
-			this.rimuoviImmagineToolStripMenuItem.Image = global::StrumentiMusicaliApp.Properties.Resources.Delete;
+			this.rimuoviImmagineToolStripMenuItem.Image = global::StrumentiMusicali.App.Properties.Resources.Delete;
 			this.rimuoviImmagineToolStripMenuItem.Name = "rimuoviImmagineToolStripMenuItem";
 			this.rimuoviImmagineToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
 			this.rimuoviImmagineToolStripMenuItem.Text = "Rimuovi Immagine";

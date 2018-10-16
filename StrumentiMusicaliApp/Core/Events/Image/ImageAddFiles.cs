@@ -1,7 +1,7 @@
-﻿using StrumentiMusicaliSql.Entity;
+﻿using StrumentiMusicali.Library.Entity;
 using System.Collections.Generic;
 
-namespace StrumentiMusicaliApp.Core.Events.Image
+namespace StrumentiMusicali.App.Core.Events.Image
 {
 	public class ImageAddFiles
 	{

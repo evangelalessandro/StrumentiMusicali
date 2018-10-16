@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E6A4D0F6-DC39-431E-A562-AC0C4465BEA4}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>StrumentiMusicaliApp</RootNamespace>
-    <AssemblyName>StrumentiMusicaliApp</AssemblyName>
+    <RootNamespace>StrumentiMusicali.App</RootNamespace>
+    <AssemblyName>StrumentiMusicali.App</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -163,9 +163,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StrumentiMusicaliSql\StrumentiMusicaliSql.csproj">
+    <ProjectReference Include="..\StrumentiMusicaliSql\StrumentiMusicali.Library.csproj">
       <Project>{114b9db5-6a31-4d89-bbb8-7ae7dd1a25c6}</Project>
-      <Name>StrumentiMusicaliSql</Name>
+      <Name>StrumentiMusicali.Library</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace StrumentiMusicaliSql.Core
+namespace StrumentiMusicali.Library.Core
 {
 	//Does used by EventAggregator to reserve subscription
 	public class Subscription<Tmessage> : IDisposable

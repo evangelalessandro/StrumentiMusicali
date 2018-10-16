@@ -1,7 +1,7 @@
 using System.Data.Entity;
-using StrumentiMusicaliSql.Entity;
+using StrumentiMusicali.Library.Entity;
 
-namespace StrumentiMusicaliSql.Model
+namespace StrumentiMusicali.Library.Model
 {
 
 	public partial class ModelSm : DbContext
@@ -17,6 +17,8 @@ namespace StrumentiMusicaliSql.Model
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+			modelBuilder.Entity<Deposito>().ToTable("Depositi");
+			modelBuilder.Entity<Magazzino>().ToTable("Magazzino");
 			modelBuilder.Entity<Articolo>().ToTable("Articoli");
 			modelBuilder.Entity<Categorie>().ToTable("Categorie");
 			modelBuilder.Entity<FotoArticolo>().ToTable("FotoArticoli");
@@ -24,10 +26,13 @@ namespace StrumentiMusicaliSql.Model
             modelBuilder.Entity<Articolo>().Property(e => e.PrezzoBarrato).HasPrecision(19, 2);
                 
         }
+		public virtual DbSet<Deposito> Depositi { get; set; }
+		public virtual DbSet<Magazzino> Magazzino { get; set; }
 		public virtual DbSet<Articolo> Articoli { get; set; }
 		public virtual DbSet<Categorie> Categorie { get; set; }
 		public virtual DbSet<EventLog> LogEventi { get; set; }
 		public virtual DbSet<FotoArticolo> FotoArticoli { get; set; }
+
 		public void FixEfProviderServicesProblem()
         {
             //The Entity Framework provider type 'System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer'

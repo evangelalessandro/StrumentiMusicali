@@ -1,7 +1,7 @@
-﻿using StrumentiMusicaliApp.Core;
+﻿using StrumentiMusicali.App.Core;
 using System;
 
-namespace StrumentiMusicaliApp
+namespace StrumentiMusicali.App
 {
 	static class Program
     {

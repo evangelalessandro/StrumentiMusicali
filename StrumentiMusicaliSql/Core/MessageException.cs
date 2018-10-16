@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace StrumentiMusicaliSql.Core
+namespace StrumentiMusicali.Library.Core
 {
 	public class MessageException :Exception
 	{

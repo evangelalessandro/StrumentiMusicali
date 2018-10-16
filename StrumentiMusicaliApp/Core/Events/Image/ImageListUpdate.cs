@@ -1,4 +1,4 @@
-﻿namespace StrumentiMusicaliApp.Core.Events.Image
+﻿namespace StrumentiMusicali.App.Core.Events.Image
 {
 	class ImageListUpdate
 	{

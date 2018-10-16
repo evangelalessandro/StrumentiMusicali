@@ -1,19 +1,22 @@
-﻿using StrumentiMusicaliApp.Core;
-using StrumentiMusicaliApp.Core.Controllers;
-using StrumentiMusicaliApp.Core.Events.Articoli;
-using StrumentiMusicaliSql.Core;
-using StrumentiMusicaliSql.Repo;
+﻿using NLog;
+using StrumentiMusicali.App.Core;
+using StrumentiMusicali.App.Core.Controllers;
+using StrumentiMusicali.App.Core.Events.Articoli;
+using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace StrumentiMusicaliApp
+namespace StrumentiMusicali.App
 {
 	public partial class fmrMain : Form
 	{
+		private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+
 		private BaseController _baseController;
 		public fmrMain(BaseController baseController)
 		{
@@ -26,6 +29,8 @@ namespace StrumentiMusicaliApp
 			txtCerca.KeyUp += TxtCerca_KeyUp;
 			EventAggregator.Instance().Subscribe<ArticoliToUpdate>(UpdateList);
 			this.Disposed += FmrMain_Disposed;
+			_logger.Debug("Form main init");
+
 		}
 
 		private void FmrMain_Disposed(object sender, EventArgs e)
@@ -50,19 +55,19 @@ namespace StrumentiMusicaliApp
 			}
 		}
 
-		private void UpdateList(ArticoliToUpdate obj)
+		private async void UpdateList(ArticoliToUpdate obj)
 		{
-			RefreshData();
+			await RefreshData();
 		}
 
-		private void TxtCerca_KeyUp(object sender, KeyEventArgs e)
+		private async void TxtCerca_KeyUp(object sender, KeyEventArgs e)
 		{
 			if (e.KeyCode == Keys.Return)
 			{
 				var dato = _baseController.ReadSetting();
 				dato.LastStringaRicerca = txtCerca.Text;
 				_baseController.SaveSetting(dato);
-				RefreshData();
+				await RefreshData();
 			}
 		}
 
@@ -102,13 +107,16 @@ namespace StrumentiMusicaliApp
 
 		private void UpdateButtonState()
 		{
+
+			ribbon1.Enabled = !(dgvMaster.DataSource == null);
+
 			ribEditArt.Enabled = dgvMaster.SelectedRows.Count > 0;
 			ribArtDuplicate.Enabled = dgvMaster.SelectedRows.Count > 0;
 			ribDelete.Enabled = dgvMaster.SelectedRows.Count > 0;
 			ribCerca.Checked = pnlCerca.Visible;
 		}
 
-		private void Form1_Load(object sender, EventArgs e)
+		private async void Form1_Load(object sender, EventArgs e)
 		{
 			var dato = _baseController.ReadSetting();
 			txtCerca.Text = dato.LastStringaRicerca;
@@ -122,73 +130,66 @@ namespace StrumentiMusicaliApp
 			{
 				ExceptionManager.ManageError(ex);
 			}
-			Init(dato.LastArticoloSelected);
-		}
-		private void Init(string idKey)
-		{
-			RefreshData();
+			UpdateButtonState();
+			await RefreshData();
+
+
+			await SelezionaRiga(dato.LastArticoloSelected);
+
+
 			UpdateButtonState();
 
-			SelezionaRiga(idKey);
+
+			_logger.Debug("Form load");
 
 		}
 		public List<ArticoloItem> GetDataAsync()
 		{
-			var dt = new DataTable();
-			var datoRicerca = txtCerca.Text;
-			List<ArticoloItem> list = new List<ArticoloItem>();
-
-			using (var uof = new UnitOfWork())
+			try
 			{
-				list = uof.ArticoliRepository.Find(a => datoRicerca == "" || a.Titolo.Contains(datoRicerca)
-					|| a.Testo.Contains(datoRicerca)
-				).Select(a => new ArticoloItem
-				{
-					ID = a.ID,
-					Titolo = a.Titolo,
-					ArticoloCS = a
-					,
-					DataCreazione = a.DataCreazione,
-					DataModifica = a.DataUltimaModifica
-					,
-					Pinned = a.Pinned
-				}).ToList();
-			}
 
-			return list;
-		}
-		private async void RefreshData()
-		{
-			using (var curs = new CursorHandler())
-			{
 				var datoRicerca = txtCerca.Text;
+				List<ArticoloItem> list = new List<ArticoloItem>();
+
 				using (var uof = new UnitOfWork())
 				{
-					//var list = uof.ArticoliRepository.Find(a => datoRicerca == "" || a.Titolo.Contains(datoRicerca)
-					//	|| a.Testo.Contains(datoRicerca)
-					//).Select(a => new ArticoloItem
-					//{
-					//	ID = a.ID,
-					//	Titolo = a.Titolo,
-					//	ArticoloCS = a
-					//	,
-					//	DataCreazione = a.DataCreazione,
-					//	DataModifica = a.DataUltimaModifica
-					//	,
-					//	Pinned = a.Pinned
-					//}).ToList();
-					//dgvMaster.DataSource = list;
-
-					var data = GetDataAsync();
-					dgvMaster.DataSource = data;
-					dgvMaster.Columns[0].Visible = false;
-					dgvMaster.Columns["Pinned"].Visible = false;
-					dgvMaster.Columns["ArticoloCS"].Visible = false;
+					list = uof.ArticoliRepository.Find(a => datoRicerca == "" || a.Titolo.Contains(datoRicerca)
+						|| a.Testo.Contains(datoRicerca)
+					).Select(a => new ArticoloItem
+					{
+						ID = a.ID,
+						Titolo = a.Titolo,
+						ArticoloCS = a
+						,
+						DataCreazione = a.DataCreazione,
+						DataModifica = a.DataUltimaModifica
+						,
+						Pinned = a.Pinned
+					}).ToList();
 				}
+
+				return list;
+			}
+			catch (Exception ex)
+			{
+				this.BeginInvoke( new Action(() =>
+				{ ExceptionManager.ManageError(ex); }));
+				return null;
 			}
 		}
-		private readonly SynchronizationContext synchronizationContext;
-		private DateTime previousTime = DateTime.Now;
+
+		private async Task RefreshData()
+		{
+			var data = await Task.Run(() => { return GetDataAsync(); });
+			if (data == null)
+				return;
+			dgvMaster.DataSource = data;
+			dgvMaster.Columns[0].Visible = false;
+			dgvMaster.Columns["Pinned"].Visible = false;
+			dgvMaster.Columns["ArticoloCS"].Visible = false;
+
+
+		}
 
 		private void ribAddArt_Click(object sender, EventArgs e)
 		{
@@ -209,7 +210,7 @@ namespace StrumentiMusicaliApp
 			EditArticolo();
 		}
 
-		private void EditArticolo()
+		private async void EditArticolo()
 		{
 			var itemSelected = (ArticoloItem)dgvMaster.SelectedRows[0].DataBoundItem;
 			using (var frm = new Forms.frmArticolo(itemSelected))
@@ -217,12 +218,13 @@ namespace StrumentiMusicaliApp
 				frm.ShowDialog();
 			}
 
-			RefreshData();
-			SelezionaRiga(itemSelected.ID);
+			await RefreshData();
+			await SelezionaRiga(itemSelected.ID);
 		}
 
-		private void SelezionaRiga(string idArticolo)
+		private async Task SelezionaRiga(string idArticolo)
 		{
+
 			for (int i = 0; i < dgvMaster.RowCount; i++)
 			{
 				if (((ArticoloItem)(dgvMaster.Rows[i].DataBoundItem)).ID == idArticolo)
@@ -232,6 +234,7 @@ namespace StrumentiMusicaliApp
 					break;
 				}
 			}
+
 		}
 
 		private void dgvMaster_DoubleClick(object sender, EventArgs e)

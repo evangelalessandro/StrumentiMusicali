@@ -1,6 +1,6 @@
-﻿using StrumentiMusicaliSql.Entity;
+﻿using StrumentiMusicali.Library.Entity;
 
-namespace StrumentiMusicaliApp.Core.Events.Image
+namespace StrumentiMusicali.App.Core.Events.Image
 {
 	public class ImageRemove
 	{

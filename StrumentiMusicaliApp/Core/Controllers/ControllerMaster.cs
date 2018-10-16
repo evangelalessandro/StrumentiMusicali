@@ -1,11 +1,11 @@
 ﻿using NLog;
 using NLog.Targets;
-using StrumentiMusicaliApp.Core.Controllers;
-using StrumentiMusicaliSql.Repo;
+using StrumentiMusicali.App.Core.Controllers;
+using StrumentiMusicali.Library.Repo;
 using System;
 using System.Windows.Forms;
 
-namespace StrumentiMusicaliApp.Core
+namespace StrumentiMusicali.App.Core
 {
 	public class ControllerMaster :  BaseController
 	{
@@ -31,13 +31,13 @@ namespace StrumentiMusicaliApp.Core
 			_controllerImmagini.Dispose();
 			_controllerImmagini = null;
 		}
-		public void LogMethod(string level, string message, string exception, string stacktrace, string classLine)
+		public static void LogMethod(string level, string message, string exception, string stacktrace, string classLine)
 		{
 			try
 			{
 				using (var uof = new UnitOfWork())
 				{
-					uof.EventLogRepository.Add(new StrumentiMusicaliSql.Entity.EventLog()
+					uof.EventLogRepository.Add(new StrumentiMusicali.Library.Entity.EventLog()
 					{ TipoEvento = level, Errore = message, TimeStamp = DateTime.Now, InnerException = exception, StackTrace = stacktrace, Class = classLine });
 					uof.Commit();
 				}

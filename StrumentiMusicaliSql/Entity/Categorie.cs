@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace StrumentiMusicaliSql.Entity
+namespace StrumentiMusicali.Library.Entity
 {
 	public class Categorie
     {

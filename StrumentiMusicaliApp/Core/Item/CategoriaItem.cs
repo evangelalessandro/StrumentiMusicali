@@ -1,4 +1,4 @@
-﻿namespace StrumentiMusicaliApp.Core
+﻿namespace StrumentiMusicali.App.Core
 {
 	public class CategoriaItem
 	{

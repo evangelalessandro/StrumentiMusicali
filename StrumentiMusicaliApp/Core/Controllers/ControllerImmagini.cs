@@ -1,7 +1,7 @@
-﻿using StrumentiMusicaliApp.Core.Events.Image;
-using StrumentiMusicaliSql.Core;
-using StrumentiMusicaliSql.Entity;
-using StrumentiMusicaliSql.Repo;
+﻿using StrumentiMusicali.App.Core.Events.Image;
+using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace StrumentiMusicaliApp.Core.Controllers
+namespace StrumentiMusicali.App.Core.Controllers
 {
 	class ControllerImmagini :BaseController
 	{

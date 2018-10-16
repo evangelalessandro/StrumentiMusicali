@@ -1,15 +1,15 @@
-﻿using StrumentiMusicaliApp.Core.Events.Articoli;
-using StrumentiMusicaliApp.Core.Events.Image;
-using StrumentiMusicaliSql.Core;
-using StrumentiMusicaliSql.Entity;
-using StrumentiMusicaliSql.Repo;
+﻿using StrumentiMusicali.App.Core.Events.Articoli;
+using StrumentiMusicali.App.Core.Events.Image;
+using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Repo;
 using System;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace StrumentiMusicaliApp.Core.Controllers
+namespace StrumentiMusicali.App.Core.Controllers
 {
 	public class ControllerArticoli : BaseController , IDisposable
 	{
@@ -32,7 +32,7 @@ namespace StrumentiMusicaliApp.Core.Controllers
 		~ControllerArticoli()
 		{
 			var dato = this.ReadSetting();
-			if (_ArticoloSelected.ItemSelected != null)
+			if (_ArticoloSelected!= null && _ArticoloSelected.ItemSelected != null)
 			{
 				dato.LastArticoloSelected = _ArticoloSelected.ItemSelected.ID;
 				this.SaveSetting(dato);
@@ -64,7 +64,7 @@ namespace StrumentiMusicaliApp.Core.Controllers
 				using (var uof = new UnitOfWork())
 				{
 					var itemCurrent = _ArticoloSelected.ItemSelected.ArticoloCS;
-					uof.ArticoliRepository.Add(new StrumentiMusicaliSql.Entity.Articolo()
+					uof.ArticoliRepository.Add(new StrumentiMusicali.Library.Entity.Articolo()
 					{
 						Categoria = itemCurrent.Categoria,
 						Condizione = itemCurrent.Condizione,
@@ -180,7 +180,7 @@ namespace StrumentiMusicaliApp.Core.Controllers
 					prezzo = decimal.Parse(strPrezzo);
 				}
 			}
-			var artNew = (new StrumentiMusicaliSql.Entity.Articolo()
+			var artNew = (new StrumentiMusicali.Library.Entity.Articolo()
 			{
 				ID = (dat[0]),
 				Categoria = int.Parse(dat[1]),
@@ -206,7 +206,7 @@ namespace StrumentiMusicaliApp.Core.Controllers
 				int ordine = 0;
 				foreach (var item in foto.Split(';'))
 				{
-					var artFoto = new StrumentiMusicaliSql.Entity.FotoArticolo()
+					var artFoto = new StrumentiMusicali.Library.Entity.FotoArticolo()
 					{
 						Articolo = artNew,
 						UrlFoto = item,

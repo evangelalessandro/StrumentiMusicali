@@ -1,9 +1,9 @@
-namespace StrumentiMusicaliSql.Migrations
+namespace StrumentiMusicali.Library.Migrations
 {
-	using StrumentiMusicaliSql.Entity;
+	using StrumentiMusicali.Library.Entity;
 	using System.Data.Entity.Migrations;
 
-	internal sealed class Configuration : DbMigrationsConfiguration<StrumentiMusicaliSql.Model.ModelSm>
+	internal sealed class Configuration : DbMigrationsConfiguration<StrumentiMusicali.Library.Model.ModelSm>
     {
         public Configuration()
         {
@@ -13,7 +13,7 @@ namespace StrumentiMusicaliSql.Migrations
 
 		}
 
-        protected override void Seed(StrumentiMusicaliSql.Model.ModelSm context)
+        protected override void Seed(StrumentiMusicali.Library.Model.ModelSm context)
         {
 			//  This method will be called after migrating to the latest version.
 

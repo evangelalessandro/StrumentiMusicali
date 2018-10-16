@@ -1,4 +1,4 @@
-﻿namespace StrumentiMusicaliApp
+﻿namespace StrumentiMusicali.App
 {
     partial class fmrMain
     {
@@ -106,8 +106,8 @@
 			// 
 			// ribAddArt
 			// 
-			this.ribAddArt.Image = global::StrumentiMusicaliApp.Properties.Resources.Add;
-			this.ribAddArt.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Add;
+			this.ribAddArt.Image = global::StrumentiMusicali.App.Properties.Resources.Add;
+			this.ribAddArt.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Add;
 			this.ribAddArt.Name = "ribAddArt";
 			this.ribAddArt.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribAddArt.SmallImage")));
 			this.ribAddArt.Text = "Crea";
@@ -115,8 +115,8 @@
 			// 
 			// ribEditArt
 			// 
-			this.ribEditArt.Image = global::StrumentiMusicaliApp.Properties.Resources.Penna;
-			this.ribEditArt.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Penna;
+			this.ribEditArt.Image = global::StrumentiMusicali.App.Properties.Resources.Penna;
+			this.ribEditArt.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Penna;
 			this.ribEditArt.Name = "ribEditArt";
 			this.ribEditArt.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribEditArt.SmallImage")));
 			this.ribEditArt.Text = "Vedi\\Modifica";
@@ -126,8 +126,8 @@
 			// 
 			this.ribDelete.DropDownItems.Add(this.ribbonButton1);
 			this.ribDelete.DropDownItems.Add(this.ribbonButton2);
-			this.ribDelete.Image = global::StrumentiMusicaliApp.Properties.Resources.Delete;
-			this.ribDelete.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Delete;
+			this.ribDelete.Image = global::StrumentiMusicali.App.Properties.Resources.Delete;
+			this.ribDelete.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Delete;
 			this.ribDelete.Name = "ribDelete";
 			this.ribDelete.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribDelete.SmallImage")));
 			this.ribDelete.Text = "Elimina";
@@ -150,8 +150,8 @@
 			// 
 			// ribArtDuplicate
 			// 
-			this.ribArtDuplicate.Image = global::StrumentiMusicaliApp.Properties.Resources.Duplicate;
-			this.ribArtDuplicate.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Duplicate;
+			this.ribArtDuplicate.Image = global::StrumentiMusicali.App.Properties.Resources.Duplicate;
+			this.ribArtDuplicate.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Duplicate;
 			this.ribArtDuplicate.Name = "ribArtDuplicate";
 			this.ribArtDuplicate.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribArtDuplicate.SmallImage")));
 			this.ribArtDuplicate.Text = "Duplica";
@@ -167,8 +167,8 @@
 			// 
 			this.ribCerca.CheckOnClick = true;
 			this.ribCerca.FlashIntervall = 50;
-			this.ribCerca.Image = global::StrumentiMusicaliApp.Properties.Resources.Cerca;
-			this.ribCerca.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Cerca;
+			this.ribCerca.Image = global::StrumentiMusicali.App.Properties.Resources.Cerca;
+			this.ribCerca.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Cerca;
 			this.ribCerca.Name = "ribCerca";
 			this.ribCerca.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribCerca.SmallImage")));
 			this.ribCerca.Text = "Cerca";
@@ -188,8 +188,8 @@
 			// 
 			// ribInvioDati
 			// 
-			this.ribInvioDati.Image = global::StrumentiMusicaliApp.Properties.Resources.Upload;
-			this.ribInvioDati.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Upload;
+			this.ribInvioDati.Image = global::StrumentiMusicali.App.Properties.Resources.Upload;
+			this.ribInvioDati.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Upload;
 			this.ribInvioDati.Name = "ribInvioDati";
 			this.ribInvioDati.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribInvioDati.SmallImage")));
 			this.ribInvioDati.Text = "Invio Dati";
@@ -202,8 +202,8 @@
 			// 
 			// ribImportArticoli
 			// 
-			this.ribImportArticoli.Image = global::StrumentiMusicaliApp.Properties.Resources.Import;
-			this.ribImportArticoli.LargeImage = global::StrumentiMusicaliApp.Properties.Resources.Import;
+			this.ribImportArticoli.Image = global::StrumentiMusicali.App.Properties.Resources.Import;
+			this.ribImportArticoli.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Import;
 			this.ribImportArticoli.Name = "ribImportArticoli";
 			this.ribImportArticoli.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribImportArticoli.SmallImage")));
 			this.ribImportArticoli.Text = "Import Articoli";

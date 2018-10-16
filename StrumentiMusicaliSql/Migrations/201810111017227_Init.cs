@@ -1,4 +1,4 @@
-namespace StrumentiMusicaliSql.Migrations
+namespace StrumentiMusicali.Library.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
@@ -28,6 +28,9 @@ namespace StrumentiMusicaliSql.Migrations
                         DataUltimaModifica = c.DateTime(nullable: false),
                         Pinned = c.Boolean(nullable: false),
                         Giacenza = c.Int(nullable: false),
+                        CodiceAbarre = c.String(maxLength: 100),
+                        CaricainEcommerce = c.Boolean(nullable: false),
+                        CaricainMercatino = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.ID);
             
@@ -43,16 +46,26 @@ namespace StrumentiMusicaliSql.Migrations
                 .PrimaryKey(t => t.ID);
             
             CreateTable(
+                "dbo.Depositi",
+                c => new
+                    {
+                        ID = c.Int(nullable: false, identity: true),
+                        NomeDeposito = c.String(),
+                    })
+                .PrimaryKey(t => t.ID);
+            
+            CreateTable(
                 "dbo.FotoArticoli",
                 c => new
                     {
                         ID = c.Guid(nullable: false, identity: true),
+                        ArticoloID = c.String(maxLength: 50),
                         UrlFoto = c.String(nullable: false),
-                        Articolo_ID = c.String(maxLength: 50),
+                        Ordine = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ID)
-                .ForeignKey("dbo.Articoli", t => t.Articolo_ID)
-                .Index(t => t.Articolo_ID);
+                .ForeignKey("dbo.Articoli", t => t.ArticoloID)
+                .Index(t => t.ArticoloID);
             
             CreateTable(
                 "dbo.EventLogs",
@@ -70,14 +83,35 @@ namespace StrumentiMusicaliSql.Migrations
                     })
                 .PrimaryKey(t => t.ID);
             
+            CreateTable(
+                "dbo.Magazzino",
+                c => new
+                    {
+                        ID = c.Guid(nullable: false, identity: true),
+                        ArticoloID = c.String(nullable: false, maxLength: 50),
+                        DepositoID = c.Int(nullable: false),
+                        Giacenza = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.ID)
+                .ForeignKey("dbo.Articoli", t => t.ArticoloID, cascadeDelete: true)
+                .ForeignKey("dbo.Depositi", t => t.DepositoID, cascadeDelete: true)
+                .Index(t => t.ArticoloID)
+                .Index(t => t.DepositoID);
+            
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.FotoArticoli", "Articolo_ID", "dbo.Articoli");
-            DropIndex("dbo.FotoArticoli", new[] { "Articolo_ID" });
+            DropForeignKey("dbo.Magazzino", "DepositoID", "dbo.Depositi");
+            DropForeignKey("dbo.Magazzino", "ArticoloID", "dbo.Articoli");
+            DropForeignKey("dbo.FotoArticoli", "ArticoloID", "dbo.Articoli");
+            DropIndex("dbo.Magazzino", new[] { "DepositoID" });
+            DropIndex("dbo.Magazzino", new[] { "ArticoloID" });
+            DropIndex("dbo.FotoArticoli", new[] { "ArticoloID" });
+            DropTable("dbo.Magazzino");
             DropTable("dbo.EventLogs");
             DropTable("dbo.FotoArticoli");
+            DropTable("dbo.Depositi");
             DropTable("dbo.Categorie");
             DropTable("dbo.Articoli");
         }

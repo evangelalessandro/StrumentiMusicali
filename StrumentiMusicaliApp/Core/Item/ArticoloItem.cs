@@ -1,8 +1,8 @@
-﻿using StrumentiMusicaliApp.Properties;
-using StrumentiMusicaliSql.Entity;
+﻿using StrumentiMusicali.App.Properties;
+using StrumentiMusicali.Library.Entity;
 using System;
 
-namespace StrumentiMusicaliApp.Core
+namespace StrumentiMusicali.App.Core
 {
 	public class ArticoloItem
 	{

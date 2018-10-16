@@ -7,8 +7,8 @@
     <ProjectGuid>{114B9DB5-6A31-4D89-BBB8-7AE7DD1A25C6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StrumentiMusicaliSql</RootNamespace>
-    <AssemblyName>StrumentiMusicaliSql</AssemblyName>
+    <RootNamespace>StrumentiMusicali.Library</RootNamespace>
+    <AssemblyName>StrumentiMusicali.Library</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -56,9 +56,11 @@
     <Compile Include="Core\EventAggregator.cs" />
     <Compile Include="Core\MessageException.cs" />
     <Compile Include="Entity\Articolo.cs" />
+    <Compile Include="Entity\Deposito.cs" />
     <Compile Include="Entity\Categorie.cs" />
     <Compile Include="Entity\EventLog.cs" />
     <Compile Include="Entity\FotoArticolo.cs" />
+    <Compile Include="Entity\Magazzino.cs" />
     <Compile Include="Migrations\201810111017227_Init.cs" />
     <Compile Include="Migrations\201810111017227_Init.Designer.cs">
       <DependentUpon>201810111017227_Init.cs</DependentUpon>
@@ -78,6 +80,9 @@
     <EmbeddedResource Include="Migrations\201810111017227_Init.resx">
       <DependentUpon>201810111017227_Init.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Note\TextFile1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

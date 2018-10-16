@@ -1,10 +1,10 @@
-﻿using StrumentiMusicaliSql.Core;
-using StrumentiMusicaliSql.Entity;
-using StrumentiMusicaliSql.Model;
+﻿using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Model;
 using System;
 using System.Linq;
 
-namespace StrumentiMusicaliSql.Repo
+namespace StrumentiMusicali.Library.Repo
 {
 
 	public class UnitOfWork : IDisposable

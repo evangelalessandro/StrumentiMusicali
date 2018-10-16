@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
 using System.Linq.Expressions;
-using StrumentiMusicaliSql.Model;
-using StrumentiMusicaliSql.Entity;
+using StrumentiMusicali.Library.Model;
+using StrumentiMusicali.Library.Entity;
 
-namespace StrumentiMusicaliSql.Repo
+namespace StrumentiMusicali.Library.Repo
 {
 	public class Repository<T> : IRepository<T>, IDisposable where T : class
     {

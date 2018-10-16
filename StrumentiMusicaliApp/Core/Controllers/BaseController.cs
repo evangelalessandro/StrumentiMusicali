@@ -1,13 +1,13 @@
 ﻿using Autofac;
 using Newtonsoft.Json;
 using NLog;
-using StrumentiMusicaliApp.Settings;
-using StrumentiMusicaliSql.Repo;
+using StrumentiMusicali.App.Settings;
+using StrumentiMusicali.Library.Repo;
 using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace StrumentiMusicaliApp.Core.Controllers
+namespace StrumentiMusicali.App.Core.Controllers
 {
 	public class BaseController : IDisposable
 	{

@@ -6,7 +6,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace StrumentiMusicaliApp.Settings
+namespace StrumentiMusicali.App.Settings
 {
     public interface ISettingsReader
     {

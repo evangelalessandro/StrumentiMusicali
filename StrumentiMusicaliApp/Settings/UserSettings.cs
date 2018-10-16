@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace StrumentiMusicaliApp.Settings
+namespace StrumentiMusicali.App.Settings
 {
     public class UserSettings
     {

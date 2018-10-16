@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace StrumentiMusicaliApp.Forms
+namespace StrumentiMusicali.App.Forms
 {
 	public class AutoCompleteTextBox : TextBox
 	{

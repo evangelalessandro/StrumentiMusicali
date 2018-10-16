@@ -1,0 +1,7 @@
+﻿https://docs.microsoft.com/it-it/ef/ef6/modeling/code-first/migrations/automatic
+
+Migrazioni Code First include due comandi principali.
+Add-Migration esegue lo scaffolding della migrazione successiva in base alle modifiche apportate al modello dalla creazione dell'ultima migrazione
+Update-Database applica tutte le migrazioni in sospeso al database
+Si intende evitare utilizzando Add-Migration (a meno che non è realmente necessario) e lo stato attivo su consentendo migrazioni Code First automaticamente calcolare e applicare le modifiche. È possibile usare Update-Database ottenere migrazioni Code First per il push delle modifiche per il nostro modello (il nuovo Blog.Urproprietà l) nel database.
+Eseguire la Update-Database comando nella Console di gestione pacchetti.

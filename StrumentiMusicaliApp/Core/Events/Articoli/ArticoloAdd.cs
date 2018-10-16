@@ -1,4 +1,4 @@
-﻿namespace StrumentiMusicaliApp.Core.Events.Articoli
+﻿namespace StrumentiMusicali.App.Core.Events.Articoli
 {
 	public class ArticoloAdd
 	{

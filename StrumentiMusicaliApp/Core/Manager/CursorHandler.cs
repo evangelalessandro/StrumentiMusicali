@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace StrumentiMusicaliApp.Core
+namespace StrumentiMusicali.App.Core
 {
 	public class CursorHandler
 	: IDisposable

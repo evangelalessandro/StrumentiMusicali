@@ -1,11 +1,11 @@
-﻿using StrumentiMusicaliApp.Core;
-using StrumentiMusicaliApp.Core.Controllers;
-using StrumentiMusicaliApp.Core.Events;
-using StrumentiMusicaliApp.Core.Events.Articoli;
-using StrumentiMusicaliApp.Core.Events.Image;
-using StrumentiMusicaliSql.Core;
-using StrumentiMusicaliSql.Entity;
-using StrumentiMusicaliSql.Repo;
+﻿using StrumentiMusicali.App.Core;
+using StrumentiMusicali.App.Core.Controllers;
+using StrumentiMusicali.App.Core.Events;
+using StrumentiMusicali.App.Core.Events.Articoli;
+using StrumentiMusicali.App.Core.Events.Image;
+using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -17,7 +17,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace StrumentiMusicaliApp.Forms
+namespace StrumentiMusicali.App.Forms
 {
 	public partial class frmArticolo : Form
 	{
@@ -30,7 +30,7 @@ namespace StrumentiMusicaliApp.Forms
 		protected Image nextImage;
 		protected PictureBox thumbnail;
 		protected bool validData;
-		private StrumentiMusicaliSql.Entity.Articolo _articolo = null;
+		private StrumentiMusicali.Library.Entity.Articolo _articolo = null;
 		private List<CategoriaItem> _categoriList = new List<CategoriaItem>();
 		FotoArticolo _fotoArticoloSelected = null;
 		private List<PictureBox> _imageList = new List<PictureBox>();
@@ -45,7 +45,7 @@ namespace StrumentiMusicaliApp.Forms
 			InitializeComponent();
 			if (_articolo == null)
 			{
-				_articolo = new StrumentiMusicaliSql.Entity.Articolo() { Testo = "Prova", Titolo = "titolo", Marca = "PRova" };
+				_articolo = new StrumentiMusicali.Library.Entity.Articolo() { Testo = "Prova", Titolo = "titolo", Marca = "PRova" };
 			}
 			EventAggregator.Instance().Subscribe<ImageListUpdate>(RefreshImageList);
 
@@ -243,7 +243,7 @@ namespace StrumentiMusicaliApp.Forms
 		{
 			if (modeEdit == false)
 			{
-				_articolo = new StrumentiMusicaliSql.Entity.Articolo();
+				_articolo = new StrumentiMusicali.Library.Entity.Articolo();
 			}
 
 			FillCombo();
@@ -287,7 +287,7 @@ namespace StrumentiMusicaliApp.Forms
 
 		private void FrmArticolo_ResizeEnd(object sender, EventArgs e)
 		{
-			Resize();
+			ResizeImage();
 		}
 
 		private void MenuImpostaPrincipale_Click(object sender, EventArgs e)
@@ -442,7 +442,7 @@ namespace StrumentiMusicaliApp.Forms
 
 						}
 						UpdateColor();
-						Resize();
+						ResizeImage();
 					}
 					catch (Exception ex)
 					{
@@ -454,7 +454,7 @@ namespace StrumentiMusicaliApp.Forms
 			}
 		}
 
-		private void Resize()
+		private void ResizeImage()
 		{
 			foreach (var item in _imageList)
 			{

@@ -1,24 +1,34 @@
 ﻿using Tulpep.NotificationWindow;
 
-namespace StrumentiMusicaliApp.Core
+namespace StrumentiMusicali.App.Core
 {
 	public class MessageManager
 	{
 		public static void NotificaInfo(string info)
 		{
 			PopupNotifier popup = new PopupNotifier();
-			popup.Image = StrumentiMusicaliApp.Properties.Resources.Info_64;
+			popup.Image = StrumentiMusicali.App.Properties.Resources.Info_64;
 			popup.TitleText = "Info";
 			popup.ContentText = info;
 			popup.Popup();
 		}
-		public static void NotificaError(string message)
+		public static void NotificaError(string message, System.Exception ex)
 		{
 			PopupNotifier popup = new PopupNotifier();
-			popup.Image = StrumentiMusicaliApp.Properties.Resources.Error_64;
+			popup.Image = StrumentiMusicali.App.Properties.Resources.Error_64;
 			popup.TitleText = "Error";
 			popup.ContentText = message;
+
 			popup.Popup();
+			if (ex != null)
+			{
+				popup.Click += delegate (object sender, System.EventArgs e)
+				{
+					NotificaError(ex.Message, null);
+				};
+			}
 		}
+
+
 	}
 }

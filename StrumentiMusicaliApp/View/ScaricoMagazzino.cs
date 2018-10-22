@@ -19,6 +19,8 @@ namespace StrumentiMusicali.App.View
 			: base()
 		{
 			_controllerMagazzino = controllerMagazzino;
+			_controllerMagazzino.SelectedItem = new MovimentoMagazzino();
+			_controllerMagazzino.SelectedItem.Qta = 1;
 			InitializeComponent();
 			lblTitoloArt.Text = "";
 			ribScarica.Click += (a, e) =>
@@ -49,7 +51,20 @@ namespace StrumentiMusicali.App.View
 
 				UpdateButton();
 			};
-			cboDeposito.SelectedValueChanged += (a, b) => { UpdateButton(); };
+			cboDeposito.SelectedValueChanged += (a, b) => {
+				try
+				{
+					_controllerMagazzino.SelectedItem.Deposito =
+						((DepositoItem)cboDeposito.SelectedItem).ID;
+
+				}
+				catch (Exception)
+				{
+
+				}
+				
+				UpdateButton();
+			};
 			txtQta.Tag = "Qta";
 			cboDeposito.Tag = "Deposito";
 			SetDataBind(this, _controllerMagazzino.SelectedItem);
@@ -61,17 +76,29 @@ namespace StrumentiMusicali.App.View
 
 		private void RefreshData(MovimentiUpdate obj)
 		{
+
+			lblTitoloArticolo.ForeColor = System.Drawing.Color.Red;
 			var movimenti = new List<MovimentoItem>();
 			using (var uof = new UnitOfWork())
 			{
 				var articolo = uof.ArticoliRepository.Find(a => a.CodiceAbarre == txtCodiceABarre.Text).FirstOrDefault();
 				if (articolo != null)
 				{
+					lblTitoloArticolo.ForeColor= System.Drawing.Color.Green;
+					var depoSel= cboDeposito.SelectedIndex;
 					_controllerMagazzino.SelectedItem.ArticoloID = articolo.ID;
 					lblTitoloArt.Text = articolo.Titolo;
 
-					cboDeposito.DataSource = _controllerMagazzino.ListDepositi();
-
+					var listDepo= _controllerMagazzino.ListDepositi();
+					cboDeposito.DataSource = listDepo;
+					if (depoSel==-1 && listDepo.Count>0)
+					{
+						cboDeposito.SelectedIndex = 0;
+					}
+					else
+					{
+						cboDeposito.SelectedIndex = depoSel;
+					}
 					movimenti = uof.MagazzinoRepository.Find(a => a.ArticoloID == _controllerMagazzino.SelectedItem.ArticoloID)
 						.Select(a => new MovimentoItem()
 						{
@@ -86,6 +113,7 @@ namespace StrumentiMusicali.App.View
 				}
 				else
 				{
+					cboDeposito.DataSource = new List<DepositoItem>();
 					movimenti = uof.MagazzinoRepository.Find(a => 1 == 1)
 						.OrderByDescending(a => a.ID).Take(100)
 						.Select(a => new MovimentoItem()
@@ -108,6 +136,7 @@ namespace StrumentiMusicali.App.View
 		private async void ScaricoMagazzino_Load(object sender, EventArgs e)
 		{
 			await UpdateButton();
+			RefreshData(new MovimentiUpdate());
 		}
 
 		private async void txtCodiceABarre_TextChanged(object sender, EventArgs e)
@@ -125,6 +154,7 @@ namespace StrumentiMusicali.App.View
 				var enableB = _controllerMagazzino.SelectedItem.ArticoloID != "" && _controllerMagazzino.SelectedItem.Qta > 0 && _controllerMagazzino.SelectedItem.Deposito > 0;
 				ribCarica.Enabled = enableB;
 				ribScarica.Enabled = enableB;
+				this.Validate();
 			}
 			catch (Exception ex)
 			{

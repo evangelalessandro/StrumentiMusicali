@@ -32,11 +32,9 @@
 			this.ribbonTab1 = new System.Windows.Forms.RibbonTab();
 			this.ribbonPanel1 = new System.Windows.Forms.RibbonPanel();
 			this.ribCerca = new System.Windows.Forms.RibbonButton();
-			this.ribCarica = new System.Windows.Forms.RibbonButton();
-			this.ribScarica = new System.Windows.Forms.RibbonButton();
+			this.ribbonPanel2 = new System.Windows.Forms.RibbonPanel();
 			this.txtCodiceABarre = new System.Windows.Forms.TextBox();
 			this.dgvMaster = new System.Windows.Forms.DataGridView();
-			this.ribbonSeparator1 = new System.Windows.Forms.RibbonSeparator();
 			this.txtQta = new System.Windows.Forms.NumericUpDown();
 			this.cboDeposito = new System.Windows.Forms.ComboBox();
 			this.label1 = new System.Windows.Forms.Label();
@@ -44,6 +42,8 @@
 			this.label3 = new System.Windows.Forms.Label();
 			this.lblTitoloArticolo = new System.Windows.Forms.Label();
 			this.lblTitoloArt = new System.Windows.Forms.Label();
+			this.ribCarica = new System.Windows.Forms.RibbonButton();
+			this.ribScarica = new System.Windows.Forms.RibbonButton();
 			((System.ComponentModel.ISupportInitialize)(this.dgvMaster)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtQta)).BeginInit();
 			this.SuspendLayout();
@@ -65,42 +65,29 @@
 			// 
 			this.ribbonTab1.Name = "ribbonTab1";
 			this.ribbonTab1.Panels.Add(this.ribbonPanel1);
+			this.ribbonTab1.Panels.Add(this.ribbonPanel2);
 			this.ribbonTab1.Text = "Scarico magazzino";
 			// 
 			// ribbonPanel1
 			// 
 			this.ribbonPanel1.Items.Add(this.ribCerca);
-			this.ribbonPanel1.Items.Add(this.ribCarica);
-			this.ribbonPanel1.Items.Add(this.ribScarica);
 			this.ribbonPanel1.Name = "ribbonPanel1";
 			this.ribbonPanel1.Text = "";
 			// 
 			// ribCerca
 			// 
-			this.ribCerca.DropDownItems.Add(this.ribCarica);
-			this.ribCerca.DropDownItems.Add(this.ribScarica);
 			this.ribCerca.Image = global::StrumentiMusicali.App.Properties.Resources.Cerca;
 			this.ribCerca.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Cerca;
 			this.ribCerca.Name = "ribCerca";
 			this.ribCerca.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribCerca.SmallImage")));
 			this.ribCerca.Text = "Cerca";
 			// 
-			// ribCarica
+			// ribbonPanel2
 			// 
-			this.ribCarica.DropDownItems.Add(this.ribbonSeparator1);
-			this.ribCarica.Image = global::StrumentiMusicali.App.Properties.Resources.Add;
-			this.ribCarica.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Add;
-			this.ribCarica.Name = "ribCarica";
-			this.ribCarica.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribCarica.SmallImage")));
-			this.ribCarica.Text = "Carica a magazzino";
-			// 
-			// ribScarica
-			// 
-			this.ribScarica.Image = global::StrumentiMusicali.App.Properties.Resources.Remove;
-			this.ribScarica.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Remove;
-			this.ribScarica.Name = "ribScarica";
-			this.ribScarica.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribScarica.SmallImage")));
-			this.ribScarica.Text = "Scarica da magazzino";
+			this.ribbonPanel2.Items.Add(this.ribCarica);
+			this.ribbonPanel2.Items.Add(this.ribScarica);
+			this.ribbonPanel2.Name = "ribbonPanel2";
+			this.ribbonPanel2.Text = "Azioni a magazzino";
 			// 
 			// txtCodiceABarre
 			// 
@@ -130,10 +117,6 @@
 			this.dgvMaster.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dgvMaster.Size = new System.Drawing.Size(885, 240);
 			this.dgvMaster.TabIndex = 2;
-			// 
-			// ribbonSeparator1
-			// 
-			this.ribbonSeparator1.Name = "ribbonSeparator1";
 			// 
 			// txtQta
 			// 
@@ -211,6 +194,22 @@
 			this.lblTitoloArt.TabIndex = 10;
 			this.lblTitoloArt.Text = "Titolo articolo:";
 			// 
+			// ribCarica
+			// 
+			this.ribCarica.Image = global::StrumentiMusicali.App.Properties.Resources.Add;
+			this.ribCarica.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Add;
+			this.ribCarica.Name = "ribCarica";
+			this.ribCarica.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribCarica.SmallImage")));
+			this.ribCarica.Text = "Deposita";
+			// 
+			// ribScarica
+			// 
+			this.ribScarica.Image = global::StrumentiMusicali.App.Properties.Resources.Remove;
+			this.ribScarica.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Remove;
+			this.ribScarica.Name = "ribScarica";
+			this.ribScarica.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribScarica.SmallImage")));
+			this.ribScarica.Text = "Scarica";
+			// 
 			// ScaricoMagazzino
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -248,11 +247,8 @@
 		private System.Windows.Forms.RibbonTab ribbonTab1;
 		private System.Windows.Forms.RibbonPanel ribbonPanel1;
 		private System.Windows.Forms.RibbonButton ribCerca;
-		private System.Windows.Forms.RibbonButton ribCarica;
-		private System.Windows.Forms.RibbonButton ribScarica;
 		private System.Windows.Forms.TextBox txtCodiceABarre;
 		private System.Windows.Forms.DataGridView dgvMaster;
-		private System.Windows.Forms.RibbonSeparator ribbonSeparator1;
 		private System.Windows.Forms.NumericUpDown txtQta;
 		private System.Windows.Forms.ComboBox cboDeposito;
 		private System.Windows.Forms.Label label1;
@@ -260,5 +256,8 @@
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label lblTitoloArticolo;
 		private System.Windows.Forms.Label lblTitoloArt;
+		private System.Windows.Forms.RibbonPanel ribbonPanel2;
+		private System.Windows.Forms.RibbonButton ribCarica;
+		private System.Windows.Forms.RibbonButton ribScarica;
 	}
 }

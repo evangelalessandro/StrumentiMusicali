@@ -81,12 +81,13 @@ namespace StrumentiMusicali.App.View
 							NomeDeposito = a.Deposito.NomeDeposito,
 							Qta = a.Qta
 						})
+						.OrderByDescending(a=>a.ID)
 						.ToList();
 				}
 				else
 				{
 					movimenti = uof.MagazzinoRepository.Find(a => 1 == 1)
-						.OrderByDescending(a => a.DataUltimaModifica).Take(100)
+						.OrderByDescending(a => a.ID).Take(100)
 						.Select(a => new MovimentoItem()
 						{
 							ID= a.ID,

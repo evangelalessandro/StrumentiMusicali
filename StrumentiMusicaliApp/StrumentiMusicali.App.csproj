@@ -201,6 +201,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="References\System.Windows.Forms.Ribbon.dll" />
+    <None Include="Resources\warning_64.png" />
     <None Include="Resources\Magazzino.png" />
     <None Include="Resources\Remove.png" />
     <None Include="Resources\Add1.png" />

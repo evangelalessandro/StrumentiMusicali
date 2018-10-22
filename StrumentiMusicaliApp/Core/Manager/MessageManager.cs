@@ -12,6 +12,14 @@ namespace StrumentiMusicali.App.Core
 			popup.ContentText = info;
 			popup.Popup();
 		}
+		public static void NotificaWarnig(string info)
+		{
+			PopupNotifier popup = new PopupNotifier();
+			popup.Image = StrumentiMusicali.App.Properties.Resources.warning_64;
+			popup.TitleText = "Attenzione";
+			popup.ContentText = info;
+			popup.Popup();
+		}
 		public static void NotificaError(string message, System.Exception ex)
 		{
 			PopupNotifier popup = new PopupNotifier();

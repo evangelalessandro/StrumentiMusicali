@@ -76,6 +76,24 @@ namespace StrumentiMusicali.App.Core.Controllers
 				{
 					using (var uof = new UnitOfWork())
 					{
+						if (movimento.Qta < 0)
+						{
+							var qtaDepositata = uof.MagazzinoRepository.Find(a => a.ArticoloID == movimento.ArticoloID &&
+							a.DepositoID == movimento.Deposito).Select(a => a.Qta).DefaultIfEmpty(0).Sum();
+							if (qtaDepositata<Math.Abs( movimento.Qta))
+							{
+								var depositoSel=uof.DepositoRepository.Find(a => a.ID == movimento.Deposito).First();
+								MessageManager.NotificaWarnig(
+									string.Format(
+									@"La quantità presente nel deposito {0} è di {1} pezzi",
+									depositoSel.NomeDeposito,
+									qtaDepositata
+									));
+								return;
+							}
+						}
+
+
 						uof.MagazzinoRepository.Add(new Library.Entity.Magazzino()
 						{
 							ArticoloID = movimento.ArticoloID,

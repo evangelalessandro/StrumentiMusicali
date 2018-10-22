@@ -1,4 +1,5 @@
 ﻿using StrumentiMusicali.App.Core;
+using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.Library.Core;
@@ -13,42 +14,45 @@ namespace StrumentiMusicali.App.View
 {
 	public partial class ScaricoMagazzino : Base.BaseDataControl
 	{
-		private MovimentoMagazzino _item = new MovimentoMagazzino();
-		public ScaricoMagazzino()
+		ControllerMagazzino _controllerMagazzino;
+		public ScaricoMagazzino(ControllerMagazzino controllerMagazzino)
 			: base()
 		{
+			_controllerMagazzino = controllerMagazzino;
 			InitializeComponent();
 			lblTitoloArt.Text = "";
 			ribScarica.Click += (a, e) =>
 			{
+				this.Validate();
 				EventAggregator.Instance().Publish<ScaricaQtaMagazzino>(new ScaricaQtaMagazzino()
 				{
-					Qta = _item.Qta,
-					Deposito = _item.Deposito,
-					ArticoloID = _item.ArticoloID
+					Qta = _controllerMagazzino.SelectedItem.Qta,
+					Deposito = _controllerMagazzino.SelectedItem.Deposito,
+					ArticoloID = _controllerMagazzino.SelectedItem.ArticoloID
 				});
 			};
 			ribCarica.Click += (a, e) =>
 			{
+				this.Validate();
 				EventAggregator.Instance().Publish<CaricaQtaMagazzino>(new CaricaQtaMagazzino()
 				{
-					Qta = _item.Qta,
-					Deposito = _item.Deposito,
-					ArticoloID = _item.ArticoloID
+					Qta = _controllerMagazzino.SelectedItem.Qta,
+					Deposito = _controllerMagazzino.SelectedItem.Deposito,
+					ArticoloID = _controllerMagazzino.SelectedItem.ArticoloID
 				});
 			};
 			cboDeposito.DisplayMember = "Descrizione";
 			cboDeposito.ValueMember = "ID";
 			txtQta.ValueChanged += (a, b) =>
 			{
-				_item.Qta = txtQta.Value;
+				_controllerMagazzino.SelectedItem.Qta = txtQta.Value;
 
 				UpdateButton();
 			};
 			cboDeposito.SelectedValueChanged += (a, b) => { UpdateButton(); };
 			txtQta.Tag = "Qta";
 			cboDeposito.Tag = "Deposito";
-			SetDataBind(this, _item);
+			SetDataBind(this, _controllerMagazzino.SelectedItem);
 			this.Load += ScaricoMagazzino_Load;
 
 			EventAggregator.Instance().Subscribe<MovimentiUpdate>(RefreshData);
@@ -63,12 +67,12 @@ namespace StrumentiMusicali.App.View
 				var articolo = uof.ArticoliRepository.Find(a => a.CodiceAbarre == txtCodiceABarre.Text).FirstOrDefault();
 				if (articolo != null)
 				{
-					_item.ArticoloID = articolo.ID;
+					_controllerMagazzino.SelectedItem.ArticoloID = articolo.ID;
 					lblTitoloArt.Text = articolo.Titolo;
 
-					cboDeposito.DataSource = getListDepositi(uof);
+					cboDeposito.DataSource = _controllerMagazzino.ListDepositi();
 
-					movimenti = uof.MagazzinoRepository.Find(a => a.ArticoloID == _item.ArticoloID)
+					movimenti = uof.MagazzinoRepository.Find(a => a.ArticoloID == _controllerMagazzino.SelectedItem.ArticoloID)
 						.Select(a => new MovimentoItem()
 						{
 							ID=a.ID,
@@ -98,41 +102,7 @@ namespace StrumentiMusicali.App.View
 			}
 		}
 
-		private System.Collections.Generic.List<DepositoItem> getListDepositi(UnitOfWork uof)
-		{
-			var listQtaDepositi = uof.MagazzinoRepository.Find(a => a.ArticoloID == _item.ArticoloID)
-									.Select(
-									a => new
-									{
-										ID = a.DepositoID,
-										Qta = a.Qta
-									}
-									)
-									.GroupBy(a => new { a.ID })
-									.Select(g => new { ID = g.Key.ID, Qta = g.Sum(x => x.Qta) })
-									.ToList();
-			/*mette i depositi vuoti per quell'articolo*/
-			var listDepositi = uof.DepositoRepository.Find(a => 1 == 1).ToList()
-				.Distinct().Select(
-				a => new DepositoItem()
-				{
-					ID = a.ID,
-					NomeDeposito = a.NomeDeposito,
-				}
-				).ToList();
-
-			foreach (var item in listDepositi)
-			{
-				var giac = listQtaDepositi.Where(b => b.ID == item.ID).FirstOrDefault();
-				if (giac != null)
-					item.Qta = giac.Qta;
-
-			}
-
-
-			listDepositi = listDepositi.Select(a => a).OrderBy(a => a.Descrizione).ToList();
-			return listDepositi;
-		}
+		
 
 		private async void ScaricoMagazzino_Load(object sender, EventArgs e)
 		{
@@ -141,7 +111,7 @@ namespace StrumentiMusicali.App.View
 
 		private async void txtCodiceABarre_TextChanged(object sender, EventArgs e)
 		{
-			_item.ArticoloID = "";
+			_controllerMagazzino.SelectedItem.ArticoloID = "";
 			lblTitoloArt.Text = "";
 			RefreshData(new MovimentiUpdate());
 			await UpdateButton();
@@ -151,7 +121,7 @@ namespace StrumentiMusicali.App.View
 		{
 			try
 			{
-				var enableB = _item.ArticoloID != "" && _item.Qta > 0 && _item.Deposito > 0;
+				var enableB = _controllerMagazzino.SelectedItem.ArticoloID != "" && _controllerMagazzino.SelectedItem.Qta > 0 && _controllerMagazzino.SelectedItem.Deposito > 0;
 				ribCarica.Enabled = enableB;
 				ribScarica.Enabled = enableB;
 			}

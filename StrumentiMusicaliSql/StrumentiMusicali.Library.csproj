@@ -62,7 +62,6 @@
     <Compile Include="Entity\EventLog.cs" />
     <Compile Include="Entity\FotoArticolo.cs" />
     <Compile Include="Entity\Magazzino.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Migrations\201810190955586_Init.cs" />
     <Compile Include="Migrations\201810190955586_Init.Designer.cs">
       <DependentUpon>201810190955586_Init.cs</DependentUpon>

@@ -21,7 +21,9 @@ namespace StrumentiMusicali.App.Core
 					MessageManager.NotificaError("Si è verificato un errore nell'ultima operazione",ex);
 				}
 			}
+#pragma warning disable CS0618 // 'ILogger.Error(string, Exception)' è obsoleto: 'Use Error(Exception exception, string message, params object[] args) method instead.'
 			_logger.Error("Errore", ex);
+#pragma warning restore CS0618 // 'ILogger.Error(string, Exception)' è obsoleto: 'Use Error(Exception exception, string message, params object[] args) method instead.'
 		}
 	}
 }

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using StrumentiMusicali.Library.Entity.Base;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace StrumentiMusicali.Library.Entity
 {
-	public class Articolo
-    {
+	public class Articolo : BaseEntity
+	{
         [Key]
 		[MaxLength(50), Required]
 		public string ID { get; set; }
@@ -26,11 +27,8 @@ namespace StrumentiMusicali.Library.Entity
         public string UrlSchedaProdottoTurbo { get; set; }
         public bool BoxProposte { get; set; }
         public bool UsaAnnuncioTurbo { get; set; }
-		public DateTime DataCreazione { get; set; }
-		public DateTime DataUltimaModifica { get; set; }
 		public bool Pinned { get; set; }
-		public int Giacenza { get; set; }
-
+		
 		[MaxLength(100)]
 		public string CodiceAbarre { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StrumentiMusicali.Library.Entity.Base;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace StrumentiMusicali.Library.Entity
 {
-	public class Magazzino
+	public class Magazzino : BaseEntity
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public Guid ID { get; set; }
+		public int ID { get; set; }
 
 		[Required]
 		public string ArticoloID { get; set; }
@@ -25,7 +26,7 @@ namespace StrumentiMusicali.Library.Entity
 		public virtual Deposito Deposito { get; set; }
 
 		[Required]
-		public int Giacenza { get; set; }
+		public int Qta { get; set; }
 
 	}
 }

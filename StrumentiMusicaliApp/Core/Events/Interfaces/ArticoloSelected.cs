@@ -1,11 +1,14 @@
-﻿namespace StrumentiMusicali.App.Core.Events
+﻿using StrumentiMusicali.App.Core.Item.Base;
+
+namespace StrumentiMusicali.App.Core.Events
 {
-	public class ArticoloCurrent
+	public class ArticoloCurrent : CurrentItem<ArticoloItem>
 	{
+		
 		public ArticoloCurrent(ArticoloItem itemSelected)
+			:base(itemSelected)
 		{
-			ItemSelected = itemSelected;
+			
 		}
-		public ArticoloItem ItemSelected { get; private set; }
 	}
 }

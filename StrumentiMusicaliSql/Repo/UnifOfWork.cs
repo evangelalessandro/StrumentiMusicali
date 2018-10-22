@@ -25,6 +25,29 @@ namespace StrumentiMusicali.Library.Repo
 			}
 
 		}
+		private Repository<Deposito> _DepositoRepository;
+
+		public IRepository<Deposito> DepositoRepository {
+			get {
+				if (_DepositoRepository == null)
+				{
+					_DepositoRepository = new Repository<Deposito>(dbContext);
+				}
+				return _DepositoRepository;
+			}
+
+		}
+		private Repository<Magazzino> _MagazzinoRepository;
+
+		public IRepository<Magazzino> MagazzinoRepository {
+			get {
+				if (_MagazzinoRepository == null)
+				{
+					_MagazzinoRepository = new Repository<Magazzino>(dbContext);
+				}
+				return _MagazzinoRepository;
+			}
+		}
 
 		private Repository<Articolo> _ArticoliRepository;
 

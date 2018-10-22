@@ -120,6 +120,9 @@ namespace StrumentiMusicali.Library.Core
             }
         }
 
-		 
+		public void Subscribe<T>()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

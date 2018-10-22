@@ -163,6 +163,16 @@ namespace StrumentiMusicali.App.Properties {
         /// <summary>
         ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Magazzino {
+            get {
+                object obj = ResourceManager.GetObject("Magazzino", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Penna {
             get {
                 object obj = ResourceManager.GetObject("Penna", resourceCulture);
@@ -186,6 +196,16 @@ namespace StrumentiMusicali.App.Properties {
         internal static System.Drawing.Bitmap Progress_Gif {
             get {
                 object obj = ResourceManager.GetObject("Progress_Gif", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Remove {
+            get {
+                object obj = ResourceManager.GetObject("Remove", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

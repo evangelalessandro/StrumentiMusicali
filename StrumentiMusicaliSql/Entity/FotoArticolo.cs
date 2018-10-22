@@ -1,10 +1,11 @@
-﻿using System;
+﻿using StrumentiMusicali.Library.Entity.Base;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StrumentiMusicali.Library.Entity
 {
-	public class FotoArticolo
+	public class FotoArticolo : BaseEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

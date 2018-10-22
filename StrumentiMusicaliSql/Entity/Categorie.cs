@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using StrumentiMusicali.Library.Entity.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace StrumentiMusicali.Library.Entity
 {
-	public class Categorie
+	public class Categorie : BaseEntity
     {
         [Key]
         public int ID { get; set; }

@@ -1,8 +1,8 @@
 ﻿using StrumentiMusicali.App.Core;
 using StrumentiMusicali.App.Core.Controllers;
-using StrumentiMusicali.App.Core.Events;
 using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Events.Image;
+using StrumentiMusicali.App.View.Base;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
@@ -19,7 +19,7 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Forms
 {
-	public partial class frmArticolo : Form
+	public partial class frmArticolo : BaseDataControl
 	{
 		protected DragDropEffects effect;
 		protected Thread getImageThread;
@@ -31,8 +31,8 @@ namespace StrumentiMusicali.App.Forms
 		protected PictureBox thumbnail;
 		protected bool validData;
 		private StrumentiMusicali.Library.Entity.Articolo _articolo = null;
-		private List<CategoriaItem> _categoriList = new List<CategoriaItem>();
-		FotoArticolo _fotoArticoloSelected = null;
+		private static List<CategoriaItem> _categoriList = new List<CategoriaItem>();
+		private FotoArticolo _fotoArticoloSelected = null;
 		private List<PictureBox> _imageList = new List<PictureBox>();
 		private string _lastFilter = "";
 		private bool modeEdit = false;
@@ -71,7 +71,7 @@ namespace StrumentiMusicali.App.Forms
 			this.pb.SizeMode = PictureBoxSizeMode.StretchImage;
 			pb.Controls.Add(thumbnail);
 			PanelImage.Controls.Add(pb);
-			this.ResizeEnd += FrmArticolo_ResizeEnd;
+			this.Resize += FrmArticolo_ResizeEnd;
 		}
 
 		public frmArticolo(ArticoloItem articolo)
@@ -82,26 +82,7 @@ namespace StrumentiMusicali.App.Forms
 		}
 
 		public delegate void AssignImageDlgt();
-
-		public static List<T> FindControlByType<T>(Control mainControl, bool getAllChild = true) where T : Control
-		{
-			List<T> lt = new List<T>();
-			for (int i = 0; i < mainControl.Controls.Count; i++)
-			{
-				if (mainControl.Controls[i] is T) lt.Add((T)mainControl.Controls[i]);
-				if (getAllChild) lt.AddRange(FindControlByType<T>(mainControl.Controls[i], getAllChild));
-			}
-			return lt;
-		}
-
-		public IEnumerable<PropertyInfo> GetProperties(Object obj)
-		{
-			Type t = obj.GetType();
-
-			return t.GetProperties()
-				.Where(p => (p.Name != "EntityKey" && p.Name != "EntityState"))
-				.Select(p => p).ToList();
-		}
+		
 
 		protected void AssignImage()
 		{
@@ -197,39 +178,51 @@ namespace StrumentiMusicali.App.Forms
 
 		private void FillCombo()
 		{
+			UpdateListCategory();
+
+			cboCategoria.DataSource = _categoriList;
+			cboCategoria.DisplayMember = "Descrizione";
+			cboCategoria.ValueMember = "ID";
+
+			var listReparti = _categoriList.Select(a => new
+			{
+				ID = a.Reparto,
+				Descrizione = a.Reparto
+			}).Distinct().ToList();
+			cboReparto.DataSource = listReparti;
+			cboReparto.DisplayMember = "Descrizione";
+			cboReparto.ValueMember = "ID";
+			cboReparto.SelectedIndexChanged += CboReparto_SelectedIndexChanged;
+
 			using (var uof = new UnitOfWork())
 			{
-				_categoriList = uof.CategorieRepository.Find(a => true).Select(a => new CategoriaItem
-				{
-					ID = a.ID,
-					Descrizione = a.Categoria + " {" + a.Reparto + "}",
-					Reparto=a.Reparto
-				}).ToList();
-				cboCategoria.DataSource = _categoriList;
-				cboCategoria.DisplayMember = "Descrizione";
-				cboCategoria.ValueMember = "ID";
-
-				var listReparti = uof.CategorieRepository.Find(a => true).Select(a => new 
-				{
-					ID = a.Reparto,
-					Descrizione = a.Reparto 
-				}).Distinct().ToList();
-				cboReparto.DataSource = listReparti;
-				cboReparto.DisplayMember = "Descrizione";
-				cboReparto.ValueMember = "ID";
-				cboReparto.SelectedIndexChanged += CboReparto_SelectedIndexChanged;
-
 				txtMarca.Values = uof.ArticoliRepository.Find(a => true).Select(a => a.Marca).Distinct().ToList().ToArray();
+			}
 
-				cboCondizione.DataSource = Enum.GetNames(typeof(enCondizioneArticolo))
-					.Select(a => new
+			cboCondizione.DataSource = Enum.GetNames(typeof(enCondizioneArticolo))
+				.Select(a => new
+				{
+					ID = (enCondizioneArticolo)Enum.Parse(typeof(enCondizioneArticolo), a),
+					Descrizione = a
+				}).ToList();
+			cboCondizione.DisplayMember = "Descrizione";
+			cboCondizione.ValueMember = "ID";
+
+		}
+
+		private static void UpdateListCategory()
+		{
+			using (var uof = new UnitOfWork())
+			{
+				if (_categoriList.Count() == 0)
+				{
+					_categoriList = uof.CategorieRepository.Find(a => true).Select(a => new CategoriaItem
 					{
-						ID = (enCondizioneArticolo)Enum.Parse(typeof(enCondizioneArticolo), a)
-						,
-						Descrizione = a
+						ID = a.ID,
+						Descrizione = a.Categoria + " {" + a.Reparto + "}",
+						Reparto = a.Reparto
 					}).ToList();
-				cboCondizione.DisplayMember = "Descrizione";
-				cboCondizione.ValueMember = "ID";
+				}
 			}
 		}
 
@@ -248,33 +241,17 @@ namespace StrumentiMusicali.App.Forms
 
 			FillCombo();
 			UpdateButtonState();
-			var listControlWithTag = FindControlByType<Control>(this).Where(a => a.Tag != null && a.Tag.ToString().Length > 0);
-
+			
 			chkPrezzoARichiesta.CheckedChanged += ChkPrezzoARichiesta_CheckedChanged;
 
-			foreach (var item in GetProperties(_articolo))
+			SetDataBind(this,_articolo);
+			using (var uof=new UnitOfWork())
 			{
-				var listByTag = listControlWithTag.Where(a => a.Tag.ToString() == item.Name);
+				var giacenza= uof.MagazzinoRepository.Find(a => a.ArticoloID == _articolo.ID)
+					.Select(a=>a.Qta).DefaultIfEmpty(0).Sum(a => a);
 
-				foreach (var cnt in listByTag)
-				{
-					if (cnt is TextBox)
-					{
-						cnt.DataBindings.Add("Text", _articolo, item.Name);
-					}
-					else if (cnt is NumericUpDown)
-					{
-						cnt.DataBindings.Add("Value", _articolo, item.Name);
-					}
-					else if (cnt is CheckBox)
-					{
-						cnt.DataBindings.Add("Checked", _articolo, item.Name);
-					}
-					else if (cnt is ComboBox)
-					{
-						cnt.DataBindings.Add("SelectedValue", _articolo, item.Name);
-					}
-				}
+				txtGiacenza.Value = giacenza;
+
 			}
 			if (cboCategoria.SelectedItem != null)
 			{
@@ -285,6 +262,7 @@ namespace StrumentiMusicali.App.Forms
 			}
 		}
 
+
 		private void FrmArticolo_ResizeEnd(object sender, EventArgs e)
 		{
 			ResizeImage();
@@ -294,11 +272,6 @@ namespace StrumentiMusicali.App.Forms
 		{
 			EventAggregator.Instance().Publish<ImageOrderSet>(
 				new ImageOrderSet(enOperationOrder.ImpostaPrincipale, _fotoArticoloSelected));
-		}
-
-		private void panel1_Paint(object sender, PaintEventArgs e)
-		{
-
 		}
 
 		private void PanelImage_DragDrop(object sender, DragEventArgs e)

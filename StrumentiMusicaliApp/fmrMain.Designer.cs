@@ -53,6 +53,8 @@
 			this.splitter1 = new System.Windows.Forms.Splitter();
 			this.ribbonOrbOptionButton1 = new System.Windows.Forms.RibbonOrbOptionButton();
 			this.ribbonOrbOptionButton2 = new System.Windows.Forms.RibbonOrbOptionButton();
+			this.ribbonPanel4 = new System.Windows.Forms.RibbonPanel();
+			this.ribCaricaMagazzino = new System.Windows.Forms.RibbonButton();
 			((System.ComponentModel.ISupportInitialize)(this.dgvMaster)).BeginInit();
 			this.pnlArticoli.SuspendLayout();
 			this.pnlCerca.SuspendLayout();
@@ -93,6 +95,7 @@
 			this.ribbonTab1.Name = "ribbonTab1";
 			this.ribbonTab1.Panels.Add(this.ribbonPanel1);
 			this.ribbonTab1.Panels.Add(this.ribbonPanel2);
+			this.ribbonTab1.Panels.Add(this.ribbonPanel4);
 			this.ribbonTab1.Text = "Articoli";
 			// 
 			// ribbonPanel1
@@ -292,6 +295,20 @@
 			this.ribbonOrbOptionButton2.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbOptionButton2.SmallImage")));
 			this.ribbonOrbOptionButton2.Text = "ribbonOrbOptionButton2";
 			// 
+			// ribbonPanel4
+			// 
+			this.ribbonPanel4.Items.Add(this.ribCaricaMagazzino);
+			this.ribbonPanel4.Name = "ribbonPanel4";
+			this.ribbonPanel4.Text = "Carico Scarico Magazzino";
+			// 
+			// ribCaricaMagazzino
+			// 
+			this.ribCaricaMagazzino.Image = ((System.Drawing.Image)(resources.GetObject("ribCaricaMagazzino.Image")));
+			this.ribCaricaMagazzino.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribCaricaMagazzino.LargeImage")));
+			this.ribCaricaMagazzino.Name = "ribCaricaMagazzino";
+			this.ribCaricaMagazzino.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribCaricaMagazzino.SmallImage")));
+			this.ribCaricaMagazzino.Text = "Apri";
+			// 
 			// fmrMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -341,6 +358,8 @@
 		private System.Windows.Forms.RibbonButton ribInvioDati;
 		private System.Windows.Forms.RibbonPanel ribbonPanel3;
 		private System.Windows.Forms.RibbonButton ribImportArticoli;
+		private System.Windows.Forms.RibbonPanel ribbonPanel4;
+		private System.Windows.Forms.RibbonButton ribCaricaMagazzino;
 	}
 }
 

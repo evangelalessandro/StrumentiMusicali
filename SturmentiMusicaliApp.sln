@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.Library",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.App", "StrumentiMusicaliApp\StrumentiMusicali.App.csproj", "{E6A4D0F6-DC39-431E-A562-AC0C4465BEA4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestModel", "TestMOdel\TestModel.csproj", "{C3C03C6E-9B6E-4404-9CB6-4A2F001869EB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{114B9DB5-6A31-4D89-BBB8-7AE7DD1A25C6} = {114B9DB5-6A31-4D89-BBB8-7AE7DD1A25C6}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +26,10 @@ Global
 		{E6A4D0F6-DC39-431E-A562-AC0C4465BEA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6A4D0F6-DC39-431E-A562-AC0C4465BEA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6A4D0F6-DC39-431E-A562-AC0C4465BEA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3C03C6E-9B6E-4404-9CB6-4A2F001869EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3C03C6E-9B6E-4404-9CB6-4A2F001869EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3C03C6E-9B6E-4404-9CB6-4A2F001869EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3C03C6E-9B6E-4404-9CB6-4A2F001869EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -63,13 +63,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 			{
 				using (var uof = new UnitOfWork())
 				{
-					var itemCurrent = _ArticoloSelected.ItemSelected.ArticoloCS;
+					var itemCurrent = ((ArticoloItem)(_ArticoloSelected.ItemSelected)).ArticoloCS;
 					uof.ArticoliRepository.Add(new StrumentiMusicali.Library.Entity.Articolo()
 					{
 						Categoria = itemCurrent.Categoria,
 						Condizione = itemCurrent.Condizione,
 						BoxProposte = itemCurrent.BoxProposte,
-						Giacenza = itemCurrent.Giacenza,
 						Marca = itemCurrent.Marca,
 						Prezzo = itemCurrent.Prezzo,
 						PrezzoARichiesta = itemCurrent.PrezzoARichiesta,
@@ -77,11 +76,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 						Testo = itemCurrent.Testo,
 						Titolo = "* " + itemCurrent.Titolo,
 						UsaAnnuncioTurbo = itemCurrent.UsaAnnuncioTurbo,
-						DataUltimaModifica = DateTime.Now
+						DataUltimaModifica = DateTime.Now,
+						DataCreazione = DateTime.Now
 					});
 					uof.Commit();
 				}
-				MessageManager.NotificaInfo("Duplicazione avvenuta co successo");
+				MessageManager.NotificaInfo("Duplicazione avvenuta con successo");
 				_logger.Info("Duplica articolo");
 				EventAggregator.Instance().Publish<ArticoliToUpdate>(new ArticoliToUpdate());
 			}
@@ -185,7 +185,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 				ID = (dat[0]),
 				Categoria = int.Parse(dat[1]),
 				Condizione = cond,
-				Giacenza = 1,
 				Marca = dat[3],
 				Titolo = dat[4],
 				Testo = dat[5].Replace("<br>", Environment.NewLine),

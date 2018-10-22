@@ -2,6 +2,7 @@
 using StrumentiMusicali.App.Core;
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Events.Articoli;
+using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -24,8 +25,23 @@ namespace StrumentiMusicali.App
 			InitializeComponent();
 			dgvMaster.SelectionChanged += DgvMaster_SelectionChanged;
 			ribCerca.Click += RibCerca_Click;
-			ribDelete.Click += ribDelete_Click;
-			ribImportArticoli.Click += RibImportArticoli_Click;
+			ribDelete.Click += (s, e) =>
+			{
+				using (var curs = new CursorHandler())
+				{
+					EventAggregator.Instance().Publish<ArticoloDelete>(new ArticoloDelete(GetCurrentItemSelected()));
+				}
+			};
+			ribImportArticoli.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish<ImportArticoli>(new ImportArticoli());
+			};
+			ribCaricaMagazzino.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new ApriGestioneMagazzino());
+			};
+			ribCaricaMagazzino.LargeImage = StrumentiMusicali.App.Properties.Resources.Magazzino;
+
 			txtCerca.KeyUp += TxtCerca_KeyUp;
 			EventAggregator.Instance().Subscribe<ArticoliToUpdate>(UpdateList);
 			this.Disposed += FmrMain_Disposed;
@@ -41,19 +57,6 @@ namespace StrumentiMusicali.App
 			_baseController.SaveSetting(dato);
 		}
 
-		private void RibImportArticoli_Click(object sender, EventArgs e)
-		{
-			EventAggregator.Instance().Publish<ImportArticoli>(new ImportArticoli());
-
-		}
-
-		private void ribDelete_Click(object sender, EventArgs e)
-		{
-			using (var curs = new CursorHandler())
-			{
-				EventAggregator.Instance().Publish<ArticoloDelete>(new ArticoloDelete(GetCurrentItemSelected()));
-			}
-		}
 
 		private async void UpdateList(ArticoliToUpdate obj)
 		{
@@ -172,8 +175,8 @@ namespace StrumentiMusicali.App
 			}
 			catch (Exception ex)
 			{
-				this.BeginInvoke( new Action(() =>
-				{ ExceptionManager.ManageError(ex); }));
+				this.BeginInvoke(new Action(() =>
+			   { ExceptionManager.ManageError(ex); }));
 				return null;
 			}
 		}
@@ -184,7 +187,6 @@ namespace StrumentiMusicali.App
 			if (data == null)
 				return;
 			dgvMaster.DataSource = data;
-			dgvMaster.Columns[0].Visible = false;
 			dgvMaster.Columns["Pinned"].Visible = false;
 			dgvMaster.Columns["ArticoloCS"].Visible = false;
 
@@ -222,7 +224,9 @@ namespace StrumentiMusicali.App
 			await SelezionaRiga(itemSelected.ID);
 		}
 
+#pragma warning disable CS1998 // In questo metodo asincrono non sono presenti operatori 'await', pertanto verrà eseguito in modo sincrono. Provare a usare l'operatore 'await' per attendere chiamate ad API non di blocco oppure 'await Task.Run(...)' per effettuare elaborazioni basate sulla CPU in un thread in background.
 		private async Task SelezionaRiga(string idArticolo)
+#pragma warning restore CS1998 // In questo metodo asincrono non sono presenti operatori 'await', pertanto verrà eseguito in modo sincrono. Provare a usare l'operatore 'await' per attendere chiamate ad API non di blocco oppure 'await Task.Run(...)' per effettuare elaborazioni basate sulla CPU in un thread in background.
 		{
 
 			for (int i = 0; i < dgvMaster.RowCount; i++)
@@ -230,7 +234,7 @@ namespace StrumentiMusicali.App
 				if (((ArticoloItem)(dgvMaster.Rows[i].DataBoundItem)).ID == idArticolo)
 				{
 					dgvMaster.Rows[i].Selected = true;
-					dgvMaster.CurrentCell = dgvMaster.Rows[i].Cells["Titolo"];
+					dgvMaster.CurrentCell = dgvMaster.Rows[i].Cells[1];
 					break;
 				}
 			}

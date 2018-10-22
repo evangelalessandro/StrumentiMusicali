@@ -24,13 +24,12 @@ namespace StrumentiMusicali.Library.Migrations
                         UrlSchedaProdottoTurbo = c.String(),
                         BoxProposte = c.Boolean(nullable: false),
                         UsaAnnuncioTurbo = c.Boolean(nullable: false),
-                        DataCreazione = c.DateTime(nullable: false),
-                        DataUltimaModifica = c.DateTime(nullable: false),
                         Pinned = c.Boolean(nullable: false),
-                        Giacenza = c.Int(nullable: false),
                         CodiceAbarre = c.String(maxLength: 100),
                         CaricainEcommerce = c.Boolean(nullable: false),
                         CaricainMercatino = c.Boolean(nullable: false),
+                        DataCreazione = c.DateTime(nullable: false),
+                        DataUltimaModifica = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.ID);
             
@@ -42,6 +41,8 @@ namespace StrumentiMusicali.Library.Migrations
                         Reparto = c.String(),
                         Categoria = c.String(),
                         CategoriaCondivisaCon = c.String(),
+                        DataCreazione = c.DateTime(nullable: false),
+                        DataUltimaModifica = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.ID);
             
@@ -51,6 +52,8 @@ namespace StrumentiMusicali.Library.Migrations
                     {
                         ID = c.Int(nullable: false, identity: true),
                         NomeDeposito = c.String(),
+                        DataCreazione = c.DateTime(nullable: false),
+                        DataUltimaModifica = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.ID);
             
@@ -62,6 +65,8 @@ namespace StrumentiMusicali.Library.Migrations
                         ArticoloID = c.String(maxLength: 50),
                         UrlFoto = c.String(nullable: false),
                         Ordine = c.Int(nullable: false),
+                        DataCreazione = c.DateTime(nullable: false),
+                        DataUltimaModifica = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Articoli", t => t.ArticoloID)
@@ -87,10 +92,12 @@ namespace StrumentiMusicali.Library.Migrations
                 "dbo.Magazzino",
                 c => new
                     {
-                        ID = c.Guid(nullable: false, identity: true),
+                        ID = c.Int(nullable: false, identity: true),
                         ArticoloID = c.String(nullable: false, maxLength: 50),
                         DepositoID = c.Int(nullable: false),
-                        Giacenza = c.Int(nullable: false),
+                        Qta = c.Int(nullable: false),
+                        DataCreazione = c.DateTime(nullable: false),
+                        DataUltimaModifica = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Articoli", t => t.ArticoloID, cascadeDelete: true)

@@ -56,14 +56,16 @@
     <Compile Include="Core\EventAggregator.cs" />
     <Compile Include="Core\MessageException.cs" />
     <Compile Include="Entity\Articolo.cs" />
+    <Compile Include="Entity\Base\BaseEntity.cs" />
     <Compile Include="Entity\Deposito.cs" />
     <Compile Include="Entity\Categorie.cs" />
     <Compile Include="Entity\EventLog.cs" />
     <Compile Include="Entity\FotoArticolo.cs" />
     <Compile Include="Entity\Magazzino.cs" />
-    <Compile Include="Migrations\201810111017227_Init.cs" />
-    <Compile Include="Migrations\201810111017227_Init.Designer.cs">
-      <DependentUpon>201810111017227_Init.cs</DependentUpon>
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Migrations\201810190955586_Init.cs" />
+    <Compile Include="Migrations\201810190955586_Init.Designer.cs">
+      <DependentUpon>201810190955586_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
@@ -77,12 +79,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201810111017227_Init.resx">
-      <DependentUpon>201810111017227_Init.cs</DependentUpon>
-    </EmbeddedResource>
+    <Content Include="Note\TextFile1.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Note\TextFile1.txt" />
+    <EmbeddedResource Include="Migrations\201810190955586_Init.resx">
+      <DependentUpon>201810190955586_Init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,12 +1,13 @@
-﻿using StrumentiMusicali.App.Properties;
+﻿using StrumentiMusicali.App.Core.Item.Base;
+using StrumentiMusicali.App.Properties;
 using StrumentiMusicali.Library.Entity;
 using System;
 
 namespace StrumentiMusicali.App.Core
 {
-	public class ArticoloItem
+	public class ArticoloItem :BaseItem
 	{
-		public string ID { get; set; }
+		
 		public string Titolo { get; set; }
 		public DateTime DataCreazione { get; set; }
 		public DateTime DataModifica { get; set; }

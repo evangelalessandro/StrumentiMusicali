@@ -1,6 +1,7 @@
 ﻿using NLog;
 using NLog.Targets;
 using StrumentiMusicali.App.Core.Controllers;
+using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Windows.Forms;
@@ -11,13 +12,15 @@ namespace StrumentiMusicali.App.Core
 	{
 		private ControllerArticoli _controllerArticoli;
 		private ControllerImmagini _controllerImmagini;
+		private ControllerMagazzino _controllerMagazzino;
+
 		public ControllerMaster() 
 			:base()
 		{
 			ConfigureNLog();
 			_controllerArticoli = new ControllerArticoli();
 			_controllerImmagini = new ControllerImmagini();
-
+			_controllerMagazzino = new ControllerMagazzino();
 
 			Application.ThreadException += Application_ThreadException;
 			Application.EnableVisualStyles();
@@ -30,6 +33,8 @@ namespace StrumentiMusicali.App.Core
 			_controllerArticoli = null;
 			_controllerImmagini.Dispose();
 			_controllerImmagini = null;
+			_controllerMagazzino.Dispose();
+			_controllerMagazzino = null;
 		}
 		public static void LogMethod(string level, string message, string exception, string stacktrace, string classLine)
 		{
@@ -66,8 +71,9 @@ namespace StrumentiMusicali.App.Core
 
 		private void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
 		{
-			_logger.Error("Application_ThreadException", e.Exception);
-		}
+ 
+			_logger.Error(e.Exception, "Application_ThreadException", null);
+ 		}
 
 		
 		

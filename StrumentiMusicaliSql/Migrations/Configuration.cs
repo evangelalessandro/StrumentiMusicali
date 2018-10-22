@@ -4,22 +4,37 @@ namespace StrumentiMusicali.Library.Migrations
 	using System.Data.Entity.Migrations;
 
 	internal sealed class Configuration : DbMigrationsConfiguration<StrumentiMusicali.Library.Model.ModelSm>
-    {
-        public Configuration()
-        {
-            AutomaticMigrationsEnabled = true;
+	{
+		public Configuration()
+		{
+			AutomaticMigrationsEnabled = true;
 			//AutomaticMigrationDataLossAllowed = true;
-			
+
 
 		}
 
-        protected override void Seed(StrumentiMusicali.Library.Model.ModelSm context)
-        {
+		protected override void Seed(StrumentiMusicali.Library.Model.ModelSm context)
+		{
 			//  This method will be called after migrating to the latest version.
 
 			//  You can use the DbSet<T>.AddOrUpdate() helper extension method 
 			//  to avoid creating duplicate seed data.
 
+			InitCategories(context);
+			InitDepositi(context);
+		}
+
+		private static void InitDepositi(Model.ModelSm context)
+		{
+
+			context.Depositi.AddOrUpdate(h=>h.NomeDeposito,
+				new Deposito() { ID = 1, NomeDeposito = "Depo 1" },
+			    new Deposito() { ID = 2, NomeDeposito = "Depo 2" });
+
+		}
+
+		private static void InitCategories(Model.ModelSm context)
+		{
 			context.Categorie.AddOrUpdate(new Categorie() { Categoria = "Synth a Tastiera", Reparto = "Tastiere", ID = 1, CategoriaCondivisaCon = "" });
 			context.Categorie.AddOrUpdate(new Categorie() { Categoria = "Workstation a Tastiera", Reparto = "Tastiere", ID = 2, CategoriaCondivisaCon = "" });
 			context.Categorie.AddOrUpdate(new Categorie() { Categoria = "Digital / Stage Piano", Reparto = "Tastiere", ID = 4, CategoriaCondivisaCon = "" });
@@ -259,8 +274,6 @@ namespace StrumentiMusicali.Library.Migrations
 			context.Categorie.AddOrUpdate(new Categorie() { Categoria = "Poster / Bandiere", Reparto = "Merchandising", ID = 289, CategoriaCondivisaCon = "" });
 			context.Categorie.AddOrUpdate(new Categorie() { Categoria = "Gadget Elettronici", Reparto = "Merchandising", ID = 286, CategoriaCondivisaCon = "" });
 			context.Categorie.AddOrUpdate(new Categorie() { Categoria = "Altri Gadget", Reparto = "Merchandising", ID = 291, CategoriaCondivisaCon = "" });
-
-
 		}
 	}
 }

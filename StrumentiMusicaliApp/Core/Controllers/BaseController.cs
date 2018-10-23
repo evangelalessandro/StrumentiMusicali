@@ -4,6 +4,7 @@ using NLog;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.Library.Repo;
 using System;
+using System.Linq;
 using System.IO;
 using System.Windows.Forms;
 
@@ -17,20 +18,45 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
  
 		}
-		public UserSettings ReadSetting()
+		private UserSettings ReadSetting()
 		{
+			UserSettings setting;
 			if (File.Exists(_PathSetting))
-			{ 
+			{
 				var json = File.ReadAllText(_PathSetting);
-				return JsonConvert.DeserializeObject<UserSettings>(json);
+				setting = JsonConvert.DeserializeObject<UserSettings>(json);
 			}
 			else
 			{
-				return new UserSettings();
+				setting = new UserSettings();
 			}
+			return setting;
 		}
-		 
-		public void SaveSetting(UserSettings settings)
+		public FormRicerca ReadSetting(enAmbienti ambiente)
+		{
+			var setting = ReadSetting();
+			if (setting.Form==null)
+			{
+				setting.Form = new System.Collections.Generic.List<Tuple<enAmbienti, FormRicerca>>();
+			}
+			var elem= setting.Form.Where(a => a.Item1 == ambiente).FirstOrDefault();
+			if (elem==null)
+			{
+				setting.Form.Add(new Tuple<enAmbienti, FormRicerca>(ambiente, new FormRicerca()));
+				SaveSetting(setting);
+			}
+			return setting.Form.Where(a => a.Item1 == ambiente).First().Item2;
+		}
+
+		public void SaveSetting(enAmbienti ambiente, FormRicerca formRicerca)
+		{
+			var setting= ReadSetting();
+		 	setting.Form.RemoveAll(a => a.Item1 == ambiente);
+			setting.Form.Add(new Tuple<enAmbienti, FormRicerca>(ambiente, formRicerca));
+			SaveSetting(setting);
+
+		}
+		private void SaveSetting(UserSettings settings)
 		{
 			File.WriteAllText(_PathSetting, 
 				JsonConvert.SerializeObject(settings));

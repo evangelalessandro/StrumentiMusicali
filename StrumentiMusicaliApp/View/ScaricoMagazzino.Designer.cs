@@ -30,9 +30,9 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScaricoMagazzino));
 			this.ribbonTab1 = new System.Windows.Forms.RibbonTab();
-			this.ribbonPanel1 = new System.Windows.Forms.RibbonPanel();
-			this.ribCerca = new System.Windows.Forms.RibbonButton();
 			this.ribbonPanel2 = new System.Windows.Forms.RibbonPanel();
+			this.ribCarica = new System.Windows.Forms.RibbonButton();
+			this.ribScarica = new System.Windows.Forms.RibbonButton();
 			this.txtCodiceABarre = new System.Windows.Forms.TextBox();
 			this.dgvMaster = new System.Windows.Forms.DataGridView();
 			this.txtQta = new System.Windows.Forms.NumericUpDown();
@@ -42,8 +42,6 @@
 			this.label3 = new System.Windows.Forms.Label();
 			this.lblTitoloArticolo = new System.Windows.Forms.Label();
 			this.lblTitoloArt = new System.Windows.Forms.Label();
-			this.ribCarica = new System.Windows.Forms.RibbonButton();
-			this.ribScarica = new System.Windows.Forms.RibbonButton();
 			((System.ComponentModel.ISupportInitialize)(this.dgvMaster)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtQta)).BeginInit();
 			this.SuspendLayout();
@@ -64,23 +62,8 @@
 			// ribbonTab1
 			// 
 			this.ribbonTab1.Name = "ribbonTab1";
-			this.ribbonTab1.Panels.Add(this.ribbonPanel1);
 			this.ribbonTab1.Panels.Add(this.ribbonPanel2);
 			this.ribbonTab1.Text = "Scarico magazzino";
-			// 
-			// ribbonPanel1
-			// 
-			this.ribbonPanel1.Items.Add(this.ribCerca);
-			this.ribbonPanel1.Name = "ribbonPanel1";
-			this.ribbonPanel1.Text = "";
-			// 
-			// ribCerca
-			// 
-			this.ribCerca.Image = global::StrumentiMusicali.App.Properties.Resources.Cerca;
-			this.ribCerca.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Cerca;
-			this.ribCerca.Name = "ribCerca";
-			this.ribCerca.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribCerca.SmallImage")));
-			this.ribCerca.Text = "Cerca";
 			// 
 			// ribbonPanel2
 			// 
@@ -88,6 +71,22 @@
 			this.ribbonPanel2.Items.Add(this.ribScarica);
 			this.ribbonPanel2.Name = "ribbonPanel2";
 			this.ribbonPanel2.Text = "Azioni a magazzino";
+			// 
+			// ribCarica
+			// 
+			this.ribCarica.Image = global::StrumentiMusicali.App.Properties.Resources.Add;
+			this.ribCarica.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Add;
+			this.ribCarica.Name = "ribCarica";
+			this.ribCarica.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribCarica.SmallImage")));
+			this.ribCarica.Text = "Deposita";
+			// 
+			// ribScarica
+			// 
+			this.ribScarica.Image = global::StrumentiMusicali.App.Properties.Resources.Remove;
+			this.ribScarica.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Remove;
+			this.ribScarica.Name = "ribScarica";
+			this.ribScarica.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribScarica.SmallImage")));
+			this.ribScarica.Text = "Scarica";
 			// 
 			// txtCodiceABarre
 			// 
@@ -194,22 +193,6 @@
 			this.lblTitoloArt.TabIndex = 10;
 			this.lblTitoloArt.Text = "Titolo articolo:";
 			// 
-			// ribCarica
-			// 
-			this.ribCarica.Image = global::StrumentiMusicali.App.Properties.Resources.Add;
-			this.ribCarica.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Add;
-			this.ribCarica.Name = "ribCarica";
-			this.ribCarica.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribCarica.SmallImage")));
-			this.ribCarica.Text = "Deposita";
-			// 
-			// ribScarica
-			// 
-			this.ribScarica.Image = global::StrumentiMusicali.App.Properties.Resources.Remove;
-			this.ribScarica.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Remove;
-			this.ribScarica.Name = "ribScarica";
-			this.ribScarica.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribScarica.SmallImage")));
-			this.ribScarica.Text = "Scarica";
-			// 
 			// ScaricoMagazzino
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -245,8 +228,6 @@
 		#endregion
 
 		private System.Windows.Forms.RibbonTab ribbonTab1;
-		private System.Windows.Forms.RibbonPanel ribbonPanel1;
-		private System.Windows.Forms.RibbonButton ribCerca;
 		private System.Windows.Forms.TextBox txtCodiceABarre;
 		private System.Windows.Forms.DataGridView dgvMaster;
 		private System.Windows.Forms.NumericUpDown txtQta;

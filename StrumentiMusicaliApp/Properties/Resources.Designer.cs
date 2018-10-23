@@ -83,6 +83,16 @@ namespace StrumentiMusicali.App.Properties {
         /// <summary>
         ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Apri_Fatturazione {
+            get {
+                object obj = ResourceManager.GetObject("Apri_Fatturazione", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Cerca {
             get {
                 object obj = ResourceManager.GetObject("Cerca", resourceCulture);

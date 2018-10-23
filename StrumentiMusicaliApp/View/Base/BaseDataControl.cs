@@ -10,6 +10,7 @@ namespace StrumentiMusicali.App.View.Base
 	public partial class BaseDataControl : Form
 	{
 		public BaseDataControl()
+			:base()
 		{
 			InitializeComponent();
 		}
@@ -38,6 +39,10 @@ namespace StrumentiMusicali.App.View.Base
 					else if (cnt is ComboBox)
 					{
 						cnt.DataBindings.Add("SelectedValue", businessObject, item.Name);
+					}
+					else if (cnt is DateTimePicker)
+					{
+						(cnt as DateTimePicker).DataBindings.Add("Value", businessObject, item.Name);
 					}
 				}
 			}

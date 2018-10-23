@@ -20,7 +20,7 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Forms
 {
-	public partial class frmArticolo : BaseDataControl
+	public partial class DettaglioArticoloView : BaseDataControl
 	{
 		protected DragDropEffects effect;
 		protected Thread getImageThread;
@@ -40,7 +40,7 @@ namespace StrumentiMusicali.App.Forms
 		private System.Windows.Forms.PictureBox pb = new PictureBox();
 
 
-		public frmArticolo()
+		public DettaglioArticoloView()
 			: base()
 		{
 			InitializeComponent();
@@ -75,7 +75,7 @@ namespace StrumentiMusicali.App.Forms
 			this.Resize += FrmArticolo_ResizeEnd;
 		}
 
-		public frmArticolo(ArticoloItem articolo)
+		public DettaglioArticoloView(ArticoloItem articolo)
 			: this()
 		{
 			_articolo = articolo.ArticoloCS;

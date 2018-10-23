@@ -21,6 +21,7 @@ namespace StrumentiMusicali.App
 		private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
 		private BaseController _baseController;
+
 		public MainView(BaseController baseController)
 		{
 			_baseController = baseController;
@@ -48,22 +49,25 @@ namespace StrumentiMusicali.App
 			{
 				EventAggregator.Instance().Publish(new ImportaFattureAccess());
 			};
+			ribBtnApriFatturazione.LargeImage = StrumentiMusicali.App.Properties.Resources.Apri_Fatturazione;
+			ribBtnApriFatturazione.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new ApriFatturazione());
+			};
 
 			txtCerca.KeyUp += TxtCerca_KeyUp;
 			EventAggregator.Instance().Subscribe<ArticoliToUpdate>(UpdateList);
 			this.Disposed += FmrMain_Disposed;
 			_logger.Debug("Form main init");
-
 		}
 
 		private void FmrMain_Disposed(object sender, EventArgs e)
 		{
-			var dato = _baseController.ReadSetting();
+			var dato = _baseController.ReadSetting(Settings.enAmbienti.Main);
 			dato.FormMainWindowState = this.WindowState;
 			dato.SizeFormMain = this.Size;
-			_baseController.SaveSetting(dato);
+			_baseController.SaveSetting(Settings.enAmbienti.Main, dato);
 		}
-
 
 		private async void UpdateList(ArticoliToUpdate obj)
 		{
@@ -74,16 +78,15 @@ namespace StrumentiMusicali.App
 		{
 			if (e.KeyCode == Keys.Return)
 			{
-				var dato = _baseController.ReadSetting();
+				var dato = _baseController.ReadSetting(Settings.enAmbienti.Main);
 				dato.LastStringaRicerca = txtCerca.Text;
-				_baseController.SaveSetting(dato);
+				_baseController.SaveSetting(Settings.enAmbienti.Main,dato);
 				await RefreshData();
 			}
 		}
 
 		private void RibCerca_Click(object sender, EventArgs e)
 		{
-
 			bool visibleCerca = pnlCerca.Visible;
 			pnlCerca.Visible = !visibleCerca;
 			splitter1.Visible = !visibleCerca;
@@ -103,8 +106,8 @@ namespace StrumentiMusicali.App
 			UpdateButtonState();
 
 			EventAggregator.Instance().Publish(new ArticoloSelected(GetCurrentItemSelected()));
-
 		}
+
 		private ArticoloItem GetCurrentItemSelected()
 		{
 			ArticoloItem item = null;
@@ -117,7 +120,6 @@ namespace StrumentiMusicali.App
 
 		private void UpdateButtonState()
 		{
-
 			ribbon1.Enabled = !(dgvMaster.DataSource == null);
 
 			ribEditArt.Enabled = dgvMaster.SelectedRows.Count > 0;
@@ -128,7 +130,7 @@ namespace StrumentiMusicali.App
 
 		private async void Form1_Load(object sender, EventArgs e)
 		{
-			var dato = _baseController.ReadSetting();
+			var dato = _baseController.ReadSetting(Settings.enAmbienti.Main);
 			txtCerca.Text = dato.LastStringaRicerca;
 
 			try
@@ -143,21 +145,17 @@ namespace StrumentiMusicali.App
 			UpdateButtonState();
 			await RefreshData();
 
-
-			await SelezionaRiga(dato.LastArticoloSelected);
-
+			await SelezionaRiga(dato.LastItemSelected);
 
 			UpdateButtonState();
 
-
 			_logger.Debug("Form load");
-
 		}
+
 		public List<ArticoloItem> GetDataAsync()
 		{
 			try
 			{
-
 				var datoRicerca = txtCerca.Text;
 				List<ArticoloItem> list = new List<ArticoloItem>();
 
@@ -196,15 +194,12 @@ namespace StrumentiMusicali.App
 			dgvMaster.DataSource = data;
 			dgvMaster.Columns["Pinned"].Visible = false;
 			dgvMaster.Columns["ArticoloCS"].Visible = false;
-
-
 		}
 
 		private void ribAddArt_Click(object sender, EventArgs e)
 		{
 			EventAggregator.Instance().Publish(new ArticoloAdd());
 		}
-
 
 		private void ribArtDuplicate_Click(object sender, EventArgs e)
 		{
@@ -222,7 +217,7 @@ namespace StrumentiMusicali.App
 		private async void EditArticolo()
 		{
 			var itemSelected = (ArticoloItem)dgvMaster.SelectedRows[0].DataBoundItem;
-			using (var frm = new Forms.frmArticolo(itemSelected))
+			using (var frm = new Forms.DettaglioArticoloView(itemSelected))
 			{
 				frm.ShowDialog();
 			}
@@ -232,10 +227,10 @@ namespace StrumentiMusicali.App
 		}
 
 #pragma warning disable CS1998 // In questo metodo asincrono non sono presenti operatori 'await', pertanto verrà eseguito in modo sincrono. Provare a usare l'operatore 'await' per attendere chiamate ad API non di blocco oppure 'await Task.Run(...)' per effettuare elaborazioni basate sulla CPU in un thread in background.
+
 		private async Task SelezionaRiga(string idArticolo)
 #pragma warning restore CS1998 // In questo metodo asincrono non sono presenti operatori 'await', pertanto verrà eseguito in modo sincrono. Provare a usare l'operatore 'await' per attendere chiamate ad API non di blocco oppure 'await Task.Run(...)' per effettuare elaborazioni basate sulla CPU in un thread in background.
 		{
-
 			for (int i = 0; i < dgvMaster.RowCount; i++)
 			{
 				if (((ArticoloItem)(dgvMaster.Rows[i].DataBoundItem)).ID == idArticolo)
@@ -245,7 +240,6 @@ namespace StrumentiMusicali.App
 					break;
 				}
 			}
-
 		}
 
 		private void dgvMaster_DoubleClick(object sender, EventArgs e)
@@ -254,4 +248,3 @@ namespace StrumentiMusicali.App
 		}
 	}
 }
-

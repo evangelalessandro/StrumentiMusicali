@@ -32,11 +32,11 @@ namespace StrumentiMusicali.App.Core.Controllers
 		}
 		~ControllerArticoli()
 		{
-			var dato = this.ReadSetting();
+			var dato = this.ReadSetting(Settings.enAmbienti.Articoli);
 			if (_ArticoloSelected!= null && _ArticoloSelected.ItemSelected != null)
 			{
-				dato.LastArticoloSelected = _ArticoloSelected.ItemSelected.ID;
-				this.SaveSetting(dato);
+				dato.LastItemSelected = _ArticoloSelected.ItemSelected.ID;
+				this.SaveSetting(Settings.enAmbienti.Articoli,dato);
 			}
 		}
 		private ArticoloSelected _ArticoloSelected;
@@ -52,7 +52,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			_logger.Info("Apertura ambiente AggiungiArticolo");
 
-			using (var frm = new Forms.frmArticolo())
+			using (var frm = new Forms.DettaglioArticoloView())
 			{
 				frm.ShowDialog();
 			}

@@ -85,17 +85,27 @@
     <Compile Include="Core\Controllers\ControllerFatturazione.cs" />
     <Compile Include="Core\Controllers\ControllerImmagini.cs" />
     <Compile Include="Core\Controllers\ControllerMagazzino.cs" />
+    <Compile Include="Core\Controllers\Fatture\ImportFatture.cs" />
     <Compile Include="Core\Events\Base\SelectedItem.cs" />
+    <Compile Include="Core\Events\Fatture\ApriFatturazione.cs" />
+    <Compile Include="Core\Events\Fatture\EditFattura.cs" />
+    <Compile Include="Core\Events\Fatture\EliminaFattura.cs" />
+    <Compile Include="Core\Events\Fatture\FatturaSave.cs" />
+    <Compile Include="Core\Events\Fatture\FattureListUpdate.cs" />
+    <Compile Include="Core\Events\Fatture\FattureUpdate.cs" />
     <Compile Include="Core\Events\Fatture\ImportaFattureAccess.cs" />
+    <Compile Include="Core\Events\Fatture\NuovaFattura.cs" />
     <Compile Include="Core\Events\Image\ImageAddFiles.cs" />
     <Compile Include="Core\Events\Image\ImageListUpdate.cs" />
     <Compile Include="Core\Events\Image\ImageOrderSet.cs" />
     <Compile Include="Core\Events\Articoli\ArticoloSave.cs" />
+    <Compile Include="Core\Events\Interfaces\FatturaCurrent.cs" />
     <Compile Include="Core\Events\Magazzino\ApriGestioneMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\MovimentiUpdate.cs" />
     <Compile Include="Core\Events\Magazzino\MovimentoMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\CaricaQtaMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\ScaricaQtaMagazzino.cs" />
+    <Compile Include="Core\Item\FatturaItem.cs" />
     <Compile Include="Core\Item\ArticoloItem.cs" />
     <Compile Include="Core\Item\Base\BaseItem.cs" />
     <Compile Include="Core\Item\Base\CurrentItem.cs" />
@@ -115,6 +125,18 @@
     <Compile Include="Core\Manager\ExceptionManager.cs" />
     <Compile Include="Core\Events\Image\ImageAdd.cs" />
     <Compile Include="Core\Manager\MessageManager.cs" />
+    <Compile Include="View\DettaglioFatturaView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\DettaglioFatturaView.Designer.cs">
+      <DependentUpon>DettaglioFatturaView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\FattureListView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\FattureListView.Designer.cs">
+      <DependentUpon>FattureListView.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\MainView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -147,6 +169,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\ISettingsReader.cs" />
     <Compile Include="Settings\UserSettings.cs" />
+    <EmbeddedResource Include="View\DettaglioFatturaView.resx">
+      <DependentUpon>DettaglioFatturaView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\FattureListView.resx">
+      <DependentUpon>FattureListView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\MainView.resx">
       <DependentUpon>MainView.cs</DependentUpon>
     </EmbeddedResource>
@@ -203,6 +231,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="References\System.Windows.Forms.Ribbon.dll" />
+    <None Include="Resources\Apri_Fatturazione.png" />
     <None Include="Resources\Fatture_48.png" />
     <None Include="Resources\warning_64.png" />
     <None Include="Resources\Magazzino.png" />

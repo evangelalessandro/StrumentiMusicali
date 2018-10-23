@@ -1,6 +1,8 @@
-﻿namespace StrumentiMusicali.App.Forms
+﻿using StrumentiMusicali.App.CustomComponents;
+
+namespace StrumentiMusicali.App.Forms
 {
-	partial class frmArticolo
+	partial class DettaglioArticoloView
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -18,7 +20,7 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmArticolo));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DettaglioArticoloView));
 			this.lblID = new System.Windows.Forms.Label();
 			this.txtID = new System.Windows.Forms.TextBox();
 			this.lblCategoria = new System.Windows.Forms.Label();
@@ -39,16 +41,16 @@
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.label6 = new System.Windows.Forms.Label();
 			this.cboReparto = new System.Windows.Forms.ComboBox();
-			this.txtFiltroCategoria = new StrumentiMusicali.App.Forms.AutoCompleteTextBox();
-			this.txtMarca = new StrumentiMusicali.App.Forms.AutoCompleteTextBox();
-			this.txtTitolo = new StrumentiMusicali.App.Forms.AutoCompleteTextBox();
+			this.txtFiltroCategoria = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
+			this.txtMarca = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
+			this.txtTitolo = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.pnlTesto = new System.Windows.Forms.Panel();
-			this.txtTesto = new StrumentiMusicali.App.Forms.AutoCompleteTextBox();
+			this.txtTesto = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.label5 = new System.Windows.Forms.Label();
-			this.txtCodiceABarre = new StrumentiMusicali.App.Forms.AutoCompleteTextBox();
+			this.txtCodiceABarre = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
 			this.chkCaricainMercatino = new System.Windows.Forms.CheckBox();
 			this.chkCaricainEcommerce = new System.Windows.Forms.CheckBox();
 			this.txtPrezzoBarrato = new System.Windows.Forms.NumericUpDown();
@@ -628,7 +630,7 @@
 			this.rimuoviImmagineToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
 			this.rimuoviImmagineToolStripMenuItem.Text = "Rimuovi Immagine";
 			// 
-			// frmArticolo
+			// DettaglioArticoloView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -638,7 +640,7 @@
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Margin = new System.Windows.Forms.Padding(4);
 			this.MinimumSize = new System.Drawing.Size(771, 542);
-			this.Name = "frmArticolo";
+			this.Name = "DettaglioArticoloView";
 			this.Load += new System.EventHandler(this.frmArticolo_Load);
 			this.Controls.SetChildIndex(this.ribbon1, 0);
 			this.Controls.SetChildIndex(this.tabControl1, 0);

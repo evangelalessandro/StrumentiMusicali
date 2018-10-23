@@ -12,6 +12,7 @@ namespace StrumentiMusicali.App.Core
 			popup.ContentText = info;
 			popup.Popup();
 		}
+
 		public static void NotificaWarnig(string info)
 		{
 			PopupNotifier popup = new PopupNotifier();
@@ -20,6 +21,7 @@ namespace StrumentiMusicali.App.Core
 			popup.ContentText = info;
 			popup.Popup();
 		}
+
 		public static void NotificaError(string message, System.Exception ex)
 		{
 			PopupNotifier popup = new PopupNotifier();
@@ -36,7 +38,5 @@ namespace StrumentiMusicali.App.Core
 				};
 			}
 		}
-
-
 	}
 }

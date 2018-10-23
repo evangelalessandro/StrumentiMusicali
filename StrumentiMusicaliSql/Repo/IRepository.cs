@@ -13,7 +13,9 @@ namespace StrumentiMusicali.Library.Repo
         //Method to add row to the table
         void Add(T entity);
 
-        IQueryable<T> Find(Expression<Func<T, bool>> predicate);
+		void AddRange(List<T> entity);
+
+		IQueryable<T> Find(Expression<Func<T, bool>> predicate);
 
         //Method to fetch row from the table
         T GetById(Guid id);

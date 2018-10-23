@@ -2,6 +2,7 @@
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Events.Image;
+using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.View.Base;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;

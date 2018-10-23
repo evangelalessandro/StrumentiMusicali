@@ -2,7 +2,9 @@
 using StrumentiMusicali.App.Core;
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Events.Articoli;
+using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Magazzino;
+using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -14,12 +16,12 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App
 {
-	public partial class fmrMain : Form
+	public partial class MainView : Form
 	{
 		private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
 		private BaseController _baseController;
-		public fmrMain(BaseController baseController)
+		public MainView(BaseController baseController)
 		{
 			_baseController = baseController;
 			InitializeComponent();
@@ -27,7 +29,7 @@ namespace StrumentiMusicali.App
 			ribCerca.Click += RibCerca_Click;
 			ribDelete.Click += (s, e) =>
 			{
-				using (var curs = new CursorHandler())
+				using (var curs = new CursorManager())
 				{
 					EventAggregator.Instance().Publish<ArticoloDelete>(new ArticoloDelete(GetCurrentItemSelected()));
 				}
@@ -41,6 +43,11 @@ namespace StrumentiMusicali.App
 				EventAggregator.Instance().Publish(new ApriGestioneMagazzino());
 			};
 			ribCaricaMagazzino.LargeImage = StrumentiMusicali.App.Properties.Resources.Magazzino;
+
+			ribImportFattureAccess.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new ImportaFattureAccess());
+			};
 
 			txtCerca.KeyUp += TxtCerca_KeyUp;
 			EventAggregator.Instance().Subscribe<ArticoliToUpdate>(UpdateList);
@@ -201,7 +208,7 @@ namespace StrumentiMusicali.App
 
 		private void ribArtDuplicate_Click(object sender, EventArgs e)
 		{
-			using (var curs = new CursorHandler())
+			using (var curs = new CursorManager())
 			{
 				EventAggregator.Instance().Publish(new ArticoloDuplicate());
 			}

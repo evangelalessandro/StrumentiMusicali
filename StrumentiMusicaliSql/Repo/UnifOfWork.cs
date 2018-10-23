@@ -61,6 +61,69 @@ namespace StrumentiMusicali.Library.Repo
 			}
 
 		}
+		private Repository<Fattura> _FatturaRepository;
+
+		public IRepository<Fattura> FatturaRepository {
+			get {
+				if (_FatturaRepository == null)
+				{
+					_FatturaRepository = new Repository<Fattura>(dbContext);
+				}
+				return _FatturaRepository;
+			}
+
+		}
+		private Repository<DDt> _DDTRepository;
+
+		public IRepository<DDt> DDTRepository {
+			get {
+				if (_DDTRepository == null)
+				{
+					_DDTRepository = new Repository<DDt>(dbContext);
+				}
+				return _DDTRepository;
+			}
+
+		}
+
+		private Repository<Cliente> _ClientiRepository;
+
+		public IRepository<Cliente> ClientiRepository {
+			get {
+				if (_ClientiRepository == null)
+				{
+					_ClientiRepository = new Repository<Cliente>(dbContext);
+				}
+				return _ClientiRepository;
+			}
+
+		}
+
+		private Repository<FatturaRiga> _FattureRigheRepository;
+
+		public IRepository<FatturaRiga> FattureRigheRepository {
+			get {
+				if (_FattureRigheRepository == null)
+				{
+					_FattureRigheRepository = new Repository<FatturaRiga>(dbContext);
+				}
+				return _FattureRigheRepository;
+			}
+
+		}
+		private Repository<DDTRiga> _DDTRigheRepository;
+
+		public IRepository<DDTRiga> DDTRigheRepository {
+			get {
+				if (_DDTRigheRepository == null)
+				{
+					_DDTRigheRepository = new Repository<DDTRiga>(dbContext);
+				}
+				return _DDTRigheRepository;
+			}
+
+		}
+
 		private Repository<FotoArticolo> _FotoArticoloRepository;
 
 		public IRepository<FotoArticolo> FotoArticoloRepository {

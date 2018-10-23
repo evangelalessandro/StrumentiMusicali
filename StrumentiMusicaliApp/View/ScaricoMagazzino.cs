@@ -2,6 +2,7 @@
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.App.Core.Item;
+using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -14,7 +15,8 @@ namespace StrumentiMusicali.App.View
 {
 	public partial class ScaricoMagazzino : Base.BaseDataControl
 	{
-		ControllerMagazzino _controllerMagazzino;
+		private ControllerMagazzino _controllerMagazzino;
+
 		public ScaricoMagazzino(ControllerMagazzino controllerMagazzino)
 			: base()
 		{
@@ -51,18 +53,17 @@ namespace StrumentiMusicali.App.View
 
 				UpdateButton();
 			};
-			cboDeposito.SelectedValueChanged += (a, b) => {
+			cboDeposito.SelectedValueChanged += (a, b) =>
+			{
 				try
 				{
 					_controllerMagazzino.SelectedItem.Deposito =
 						((DepositoItem)cboDeposito.SelectedItem).ID;
-
 				}
 				catch (Exception)
 				{
-
 				}
-				
+
 				UpdateButton();
 			};
 			txtQta.Tag = "Qta";
@@ -71,12 +72,10 @@ namespace StrumentiMusicali.App.View
 			this.Load += ScaricoMagazzino_Load;
 
 			EventAggregator.Instance().Subscribe<MovimentiUpdate>(RefreshData);
-
 		}
 
 		private void RefreshData(MovimentiUpdate obj)
 		{
-
 			lblTitoloArticolo.ForeColor = System.Drawing.Color.Red;
 			var movimenti = new List<MovimentoItem>();
 			using (var uof = new UnitOfWork())
@@ -84,14 +83,14 @@ namespace StrumentiMusicali.App.View
 				var articolo = uof.ArticoliRepository.Find(a => a.CodiceAbarre == txtCodiceABarre.Text).FirstOrDefault();
 				if (articolo != null)
 				{
-					lblTitoloArticolo.ForeColor= System.Drawing.Color.Green;
-					var depoSel= cboDeposito.SelectedIndex;
+					lblTitoloArticolo.ForeColor = System.Drawing.Color.Green;
+					var depoSel = cboDeposito.SelectedIndex;
 					_controllerMagazzino.SelectedItem.ArticoloID = articolo.ID;
 					lblTitoloArt.Text = articolo.Titolo;
 
-					var listDepo= _controllerMagazzino.ListDepositi();
+					var listDepo = _controllerMagazzino.ListDepositi();
 					cboDeposito.DataSource = listDepo;
-					if (depoSel==-1 && listDepo.Count>0)
+					if (depoSel == -1 && listDepo.Count > 0)
 					{
 						cboDeposito.SelectedIndex = 0;
 					}
@@ -102,13 +101,13 @@ namespace StrumentiMusicali.App.View
 					movimenti = uof.MagazzinoRepository.Find(a => a.ArticoloID == _controllerMagazzino.SelectedItem.ArticoloID)
 						.Select(a => new MovimentoItem()
 						{
-							ID=a.ID,
+							ID = a.ID,
 							Articolo = a.Articolo.Titolo,
 							Data = a.DataCreazione,
 							NomeDeposito = a.Deposito.NomeDeposito,
 							Qta = a.Qta
 						})
-						.OrderByDescending(a=>a.ID)
+						.OrderByDescending(a => a.ID)
 						.ToList();
 				}
 				else
@@ -118,7 +117,7 @@ namespace StrumentiMusicali.App.View
 						.OrderByDescending(a => a.ID).Take(100)
 						.Select(a => new MovimentoItem()
 						{
-							ID= a.ID,
+							ID = a.ID,
 							Articolo = a.Articolo.Titolo,
 							Data = a.DataCreazione,
 							NomeDeposito = a.Deposito.NomeDeposito,
@@ -130,8 +129,6 @@ namespace StrumentiMusicali.App.View
 				dgvMaster.DataSource = movimenti;
 			}
 		}
-
-		
 
 		private async void ScaricoMagazzino_Load(object sender, EventArgs e)
 		{

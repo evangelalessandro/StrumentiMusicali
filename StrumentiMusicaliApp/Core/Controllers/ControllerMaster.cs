@@ -13,6 +13,7 @@ namespace StrumentiMusicali.App.Core
 		private ControllerArticoli _controllerArticoli;
 		private ControllerImmagini _controllerImmagini;
 		private ControllerMagazzino _controllerMagazzino;
+		private ControllerFatturazione _controllerFatturazione;
 
 		public ControllerMaster() 
 			:base()
@@ -21,14 +22,17 @@ namespace StrumentiMusicali.App.Core
 			_controllerArticoli = new ControllerArticoli();
 			_controllerImmagini = new ControllerImmagini();
 			_controllerMagazzino = new ControllerMagazzino();
+			_controllerFatturazione = new ControllerFatturazione();
 
 			Application.ThreadException += Application_ThreadException;
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new fmrMain(this));
+			Application.Run(new MainView(this));
 		}
 		~ControllerMaster()
 		{
+			_controllerFatturazione.Dispose();
+			_controllerFatturazione = null;
 			_controllerArticoli.Dispose();
 			_controllerArticoli = null;
 			_controllerImmagini.Dispose();

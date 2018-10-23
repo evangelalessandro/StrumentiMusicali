@@ -9,15 +9,13 @@ namespace StrumentiMusicali.Library.Migrations
 		{
 			AutomaticMigrationsEnabled = true;
 			//AutomaticMigrationDataLossAllowed = true;
-
-
 		}
 
 		protected override void Seed(StrumentiMusicali.Library.Model.ModelSm context)
 		{
 			//  This method will be called after migrating to the latest version.
 
-			//  You can use the DbSet<T>.AddOrUpdate() helper extension method 
+			//  You can use the DbSet<T>.AddOrUpdate() helper extension method
 			//  to avoid creating duplicate seed data.
 
 			InitCategories(context);
@@ -26,11 +24,9 @@ namespace StrumentiMusicali.Library.Migrations
 
 		private static void InitDepositi(Model.ModelSm context)
 		{
-
-			context.Depositi.AddOrUpdate(h=>h.NomeDeposito,
+			context.Depositi.AddOrUpdate(h => h.NomeDeposito,
 				new Deposito() { ID = 1, NomeDeposito = "Depo 1" },
-			    new Deposito() { ID = 2, NomeDeposito = "Depo 2" });
-
+				new Deposito() { ID = 2, NomeDeposito = "Depo 2" });
 		}
 
 		private static void InitCategories(Model.ModelSm context)

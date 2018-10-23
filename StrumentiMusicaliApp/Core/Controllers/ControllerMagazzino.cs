@@ -1,5 +1,6 @@
 ﻿using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.App.Core.Item;
+using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -10,6 +11,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 	public class ControllerMagazzino : BaseController
 	{
 		public MovimentoMagazzino SelectedItem { get; set; } = new MovimentoMagazzino();
+
 		public ControllerMagazzino()
 			: base()
 		{
@@ -23,6 +25,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			EventAggregator.Instance().Subscribe<ScaricaQtaMagazzino>(ScaricaMagazzino);
 			EventAggregator.Instance().Subscribe<CaricaQtaMagazzino>(CaricaMagazzino);
 		}
+
 		internal System.Collections.Generic.List<DepositoItem> ListDepositi()
 		{
 			using (var uof = new UnitOfWork())
@@ -53,26 +56,24 @@ namespace StrumentiMusicali.App.Core.Controllers
 					var giac = listQtaDepositi.Where(b => b.ID == item.ID).FirstOrDefault();
 					if (giac != null)
 						item.Qta = giac.Qta;
-
 				}
-
 
 				listDepositi = listDepositi.Select(a => a).OrderBy(a => a.Descrizione).ToList();
 				return listDepositi;
-
 			}
 		}
+
 		private void CaricaMagazzino(CaricaQtaMagazzino obj)
 		{
 			NuovoMovimento(new MovimentoMagazzino()
 			{ ArticoloID = obj.ArticoloID, Deposito = obj.Deposito, Qta = obj.Qta });
 		}
+
 		private void NuovoMovimento(MovimentoMagazzino movimento)
 		{
 			try
 			{
-
-				using (var curs = new CursorHandler())
+				using (var curs = new CursorManager())
 				{
 					using (var uof = new UnitOfWork())
 					{
@@ -80,9 +81,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 						{
 							var qtaDepositata = uof.MagazzinoRepository.Find(a => a.ArticoloID == movimento.ArticoloID &&
 							a.DepositoID == movimento.Deposito).Select(a => a.Qta).DefaultIfEmpty(0).Sum();
-							if (qtaDepositata<Math.Abs( movimento.Qta))
+							if (qtaDepositata < Math.Abs(movimento.Qta))
 							{
-								var depositoSel=uof.DepositoRepository.Find(a => a.ID == movimento.Deposito).First();
+								var depositoSel = uof.DepositoRepository.Find(a => a.ID == movimento.Deposito).First();
 								MessageManager.NotificaWarnig(
 									string.Format(
 									@"La quantità presente nel deposito {0} è di {1} pezzi",
@@ -92,7 +93,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 								return;
 							}
 						}
-
 
 						uof.MagazzinoRepository.Add(new Library.Entity.Magazzino()
 						{
@@ -104,7 +104,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 						uof.Commit();
 						MessageManager.NotificaInfo("Aggiunto movimento magazzino");
 						EventAggregator.Instance().Publish<MovimentiUpdate>(new MovimentiUpdate());
-
 					}
 				}
 			}
@@ -113,6 +112,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				ExceptionManager.ManageError(ex);
 			}
 		}
+
 		private void ScaricaMagazzino(ScaricaQtaMagazzino obj)
 		{
 			NuovoMovimento(new MovimentoMagazzino()

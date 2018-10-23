@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StrumentiMusicali.Library.Entity.Base
 {
@@ -10,6 +6,5 @@ namespace StrumentiMusicali.Library.Entity.Base
 	{
 		public DateTime DataCreazione { get; set; } = DateTime.Now;
 		public DateTime DataUltimaModifica { get; set; } = DateTime.Now;
-
 	}
 }

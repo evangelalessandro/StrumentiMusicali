@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace StrumentiMusicali.App.Core
+namespace StrumentiMusicali.App.Core.Manager
 {
-	public class CursorHandler
+	public class CursorManager
 	: IDisposable
 	{
-		public CursorHandler(Cursor cursor = null)
+		public CursorManager(Cursor cursor = null)
 		{
 			_saved = Cursor.Current;
 			Cursor.Current = cursor ?? Cursors.WaitCursor;
@@ -17,7 +17,7 @@ namespace StrumentiMusicali.App.Core
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
-		~CursorHandler()
+		~CursorManager()
 		{
 			// Finalizer calls Dispose(false)
 			Dispose(false);

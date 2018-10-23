@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace StrumentiMusicali.Library.Repo
 {
@@ -31,6 +32,16 @@ namespace StrumentiMusicali.Library.Repo
 
 		//Implementation of IRepository methods
 		public virtual IEnumerable<T> DataSet { get { return dbSet; } }
+
+		public virtual void AddRange(List<T> entityList)
+		{
+			int indexEl = 0;
+			foreach (var item in entityList)
+			{
+				Add(item);
+				indexEl++;
+			}
+		}
 
 		public virtual void Add(T entity)
 		{

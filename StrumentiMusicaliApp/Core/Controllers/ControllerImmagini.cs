@@ -1,4 +1,5 @@
 ﻿using StrumentiMusicali.App.Core.Events.Image;
+using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
@@ -26,7 +27,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			try
 			{
 				var listFileToDelete = new List<string>();
-				using (var curs = new CursorHandler())
+				using (var curs = new CursorManager())
 				{
 					using (var uof = new UnitOfWork())
 					{
@@ -65,7 +66,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			try
 			{
-				using (var curs = new CursorHandler())
+				using (var curs = new CursorManager())
 				{
 					using (var uof = new UnitOfWork())
 					{

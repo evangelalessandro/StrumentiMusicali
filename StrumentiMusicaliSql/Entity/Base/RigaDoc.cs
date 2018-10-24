@@ -19,5 +19,7 @@ namespace StrumentiMusicali.Library.Entity
 		public string Descrizione { get; set; }
 
 		public int Qta { get; set; }
+
+		public int OrdineVisualizzazione { get; set; }
 	}
 }

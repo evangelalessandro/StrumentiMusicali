@@ -95,6 +95,8 @@
     <Compile Include="Core\Events\Fatture\FattureUpdate.cs" />
     <Compile Include="Core\Events\Fatture\ImportaFattureAccess.cs" />
     <Compile Include="Core\Events\Fatture\NuovaFattura.cs" />
+    <Compile Include="Core\Events\Fatture\Righe\AggiungiFatturaRiga.cs" />
+    <Compile Include="Core\Events\Fatture\Righe\EliminaFatturaRiga.cs" />
     <Compile Include="Core\Events\Image\ImageAddFiles.cs" />
     <Compile Include="Core\Events\Image\ImageListUpdate.cs" />
     <Compile Include="Core\Events\Image\ImageOrderSet.cs" />
@@ -105,8 +107,9 @@
     <Compile Include="Core\Events\Magazzino\MovimentoMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\CaricaQtaMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\ScaricaQtaMagazzino.cs" />
-    <Compile Include="Core\Item\FatturaItem.cs" />
     <Compile Include="Core\Item\ArticoloItem.cs" />
+    <Compile Include="Core\Item\FatturaRigaItem.cs" />
+    <Compile Include="Core\Item\FatturaItem.cs" />
     <Compile Include="Core\Item\Base\BaseItem.cs" />
     <Compile Include="Core\Item\Base\CurrentItem.cs" />
     <Compile Include="Core\Item\CategoriaItem.cs" />

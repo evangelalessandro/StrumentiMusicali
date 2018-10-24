@@ -3,27 +3,18 @@ using StrumentiMusicali.App.Properties;
 using StrumentiMusicali.Library.Entity;
 using System;
 
-namespace StrumentiMusicali.App.Core
+namespace StrumentiMusicali.App.Core.Item
 {
-	public class ArticoloItem :BaseItem
+	public class FatturaItem : BaseItem
 	{
 		
-		public string Titolo { get; set; }
-		public DateTime DataCreazione { get; set; }
-		public DateTime DataModifica { get; set; }
-		public bool Pinned { get; set; }
-		public System.Drawing.Bitmap PinnedImage {
-			get {
-				if (Pinned)
-				{
-					return Resources.pin_16;
-				}
-				return new System.Drawing.Bitmap(20,20);
-			}
-		}
+		public string RagioneSociale { get; set; }
+		public DateTime Data { get; set; }
+		public string PIVA { get; set; }
 
+		public string Codice { get; set; }
 
-		public Articolo ArticoloCS { get; set; }
+		public Fattura FatturaCS { get; set; }
 
 	}
 }

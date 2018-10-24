@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace StrumentiMusicali.App.Core.Controllers
+namespace StrumentiMusicali.App.Core.Controllers.Base
 {
 	public class BaseController : IDisposable
 	{

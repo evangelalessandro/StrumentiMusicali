@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace StrumentiMusicali.App.View.Base
+namespace StrumentiMusicali.App.View.BaseControl
 {
 	public partial class BaseDataControl : UserControl
 	{

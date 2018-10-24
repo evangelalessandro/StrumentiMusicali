@@ -1,5 +1,6 @@
 ﻿using StrumentiMusicali.App.Core.Item.Base;
 using StrumentiMusicali.App.CustomComponents;
+using StrumentiMusicali.Library.Entity.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace StrumentiMusicali.App.View
+namespace StrumentiMusicali.App.View.Utility
 {
 	public static class UtilityView
 	{
@@ -21,11 +22,10 @@ namespace StrumentiMusicali.App.View
 			return default(T);
 		}
 		public static async Task SelezionaRiga(this DataGridView dataGrid,string idItem )
-			 
 		{
 			for (int i = 0; i < dataGrid.RowCount; i++)
 			{
-				if (((BaseItem)(dataGrid.Rows[i].DataBoundItem)).ID == idItem)
+				if (((BaseItemID)(dataGrid.Rows[i].DataBoundItem)).ID == idItem)
 				{
 					dataGrid.Rows[i].Selected = true;
 					dataGrid.CurrentCell = dataGrid.Rows[i].Cells[1];

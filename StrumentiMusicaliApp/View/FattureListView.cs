@@ -3,6 +3,7 @@ using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -50,6 +51,8 @@ namespace StrumentiMusicali.App.View
 			EventAggregator.Instance().Subscribe<FattureListUpdate>(UpdateList);
 			this.Disposed += FmrMain_Disposed;
 			_logger.Debug(this.Name + " init");
+
+			
 		}
 		 
 		private void FmrMain_Disposed(object sender, EventArgs e)
@@ -156,7 +159,7 @@ namespace StrumentiMusicali.App.View
 					{
 						ID = a.ID.ToString(),
 						Data = a.Data,
-						FatturaCS = a,
+						Entity = a,
 						PIVA = a.PIVA,
 						Codice=a.Codice,
 						RagioneSociale = a.RagioneSociale
@@ -180,7 +183,7 @@ namespace StrumentiMusicali.App.View
 				return;
 			dgvMaster.DataSource = data;
 
-			dgvMaster.Columns["FatturaCS"].Visible = false;
+			dgvMaster.Columns["Entity"].Visible = false;
 			dgvMaster.AutoResizeColumns();
 			dgvMaster.Columns["ID"].DisplayIndex = 0;
 			dgvMaster.Columns["Codice"].DisplayIndex = 1;

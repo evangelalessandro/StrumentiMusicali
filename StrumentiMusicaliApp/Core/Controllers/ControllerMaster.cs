@@ -1,6 +1,7 @@
 ﻿using NLog;
 using NLog.Targets;
 using StrumentiMusicali.App.Core.Controllers;
+using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
 using System;

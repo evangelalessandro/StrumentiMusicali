@@ -5,6 +5,7 @@ using StrumentiMusicali.App.Core.Events.Image;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View;
+using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
@@ -79,7 +80,7 @@ namespace StrumentiMusicali.App.Forms
 		public DettaglioArticoloView(ArticoloItem articolo)
 			: this()
 		{
-			_articolo = articolo.ArticoloCS;
+			_articolo = articolo.Entity;
 			modeEdit = true;
 		}
 
@@ -525,7 +526,7 @@ namespace StrumentiMusicali.App.Forms
 		}
 		private void UpdateButtonState()
 		{
-			tabPage2.Enabled = _fotoArticoloSelected != null; 
+			tabPage2.Enabled = _articolo != null && _articolo.ID!="" ; 
 			if (_ribPannelImmagini != null)
 			{
 				_ribPannelImmagini.Enabled = tabControl1.SelectedTab == tabPage2;

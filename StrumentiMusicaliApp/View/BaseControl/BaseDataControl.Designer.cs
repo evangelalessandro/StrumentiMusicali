@@ -1,4 +1,4 @@
-﻿namespace StrumentiMusicali.App.View.Base
+﻿namespace StrumentiMusicali.App.View.BaseControl
 {
 	partial class BaseDataControl
 	{

@@ -66,7 +66,6 @@ namespace StrumentiMusicali.App.View
 			this.txtPrezzo = new System.Windows.Forms.NumericUpDown();
 			this.label3 = new System.Windows.Forms.Label();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
-			this.dgvRighe = new System.Windows.Forms.DataGridView();
 			this.pnl1Alto.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -77,8 +76,6 @@ namespace StrumentiMusicali.App.View
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzo)).BeginInit();
-			this.tabPage2.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dgvRighe)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// lblID
@@ -621,32 +618,13 @@ namespace StrumentiMusicali.App.View
 			// 
 			// tabPage2
 			// 
-			this.tabPage2.Controls.Add(this.dgvRighe);
 			this.tabPage2.Location = new System.Drawing.Point(4, 25);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(1142, 417);
+			this.tabPage2.Size = new System.Drawing.Size(1142, 420);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Righe";
 			this.tabPage2.UseVisualStyleBackColor = true;
-			// 
-			// dgvRighe
-			// 
-			this.dgvRighe.AllowUserToAddRows = false;
-			this.dgvRighe.AllowUserToDeleteRows = false;
-			this.dgvRighe.AllowUserToOrderColumns = true;
-			this.dgvRighe.AllowUserToResizeRows = false;
-			this.dgvRighe.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgvRighe.Dock = System.Windows.Forms.DockStyle.Top;
-			this.dgvRighe.Location = new System.Drawing.Point(3, 3);
-			this.dgvRighe.Margin = new System.Windows.Forms.Padding(2);
-			this.dgvRighe.MultiSelect = false;
-			this.dgvRighe.Name = "dgvRighe";
-			this.dgvRighe.ReadOnly = true;
-			this.dgvRighe.RowTemplate.Height = 24;
-			this.dgvRighe.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dgvRighe.Size = new System.Drawing.Size(1136, 198);
-			this.dgvRighe.TabIndex = 2;
 			// 
 			// DettaglioFatturaView
 			// 
@@ -673,8 +651,6 @@ namespace StrumentiMusicali.App.View
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzo)).EndInit();
-			this.tabPage2.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.dgvRighe)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -729,7 +705,6 @@ namespace StrumentiMusicali.App.View
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.NumericUpDown numericUpDown3;
 		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.DataGridView dgvRighe;
 		 
 		
 	}

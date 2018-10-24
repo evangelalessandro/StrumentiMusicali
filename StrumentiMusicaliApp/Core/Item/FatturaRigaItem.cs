@@ -5,7 +5,7 @@ using System;
 
 namespace StrumentiMusicali.App.Core.Item
 {
-	public class FatturaRigaItem : BaseItem
+	public class FatturaRigaItem : BaseItem<FatturaRiga>
 	{
 		
 		public string CodiceArt { get; set; }
@@ -21,7 +21,6 @@ namespace StrumentiMusicali.App.Core.Item
 		public string Iva { get; set; }
 
 
-		public FatturaRiga FatturaRigaCS { get; set; }
-
+		 
 	}
 }

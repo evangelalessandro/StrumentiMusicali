@@ -86,13 +86,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Controllers\BaseController.cs" />
+    <Compile Include="Core\Controllers\Base\BaseControllerGeneric.cs" />
+    <Compile Include="Core\Controllers\Base\BaseController.cs" />
     <Compile Include="Core\Controllers\ControllerArticoli.cs" />
     <Compile Include="Core\Controllers\ControllerFatturazione.cs" />
     <Compile Include="Core\Controllers\ControllerImmagini.cs" />
     <Compile Include="Core\Controllers\ControllerMagazzino.cs" />
+    <Compile Include="Core\Controllers\ControllerRigheFatture.cs" />
     <Compile Include="Core\Controllers\Fatture\ImportFatture.cs" />
-    <Compile Include="Core\Events\Base\SelectedItem.cs" />
+    <Compile Include="Core\Events\Generics\UpdateList.cs" />
     <Compile Include="Core\Events\Fatture\ApriFatturazione.cs" />
     <Compile Include="Core\Events\Fatture\EditFattura.cs" />
     <Compile Include="Core\Events\Fatture\EliminaFattura.cs" />
@@ -107,13 +109,14 @@
     <Compile Include="Core\Events\Image\ImageListUpdate.cs" />
     <Compile Include="Core\Events\Image\ImageOrderSet.cs" />
     <Compile Include="Core\Events\Articoli\ArticoloSave.cs" />
-    <Compile Include="Core\Events\Interfaces\FatturaCurrent.cs" />
+    <Compile Include="Core\Events\Interfaces\ArticoloCurrent.cs" />
     <Compile Include="Core\Events\Magazzino\ApriGestioneMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\MovimentiUpdate.cs" />
     <Compile Include="Core\Events\Magazzino\MovimentoMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\CaricaQtaMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\ScaricaQtaMagazzino.cs" />
     <Compile Include="Core\Item\ArticoloItem.cs" />
+    <Compile Include="Core\Item\Base\BaseItemID.cs" />
     <Compile Include="Core\Item\FatturaRigaItem.cs" />
     <Compile Include="Core\Item\FatturaItem.cs" />
     <Compile Include="Core\Item\Base\BaseItem.cs" />
@@ -130,7 +133,7 @@
     <Compile Include="Core\Events\Articoli\ArticoliUpdate.cs" />
     <Compile Include="Core\Events\Articoli\ArticoloSelected.cs" />
     <Compile Include="Core\Events\Articoli\ImportArticoli.cs" />
-    <Compile Include="Core\Events\Interfaces\ArticoloSelected.cs" />
+    <Compile Include="Core\Events\Interfaces\FatturaCurrent.cs" />
     <Compile Include="Core\Manager\ExceptionManager.cs" />
     <Compile Include="Core\Events\Image\ImageAdd.cs" />
     <Compile Include="Core\Manager\MessageManager.cs" />
@@ -145,11 +148,22 @@
     <Compile Include="View\DettaglioFatturaView.Designer.cs">
       <DependentUpon>DettaglioFatturaView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Core\Events\Generics\Edit.cs" />
+    <Compile Include="View\BaseControl\BaseGridViewGeneric.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\BaseControl\BaseGridViewGeneric.Designer.cs">
+      <DependentUpon>BaseGridViewGeneric.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\FattureListView.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="View\FattureListView.Designer.cs">
       <DependentUpon>FattureListView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Events\Generics\ItemSelected.cs" />
+    <Compile Include="View\FattureRigheListView.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\Utility\IMenu.cs" />
     <Compile Include="View\MainView.cs">
@@ -184,10 +198,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\ISettingsReader.cs" />
     <Compile Include="Settings\UserSettings.cs" />
-    <Compile Include="View\UtilityView.cs" />
+    <Compile Include="View\Utility\UtilityView.cs" />
     <Compile Include="View\Utility\OrdinaTab.cs" />
     <EmbeddedResource Include="View\DettaglioFatturaView.resx">
       <DependentUpon>DettaglioFatturaView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\BaseControl\BaseGridViewGeneric.resx">
+      <DependentUpon>BaseGridViewGeneric.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\FattureListView.resx">
       <DependentUpon>FattureListView.cs</DependentUpon>
@@ -245,7 +262,9 @@
       <Name>StrumentiMusicali.Library</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Core\Events\Base\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="References\System.Windows.Forms.Ribbon.dll" />
     <None Include="Resources\Apri_Fatturazione.png" />

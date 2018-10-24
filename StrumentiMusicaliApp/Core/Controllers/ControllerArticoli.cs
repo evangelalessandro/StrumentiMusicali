@@ -1,4 +1,5 @@
-﻿using StrumentiMusicali.App.Core.Events.Articoli;
+﻿using StrumentiMusicali.App.Core.Controllers.Base;
+using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Events.Image;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.Library.Core;
@@ -64,7 +65,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			{
 				using (var uof = new UnitOfWork())
 				{
-					var itemCurrent = ((ArticoloItem)(_ArticoloSelected.ItemSelected)).ArticoloCS;
+					var itemCurrent = ((ArticoloItem)(_ArticoloSelected.ItemSelected)).Entity;
 					uof.ArticoliRepository.Add(new StrumentiMusicali.Library.Entity.Articolo()
 					{
 						Categoria = itemCurrent.Categoria,

@@ -1,11 +1,12 @@
 ﻿using NLog;
 using StrumentiMusicali.App.Core;
 using StrumentiMusicali.App.Core.Controllers;
+using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.App.Core.Manager;
-using StrumentiMusicali.App.View;
+using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -168,11 +169,9 @@ namespace StrumentiMusicali.App
 					{
 						ID = a.ID,
 						Titolo = a.Titolo,
-						ArticoloCS = a
-						,
+						Entity = a,
 						DataCreazione = a.DataCreazione,
-						DataModifica = a.DataUltimaModifica
-						,
+						DataModifica = a.DataUltimaModifica,
 						Pinned = a.Pinned
 					}).ToList();
 				}
@@ -194,7 +193,7 @@ namespace StrumentiMusicali.App
 				return;
 			dgvMaster.DataSource = data;
 			dgvMaster.Columns["Pinned"].Visible = false;
-			dgvMaster.Columns["ArticoloCS"].Visible = false;
+			dgvMaster.Columns["Entity"].Visible = false;
 		}
 
 		private void ribAddArt_Click(object sender, EventArgs e)

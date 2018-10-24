@@ -1,16 +1,13 @@
 ﻿using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Events.Fatture;
-using StrumentiMusicali.App.Core.Item;
-using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
-using StrumentiMusicali.App.View.Base;
+using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View
@@ -19,13 +16,13 @@ namespace StrumentiMusicali.App.View
 	{
 		private ControllerFatturazione _controllerFatturazione;
 
-		 
+		private ControllerRigheFatture _controllerRighe;
+
 		public DettaglioFatturaView(ControllerFatturazione controllerFatturazione)
 			: base()
 		{
 			_controllerFatturazione = controllerFatturazione;
 			InitializeComponent();
-
 			
 		}
 
@@ -89,6 +86,12 @@ namespace StrumentiMusicali.App.View
 
 		private void frm_Load(object sender, EventArgs e)
 		{
+			_controllerRighe = new ControllerRigheFatture(_controllerFatturazione);
+			var controlFattRigheList = new FattureRigheListView(_controllerRighe);
+			controlFattRigheList.Height = tabPage2.Size.Height;
+			controlFattRigheList.Dock = DockStyle.Top;
+			tabPage2.Controls.Add(controlFattRigheList);
+
 			FillCombo();
 
 			UpdateButtonState();
@@ -121,70 +124,12 @@ namespace StrumentiMusicali.App.View
 
 		private void RefreshRighe()
 		{
-			RefreshData();
+			_controllerRighe.UpdateDataSource();
 		}
 
-		public List<FatturaRigaItem> GetDataAsync()
-		{
-			try
-			{ 
-				List<FatturaRigaItem> list = new List<FatturaRigaItem>();
+		
 
-				using (var uof = new UnitOfWork())
-				{
-					list = uof.FattureRigheRepository.Find(a => a.FatturaID==_controllerFatturazione.SelectedItem.ID
-
-					).Select(a => new FatturaRigaItem
-					{
-						ID = a.ID.ToString(),
-						CodiceArt=a.CodiceArticoloOld,
-						RigaDescrizione=a.Descrizione,
-						FatturaRigaCS=a,
-						RigaImporto=a.Qta*a.PrezzoUnitario,
-						PrezzoUnitario=a.PrezzoUnitario,
-						RigaQta=a.Qta,
-						Iva=a.IvaApplicata
-					}).OrderBy(a => a.FatturaRigaCS.OrdineVisualizzazione).ThenBy(a=>a.ID).ToList();
-				}
-
-				return list;
-			}
-			catch (Exception ex)
-			{
-				this.BeginInvoke(new Action(() =>
-				{ ExceptionManager.ManageError(ex); }));
-				return null;
-			}
-		}
-
-		private async Task RefreshData()
-		{
-			var data = await Task.Run(() => { return GetDataAsync(); });
-			if (data == null)
-				return;
-			dgvRighe.DataSource = data;
-
-			var provider = new System.Globalization.CultureInfo("it-IT");
-			//var provider = new System.Globalization.CultureInfo("en");
-
-			dgvRighe.Columns["PrezzoUnitario"].DefaultCellStyle.FormatProvider = provider;
-			dgvRighe.Columns["PrezzoUnitario"].DefaultCellStyle.Format = "C2";
-			dgvRighe.Columns["PrezzoUnitario"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-
-			dgvRighe.Columns["Importo"].DefaultCellStyle.FormatProvider = provider;
-			dgvRighe.Columns["Importo"].DefaultCellStyle.Format = "C2";
-			dgvRighe.Columns["Importo"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-
-			dgvRighe.Columns["FatturaRigaCS"].Visible = false;
-			dgvRighe.Columns["ID"].Visible = false;
-			dgvRighe.AutoResizeColumns();
-			dgvRighe.Columns["CodiceArt"].DisplayIndex = 0;
-			dgvRighe.Columns["Descrizione"].DisplayIndex = 1;
-			dgvRighe.Columns["Qta"].DisplayIndex = 2;
-			dgvRighe.Columns["PrezzoUnitario"].DisplayIndex = 3;
-			dgvRighe.Columns["Importo"].DisplayIndex = 4;
-			dgvRighe.Columns["Iva"].DisplayIndex = 5;
-		}
+		
 
 		private void UpdateButtonState()
 		{

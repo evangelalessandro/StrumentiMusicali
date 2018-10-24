@@ -5,7 +5,7 @@ using System;
 
 namespace StrumentiMusicali.App.Core
 {
-	public class ArticoloItem :BaseItem
+	public class ArticoloItem :BaseItem<Articolo>
 	{
 		
 		public string Titolo { get; set; }
@@ -23,7 +23,6 @@ namespace StrumentiMusicali.App.Core
 		}
 
 
-		public Articolo ArticoloCS { get; set; }
-
+		 
 	}
 }

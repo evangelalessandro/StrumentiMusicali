@@ -1,4 +1,5 @@
-﻿using StrumentiMusicali.App.Core.Controllers.Fatture;
+﻿using StrumentiMusicali.App.Core.Controllers.Base;
+using StrumentiMusicali.App.Core.Controllers.Fatture;
 using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
@@ -91,7 +92,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void FatturaEdit(EditFattura obj)
 		{
-			SelectedItem = ((FatturaItem)obj.ItemSelected).FatturaCS;
+			SelectedItem = ((FatturaItem)obj.ItemSelected).Entity;
 			ShowDettaglio();
 		}
 

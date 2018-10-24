@@ -3,6 +3,8 @@ using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.App.View.BaseControl;
+using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -13,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace StrumentiMusicali.App.View
 {
-	public partial class ScaricoMagazzino : Base.BaseDataControl
+	public partial class ScaricoMagazzino : BaseDataControl
 	{
 		private ControllerMagazzino _controllerMagazzino;
 

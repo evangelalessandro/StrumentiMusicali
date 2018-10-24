@@ -15,6 +15,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 	public class ControllerFatturazione : BaseController
 	{
 		public Fattura SelectedItem { get; set; } = new Fattura();
+		public FatturaRiga SelectedItemRow { get; set; } = new FatturaRiga();
 
 		public ControllerFatturazione() : base()
 		{
@@ -74,7 +75,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				{
 					int val = int.Parse(obj.ItemSelected.ID);
 					var item = uof.FatturaRepository.Find(a => a.ID == val).FirstOrDefault();
-					_logger.Info(string.Format("Cancellazione fattura/r/n codice {0} /r/n Numero {1}", 
+					_logger.Info(string.Format("Cancellazione fattura/r/n codice {0} /r/n Numero {1}",
 						item.Codice, item.ID));
 					uof.FatturaRepository.Delete(item);
 					uof.Commit();
@@ -87,24 +88,26 @@ namespace StrumentiMusicali.App.Core.Controllers
 				ExceptionManager.ManageError(ex);
 			}
 		}
-		
+
 		private void FatturaEdit(EditFattura obj)
 		{
 			SelectedItem = ((FatturaItem)obj.ItemSelected).FatturaCS;
+			ShowDettaglio();
+		}
+
+		private void ShowDettaglio()
+		{
 			using (var view = new DettaglioFatturaView(this))
 			{
-				view.ShowDialog();
+				ShowView(view);
 			}
 		}
+
 
 		private void AddFattura(NuovaFattura obj)
 		{
 			SelectedItem = new Fattura();
-			using (var view = new DettaglioFatturaView(this))
-			{
-
-				view.ShowDialog();
-			}
+			ShowDettaglio();
 		}
 
 		private void ApriAmbiente(ApriFatturazione obj)

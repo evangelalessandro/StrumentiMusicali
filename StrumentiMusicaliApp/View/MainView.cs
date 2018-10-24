@@ -5,6 +5,7 @@ using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.App.View;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -145,7 +146,7 @@ namespace StrumentiMusicali.App
 			UpdateButtonState();
 			await RefreshData();
 
-			await SelezionaRiga(dato.LastItemSelected);
+			await dgvMaster.SelezionaRiga(dato.LastItemSelected); 
 
 			UpdateButtonState();
 
@@ -219,28 +220,14 @@ namespace StrumentiMusicali.App
 			var itemSelected = (ArticoloItem)dgvMaster.SelectedRows[0].DataBoundItem;
 			using (var frm = new Forms.DettaglioArticoloView(itemSelected))
 			{
-				frm.ShowDialog();
+				_baseController.ShowView(frm);
 			}
 
 			await RefreshData();
-			await SelezionaRiga(itemSelected.ID);
+			await dgvMaster.SelezionaRiga(itemSelected.ID);
 		}
 
-#pragma warning disable CS1998 // In questo metodo asincrono non sono presenti operatori 'await', pertanto verrà eseguito in modo sincrono. Provare a usare l'operatore 'await' per attendere chiamate ad API non di blocco oppure 'await Task.Run(...)' per effettuare elaborazioni basate sulla CPU in un thread in background.
 
-		private async Task SelezionaRiga(string idArticolo)
-#pragma warning restore CS1998 // In questo metodo asincrono non sono presenti operatori 'await', pertanto verrà eseguito in modo sincrono. Provare a usare l'operatore 'await' per attendere chiamate ad API non di blocco oppure 'await Task.Run(...)' per effettuare elaborazioni basate sulla CPU in un thread in background.
-		{
-			for (int i = 0; i < dgvMaster.RowCount; i++)
-			{
-				if (((ArticoloItem)(dgvMaster.Rows[i].DataBoundItem)).ID == idArticolo)
-				{
-					dgvMaster.Rows[i].Selected = true;
-					dgvMaster.CurrentCell = dgvMaster.Rows[i].Cells[1];
-					break;
-				}
-			}
-		}
 
 		private void dgvMaster_DoubleClick(object sender, EventArgs e)
 		{

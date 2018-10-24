@@ -1,22 +1,39 @@
-﻿using StrumentiMusicali.App.CustomComponents;
+﻿using StrumentiMusicali.App.Core.Item.Base;
+using StrumentiMusicali.App.CustomComponents;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace StrumentiMusicali.App.View.Base
+namespace StrumentiMusicali.App.View
 {
-	public partial class BaseDataControl : Form
+	public static class UtilityView
 	{
-		int _tabindex = 0;
-		public BaseDataControl()
-			:base()
+		public static T GetCurrentItemSelected<T>(this DataGridView dataGrid)
 		{
-			InitializeComponent();
+			if (dataGrid.SelectedRows.Count > 0)
+			{
+				return (T)dataGrid.SelectedRows[0].DataBoundItem;
+			}
+			return default(T);
 		}
-		public void SetDataBind(Control parentControl, object businessObject)
+		public static async Task SelezionaRiga(this DataGridView dataGrid,string idItem )
+			 
+		{
+			for (int i = 0; i < dataGrid.RowCount; i++)
+			{
+				if (((BaseItem)(dataGrid.Rows[i].DataBoundItem)).ID == idItem)
+				{
+					dataGrid.Rows[i].Selected = true;
+					dataGrid.CurrentCell = dataGrid.Rows[i].Cells[1];
+					break;
+				}
+			}
+		}
+		public static void SetDataBind(Control parentControl, object businessObject)
 		{
 			var listControlWithTag = FindControlByType<Control>(parentControl).Where(a => a.Tag != null && a.Tag.ToString().Length > 0);
 
@@ -52,20 +69,7 @@ namespace StrumentiMusicali.App.View.Base
 				}
 			}
 		}
-
-		internal void OrderTab(Control parent)
-		{
-			foreach (var item in FindControlByType<Control>(parent, true).Where(a => a.TabStop == true).GroupBy(a => a.Parent).Select(a => new { a.Key, a }).ToList())
-			{
-				foreach (var b in item.a.OrderBy(a => a.Top).ThenBy(a => a.Left))
-				{
-					b.TabIndex = _tabindex;
-					_tabindex++;
-				}
-			}
-			 
-		}
-		public List<T> FindControlByType<T>(Control mainControl, bool getAllChild = true) where T : Control
+		public static List<T> FindControlByType<T>(Control mainControl, bool getAllChild = true) where T : Control
 		{
 			List<T> lt = new List<T>();
 			for (int i = 0; i < mainControl.Controls.Count; i++)
@@ -76,7 +80,7 @@ namespace StrumentiMusicali.App.View.Base
 			return lt;
 		}
 
-		public IEnumerable<PropertyInfo> GetProperties(Object obj)
+		public static IEnumerable<PropertyInfo> GetProperties(Object obj)
 		{
 			Type t = obj.GetType();
 

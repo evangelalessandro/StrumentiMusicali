@@ -52,9 +52,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			_logger.Info("Apertura ambiente AggiungiArticolo");
 
-			using (var frm = new Forms.DettaglioArticoloView())
+			using (var view = new Forms.DettaglioArticoloView())
 			{
-				frm.ShowDialog();
+				ShowView(view);
 			}
 		}
 

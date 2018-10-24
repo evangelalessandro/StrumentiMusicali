@@ -25,26 +25,26 @@ namespace StrumentiMusicali.App.View
 			_controllerMagazzino.SelectedItem.Qta = 1;
 			InitializeComponent();
 			lblTitoloArt.Text = "";
-			ribScarica.Click += (a, e) =>
-			{
-				this.Validate();
-				EventAggregator.Instance().Publish<ScaricaQtaMagazzino>(new ScaricaQtaMagazzino()
-				{
-					Qta = _controllerMagazzino.SelectedItem.Qta,
-					Deposito = _controllerMagazzino.SelectedItem.Deposito,
-					ArticoloID = _controllerMagazzino.SelectedItem.ArticoloID
-				});
-			};
-			ribCarica.Click += (a, e) =>
-			{
-				this.Validate();
-				EventAggregator.Instance().Publish<CaricaQtaMagazzino>(new CaricaQtaMagazzino()
-				{
-					Qta = _controllerMagazzino.SelectedItem.Qta,
-					Deposito = _controllerMagazzino.SelectedItem.Deposito,
-					ArticoloID = _controllerMagazzino.SelectedItem.ArticoloID
-				});
-			};
+			//ribScarica.Click += (a, e) =>
+			//{
+			//	this.Validate();
+			//	EventAggregator.Instance().Publish<ScaricaQtaMagazzino>(new ScaricaQtaMagazzino()
+			//	{
+			//		Qta = _controllerMagazzino.SelectedItem.Qta,
+			//		Deposito = _controllerMagazzino.SelectedItem.Deposito,
+			//		ArticoloID = _controllerMagazzino.SelectedItem.ArticoloID
+			//	});
+			//};
+			//ribCarica.Click += (a, e) =>
+			//{
+			//	this.Validate();
+			//	EventAggregator.Instance().Publish<CaricaQtaMagazzino>(new CaricaQtaMagazzino()
+			//	{
+			//		Qta = _controllerMagazzino.SelectedItem.Qta,
+			//		Deposito = _controllerMagazzino.SelectedItem.Deposito,
+			//		ArticoloID = _controllerMagazzino.SelectedItem.ArticoloID
+			//	});
+			//};
 			cboDeposito.DisplayMember = "Descrizione";
 			cboDeposito.ValueMember = "ID";
 			txtQta.ValueChanged += (a, b) =>
@@ -68,7 +68,7 @@ namespace StrumentiMusicali.App.View
 			};
 			txtQta.Tag = "Qta";
 			cboDeposito.Tag = "Deposito";
-			SetDataBind(this, _controllerMagazzino.SelectedItem);
+			UtilityView.SetDataBind(this, _controllerMagazzino.SelectedItem);
 			this.Load += ScaricoMagazzino_Load;
 
 			EventAggregator.Instance().Subscribe<MovimentiUpdate>(RefreshData);
@@ -149,8 +149,8 @@ namespace StrumentiMusicali.App.View
 			try
 			{
 				var enableB = _controllerMagazzino.SelectedItem.ArticoloID != "" && _controllerMagazzino.SelectedItem.Qta > 0 && _controllerMagazzino.SelectedItem.Deposito > 0;
-				ribCarica.Enabled = enableB;
-				ribScarica.Enabled = enableB;
+				//ribCarica.Enabled = enableB;
+				//ribScarica.Enabled = enableB;
 				this.Validate();
 			}
 			catch (Exception ex)

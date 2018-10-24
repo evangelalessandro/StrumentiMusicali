@@ -10,13 +10,13 @@ namespace StrumentiMusicali.App.Core.Item
 		
 		public string CodiceArt { get; set; }
 		
-		public string Descrizione { get; set; }
+		public string RigaDescrizione { get; set; }
 
-		public int Qta { get; set; }
+		public int RigaQta { get; set; }
 
 		public decimal PrezzoUnitario { get; set; }
 
-		public decimal Importo { get; set; }
+		public decimal RigaImporto { get; set; }
 
 		public string Iva { get; set; }
 

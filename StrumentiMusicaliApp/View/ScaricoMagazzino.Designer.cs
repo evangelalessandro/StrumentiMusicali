@@ -28,11 +28,6 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScaricoMagazzino));
-			this.ribbonTab1 = new System.Windows.Forms.RibbonTab();
-			this.ribbonPanel2 = new System.Windows.Forms.RibbonPanel();
-			this.ribCarica = new System.Windows.Forms.RibbonButton();
-			this.ribScarica = new System.Windows.Forms.RibbonButton();
 			this.txtCodiceABarre = new System.Windows.Forms.TextBox();
 			this.dgvMaster = new System.Windows.Forms.DataGridView();
 			this.txtQta = new System.Windows.Forms.NumericUpDown();
@@ -46,54 +41,12 @@
 			((System.ComponentModel.ISupportInitialize)(this.txtQta)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// ribbon1
-			// 
-			// 
-			// 
-			// 
-			this.ribbon1.OrbDropDown.BorderRoundness = 8;
-			this.ribbon1.OrbDropDown.Location = new System.Drawing.Point(0, 0);
-			this.ribbon1.OrbDropDown.Name = "";
-			this.ribbon1.OrbDropDown.Size = new System.Drawing.Size(527, 447);
-			this.ribbon1.OrbDropDown.TabIndex = 0;
-			this.ribbon1.Size = new System.Drawing.Size(885, 157);
-			this.ribbon1.Tabs.Add(this.ribbonTab1);
-			// 
-			// ribbonTab1
-			// 
-			this.ribbonTab1.Name = "ribbonTab1";
-			this.ribbonTab1.Panels.Add(this.ribbonPanel2);
-			this.ribbonTab1.Text = "Scarico magazzino";
-			// 
-			// ribbonPanel2
-			// 
-			this.ribbonPanel2.Items.Add(this.ribCarica);
-			this.ribbonPanel2.Items.Add(this.ribScarica);
-			this.ribbonPanel2.Name = "ribbonPanel2";
-			this.ribbonPanel2.Text = "Azioni a magazzino";
-			// 
-			// ribCarica
-			// 
-			this.ribCarica.Image = global::StrumentiMusicali.App.Properties.Resources.Add;
-			this.ribCarica.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Add;
-			this.ribCarica.Name = "ribCarica";
-			this.ribCarica.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribCarica.SmallImage")));
-			this.ribCarica.Text = "Deposita";
-			// 
-			// ribScarica
-			// 
-			this.ribScarica.Image = global::StrumentiMusicali.App.Properties.Resources.Remove;
-			this.ribScarica.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Remove;
-			this.ribScarica.Name = "ribScarica";
-			this.ribScarica.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribScarica.SmallImage")));
-			this.ribScarica.Text = "Scarica";
-			// 
 			// txtCodiceABarre
 			// 
 			this.txtCodiceABarre.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtCodiceABarre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtCodiceABarre.Location = new System.Drawing.Point(17, 197);
+			this.txtCodiceABarre.Location = new System.Drawing.Point(3, 35);
 			this.txtCodiceABarre.Name = "txtCodiceABarre";
 			this.txtCodiceABarre.Size = new System.Drawing.Size(856, 26);
 			this.txtCodiceABarre.TabIndex = 1;
@@ -107,7 +60,7 @@
 			this.dgvMaster.AllowUserToResizeRows = false;
 			this.dgvMaster.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgvMaster.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.dgvMaster.Location = new System.Drawing.Point(0, 334);
+			this.dgvMaster.Location = new System.Drawing.Point(0, 173);
 			this.dgvMaster.Margin = new System.Windows.Forms.Padding(2);
 			this.dgvMaster.MultiSelect = false;
 			this.dgvMaster.Name = "dgvMaster";
@@ -120,7 +73,7 @@
 			// txtQta
 			// 
 			this.txtQta.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtQta.Location = new System.Drawing.Point(195, 243);
+			this.txtQta.Location = new System.Drawing.Point(181, 81);
 			this.txtQta.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -137,7 +90,7 @@
 			this.cboDeposito.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboDeposito.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.cboDeposito.FormattingEnabled = true;
-			this.cboDeposito.Location = new System.Drawing.Point(437, 242);
+			this.cboDeposito.Location = new System.Drawing.Point(423, 80);
 			this.cboDeposito.Name = "cboDeposito";
 			this.cboDeposito.Size = new System.Drawing.Size(436, 32);
 			this.cboDeposito.TabIndex = 5;
@@ -147,7 +100,7 @@
 			// 
 			this.label1.AutoSize = true;
 			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label1.Location = new System.Drawing.Point(321, 244);
+			this.label1.Location = new System.Drawing.Point(307, 82);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(97, 25);
 			this.label1.TabIndex = 6;
@@ -157,7 +110,7 @@
 			// 
 			this.label2.AutoSize = true;
 			this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label2.Location = new System.Drawing.Point(96, 245);
+			this.label2.Location = new System.Drawing.Point(82, 83);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(93, 25);
 			this.label2.TabIndex = 7;
@@ -167,7 +120,7 @@
 			// 
 			this.label3.AutoSize = true;
 			this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label3.Location = new System.Drawing.Point(12, 169);
+			this.label3.Location = new System.Drawing.Point(-2, 7);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(229, 25);
 			this.label3.TabIndex = 8;
@@ -177,7 +130,7 @@
 			// 
 			this.lblTitoloArticolo.AutoSize = true;
 			this.lblTitoloArticolo.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblTitoloArticolo.Location = new System.Drawing.Point(26, 287);
+			this.lblTitoloArticolo.Location = new System.Drawing.Point(12, 125);
 			this.lblTitoloArticolo.Name = "lblTitoloArticolo";
 			this.lblTitoloArticolo.Size = new System.Drawing.Size(147, 25);
 			this.lblTitoloArticolo.TabIndex = 9;
@@ -187,7 +140,7 @@
 			// 
 			this.lblTitoloArt.AutoSize = true;
 			this.lblTitoloArt.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblTitoloArt.Location = new System.Drawing.Point(179, 287);
+			this.lblTitoloArt.Location = new System.Drawing.Point(165, 125);
 			this.lblTitoloArt.Name = "lblTitoloArt";
 			this.lblTitoloArt.Size = new System.Drawing.Size(147, 25);
 			this.lblTitoloArt.TabIndex = 10;
@@ -197,7 +150,6 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(885, 574);
 			this.Controls.Add(this.lblTitoloArt);
 			this.Controls.Add(this.lblTitoloArticolo);
 			this.Controls.Add(this.label3);
@@ -208,16 +160,7 @@
 			this.Controls.Add(this.dgvMaster);
 			this.Controls.Add(this.txtCodiceABarre);
 			this.Name = "ScaricoMagazzino";
-			this.Controls.SetChildIndex(this.ribbon1, 0);
-			this.Controls.SetChildIndex(this.txtCodiceABarre, 0);
-			this.Controls.SetChildIndex(this.dgvMaster, 0);
-			this.Controls.SetChildIndex(this.txtQta, 0);
-			this.Controls.SetChildIndex(this.cboDeposito, 0);
-			this.Controls.SetChildIndex(this.label1, 0);
-			this.Controls.SetChildIndex(this.label2, 0);
-			this.Controls.SetChildIndex(this.label3, 0);
-			this.Controls.SetChildIndex(this.lblTitoloArticolo, 0);
-			this.Controls.SetChildIndex(this.lblTitoloArt, 0);
+			this.Size = new System.Drawing.Size(885, 413);
 			((System.ComponentModel.ISupportInitialize)(this.dgvMaster)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtQta)).EndInit();
 			this.ResumeLayout(false);
@@ -227,7 +170,6 @@
 
 		#endregion
 
-		private System.Windows.Forms.RibbonTab ribbonTab1;
 		private System.Windows.Forms.TextBox txtCodiceABarre;
 		private System.Windows.Forms.DataGridView dgvMaster;
 		private System.Windows.Forms.NumericUpDown txtQta;
@@ -237,8 +179,5 @@
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label lblTitoloArticolo;
 		private System.Windows.Forms.Label lblTitoloArt;
-		private System.Windows.Forms.RibbonPanel ribbonPanel2;
-		private System.Windows.Forms.RibbonButton ribCarica;
-		private System.Windows.Forms.RibbonButton ribScarica;
 	}
 }

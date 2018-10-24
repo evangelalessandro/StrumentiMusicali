@@ -20,21 +20,12 @@ namespace StrumentiMusicali.App.View
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DettaglioFatturaView));
 			this.lblID = new System.Windows.Forms.Label();
 			this.txtID = new System.Windows.Forms.TextBox();
 			this.lblCondizione = new System.Windows.Forms.Label();
 			this.lblMarca = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
-			this.ribbonButton1 = new System.Windows.Forms.RibbonButton();
-			this.ribbonTab1 = new System.Windows.Forms.RibbonTab();
-			this.ribPanelStrumenti = new System.Windows.Forms.RibbonPanel();
-			this.ribSave = new System.Windows.Forms.RibbonButton();
-			this.ribPanelRighe = new System.Windows.Forms.RibbonPanel();
-			this.ribAdd = new System.Windows.Forms.RibbonButton();
-			this.ribRemove = new System.Windows.Forms.RibbonButton();
 			this.cboPagamento = new System.Windows.Forms.ComboBox();
 			this.pnl1Alto = new System.Windows.Forms.Panel();
 			this.label18 = new System.Windows.Forms.Label();
@@ -76,11 +67,6 @@ namespace StrumentiMusicali.App.View
 			this.label3 = new System.Windows.Forms.Label();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.dgvRighe = new System.Windows.Forms.DataGridView();
-			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.menuImpostaPrincipale = new System.Windows.Forms.ToolStripMenuItem();
-			this.diminuisciPrioritàToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.aumentaPrioritàToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.rimuoviImmagineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.pnl1Alto.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -93,26 +79,7 @@ namespace StrumentiMusicali.App.View
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzo)).BeginInit();
 			this.tabPage2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvRighe)).BeginInit();
-			this.contextMenuStrip1.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// ribbon1
-			// 
-			// 
-			// 
-			// 
-			this.ribbon1.OrbDropDown.BorderRoundness = 8;
-			this.ribbon1.OrbDropDown.Location = new System.Drawing.Point(0, 0);
-			this.ribbon1.OrbDropDown.Name = "";
-			this.ribbon1.OrbDropDown.Size = new System.Drawing.Size(527, 447);
-			this.ribbon1.OrbDropDown.TabIndex = 0;
-			// 
-			// 
-			// 
-			this.ribbon1.QuickAccessToolbar.Items.Add(this.ribbonButton1);
-			this.ribbon1.Size = new System.Drawing.Size(1150, 150);
-			this.ribbon1.TabIndex = 25;
-			this.ribbon1.Tabs.Add(this.ribbonTab1);
 			// 
 			// lblID
 			// 
@@ -173,63 +140,6 @@ namespace StrumentiMusicali.App.View
 			this.label2.Size = new System.Drawing.Size(47, 16);
 			this.label2.TabIndex = 10;
 			this.label2.Text = "Note 1";
-			// 
-			// ribbonButton1
-			// 
-			this.ribbonButton1.Image = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.Image")));
-			this.ribbonButton1.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.LargeImage")));
-			this.ribbonButton1.MaxSizeMode = System.Windows.Forms.RibbonElementSizeMode.Compact;
-			this.ribbonButton1.Name = "ribbonButton1";
-			this.ribbonButton1.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.SmallImage")));
-			this.ribbonButton1.Text = "ribbonButton1";
-			// 
-			// ribbonTab1
-			// 
-			this.ribbonTab1.Name = "ribbonTab1";
-			this.ribbonTab1.Panels.Add(this.ribPanelStrumenti);
-			this.ribbonTab1.Panels.Add(this.ribPanelRighe);
-			this.ribbonTab1.Text = "Fattura";
-			// 
-			// ribPanelStrumenti
-			// 
-			this.ribPanelStrumenti.ButtonMoreEnabled = false;
-			this.ribPanelStrumenti.ButtonMoreVisible = false;
-			this.ribPanelStrumenti.Items.Add(this.ribSave);
-			this.ribPanelStrumenti.Name = "ribPanelStrumenti";
-			this.ribPanelStrumenti.Text = "Strumenti";
-			// 
-			// ribSave
-			// 
-			this.ribSave.Image = global::StrumentiMusicali.App.Properties.Resources.Save;
-			this.ribSave.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Save;
-			this.ribSave.Name = "ribSave";
-			this.ribSave.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribSave.SmallImage")));
-			this.ribSave.Text = "Salva";
-			// 
-			// ribPanelRighe
-			// 
-			this.ribPanelRighe.ButtonMoreEnabled = false;
-			this.ribPanelRighe.ButtonMoreVisible = false;
-			this.ribPanelRighe.Items.Add(this.ribAdd);
-			this.ribPanelRighe.Items.Add(this.ribRemove);
-			this.ribPanelRighe.Name = "ribPanelRighe";
-			this.ribPanelRighe.Text = "Righe";
-			// 
-			// ribAdd
-			// 
-			this.ribAdd.Image = global::StrumentiMusicali.App.Properties.Resources.Add;
-			this.ribAdd.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Add;
-			this.ribAdd.Name = "ribAdd";
-			this.ribAdd.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribAdd.SmallImage")));
-			this.ribAdd.Text = "Aggiungi";
-			// 
-			// ribRemove
-			// 
-			this.ribRemove.Image = global::StrumentiMusicali.App.Properties.Resources.Delete;
-			this.ribRemove.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Delete;
-			this.ribRemove.Name = "ribRemove";
-			this.ribRemove.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribRemove.SmallImage")));
-			this.ribRemove.Text = "Rimuovi";
 			// 
 			// cboPagamento
 			// 
@@ -547,10 +457,10 @@ namespace StrumentiMusicali.App.View
 			this.tabControl1.Controls.Add(this.tabPage1);
 			this.tabControl1.Controls.Add(this.tabPage2);
 			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tabControl1.Location = new System.Drawing.Point(0, 150);
+			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(1150, 446);
+			this.tabControl1.Size = new System.Drawing.Size(1150, 449);
 			this.tabControl1.TabIndex = 29;
 			this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
 			// 
@@ -562,7 +472,7 @@ namespace StrumentiMusicali.App.View
 			this.tabPage1.Location = new System.Drawing.Point(4, 25);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(1142, 417);
+			this.tabPage1.Size = new System.Drawing.Size(1142, 420);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Dati Fattura";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -578,7 +488,7 @@ namespace StrumentiMusicali.App.View
 			this.pnl2Testo.Location = new System.Drawing.Point(3, 190);
 			this.pnl2Testo.Name = "pnl2Testo";
 			this.pnl2Testo.Padding = new System.Windows.Forms.Padding(5);
-			this.pnl2Testo.Size = new System.Drawing.Size(1136, 87);
+			this.pnl2Testo.Size = new System.Drawing.Size(1136, 90);
 			this.pnl2Testo.TabIndex = 33;
 			// 
 			// txtNote2
@@ -620,7 +530,7 @@ namespace StrumentiMusicali.App.View
 			this.pnl3Basso.Controls.Add(this.txtPrezzo);
 			this.pnl3Basso.Controls.Add(this.label3);
 			this.pnl3Basso.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnl3Basso.Location = new System.Drawing.Point(3, 277);
+			this.pnl3Basso.Location = new System.Drawing.Point(3, 280);
 			this.pnl3Basso.Name = "pnl3Basso";
 			this.pnl3Basso.Size = new System.Drawing.Size(1136, 137);
 			this.pnl3Basso.TabIndex = 32;
@@ -738,56 +648,18 @@ namespace StrumentiMusicali.App.View
 			this.dgvRighe.Size = new System.Drawing.Size(1136, 198);
 			this.dgvRighe.TabIndex = 2;
 			// 
-			// contextMenuStrip1
-			// 
-			this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuImpostaPrincipale,
-            this.diminuisciPrioritàToolStripMenuItem,
-            this.aumentaPrioritàToolStripMenuItem,
-            this.rimuoviImmagineToolStripMenuItem});
-			this.contextMenuStrip1.Name = "contextMenuStrip1";
-			this.contextMenuStrip1.Size = new System.Drawing.Size(206, 92);
-			// 
-			// menuImpostaPrincipale
-			// 
-			this.menuImpostaPrincipale.Name = "menuImpostaPrincipale";
-			this.menuImpostaPrincipale.Size = new System.Drawing.Size(205, 22);
-			this.menuImpostaPrincipale.Text = "Imposta come principale";
-			// 
-			// diminuisciPrioritàToolStripMenuItem
-			// 
-			this.diminuisciPrioritàToolStripMenuItem.Name = "diminuisciPrioritàToolStripMenuItem";
-			this.diminuisciPrioritàToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-			this.diminuisciPrioritàToolStripMenuItem.Text = "Diminuisci priorità";
-			// 
-			// aumentaPrioritàToolStripMenuItem
-			// 
-			this.aumentaPrioritàToolStripMenuItem.Name = "aumentaPrioritàToolStripMenuItem";
-			this.aumentaPrioritàToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-			this.aumentaPrioritàToolStripMenuItem.Text = "Aumenta priorità";
-			// 
-			// rimuoviImmagineToolStripMenuItem
-			// 
-			this.rimuoviImmagineToolStripMenuItem.Image = global::StrumentiMusicali.App.Properties.Resources.Delete;
-			this.rimuoviImmagineToolStripMenuItem.Name = "rimuoviImmagineToolStripMenuItem";
-			this.rimuoviImmagineToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-			this.rimuoviImmagineToolStripMenuItem.Text = "Rimuovi Immagine";
-			// 
 			// DettaglioFatturaView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1150, 596);
 			this.Controls.Add(this.tabControl1);
 			this.DoubleBuffered = true;
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Margin = new System.Windows.Forms.Padding(4);
-			this.MinimumSize = new System.Drawing.Size(771, 542);
+			this.MinimumSize = new System.Drawing.Size(1150, 449);
 			this.Name = "DettaglioFatturaView";
-			this.Text = "Fattura";
+			this.Size = new System.Drawing.Size(1150, 449);
 			this.Load += new System.EventHandler(this.frm_Load);
-			this.Controls.SetChildIndex(this.ribbon1, 0);
-			this.Controls.SetChildIndex(this.tabControl1, 0);
 			this.pnl1Alto.ResumeLayout(false);
 			this.pnl1Alto.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
@@ -803,7 +675,6 @@ namespace StrumentiMusicali.App.View
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzo)).EndInit();
 			this.tabPage2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgvRighe)).EndInit();
-			this.contextMenuStrip1.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -820,11 +691,6 @@ namespace StrumentiMusicali.App.View
 		private System.Windows.Forms.Label label2;
 		private AutoCompleteTextBox txtNote1;
 		 
-		private System.Windows.Forms.RibbonTab ribbonTab1;
-		private System.Windows.Forms.RibbonPanel ribPanelStrumenti;
-		private System.Windows.Forms.RibbonButton ribbonButton1;
-		private System.Windows.Forms.RibbonPanel ribPanelRighe;
-		private System.Windows.Forms.RibbonButton ribSave;
 		private System.Windows.Forms.ComboBox cboPagamento;
 		private System.Windows.Forms.Panel pnl1Alto;
 		private System.Windows.Forms.TabControl tabControl1;
@@ -833,13 +699,7 @@ namespace StrumentiMusicali.App.View
 		private System.Windows.Forms.NumericUpDown txtPrezzo;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.TabPage tabPage2;
-		private System.Windows.Forms.RibbonButton ribAdd;
-		private System.Windows.Forms.RibbonButton ribRemove;
-		private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-		private System.Windows.Forms.ToolStripMenuItem menuImpostaPrincipale;
-		private System.Windows.Forms.ToolStripMenuItem diminuisciPrioritàToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem aumentaPrioritàToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem rimuoviImmagineToolStripMenuItem;
+		
 		private System.Windows.Forms.Panel pnl2Testo;
 		private AutoCompleteTextBox txtVettore;
 		private System.Windows.Forms.Label label13;
@@ -870,5 +730,7 @@ namespace StrumentiMusicali.App.View
 		private System.Windows.Forms.NumericUpDown numericUpDown3;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.DataGridView dgvRighe;
+		 
+		
 	}
 }

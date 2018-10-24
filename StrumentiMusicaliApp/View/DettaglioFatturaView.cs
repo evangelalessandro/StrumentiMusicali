@@ -2,6 +2,7 @@
 using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.Base;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
@@ -14,28 +15,18 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View
 {
-	public partial class DettaglioFatturaView : BaseDataControl
+	public partial class DettaglioFatturaView : UserControl, IMenu
 	{
 		private ControllerFatturazione _controllerFatturazione;
 
+		 
 		public DettaglioFatturaView(ControllerFatturazione controllerFatturazione)
 			: base()
 		{
 			_controllerFatturazione = controllerFatturazione;
 			InitializeComponent();
 
-			ribSave.Click += (a, b) =>
-			{
-				this.Validate();
-				EventAggregator.Instance().Publish<FatturaSave>(new FatturaSave());
-				UpdateButtonState();
-			};
-			ribRemove.Click+= (a, b) =>
-			{
-				this.Validate();
-				EventAggregator.Instance().Publish<FatturaSave>(new FatturaSave());
-				UpdateButtonState();
-			};
+			
 		}
 
 		/// <summary>
@@ -102,15 +93,18 @@ namespace StrumentiMusicali.App.View
 
 			UpdateButtonState();
 
-			SetDataBind(this, _controllerFatturazione.SelectedItem);
+			UtilityView.SetDataBind(this, _controllerFatturazione.SelectedItem);
 
 			txtRagioneSociale.TextChanged += TxtRagioneSociale_TextChanged;
 
 
+			using (var ord=new Utility.OrdinaTab())
+			{
+				ord.OrderTab(pnl1Alto);
+				ord.OrderTab(pnl2Testo);
+				ord.OrderTab(pnl3Basso);
 
-			OrderTab(pnl1Alto);
-			OrderTab(pnl2Testo);
-			OrderTab(pnl3Basso);
+			}
 
 		}
 
@@ -144,11 +138,11 @@ namespace StrumentiMusicali.App.View
 					{
 						ID = a.ID.ToString(),
 						CodiceArt=a.CodiceArticoloOld,
-						Descrizione=a.Descrizione,
+						RigaDescrizione=a.Descrizione,
 						FatturaRigaCS=a,
-						Importo=a.Qta*a.PrezzoUnitario,
+						RigaImporto=a.Qta*a.PrezzoUnitario,
 						PrezzoUnitario=a.PrezzoUnitario,
-						Qta=a.Qta,
+						RigaQta=a.Qta,
 						Iva=a.IvaApplicata
 					}).OrderBy(a => a.FatturaRigaCS.OrdineVisualizzazione).ThenBy(a=>a.ID).ToList();
 				}
@@ -194,8 +188,31 @@ namespace StrumentiMusicali.App.View
 
 		private void UpdateButtonState()
 		{
-			ribPanelRighe.Enabled = tabControl1.SelectedTab == tabPage2;
-			ribRemove.Enabled = true;
+			if (_menuTab!=null)
+			{ 
+				_menuTab.Tabs[0].Pannelli[0].Enabled = tabControl1.SelectedTab == tabPage2;
+				
+			}
+		}
+		MenuTab _menuTab = null;
+		public MenuTab GetMenu()
+		{
+			if (_menuTab==null)
+			{
+				_menuTab = new MenuTab();
+				
+				var tab =_menuTab.Add("Principale");
+				var ribPannel =tab.Add("Principale");
+				var ribSave = ribPannel.Add("Save", Properties.Resources.Save);
+				ribSave.Click += (a, e) =>
+				{
+					this.Validate();
+					EventAggregator.Instance().Publish<FatturaSave>(new FatturaSave());
+					UpdateButtonState();
+				};
+			}
+			return _menuTab;
+			 
 		}
 	}
 }

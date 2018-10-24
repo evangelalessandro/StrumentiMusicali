@@ -21,6 +21,7 @@ namespace StrumentiMusicali.App.View
 		private ControllerFatturazione _baseController;
 
 		public FattureListView(ControllerFatturazione baseController)
+			:base()
 		{
 			_baseController = baseController;
 			InitializeComponent();
@@ -30,7 +31,8 @@ namespace StrumentiMusicali.App.View
 			{
 				using (var curs = new CursorManager())
 				{
-					EventAggregator.Instance().Publish<EliminaFattura>(new EliminaFattura(GetCurrentItemSelected()));
+					EventAggregator.Instance().Publish<EliminaFattura>(
+						new EliminaFattura(dgvMaster.GetCurrentItemSelected<FatturaItem>()));
 				}
 			};
 
@@ -49,7 +51,7 @@ namespace StrumentiMusicali.App.View
 			this.Disposed += FmrMain_Disposed;
 			_logger.Debug(this.Name + " init");
 		}
-
+		 
 		private void FmrMain_Disposed(object sender, EventArgs e)
 		{
 			var dato = _baseController.ReadSetting(Settings.enAmbienti.FattureList);
@@ -63,7 +65,9 @@ namespace StrumentiMusicali.App.View
 		private async void UpdateList(FattureListUpdate obj)
 		{
 			await RefreshData();
-			await SelezionaRiga(_baseController.SelectedItem.ID.ToString());
+
+			await dgvMaster.SelezionaRiga(_baseController.SelectedItem.ID.ToString());
+			
 		}
 
 		private async void TxtCerca_KeyUp(object sender, KeyEventArgs e)
@@ -97,15 +101,7 @@ namespace StrumentiMusicali.App.View
 
 		}
 
-		private FatturaItem GetCurrentItemSelected()
-		{
-			FatturaItem item = null;
-			if (dgvMaster.SelectedRows.Count > 0)
-			{
-				item = (FatturaItem)dgvMaster.SelectedRows[0].DataBoundItem;
-			}
-			return item;
-		}
+		
 
 		private void UpdateButtonState()
 		{
@@ -135,7 +131,7 @@ namespace StrumentiMusicali.App.View
 			UpdateButtonState();
 			await RefreshData();
 
-			await SelezionaRiga(dato.LastItemSelected);
+			await dgvMaster.SelezionaRiga(dato.LastItemSelected);
 
 			UpdateButtonState();
 
@@ -196,18 +192,7 @@ namespace StrumentiMusicali.App.View
 		 
 
 		 
-		private async Task SelezionaRiga(string idItem)
-		{
-			for (int i = 0; i < dgvMaster.RowCount; i++)
-			{
-				if (((FatturaItem)(dgvMaster.Rows[i].DataBoundItem)).ID == idItem)
-				{
-					dgvMaster.Rows[i].Selected = true;
-					dgvMaster.CurrentCell = dgvMaster.Rows[i].Cells[1];
-					break;
-				}
-			}
-		}
+		
 
 		private void dgvMaster_DoubleClick(object sender, EventArgs e)
 		{
@@ -216,11 +201,12 @@ namespace StrumentiMusicali.App.View
 
 		private async void Edit()
 		{
-			var itemSelected = GetCurrentItemSelected();
+			var itemSelected = dgvMaster.GetCurrentItemSelected<FatturaItem>();
 			EventAggregator.Instance().Publish<EditFattura>(new EditFattura(itemSelected));
 
 			await RefreshData();
-			await SelezionaRiga(itemSelected.ID);
+			
+			await dgvMaster.SelezionaRiga(itemSelected.ID );
 		}
 	}
 }

@@ -12,7 +12,7 @@ namespace StrumentiMusicali.App.Core.Item
 		public DateTime Data { get; set; }
 		public string PIVA { get; set; }
 
-
+		public string Codice { get; set; }
 
 		public Fattura FatturaCS { get; set; }
 

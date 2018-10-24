@@ -26,6 +26,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			try
 			{
+				if (!MessageManager.QuestionMessage("Sei sicuro di voler cancellare l'immagine selezionata?"))
+					return;
 				var listFileToDelete = new List<string>();
 				using (var curs = new CursorManager())
 				{

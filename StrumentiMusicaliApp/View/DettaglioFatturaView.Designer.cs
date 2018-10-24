@@ -36,7 +36,7 @@ namespace StrumentiMusicali.App.View
 			this.ribAdd = new System.Windows.Forms.RibbonButton();
 			this.ribRemove = new System.Windows.Forms.RibbonButton();
 			this.cboPagamento = new System.Windows.Forms.ComboBox();
-			this.panel2 = new System.Windows.Forms.Panel();
+			this.pnl1Alto = new System.Windows.Forms.Panel();
 			this.label18 = new System.Windows.Forms.Label();
 			this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
 			this.label17 = new System.Windows.Forms.Label();
@@ -54,20 +54,20 @@ namespace StrumentiMusicali.App.View
 			this.txtCausaleTrasporto = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
 			this.label11 = new System.Windows.Forms.Label();
 			this.label10 = new System.Windows.Forms.Label();
-			this.autoCompleteTextBox1 = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
+			this.txtPIVA = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
 			this.label9 = new System.Windows.Forms.Label();
 			this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
 			this.label7 = new System.Windows.Forms.Label();
-			this.textBox1 = new System.Windows.Forms.TextBox();
-			this.txtMarca = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
+			this.txtCodice = new System.Windows.Forms.TextBox();
+			this.txtRagioneSociale = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
 			this.txtTrasportoACura = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.pnlTesto = new System.Windows.Forms.Panel();
+			this.pnl2Testo = new System.Windows.Forms.Panel();
 			this.txtNote2 = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
 			this.label6 = new System.Windows.Forms.Label();
 			this.txtNote1 = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
-			this.panel1 = new System.Windows.Forms.Panel();
+			this.pnl3Basso = new System.Windows.Forms.Panel();
 			this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
 			this.label5 = new System.Windows.Forms.Label();
 			this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
@@ -81,13 +81,13 @@ namespace StrumentiMusicali.App.View
 			this.diminuisciPrioritàToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aumentaPrioritàToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.rimuoviImmagineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.panel2.SuspendLayout();
+			this.pnl1Alto.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
-			this.pnlTesto.SuspendLayout();
-			this.panel1.SuspendLayout();
+			this.pnl2Testo.SuspendLayout();
+			this.pnl3Basso.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzo)).BeginInit();
@@ -137,7 +137,7 @@ namespace StrumentiMusicali.App.View
 			// lblCondizione
 			// 
 			this.lblCondizione.AutoSize = true;
-			this.lblCondizione.Location = new System.Drawing.Point(11, 47);
+			this.lblCondizione.Location = new System.Drawing.Point(11, 45);
 			this.lblCondizione.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.lblCondizione.Name = "lblCondizione";
 			this.lblCondizione.Size = new System.Drawing.Size(78, 16);
@@ -167,12 +167,10 @@ namespace StrumentiMusicali.App.View
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Dock = System.Windows.Forms.DockStyle.Left;
-			this.label2.Location = new System.Drawing.Point(5, 5);
-			this.label2.Margin = new System.Windows.Forms.Padding(10);
+			this.label2.Location = new System.Drawing.Point(17, 8);
+			this.label2.Margin = new System.Windows.Forms.Padding(0);
 			this.label2.Name = "label2";
-			this.label2.Padding = new System.Windows.Forms.Padding(10);
-			this.label2.Size = new System.Drawing.Size(67, 36);
+			this.label2.Size = new System.Drawing.Size(47, 16);
 			this.label2.TabIndex = 10;
 			this.label2.Text = "Note 1";
 			// 
@@ -237,49 +235,49 @@ namespace StrumentiMusicali.App.View
 			// 
 			this.cboPagamento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboPagamento.FormattingEnabled = true;
-			this.cboPagamento.Location = new System.Drawing.Point(85, 42);
+			this.cboPagamento.Location = new System.Drawing.Point(96, 40);
 			this.cboPagamento.Name = "cboPagamento";
 			this.cboPagamento.Size = new System.Drawing.Size(219, 24);
 			this.cboPagamento.TabIndex = 5;
 			this.cboPagamento.Tag = "Pagamento";
 			// 
-			// panel2
+			// pnl1Alto
 			// 
-			this.panel2.Controls.Add(this.label18);
-			this.panel2.Controls.Add(this.dateTimePicker3);
-			this.panel2.Controls.Add(this.label17);
-			this.panel2.Controls.Add(this.dateTimePicker2);
-			this.panel2.Controls.Add(this.label16);
-			this.panel2.Controls.Add(this.numericUpDown2);
-			this.panel2.Controls.Add(this.label15);
-			this.panel2.Controls.Add(this.numericUpDown1);
-			this.panel2.Controls.Add(this.txtAspettoBeni);
-			this.panel2.Controls.Add(this.label14);
-			this.panel2.Controls.Add(this.txtVettore);
-			this.panel2.Controls.Add(this.label13);
-			this.panel2.Controls.Add(this.txtPorto);
-			this.panel2.Controls.Add(this.label12);
-			this.panel2.Controls.Add(this.txtCausaleTrasporto);
-			this.panel2.Controls.Add(this.label11);
-			this.panel2.Controls.Add(this.label10);
-			this.panel2.Controls.Add(this.autoCompleteTextBox1);
-			this.panel2.Controls.Add(this.label9);
-			this.panel2.Controls.Add(this.dateTimePicker1);
-			this.panel2.Controls.Add(this.label7);
-			this.panel2.Controls.Add(this.textBox1);
-			this.panel2.Controls.Add(this.cboPagamento);
-			this.panel2.Controls.Add(this.lblID);
-			this.panel2.Controls.Add(this.txtID);
-			this.panel2.Controls.Add(this.lblCondizione);
-			this.panel2.Controls.Add(this.lblMarca);
-			this.panel2.Controls.Add(this.txtMarca);
-			this.panel2.Controls.Add(this.txtTrasportoACura);
-			this.panel2.Controls.Add(this.label1);
-			this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel2.Location = new System.Drawing.Point(3, 3);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(1136, 187);
-			this.panel2.TabIndex = 31;
+			this.pnl1Alto.Controls.Add(this.label18);
+			this.pnl1Alto.Controls.Add(this.dateTimePicker3);
+			this.pnl1Alto.Controls.Add(this.label17);
+			this.pnl1Alto.Controls.Add(this.dateTimePicker2);
+			this.pnl1Alto.Controls.Add(this.label16);
+			this.pnl1Alto.Controls.Add(this.numericUpDown2);
+			this.pnl1Alto.Controls.Add(this.label15);
+			this.pnl1Alto.Controls.Add(this.numericUpDown1);
+			this.pnl1Alto.Controls.Add(this.txtAspettoBeni);
+			this.pnl1Alto.Controls.Add(this.label14);
+			this.pnl1Alto.Controls.Add(this.txtVettore);
+			this.pnl1Alto.Controls.Add(this.label13);
+			this.pnl1Alto.Controls.Add(this.txtPorto);
+			this.pnl1Alto.Controls.Add(this.label12);
+			this.pnl1Alto.Controls.Add(this.txtCausaleTrasporto);
+			this.pnl1Alto.Controls.Add(this.label11);
+			this.pnl1Alto.Controls.Add(this.label10);
+			this.pnl1Alto.Controls.Add(this.txtPIVA);
+			this.pnl1Alto.Controls.Add(this.label9);
+			this.pnl1Alto.Controls.Add(this.dateTimePicker1);
+			this.pnl1Alto.Controls.Add(this.label7);
+			this.pnl1Alto.Controls.Add(this.txtCodice);
+			this.pnl1Alto.Controls.Add(this.cboPagamento);
+			this.pnl1Alto.Controls.Add(this.lblID);
+			this.pnl1Alto.Controls.Add(this.txtID);
+			this.pnl1Alto.Controls.Add(this.lblCondizione);
+			this.pnl1Alto.Controls.Add(this.lblMarca);
+			this.pnl1Alto.Controls.Add(this.txtRagioneSociale);
+			this.pnl1Alto.Controls.Add(this.txtTrasportoACura);
+			this.pnl1Alto.Controls.Add(this.label1);
+			this.pnl1Alto.Dock = System.Windows.Forms.DockStyle.Top;
+			this.pnl1Alto.Location = new System.Drawing.Point(3, 3);
+			this.pnl1Alto.Name = "pnl1Alto";
+			this.pnl1Alto.Size = new System.Drawing.Size(1136, 187);
+			this.pnl1Alto.TabIndex = 31;
 			// 
 			// label18
 			// 
@@ -458,30 +456,30 @@ namespace StrumentiMusicali.App.View
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(535, 47);
+			this.label10.Location = new System.Drawing.Point(535, 43);
 			this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(62, 16);
 			this.label10.TabIndex = 36;
 			this.label10.Text = "PIVA\\CF:";
 			// 
-			// autoCompleteTextBox1
+			// txtPIVA
 			// 
-			this.autoCompleteTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.txtPIVA.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.autoCompleteTextBox1.Location = new System.Drawing.Point(605, 42);
-			this.autoCompleteTextBox1.Margin = new System.Windows.Forms.Padding(4);
-			this.autoCompleteTextBox1.MaxLength = 100;
-			this.autoCompleteTextBox1.Name = "autoCompleteTextBox1";
-			this.autoCompleteTextBox1.Size = new System.Drawing.Size(374, 22);
-			this.autoCompleteTextBox1.TabIndex = 35;
-			this.autoCompleteTextBox1.Tag = "PIVA";
-			this.autoCompleteTextBox1.Values = null;
+			this.txtPIVA.Location = new System.Drawing.Point(605, 40);
+			this.txtPIVA.Margin = new System.Windows.Forms.Padding(4);
+			this.txtPIVA.MaxLength = 100;
+			this.txtPIVA.Name = "txtPIVA";
+			this.txtPIVA.Size = new System.Drawing.Size(374, 22);
+			this.txtPIVA.TabIndex = 35;
+			this.txtPIVA.Tag = "PIVA";
+			this.txtPIVA.Values = null;
 			// 
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(377, 47);
+			this.label9.Location = new System.Drawing.Point(377, 43);
 			this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(37, 16);
@@ -492,7 +490,7 @@ namespace StrumentiMusicali.App.View
 			// 
 			this.dateTimePicker1.CustomFormat = "DD/MM/YYYY";
 			this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-			this.dateTimePicker1.Location = new System.Drawing.Point(421, 44);
+			this.dateTimePicker1.Location = new System.Drawing.Point(421, 40);
 			this.dateTimePicker1.Name = "dateTimePicker1";
 			this.dateTimePicker1.ShowUpDown = true;
 			this.dateTimePicker1.Size = new System.Drawing.Size(107, 22);
@@ -509,28 +507,27 @@ namespace StrumentiMusicali.App.View
 			this.label7.TabIndex = 31;
 			this.label7.Text = "Codice";
 			// 
-			// textBox1
+			// txtCodice
 			// 
-			this.textBox1.Location = new System.Drawing.Point(206, 10);
-			this.textBox1.Margin = new System.Windows.Forms.Padding(4);
-			this.textBox1.Name = "textBox1";
-			this.textBox1.ReadOnly = true;
-			this.textBox1.Size = new System.Drawing.Size(126, 22);
-			this.textBox1.TabIndex = 32;
-			this.textBox1.Tag = "Codice";
+			this.txtCodice.Location = new System.Drawing.Point(206, 10);
+			this.txtCodice.Margin = new System.Windows.Forms.Padding(4);
+			this.txtCodice.Name = "txtCodice";
+			this.txtCodice.Size = new System.Drawing.Size(126, 22);
+			this.txtCodice.TabIndex = 32;
+			this.txtCodice.Tag = "Codice";
 			// 
-			// txtMarca
+			// txtRagioneSociale
 			// 
-			this.txtMarca.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.txtRagioneSociale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtMarca.Location = new System.Drawing.Point(454, 10);
-			this.txtMarca.Margin = new System.Windows.Forms.Padding(4);
-			this.txtMarca.MaxLength = 100;
-			this.txtMarca.Name = "txtMarca";
-			this.txtMarca.Size = new System.Drawing.Size(667, 22);
-			this.txtMarca.TabIndex = 2;
-			this.txtMarca.Tag = "Marca";
-			this.txtMarca.Values = null;
+			this.txtRagioneSociale.Location = new System.Drawing.Point(454, 10);
+			this.txtRagioneSociale.Margin = new System.Windows.Forms.Padding(4);
+			this.txtRagioneSociale.MaxLength = 100;
+			this.txtRagioneSociale.Name = "txtRagioneSociale";
+			this.txtRagioneSociale.Size = new System.Drawing.Size(667, 22);
+			this.txtRagioneSociale.TabIndex = 2;
+			this.txtRagioneSociale.Tag = "RagioneSociale";
+			this.txtRagioneSociale.Values = null;
 			// 
 			// txtTrasportoACura
 			// 
@@ -559,9 +556,9 @@ namespace StrumentiMusicali.App.View
 			// 
 			// tabPage1
 			// 
-			this.tabPage1.Controls.Add(this.pnlTesto);
-			this.tabPage1.Controls.Add(this.panel1);
-			this.tabPage1.Controls.Add(this.panel2);
+			this.tabPage1.Controls.Add(this.pnl2Testo);
+			this.tabPage1.Controls.Add(this.pnl3Basso);
+			this.tabPage1.Controls.Add(this.pnl1Alto);
 			this.tabPage1.Location = new System.Drawing.Point(4, 25);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -570,19 +567,19 @@ namespace StrumentiMusicali.App.View
 			this.tabPage1.Text = "Dati Fattura";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
-			// pnlTesto
+			// pnl2Testo
 			// 
-			this.pnlTesto.Controls.Add(this.txtNote2);
-			this.pnlTesto.Controls.Add(this.label6);
-			this.pnlTesto.Controls.Add(this.txtNote1);
-			this.pnlTesto.Controls.Add(this.label2);
-			this.pnlTesto.Cursor = System.Windows.Forms.Cursors.Default;
-			this.pnlTesto.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlTesto.Location = new System.Drawing.Point(3, 190);
-			this.pnlTesto.Name = "pnlTesto";
-			this.pnlTesto.Padding = new System.Windows.Forms.Padding(5);
-			this.pnlTesto.Size = new System.Drawing.Size(1136, 87);
-			this.pnlTesto.TabIndex = 33;
+			this.pnl2Testo.Controls.Add(this.txtNote2);
+			this.pnl2Testo.Controls.Add(this.label6);
+			this.pnl2Testo.Controls.Add(this.txtNote1);
+			this.pnl2Testo.Controls.Add(this.label2);
+			this.pnl2Testo.Cursor = System.Windows.Forms.Cursors.Default;
+			this.pnl2Testo.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnl2Testo.Location = new System.Drawing.Point(3, 190);
+			this.pnl2Testo.Name = "pnl2Testo";
+			this.pnl2Testo.Padding = new System.Windows.Forms.Padding(5);
+			this.pnl2Testo.Size = new System.Drawing.Size(1136, 87);
+			this.pnl2Testo.TabIndex = 33;
 			// 
 			// txtNote2
 			// 
@@ -597,11 +594,10 @@ namespace StrumentiMusicali.App.View
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(5, 45);
-			this.label6.Margin = new System.Windows.Forms.Padding(10);
+			this.label6.Location = new System.Drawing.Point(17, 45);
+			this.label6.Margin = new System.Windows.Forms.Padding(0);
 			this.label6.Name = "label6";
-			this.label6.Padding = new System.Windows.Forms.Padding(10);
-			this.label6.Size = new System.Drawing.Size(67, 36);
+			this.label6.Size = new System.Drawing.Size(47, 16);
 			this.label6.TabIndex = 11;
 			this.label6.Text = "Note 2";
 			// 
@@ -615,19 +611,19 @@ namespace StrumentiMusicali.App.View
 			this.txtNote1.Tag = "Note1";
 			this.txtNote1.Values = null;
 			// 
-			// panel1
+			// pnl3Basso
 			// 
-			this.panel1.Controls.Add(this.numericUpDown4);
-			this.panel1.Controls.Add(this.label5);
-			this.panel1.Controls.Add(this.numericUpDown3);
-			this.panel1.Controls.Add(this.label4);
-			this.panel1.Controls.Add(this.txtPrezzo);
-			this.panel1.Controls.Add(this.label3);
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panel1.Location = new System.Drawing.Point(3, 277);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(1136, 137);
-			this.panel1.TabIndex = 32;
+			this.pnl3Basso.Controls.Add(this.numericUpDown4);
+			this.pnl3Basso.Controls.Add(this.label5);
+			this.pnl3Basso.Controls.Add(this.numericUpDown3);
+			this.pnl3Basso.Controls.Add(this.label4);
+			this.pnl3Basso.Controls.Add(this.txtPrezzo);
+			this.pnl3Basso.Controls.Add(this.label3);
+			this.pnl3Basso.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.pnl3Basso.Location = new System.Drawing.Point(3, 277);
+			this.pnl3Basso.Name = "pnl3Basso";
+			this.pnl3Basso.Size = new System.Drawing.Size(1136, 137);
+			this.pnl3Basso.TabIndex = 32;
 			// 
 			// numericUpDown4
 			// 
@@ -789,19 +785,19 @@ namespace StrumentiMusicali.App.View
 			this.MinimumSize = new System.Drawing.Size(771, 542);
 			this.Name = "DettaglioFatturaView";
 			this.Text = "Fattura";
-			this.Load += new System.EventHandler(this.frmArticolo_Load);
+			this.Load += new System.EventHandler(this.frm_Load);
 			this.Controls.SetChildIndex(this.ribbon1, 0);
 			this.Controls.SetChildIndex(this.tabControl1, 0);
-			this.panel2.ResumeLayout(false);
-			this.panel2.PerformLayout();
+			this.pnl1Alto.ResumeLayout(false);
+			this.pnl1Alto.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
-			this.pnlTesto.ResumeLayout(false);
-			this.pnlTesto.PerformLayout();
-			this.panel1.ResumeLayout(false);
-			this.panel1.PerformLayout();
+			this.pnl2Testo.ResumeLayout(false);
+			this.pnl2Testo.PerformLayout();
+			this.pnl3Basso.ResumeLayout(false);
+			this.pnl3Basso.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzo)).EndInit();
@@ -817,7 +813,7 @@ namespace StrumentiMusicali.App.View
 		private System.Windows.Forms.Label lblID;
 		private System.Windows.Forms.TextBox txtID;
 		private System.Windows.Forms.Label lblCondizione;
-		private AutoCompleteTextBox txtMarca;
+		private AutoCompleteTextBox txtRagioneSociale;
 		private System.Windows.Forms.Label lblMarca;
 		private AutoCompleteTextBox txtTrasportoACura;
 		private System.Windows.Forms.Label label1;
@@ -830,10 +826,10 @@ namespace StrumentiMusicali.App.View
 		private System.Windows.Forms.RibbonPanel ribPanelRighe;
 		private System.Windows.Forms.RibbonButton ribSave;
 		private System.Windows.Forms.ComboBox cboPagamento;
-		private System.Windows.Forms.Panel panel2;
+		private System.Windows.Forms.Panel pnl1Alto;
 		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage tabPage1;
-		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Panel pnl3Basso;
 		private System.Windows.Forms.NumericUpDown txtPrezzo;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.TabPage tabPage2;
@@ -844,7 +840,7 @@ namespace StrumentiMusicali.App.View
 		private System.Windows.Forms.ToolStripMenuItem diminuisciPrioritàToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem aumentaPrioritàToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem rimuoviImmagineToolStripMenuItem;
-		private System.Windows.Forms.Panel pnlTesto;
+		private System.Windows.Forms.Panel pnl2Testo;
 		private AutoCompleteTextBox txtVettore;
 		private System.Windows.Forms.Label label13;
 		private AutoCompleteTextBox txtPorto;
@@ -852,11 +848,11 @@ namespace StrumentiMusicali.App.View
 		private AutoCompleteTextBox txtCausaleTrasporto;
 		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.Label label10;
-		private AutoCompleteTextBox autoCompleteTextBox1;
+		private AutoCompleteTextBox txtPIVA;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.DateTimePicker dateTimePicker1;
 		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.TextBox txtCodice;
 		private System.Windows.Forms.Label label18;
 		private System.Windows.Forms.DateTimePicker dateTimePicker3;
 		private System.Windows.Forms.Label label17;

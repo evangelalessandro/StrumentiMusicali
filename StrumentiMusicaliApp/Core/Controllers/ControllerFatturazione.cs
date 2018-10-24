@@ -7,10 +7,6 @@ using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.OleDb;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -26,12 +22,43 @@ namespace StrumentiMusicali.App.Core.Controllers
 			EventAggregator.Instance().Subscribe<ApriFatturazione>(ApriAmbiente);
 			EventAggregator.Instance().Subscribe<NuovaFattura>(AddFattura);
 			EventAggregator.Instance().Subscribe<EditFattura>(FatturaEdit);
+			EventAggregator.Instance().Subscribe<FatturaSave>(Save);
+
 			EventAggregator.Instance().Subscribe<EliminaFattura>(DelFattura);
 		}
+
+		private void Save(FatturaSave obj)
+		{
+			try
+			{
+				using (var cursor = new CursorManager())
+				{
+					using (var uof = new UnitOfWork())
+					{
+						if (SelectedItem.ID > 0)
+						{
+							uof.FatturaRepository.Update(SelectedItem);
+						}
+						else
+						{
+							uof.FatturaRepository.Add(SelectedItem);
+						}
+						uof.Commit();
+					}
+					MessageManager.NotificaInfo("Salvataggio avvenuto con successo");
+					EventAggregator.Instance().Publish<FattureListUpdate>(new FattureListUpdate());
+				}
+			}
+			catch (MessageException ex)
+			{
+				ExceptionManager.ManageError(ex);
+			}
+		}
+
 		~ControllerFatturazione()
 		{
 			var dato = this.ReadSetting(Settings.enAmbienti.FattureList);
-			if (SelectedItem != null && SelectedItem!= null && SelectedItem.ID>0)
+			if (SelectedItem != null && SelectedItem != null && SelectedItem.ID > 0)
 			{
 				dato.LastItemSelected = SelectedItem.ID.ToString();
 				this.SaveSetting(Settings.enAmbienti.FattureList, dato);
@@ -39,10 +66,29 @@ namespace StrumentiMusicali.App.Core.Controllers
 		}
 		private void DelFattura(EliminaFattura obj)
 		{
-			
+			try
+			{
+				if (!MessageManager.QuestionMessage("Sei sicuro di voler cancellare la fattura selezionata?"))
+					return;
+				using (var uof = new UnitOfWork())
+				{
+					int val = int.Parse(obj.ItemSelected.ID);
+					var item = uof.FatturaRepository.Find(a => a.ID == val).FirstOrDefault();
+					_logger.Info(string.Format("Cancellazione fattura/r/n codice {0} /r/n Numero {1}", 
+						item.Codice, item.ID));
+					uof.FatturaRepository.Delete(item);
+					uof.Commit();
+				}
+				MessageManager.NotificaInfo("Cancellazione avvenuta correttamente!");
+				EventAggregator.Instance().Publish<FattureListUpdate>(new FattureListUpdate());
+			}
+			catch (Exception ex)
+			{
+				ExceptionManager.ManageError(ex);
+			}
 		}
-
-		private void FatturaEdit( EditFattura obj)
+		
+		private void FatturaEdit(EditFattura obj)
 		{
 			SelectedItem = ((FatturaItem)obj.ItemSelected).FatturaCS;
 			using (var view = new DettaglioFatturaView(this))
@@ -54,7 +100,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		private void AddFattura(NuovaFattura obj)
 		{
 			SelectedItem = new Fattura();
-			using (var view=new DettaglioFatturaView(this))
+			using (var view = new DettaglioFatturaView(this))
 			{
 
 				view.ShowDialog();
@@ -63,8 +109,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void ApriAmbiente(ApriFatturazione obj)
 		{
-			
-			using (var view=new FattureListView(this))
+
+			using (var view = new FattureListView(this))
 			{
 				view.ShowDialog();
 			}

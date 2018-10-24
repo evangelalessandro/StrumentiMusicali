@@ -18,6 +18,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
  
 		}
+		
 		private UserSettings ReadSetting()
 		{
 			UserSettings setting;

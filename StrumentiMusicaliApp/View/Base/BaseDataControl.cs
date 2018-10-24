@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StrumentiMusicali.App.CustomComponents;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace StrumentiMusicali.App.View.Base
 {
 	public partial class BaseDataControl : Form
 	{
+		int _tabindex = 0;
 		public BaseDataControl()
 			:base()
 		{
@@ -42,13 +44,27 @@ namespace StrumentiMusicali.App.View.Base
 					}
 					else if (cnt is DateTimePicker)
 					{
-						(cnt as DateTimePicker).DataBindings.Add("Value", businessObject, item.Name);
+						cnt.DataBindings.Add(new DateTimePickerBinding(businessObject, item.Name
+							, DataSourceUpdateMode.OnPropertyChanged));
+
+						//(cnt as DateTimePicker).DataBindings.Add("Value", businessObject, item.Name);
 					}
 				}
 			}
 		}
 
-
+		internal void OrderTab(Control parent)
+		{
+			foreach (var item in FindControlByType<Control>(parent, true).Where(a => a.TabStop == true).GroupBy(a => a.Parent).Select(a => new { a.Key, a }).ToList())
+			{
+				foreach (var b in item.a.OrderBy(a => a.Top).ThenBy(a => a.Left))
+				{
+					b.TabIndex = _tabindex;
+					_tabindex++;
+				}
+			}
+			 
+		}
 		public List<T> FindControlByType<T>(Control mainControl, bool getAllChild = true) where T : Control
 		{
 			List<T> lt = new List<T>();

@@ -224,6 +224,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			try
 			{
+				if (!MessageManager.QuestionMessage("Sei sicuro di voler cancellare l'articolo selezionato?"))
+					return;
 				using (var uof = new UnitOfWork())
 				{
 					var item = uof.ArticoliRepository.Find(a => a.ID == obj.ItemSelected.ID).FirstOrDefault();

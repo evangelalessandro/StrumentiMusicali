@@ -1,4 +1,5 @@
-﻿using Tulpep.NotificationWindow;
+﻿using System.Windows.Forms;
+using Tulpep.NotificationWindow;
 
 namespace StrumentiMusicali.App.Core
 {
@@ -12,7 +13,11 @@ namespace StrumentiMusicali.App.Core
 			popup.ContentText = info;
 			popup.Popup();
 		}
+		public static bool QuestionMessage(string textQuestion)
+		{
+			return MessageBox.Show(textQuestion, "Domanda", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
 
+		}
 		public static void NotificaWarnig(string info)
 		{
 			PopupNotifier popup = new PopupNotifier();

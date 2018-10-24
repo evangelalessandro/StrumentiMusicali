@@ -63,6 +63,7 @@ namespace StrumentiMusicali.App.View
 		private async void UpdateList(FattureListUpdate obj)
 		{
 			await RefreshData();
+			await SelezionaRiga(_baseController.SelectedItem.ID.ToString());
 		}
 
 		private async void TxtCerca_KeyUp(object sender, KeyEventArgs e)
@@ -153,7 +154,7 @@ namespace StrumentiMusicali.App.View
 					list = uof.FatturaRepository.Find(a => datoRicerca == ""
 					   || a.RagioneSociale.Contains(datoRicerca)
 						|| a.PIVA.Contains(datoRicerca)
-						|| a.Codice.Equals(datoRicerca, StringComparison.InvariantCultureIgnoreCase)
+						|| a.Codice.Contains(datoRicerca)
 
 					).Select(a => new FatturaItem
 					{
@@ -161,6 +162,7 @@ namespace StrumentiMusicali.App.View
 						Data = a.Data,
 						FatturaCS = a,
 						PIVA = a.PIVA,
+						Codice=a.Codice,
 						RagioneSociale = a.RagioneSociale
 					}).Take(100).OrderByDescending(a => a.Data).ToList();
 				}
@@ -182,6 +184,11 @@ namespace StrumentiMusicali.App.View
 				return;
 			dgvMaster.DataSource = data;
 
+			dgvMaster.Columns["FatturaCS"].Visible = false;
+			dgvMaster.AutoResizeColumns();
+			dgvMaster.Columns["ID"].DisplayIndex = 0;
+			dgvMaster.Columns["Codice"].DisplayIndex = 1;
+			dgvMaster.Columns["RagioneSociale"].DisplayIndex = 2;
 		}
 
 
@@ -207,13 +214,13 @@ namespace StrumentiMusicali.App.View
 			Edit();
 		}
 
-		private void Edit()
+		private async void Edit()
 		{
 			var itemSelected = GetCurrentItemSelected();
 			EventAggregator.Instance().Publish<EditFattura>(new EditFattura(itemSelected));
 
-			RefreshData();
-			SelezionaRiga(itemSelected.ID);
+			await RefreshData();
+			await SelezionaRiga(itemSelected.ID);
 		}
 	}
 }

@@ -45,16 +45,16 @@ namespace StrumentiMusicali.App.View
 		{
 			using (var uof = new UnitOfWork())
 			{
-				var listPagamenti = new List<Tuple<int, string>>();
-				listPagamenti.Add(new Tuple<int, string>(-1, "Seleziona pagamento"));
-				listPagamenti.Add(new Tuple<int, string>(1, "Bonifico Bancario"));
-				listPagamenti.Add(new Tuple<int, string>(2, "Rimessa Diretta"));
+				var listPagamenti = new List<string>();
+				listPagamenti.Add(("Seleziona pagamento"));
+				listPagamenti.Add(("Bonifico Bancario"));
+				listPagamenti.Add(("Rimessa Diretta"));
 
 				cboPagamento.DataSource = listPagamenti.Select(a =>
 						new
 						{
-							ID = a.Item1,
-							Descrizione = a.Item2
+							ID = a,
+							Descrizione = a
 						}
 						).ToList();
 				cboPagamento.DisplayMember = "Descrizione";
@@ -67,17 +67,44 @@ namespace StrumentiMusicali.App.View
 				txtVettore.Values = uof.FatturaRepository.Find(a => true).Select(a => a.Vettore).Distinct().ToList().ToArray();
 				txtNote1.Values = uof.FatturaRepository.Find(a => true).Select(a => a.Note1).Distinct().ToList().ToArray();
 				txtNote2.Values = uof.FatturaRepository.Find(a => true).Select(a => a.Note2).Distinct().ToList().ToArray();
+
+				txtRagioneSociale.Values =
+					uof.ClientiRepository.Find(a => true).Select(a => a.RagioneSociale).Distinct().ToList().ToArray();
+
 			}
 		}
 
-		private void frmArticolo_Load(object sender, EventArgs e)
+		private void TxtRagioneSociale_TextChanged(object sender, EventArgs e)
+		{
+			using (var uof = new UnitOfWork())
+			{
+				var finded = uof.ClientiRepository.Find(a => a.RagioneSociale == txtRagioneSociale.Text).Select(a => a.PIVA).FirstOrDefault();
+				if (finded != null && finded.Length > 0)
+				{
+					txtPIVA.Text = finded;
+				}
+			}
+		}
+
+		private void frm_Load(object sender, EventArgs e)
 		{
 			FillCombo();
 
 			UpdateButtonState();
 
 			SetDataBind(this, _controllerFatturazione.SelectedItem);
+
+			txtRagioneSociale.TextChanged += TxtRagioneSociale_TextChanged;
+
+
+
+			OrderTab(pnl1Alto);
+			OrderTab(pnl2Testo);
+			OrderTab(pnl3Basso);
+
 		}
+
+
 
 		private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
 		{

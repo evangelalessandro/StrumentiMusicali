@@ -125,6 +125,7 @@
     <Compile Include="Core\Manager\ExceptionManager.cs" />
     <Compile Include="Core\Events\Image\ImageAdd.cs" />
     <Compile Include="Core\Manager\MessageManager.cs" />
+    <Compile Include="CustomComponents\DateTimePickerBinding.cs" />
     <Compile Include="View\DettaglioFatturaView.cs">
       <SubType>Form</SubType>
     </Compile>

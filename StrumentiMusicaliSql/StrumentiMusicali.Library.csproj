@@ -75,9 +75,9 @@
     <Compile Include="Entity\Magazzino.cs" />
     <Compile Include="Entity\Fatture\DDTRiga.cs" />
     <Compile Include="Entity\Fatture\FatturaRiga.cs" />
-    <Compile Include="Migrations\201810190955586_Init.cs" />
-    <Compile Include="Migrations\201810190955586_Init.Designer.cs">
-      <DependentUpon>201810190955586_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201810260947596_Init.cs" />
+    <Compile Include="Migrations\201810260947596_Init.Designer.cs">
+      <DependentUpon>201810260947596_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
@@ -97,8 +97,8 @@
     <Content Include="Note\TextFile1.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201810190955586_Init.resx">
-      <DependentUpon>201810190955586_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201810260947596_Init.resx">
+      <DependentUpon>201810260947596_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

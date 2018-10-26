@@ -48,7 +48,7 @@ namespace StrumentiMusicali.App.CustomComponents
 				}
 				else
 				{
-					dateTimePicker.ShowCheckBox = true;
+					dateTimePicker.ShowCheckBox = false;
 					dateTimePicker.Checked = true;
 				}
 			}

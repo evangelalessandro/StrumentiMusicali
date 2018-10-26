@@ -28,10 +28,11 @@ namespace StrumentiMusicali.App.View
 			this.label2 = new System.Windows.Forms.Label();
 			this.cboPagamento = new System.Windows.Forms.ComboBox();
 			this.pnl1Alto = new System.Windows.Forms.Panel();
+			this.dateEdit3 = new DevExpress.XtraEditors.DateEdit();
+			this.dateEdit2 = new DevExpress.XtraEditors.DateEdit();
+			this.dateEdit1 = new DevExpress.XtraEditors.DateEdit();
 			this.label18 = new System.Windows.Forms.Label();
-			this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
 			this.label17 = new System.Windows.Forms.Label();
-			this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
 			this.label16 = new System.Windows.Forms.Label();
 			this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
 			this.label15 = new System.Windows.Forms.Label();
@@ -47,7 +48,6 @@ namespace StrumentiMusicali.App.View
 			this.label10 = new System.Windows.Forms.Label();
 			this.txtPIVA = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
 			this.label9 = new System.Windows.Forms.Label();
-			this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
 			this.label7 = new System.Windows.Forms.Label();
 			this.txtCodice = new System.Windows.Forms.TextBox();
 			this.txtRagioneSociale = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
@@ -67,6 +67,12 @@ namespace StrumentiMusicali.App.View
 			this.label3 = new System.Windows.Forms.Label();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.pnl1Alto.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dateEdit3.Properties.CalendarTimeProperties)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.dateEdit3.Properties)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.dateEdit2.Properties.CalendarTimeProperties)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.dateEdit2.Properties)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties.CalendarTimeProperties)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
 			this.tabControl1.SuspendLayout();
@@ -150,10 +156,11 @@ namespace StrumentiMusicali.App.View
 			// 
 			// pnl1Alto
 			// 
+			this.pnl1Alto.Controls.Add(this.dateEdit3);
+			this.pnl1Alto.Controls.Add(this.dateEdit2);
+			this.pnl1Alto.Controls.Add(this.dateEdit1);
 			this.pnl1Alto.Controls.Add(this.label18);
-			this.pnl1Alto.Controls.Add(this.dateTimePicker3);
 			this.pnl1Alto.Controls.Add(this.label17);
-			this.pnl1Alto.Controls.Add(this.dateTimePicker2);
 			this.pnl1Alto.Controls.Add(this.label16);
 			this.pnl1Alto.Controls.Add(this.numericUpDown2);
 			this.pnl1Alto.Controls.Add(this.label15);
@@ -169,7 +176,6 @@ namespace StrumentiMusicali.App.View
 			this.pnl1Alto.Controls.Add(this.label10);
 			this.pnl1Alto.Controls.Add(this.txtPIVA);
 			this.pnl1Alto.Controls.Add(this.label9);
-			this.pnl1Alto.Controls.Add(this.dateTimePicker1);
 			this.pnl1Alto.Controls.Add(this.label7);
 			this.pnl1Alto.Controls.Add(this.txtCodice);
 			this.pnl1Alto.Controls.Add(this.cboPagamento);
@@ -186,6 +192,48 @@ namespace StrumentiMusicali.App.View
 			this.pnl1Alto.Size = new System.Drawing.Size(1136, 187);
 			this.pnl1Alto.TabIndex = 31;
 			// 
+			// dateEdit3
+			// 
+			this.dateEdit3.EditValue = null;
+			this.dateEdit3.Location = new System.Drawing.Point(415, 44);
+			this.dateEdit3.Name = "dateEdit3";
+			this.dateEdit3.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+			this.dateEdit3.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton()});
+			this.dateEdit3.Size = new System.Drawing.Size(100, 20);
+			this.dateEdit3.TabIndex = 55;
+			this.dateEdit3.Tag = "Data";
+			// 
+			// dateEdit2
+			// 
+			this.dateEdit2.EditValue = null;
+			this.dateEdit2.Location = new System.Drawing.Point(388, 154);
+			this.dateEdit2.Name = "dateEdit2";
+			this.dateEdit2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+			this.dateEdit2.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton()});
+			this.dateEdit2.Size = new System.Drawing.Size(100, 20);
+			this.dateEdit2.TabIndex = 54;
+			this.dateEdit2.Tag = "OraTrasporto";
+			// 
+			// dateEdit1
+			// 
+			this.dateEdit1.EditValue = null;
+			this.dateEdit1.Location = new System.Drawing.Point(275, 153);
+			this.dateEdit1.Name = "dateEdit1";
+			this.dateEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+			this.dateEdit1.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton()});
+			this.dateEdit1.Properties.NullDateCalendarValue = new System.DateTime(2018, 10, 26, 15, 40, 34, 0);
+			this.dateEdit1.Properties.NullValuePrompt = "data non settata";
+			this.dateEdit1.Properties.NullValuePromptShowForEmptyValue = true;
+			this.dateEdit1.Size = new System.Drawing.Size(100, 20);
+			this.dateEdit1.TabIndex = 53;
+			this.dateEdit1.Tag = "DataTrasporto";
+			// 
 			// label18
 			// 
 			this.label18.AutoSize = true;
@@ -196,18 +244,6 @@ namespace StrumentiMusicali.App.View
 			this.label18.TabIndex = 52;
 			this.label18.Text = "Ora Trasporto";
 			// 
-			// dateTimePicker3
-			// 
-			this.dateTimePicker3.CustomFormat = "DD/MM/YYYY";
-			this.dateTimePicker3.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-			this.dateTimePicker3.Location = new System.Drawing.Point(388, 152);
-			this.dateTimePicker3.Name = "dateTimePicker3";
-			this.dateTimePicker3.ShowCheckBox = true;
-			this.dateTimePicker3.ShowUpDown = true;
-			this.dateTimePicker3.Size = new System.Drawing.Size(107, 22);
-			this.dateTimePicker3.TabIndex = 51;
-			this.dateTimePicker3.Tag = "OraTrasporto";
-			// 
 			// label17
 			// 
 			this.label17.AutoSize = true;
@@ -217,18 +253,6 @@ namespace StrumentiMusicali.App.View
 			this.label17.Size = new System.Drawing.Size(99, 16);
 			this.label17.TabIndex = 50;
 			this.label17.Text = "Data Trasporto";
-			// 
-			// dateTimePicker2
-			// 
-			this.dateTimePicker2.CustomFormat = "DD/MM/YYYY";
-			this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-			this.dateTimePicker2.Location = new System.Drawing.Point(275, 152);
-			this.dateTimePicker2.Name = "dateTimePicker2";
-			this.dateTimePicker2.ShowCheckBox = true;
-			this.dateTimePicker2.ShowUpDown = true;
-			this.dateTimePicker2.Size = new System.Drawing.Size(107, 22);
-			this.dateTimePicker2.TabIndex = 49;
-			this.dateTimePicker2.Tag = "DataTrasporto";
 			// 
 			// label16
 			// 
@@ -392,17 +416,6 @@ namespace StrumentiMusicali.App.View
 			this.label9.Size = new System.Drawing.Size(37, 16);
 			this.label9.TabIndex = 34;
 			this.label9.Text = "Data";
-			// 
-			// dateTimePicker1
-			// 
-			this.dateTimePicker1.CustomFormat = "DD/MM/YYYY";
-			this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-			this.dateTimePicker1.Location = new System.Drawing.Point(421, 40);
-			this.dateTimePicker1.Name = "dateTimePicker1";
-			this.dateTimePicker1.ShowUpDown = true;
-			this.dateTimePicker1.Size = new System.Drawing.Size(107, 22);
-			this.dateTimePicker1.TabIndex = 33;
-			this.dateTimePicker1.Tag = "Data";
 			// 
 			// label7
 			// 
@@ -640,6 +653,12 @@ namespace StrumentiMusicali.App.View
 			this.Load += new System.EventHandler(this.frm_Load);
 			this.pnl1Alto.ResumeLayout(false);
 			this.pnl1Alto.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dateEdit3.Properties.CalendarTimeProperties)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.dateEdit3.Properties)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.dateEdit2.Properties.CalendarTimeProperties)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.dateEdit2.Properties)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties.CalendarTimeProperties)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
 			this.tabControl1.ResumeLayout(false);
@@ -686,13 +705,10 @@ namespace StrumentiMusicali.App.View
 		private System.Windows.Forms.Label label10;
 		private AutoCompleteTextBox txtPIVA;
 		private System.Windows.Forms.Label label9;
-		private System.Windows.Forms.DateTimePicker dateTimePicker1;
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.TextBox txtCodice;
 		private System.Windows.Forms.Label label18;
-		private System.Windows.Forms.DateTimePicker dateTimePicker3;
 		private System.Windows.Forms.Label label17;
-		private System.Windows.Forms.DateTimePicker dateTimePicker2;
 		private System.Windows.Forms.Label label16;
 		private System.Windows.Forms.NumericUpDown numericUpDown2;
 		private System.Windows.Forms.Label label15;
@@ -705,7 +721,8 @@ namespace StrumentiMusicali.App.View
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.NumericUpDown numericUpDown3;
 		private System.Windows.Forms.Label label4;
-		 
-		
+		private DevExpress.XtraEditors.DateEdit dateEdit3;
+		private DevExpress.XtraEditors.DateEdit dateEdit2;
+		private DevExpress.XtraEditors.DateEdit dateEdit1;
 	}
 }

@@ -31,31 +31,26 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void Save(FatturaSave obj)
 		{
-			try
+			using (var saveManager =new SaveEntityManager())
 			{
-				using (var cursor = new CursorManager())
+				var uof = saveManager.UnitOfWork;
+				if (SelectedItem.ID > 0)
 				{
-					using (var uof = new UnitOfWork())
-					{
-						if (SelectedItem.ID > 0)
-						{
-							uof.FatturaRepository.Update(SelectedItem);
-						}
-						else
-						{
-							uof.FatturaRepository.Add(SelectedItem);
-						}
-						uof.Commit();
-					}
-					MessageManager.NotificaInfo("Salvataggio avvenuto con successo");
+					uof.FatturaRepository.Update(SelectedItem);
+				}
+				else
+				{
+					uof.FatturaRepository.Add(SelectedItem);
+				}
+				if (saveManager.SaveEntity(enSaveOperation.OpSave))
+				{
 					EventAggregator.Instance().Publish<FattureListUpdate>(new FattureListUpdate());
 				}
 			}
-			catch (MessageException ex)
-			{
-				ExceptionManager.ManageError(ex);
-			}
+			
 		}
+
+
 
 		~ControllerFatturazione()
 		{
@@ -72,17 +67,22 @@ namespace StrumentiMusicali.App.Core.Controllers
 			{
 				if (!MessageManager.QuestionMessage("Sei sicuro di voler cancellare la fattura selezionata?"))
 					return;
-				using (var uof = new UnitOfWork())
+				using (var saveEntity = new SaveEntityManager())
 				{
+					var uof = saveEntity.UnitOfWork;
 					int val = int.Parse(obj.ItemSelected.ID);
 					var item = uof.FatturaRepository.Find(a => a.ID == val).FirstOrDefault();
 					_logger.Info(string.Format("Cancellazione fattura/r/n codice {0} /r/n Numero {1}",
 						item.Codice, item.ID));
 					uof.FatturaRepository.Delete(item);
-					uof.Commit();
+
+					if (saveEntity.SaveEntity(enSaveOperation.OpDelete))
+					{
+						EventAggregator.Instance().Publish<FattureListUpdate>(
+							new FattureListUpdate());
+					}
 				}
-				MessageManager.NotificaInfo("Cancellazione avvenuta correttamente!");
-				EventAggregator.Instance().Publish<FattureListUpdate>(new FattureListUpdate());
+
 			}
 			catch (Exception ex)
 			{

@@ -13,14 +13,13 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-	class ControllerImmagini :BaseController
+	internal class ControllerImmagini : BaseController
 	{
 		public ControllerImmagini() : base()
 		{
 			EventAggregator.Instance().Subscribe<ImageOrderSet>(OrderImage);
 			EventAggregator.Instance().Subscribe<ImageAddFiles>(AddImageFiles);
 			EventAggregator.Instance().Subscribe<ImageRemove>(RemoveImage);
-
 		}
 
 		private void RemoveImage(ImageRemove obj)
@@ -71,8 +70,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 			{
 				using (var curs = new CursorManager())
 				{
-					using (var uof = new UnitOfWork())
+					using (var save = new SaveEntityManager())
 					{
+						var uof = save.UnitOfWork;
 						var articolo = uof.FotoArticoloRepository.Find(
 							a => a.ID == obj.FotoArticolo.ID).Select(a => a.Articolo).FirstOrDefault();
 						var list = uof.FotoArticoloRepository.Find(
@@ -118,11 +118,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 							uof.FotoArticoloRepository.Update(item);
 						}
 
-						uof.Commit();
+						if (save.SaveEntity(enSaveOperation.OpSave))
+						{
+							EventAggregator.Instance().Publish<ImageListUpdate>(new ImageListUpdate());
+						}
 					}
 				}
-				MessageManager.NotificaInfo("Salvataggio avvenuto con successo");
-				EventAggregator.Instance().Publish<ImageListUpdate>(new ImageListUpdate());
 			}
 			catch (Exception ex)
 			{
@@ -137,13 +138,13 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 		}
 
-
 		private void AddImageFiles(ImageAddFiles args)
 		{
 			try
 			{
-				using (var uof = new UnitOfWork())
+				using (var save = new SaveEntityManager())
 				{
+					var uof = save.UnitOfWork;
 					var maxOrdineItem = uof.FotoArticoloRepository
 						.Find(a => a.ArticoloID == args.Articolo.ID)
 						.OrderByDescending(a => a.Ordine).FirstOrDefault();
@@ -164,24 +165,22 @@ namespace StrumentiMusicali.App.Core.Controllers
 						uof.FotoArticoloRepository.Add(
 							new FotoArticolo()
 							{
-								ArticoloID = args.Articolo.ID
-							,
-								UrlFoto = newName
-							,
+								ArticoloID = args.Articolo.ID,
+								UrlFoto = newName,
 								Ordine = maxOrdine
 							});
 						maxOrdine++;
 					}
-					uof.Commit();
+					if (save.SaveEntity(string.Format(@"{0} Immagine\i aggiunta\e", args.Files.Count())))
+					{
+						EventAggregator.Instance().Publish<ImageListUpdate>(new ImageListUpdate());
+					}
 				}
-				EventAggregator.Instance().Publish<ImageListUpdate>(new ImageListUpdate());
-				MessageManager.NotificaInfo(string.Format(@"{0} Immagine\i aggiunta\e", args.Files.Count()));
 			}
 			catch (Exception ex)
 			{
 				ExceptionManager.ManageError(ex);
 			}
 		}
-
 	}
 }

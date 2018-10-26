@@ -1,6 +1,7 @@
 ﻿using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.MenuRibbon;
+using StrumentiMusicali.App.View.FattureRighe;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View
@@ -32,6 +34,14 @@ namespace StrumentiMusicali.App.View
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
+			if (_controllerRighe!=null)
+				_controllerRighe.Dispose();
+			foreach (Control item in tabPage2.Controls)
+			{
+				item.Dispose();
+				GC.SuppressFinalize(item);
+			}
+			
 			if (disposing && (components != null))
 			{
 				components.Dispose();
@@ -84,13 +94,9 @@ namespace StrumentiMusicali.App.View
 			}
 		}
 
-		private void frm_Load(object sender, EventArgs e)
+		private async void frm_Load(object sender, EventArgs e)
 		{
-			_controllerRighe = new ControllerRigheFatture(_controllerFatturazione);
-			var controlFattRigheList = new FattureRigheListView(_controllerRighe);
-			controlFattRigheList.Height = tabPage2.Size.Height;
-			controlFattRigheList.Dock = DockStyle.Top;
-			tabPage2.Controls.Add(controlFattRigheList);
+			await AddElemet();
 
 			FillCombo();
 
@@ -101,7 +107,7 @@ namespace StrumentiMusicali.App.View
 			txtRagioneSociale.TextChanged += TxtRagioneSociale_TextChanged;
 
 
-			using (var ord=new Utility.OrdinaTab())
+			using (var ord = new Utility.OrdinaTab())
 			{
 				ord.OrderTab(pnl1Alto);
 				ord.OrderTab(pnl2Testo);
@@ -111,7 +117,26 @@ namespace StrumentiMusicali.App.View
 
 		}
 
+		private async Task AddElemet()
+		{
+			await Task.Run(() =>
+			{
+				_controllerRighe = new ControllerRigheFatture(_controllerFatturazione);
+				var controlFattRigheList = new FattureRigheListView(_controllerRighe);
+				var controlFattRigheDetail = new FattureRigheDetailView(_controllerRighe);
 
+				controlFattRigheList.Height = 200;
+				controlFattRigheList.Dock = DockStyle.Top;
+				tabPage2.Controls.Add(controlFattRigheList);
+				var spit = new Splitter() { Dock = DockStyle.Top, Height = 20, BackColor = System.Drawing.Color.Green, };
+				tabPage2.Controls.Add(spit);
+				spit.BringToFront();
+				tabPage2.Controls.Add(controlFattRigheDetail);
+				controlFattRigheDetail.Height = 200;
+				controlFattRigheDetail.Dock = DockStyle.Fill;
+				controlFattRigheDetail.BringToFront();
+			});
+		}
 
 		private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
 		{
@@ -135,7 +160,7 @@ namespace StrumentiMusicali.App.View
 		{
 			if (_menuTab!=null)
 			{ 
-				_menuTab.Tabs[0].Pannelli[0].Enabled = tabControl1.SelectedTab == tabPage2;
+				//_menuTab.Tabs[0].Pannelli[0].Enabled = tabControl1.SelectedTab == tabPage2;
 				
 			}
 		}

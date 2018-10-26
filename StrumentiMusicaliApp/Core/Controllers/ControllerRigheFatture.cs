@@ -1,22 +1,29 @@
-﻿using StrumentiMusicali.App.Core.Controllers.Base;
+﻿using PropertyChanged;
+using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-	public class ControllerRigheFatture : BaseControllerGeneric<FatturaRiga, FatturaRigaItem>
+	[AddINotifyPropertyChangedInterface]
+	public class ControllerRigheFatture :    BaseControllerGeneric<FatturaRiga, FatturaRigaItem>
 	{
 		ControllerFatturazione _controllerFatturazione;
 		public ControllerRigheFatture(ControllerFatturazione controllerFatturazione)
 		{
 			_controllerFatturazione = controllerFatturazione;
+
+			SelectedItem = new FatturaRiga();
 		}
-		public override async void RefreshList(UpdateList<FatturaRiga> obj)
+		 
+
+		public override void RefreshList(UpdateList<FatturaRiga> obj)
 		{
 
 			try

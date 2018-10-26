@@ -49,6 +49,7 @@ namespace StrumentiMusicali.App.Core
 				{
 					uof.EventLogRepository.Add(new StrumentiMusicali.Library.Entity.EventLog()
 					{ TipoEvento = level, Errore = message, TimeStamp = DateTime.Now, InnerException = exception, StackTrace = stacktrace, Class = classLine });
+
 					uof.Commit();
 				}
 			}
@@ -76,7 +77,7 @@ namespace StrumentiMusicali.App.Core
 
 		private void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
 		{
- 
+			
 			_logger.Error(e.Exception, "Application_ThreadException", null);
  		}
 

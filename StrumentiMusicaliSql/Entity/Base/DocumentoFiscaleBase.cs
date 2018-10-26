@@ -10,10 +10,13 @@ namespace StrumentiMusicali.Library.Entity
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int ID { get; set; }
+		[Required]
 		public string Codice { get; set; }
+		[Required]
 		public DateTime Data { get; set; } = DateTime.Now;
 		public string RagioneSociale { get; set; }
 		public string PIVA { get; set; }
+		[Required]
 		public int ClienteID { get; set; }
 		public virtual Cliente Cliente { get; set; }
 		public int TipoDocumento { get; set; }

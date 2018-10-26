@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace StrumentiMusicali.Library.Repo
@@ -59,6 +60,8 @@ namespace StrumentiMusicali.Library.Repo
 				}
 
 			}
+			FixDateNull(entity);
+
 			dbSet.Add(entity);
 		}
 
@@ -74,10 +77,32 @@ namespace StrumentiMusicali.Library.Repo
 				var item = (entity as BaseEntity);
 				item.DataUltimaModifica = DateTime.Now;
 			}
+			FixDateNull(entity);
 
 			dbContext.Entry(entity).State = EntityState.Modified;
 		}
 
+		private void FixDateNull(T entity)
+		{
+			var list = GetProperties(entity);
+			foreach (var item in list.Where(a => a.PropertyType.ToString().Contains("DateTime")))
+			{
+				var val = item.GetValue(entity);
+				if ((val!=null) && (((DateTime)val).Year < 1800))
+				{
+					item.SetValue(entity, null);
+				}
+			}
+		}
+
+		private static IEnumerable<PropertyInfo> GetProperties(Object obj)
+		{
+			Type t = obj.GetType();
+
+			return t.GetProperties()
+				.Where(p => (p.Name != "EntityKey" && p.Name != "EntityState"))
+				.Select(p => p).ToList();
+		}
 		public virtual void Delete(T entity)
 		{
 			dbSet.Remove(entity);

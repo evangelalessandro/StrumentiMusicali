@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-	public class ControllerArticoli : BaseController , IDisposable
+	public class ControllerArticoli : BaseController, IDisposable
 	{
 
 		public ControllerArticoli()
@@ -29,15 +29,15 @@ namespace StrumentiMusicali.App.Core.Controllers
 			EventAggregator.Instance().Subscribe<ImportArticoli>(ImportaCsvArticoli);
 			EventAggregator.Instance().Subscribe<ArticoloSave>(SaveArticolo);
 
-			
+
 		}
 		~ControllerArticoli()
 		{
 			var dato = this.ReadSetting(Settings.enAmbienti.Articoli);
-			if (_ArticoloSelected!= null && _ArticoloSelected.ItemSelected != null)
+			if (_ArticoloSelected != null && _ArticoloSelected.ItemSelected != null)
 			{
 				dato.LastItemSelected = _ArticoloSelected.ItemSelected.ID;
-				this.SaveSetting(Settings.enAmbienti.Articoli,dato);
+				this.SaveSetting(Settings.enAmbienti.Articoli, dato);
 			}
 		}
 		private ArticoloSelected _ArticoloSelected;
@@ -46,7 +46,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			_ArticoloSelected = obj;
 
-			
+
 		}
 
 		private void AggiungiArticolo(ArticoloAdd articoloAdd)
@@ -63,8 +63,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			try
 			{
-				using (var uof = new UnitOfWork())
+				using (var saveEntity = new SaveEntityManager())
 				{
+					var uof = saveEntity.UnitOfWork;
 					var itemCurrent = ((ArticoloItem)(_ArticoloSelected.ItemSelected)).Entity;
 					uof.ArticoliRepository.Add(new StrumentiMusicali.Library.Entity.Articolo()
 					{
@@ -81,11 +82,13 @@ namespace StrumentiMusicali.App.Core.Controllers
 						DataUltimaModifica = DateTime.Now,
 						DataCreazione = DateTime.Now
 					});
-					uof.Commit();
+
+					if (saveEntity.SaveEntity(enSaveOperation.Duplicazione))
+					{
+						_logger.Info("Duplica articolo");
+						EventAggregator.Instance().Publish<ArticoliToUpdate>(new ArticoliToUpdate());
+					}
 				}
-				MessageManager.NotificaInfo("Duplicazione avvenuta con successo");
-				_logger.Info("Duplica articolo");
-				EventAggregator.Instance().Publish<ArticoliToUpdate>(new ArticoliToUpdate());
 			}
 			catch (Exception ex)
 			{
@@ -227,15 +230,16 @@ namespace StrumentiMusicali.App.Core.Controllers
 			{
 				if (!MessageManager.QuestionMessage("Sei sicuro di voler cancellare l'articolo selezionato?"))
 					return;
-				using (var uof = new UnitOfWork())
+				using (var save = new SaveEntityManager())
 				{
-					var item = uof.ArticoliRepository.Find(a => a.ID == obj.ItemSelected.ID).FirstOrDefault();
+					var item = save.UnitOfWork.ArticoliRepository.Find(a => a.ID == obj.ItemSelected.ID).FirstOrDefault();
 					_logger.Info(string.Format("Cancellazione articolo /r/n{0} /r/n{1}", item.Titolo, item.ID));
-					uof.ArticoliRepository.Delete(item);
-					uof.Commit();
+					save.UnitOfWork.ArticoliRepository.Delete(item);
+					if (save.SaveEntity(enSaveOperation.OpDelete))
+					{
+						EventAggregator.Instance().Publish<ArticoliToUpdate>(new ArticoliToUpdate());
+					}
 				}
-				MessageManager.NotificaInfo("Cancellazione avvenuta correttamente!");
-				EventAggregator.Instance().Publish<ArticoliToUpdate>(new ArticoliToUpdate());
 			}
 			catch (Exception ex)
 			{
@@ -247,23 +251,26 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			try
 			{
-				using (var curs = new CursorManager())
+
+				using (var save = new SaveEntityManager())
 				{
-					using (var uof = new UnitOfWork())
+					var uof = save.UnitOfWork;
+					if (string.IsNullOrEmpty(arg.Articolo.ID)
+						|| uof.ArticoliRepository.Find(a => a.ID == arg.Articolo.ID).Count() == 0)
 					{
-						if (string.IsNullOrEmpty(arg.Articolo.ID)
-							|| uof.ArticoliRepository.Find(a => a.ID == arg.Articolo.ID).Count() == 0)
-						{
-							uof.ArticoliRepository.Add(arg.Articolo);
-						}
-						else
-						{
-							uof.ArticoliRepository.Update(arg.Articolo);
-						}
-						uof.Commit();
+						uof.ArticoliRepository.Add(arg.Articolo);
+					}
+					else
+					{
+						uof.ArticoliRepository.Update(arg.Articolo);
+					}
+					if (
+					save.SaveEntity(enSaveOperation.OpSave))
+					{
+
 					}
 				}
-				MessageManager.NotificaInfo("Salvataggio avvenuto con successo");
+				
 			}
 			catch (MessageException ex)
 			{

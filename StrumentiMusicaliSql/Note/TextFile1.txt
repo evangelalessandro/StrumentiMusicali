@@ -9,3 +9,8 @@ applicare le modifiche. È possibile usare Update-Database ottenere migrazioni
 Code First per il push delle modifiche per il nostro modello (il nuovo Blog.Urproprietà l)
 nel database.
 Eseguire la Update-Database comando nella Console di gestione pacchetti.
+
+
+
+Se vengono effettuate ulteriori modifiche al modello che si desidera includere nella migrazione, 
+è possibile rieseguirne lo scaffolding eseguendo di nuovo il comando 'Add-Migration Init'.

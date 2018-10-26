@@ -161,6 +161,14 @@ namespace StrumentiMusicali.Library.Repo
 			{
 				throw new MessageException(ex.EntityValidationErrors.First().ValidationErrors.Select(a => a.ErrorMessage).ToList());
 			}
+			catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
+			{
+				if (ex.InnerException.InnerException !=null )
+				{
+					throw new Exception(ex.InnerException.InnerException.ToString());
+				}
+				throw new Exception(ex.InnerException.ToString());
+			}
 
 		}
 

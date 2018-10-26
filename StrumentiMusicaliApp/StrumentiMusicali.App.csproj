@@ -54,6 +54,40 @@
     <Reference Include="Autofac, Version=4.8.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.8.1\lib\net45\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Pdf.v18.1.Core">
+    </Reference>
+    <Reference Include="DevExpress.Office.v18.1.Core">
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v18.1.Core">
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v18.1.Export">
+    </Reference>
+    <Reference Include="DevExpress.Printing.v18.1.Core">
+    </Reference>
+    <Reference Include="DevExpress.Data.v18.1">
+    </Reference>
+    <Reference Include="DevExpress.Utils.v18.1">
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v18.1">
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v18.1.Design">
+    </Reference>
+    <Reference Include="DevExpress.Charts.v18.1.Core">
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v18.1.Wizard">
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v18.1">
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v18.1.Design">
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v18.1">
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v18.1.UI">
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v18.1">
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v18.1.Design">
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -94,6 +128,7 @@
     <Compile Include="Core\Controllers\ControllerMagazzino.cs" />
     <Compile Include="Core\Controllers\ControllerRigheFatture.cs" />
     <Compile Include="Core\Controllers\Fatture\ImportFatture.cs" />
+    <Compile Include="Core\Controllers\SaveEntityManager.cs" />
     <Compile Include="Core\Events\Generics\UpdateList.cs" />
     <Compile Include="Core\Events\Fatture\ApriFatturazione.cs" />
     <Compile Include="Core\Events\Fatture\EditFattura.cs" />
@@ -142,6 +177,24 @@
     <Content Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDBase.Designer.cs">
+      <DependentUpon>EDBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDNumeric.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDNumeric.Designer.cs">
+      <DependentUpon>EDNumeric.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDTesto.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDTesto.Designer.cs">
+      <DependentUpon>EDTesto.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\DettaglioFatturaView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -162,8 +215,17 @@
       <DependentUpon>FattureListView.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\Events\Generics\ItemSelected.cs" />
-    <Compile Include="View\FattureRigheListView.cs">
+    <Compile Include="View\FattureRighe\FattureRigheDetailView.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\FattureRighe\FattureRigheListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Test.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Test.Designer.cs">
+      <DependentUpon>Test.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Utility\IMenu.cs" />
     <Compile Include="View\MainView.cs">
@@ -200,6 +262,16 @@
     <Compile Include="Settings\UserSettings.cs" />
     <Compile Include="View\Utility\UtilityView.cs" />
     <Compile Include="View\Utility\OrdinaTab.cs" />
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="View\BaseControl\ElementiDettaglio\EDBase.resx">
+      <DependentUpon>EDBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\BaseControl\ElementiDettaglio\EDNumeric.resx">
+      <DependentUpon>EDNumeric.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\BaseControl\ElementiDettaglio\EDTesto.resx">
+      <DependentUpon>EDTesto.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\DettaglioFatturaView.resx">
       <DependentUpon>DettaglioFatturaView.cs</DependentUpon>
     </EmbeddedResource>
@@ -208,6 +280,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\FattureListView.resx">
       <DependentUpon>FattureListView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\FattureRighe\FattureRigheDetailView.resx">
+      <DependentUpon>FattureRigheDetailView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\MainView.resx">
       <DependentUpon>MainView.cs</DependentUpon>
@@ -224,6 +299,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\ScaricoMagazzino.resx">
       <DependentUpon>ScaricoMagazzino.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Test.resx">
+      <DependentUpon>Test.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

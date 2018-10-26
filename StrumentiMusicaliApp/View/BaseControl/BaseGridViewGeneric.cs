@@ -24,6 +24,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			_controller = controller;
 			this.dgvRighe.DataSource = _controller.DataSource;
 			this.Load += Control_Load;
+			this.dgvRighe.SelectionChanged += DgvMaster_SelectionChanged;
 		}
 
 		private void Control_Load(object sender, EventArgs e)
@@ -37,6 +38,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 		private void DgvMaster_SelectionChanged(object sender, EventArgs e)
 		{
 			EventAggregator.Instance().Publish(new ItemSelected<TBaseItem,TEntity>(dgvRighe.GetCurrentItemSelected<TBaseItem>()));
+			_controller.SelectedItem = dgvRighe.GetCurrentItemSelected<TBaseItem>().Entity;
 		}
 		private void DgvRighe_DoubleClick(object sender, EventArgs e)
 		{

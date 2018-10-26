@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Newtonsoft.Json;
 using NLog;
+using PropertyChanged;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Item.Base;
@@ -10,20 +11,25 @@ using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Base;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers.Base
 {
-	public abstract class BaseControllerGeneric<TEntity, TBaseItem> : BaseController
+	
+	public abstract class BaseControllerGeneric<TEntity, TBaseItem> : BaseController  
 		where TEntity: BaseEntity
 		where TBaseItem : BaseItem<TEntity>
 	{
+		 
+
 		public BaseControllerGeneric()
 		{
 			Init();
 		}
+		 
 
 		public abstract void RefreshList(UpdateList<TEntity> obj);
 		 

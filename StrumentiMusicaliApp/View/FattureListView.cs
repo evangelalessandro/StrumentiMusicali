@@ -1,4 +1,5 @@
 ﻿using NLog;
+using NLog;
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Item;
@@ -8,6 +9,7 @@ using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -163,10 +165,10 @@ namespace StrumentiMusicali.App.View
 						PIVA = a.PIVA,
 						Codice=a.Codice,
 						RagioneSociale = a.RagioneSociale
-					}).Take(100).OrderByDescending(a => a.Data).ToList();
+					}).OrderByDescending(a => a.ID).Take(100).ToList();
 				}
 
-				return list;
+				return (list); 
 			}
 			catch (Exception ex)
 			{
@@ -181,25 +183,39 @@ namespace StrumentiMusicali.App.View
 			var data = await Task.Run(() => { return GetDataAsync(); });
 			if (data == null)
 				return;
-			dgvMaster.DataSource = data;
+			dgvMaster.DataSource =   new MySortableBindingList<FatturaItem>(data );
 
 			dgvMaster.Columns["Entity"].Visible = false;
 			dgvMaster.AutoResizeColumns();
 			dgvMaster.Columns["ID"].DisplayIndex = 0;
 			dgvMaster.Columns["Codice"].DisplayIndex = 1;
 			dgvMaster.Columns["RagioneSociale"].DisplayIndex = 2;
+			 
+				
 		}
-
-
-
-		 
-
-		 
-		
+	 
 
 		private void dgvMaster_DoubleClick(object sender, EventArgs e)
 		{
-			Edit();
+			var g = sender as DataGridView;
+			if (g != null)
+			{
+				var p = g.PointToClient(MousePosition);
+				var hti = g.HitTest(p.X, p.Y);
+				if (hti.Type == DataGridViewHitTestType.ColumnHeader)
+				{
+					var columnIndex = hti.ColumnIndex;
+					//You handled a double click on column header
+					//Do what you need
+				}
+				else if (hti.Type == DataGridViewHitTestType.RowHeader)
+				{
+					var rowIndex = hti.RowIndex;
+					//You handled a double click on row header
+					Edit();
+				}
+			}
+			
 		}
 
 		private async void Edit()

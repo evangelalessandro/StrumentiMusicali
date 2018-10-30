@@ -66,6 +66,7 @@ namespace StrumentiMusicali.App.View
 			this.txtPrezzo = new System.Windows.Forms.NumericUpDown();
 			this.label3 = new System.Windows.Forms.Label();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.cboClienteID = new DevExpress.XtraEditors.LookUpEdit();
 			this.pnl1Alto.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dateEdit3.Properties.CalendarTimeProperties)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dateEdit3.Properties)).BeginInit();
@@ -82,6 +83,7 @@ namespace StrumentiMusicali.App.View
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzo)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.cboClienteID.Properties)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// lblID
@@ -156,6 +158,7 @@ namespace StrumentiMusicali.App.View
 			// 
 			// pnl1Alto
 			// 
+			this.pnl1Alto.Controls.Add(this.cboClienteID);
 			this.pnl1Alto.Controls.Add(this.dateEdit3);
 			this.pnl1Alto.Controls.Add(this.dateEdit2);
 			this.pnl1Alto.Controls.Add(this.dateEdit1);
@@ -210,10 +213,18 @@ namespace StrumentiMusicali.App.View
 			this.dateEdit2.EditValue = null;
 			this.dateEdit2.Location = new System.Drawing.Point(388, 154);
 			this.dateEdit2.Name = "dateEdit2";
+			this.dateEdit2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
 			this.dateEdit2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-			this.dateEdit2.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton()});
+			this.dateEdit2.Properties.CalendarDateEditing = false;
+			this.dateEdit2.Properties.CalendarTimeEditing = DevExpress.Utils.DefaultBoolean.True;
+			this.dateEdit2.Properties.DisplayFormat.FormatString = "HH:mm";
+			this.dateEdit2.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+			this.dateEdit2.Properties.EditFormat.FormatString = "HH:mm";
+			this.dateEdit2.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+			this.dateEdit2.Properties.Mask.EditMask = "HH:mm";
+			this.dateEdit2.Properties.ShowDropDown = DevExpress.XtraEditors.Controls.ShowDropDown.Never;
+			this.dateEdit2.Properties.ShowMonthHeaders = false;
 			this.dateEdit2.Size = new System.Drawing.Size(100, 20);
 			this.dateEdit2.TabIndex = 54;
 			this.dateEdit2.Tag = "OraTrasporto";
@@ -402,7 +413,7 @@ namespace StrumentiMusicali.App.View
 			this.txtPIVA.Margin = new System.Windows.Forms.Padding(4);
 			this.txtPIVA.MaxLength = 100;
 			this.txtPIVA.Name = "txtPIVA";
-			this.txtPIVA.Size = new System.Drawing.Size(374, 22);
+			this.txtPIVA.Size = new System.Drawing.Size(202, 22);
 			this.txtPIVA.TabIndex = 35;
 			this.txtPIVA.Tag = "PIVA";
 			this.txtPIVA.Values = null;
@@ -639,6 +650,16 @@ namespace StrumentiMusicali.App.View
 			this.tabPage2.Text = "Righe";
 			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
+			// cboClienteID
+			// 
+			this.cboClienteID.Location = new System.Drawing.Point(814, 40);
+			this.cboClienteID.Name = "cboClienteID";
+			this.cboClienteID.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+			this.cboClienteID.Size = new System.Drawing.Size(297, 20);
+			this.cboClienteID.TabIndex = 56;
+			this.cboClienteID.Tag = "ClienteID";
+			// 
 			// DettaglioFatturaView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -670,6 +691,7 @@ namespace StrumentiMusicali.App.View
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzo)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.cboClienteID.Properties)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -724,5 +746,6 @@ namespace StrumentiMusicali.App.View
 		private DevExpress.XtraEditors.DateEdit dateEdit3;
 		private DevExpress.XtraEditors.DateEdit dateEdit2;
 		private DevExpress.XtraEditors.DateEdit dateEdit1;
+		private DevExpress.XtraEditors.LookUpEdit cboClienteID;
 	}
 }

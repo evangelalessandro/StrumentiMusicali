@@ -33,6 +33,7 @@ namespace StrumentiMusicali.App.View.Utility
 				}
 			}
 		}
+		
 		public delegate void InvokeIfRequiredDelegate<T>(T obj)
 				where T : ISynchronizeInvoke;
 
@@ -93,6 +94,10 @@ namespace StrumentiMusicali.App.View.Utility
 						{
 							InitDate(cnt as DateEdit);
 							cnt.DataBindings.Add("DateTime", businessObject, item.Name,	true);
+						}
+						else if (cnt is LookUpEdit)
+						{
+							cnt.DataBindings.Add("EditValue", businessObject, item.Name);
 						}
 					}
 				}

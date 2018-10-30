@@ -16,8 +16,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 	public class ControllerFatturazione : BaseController
 	{
 		public Fattura SelectedItem { get; set; } = new Fattura();
-		public FatturaRiga SelectedItemRow { get; set; } = new FatturaRiga();
-
+		 
 		public ControllerFatturazione() : base()
 		{
 			EventAggregator.Instance().Subscribe<ImportaFattureAccess>(ImportaFatture);
@@ -33,7 +32,15 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			using (var saveManager =new SaveEntityManager())
 			{
+				if (SelectedItem.Pagamento.Length==0)
+				{
+					MessageManager.NotificaWarnig("Occorre impostare il pagamento");
+					return;
+				}
+
 				var uof = saveManager.UnitOfWork;
+				SelectedItem.Data = SelectedItem.Data.Date;
+
 				if (SelectedItem.ID > 0)
 				{
 					uof.FatturaRepository.Update(SelectedItem);
@@ -42,6 +49,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				{
 					uof.FatturaRepository.Add(SelectedItem);
 				}
+				
 				if (saveManager.SaveEntity(enSaveOperation.OpSave))
 				{
 					EventAggregator.Instance().Publish<FattureListUpdate>(new FattureListUpdate());

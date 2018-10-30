@@ -6,6 +6,8 @@
 			:base()
 		{
 			TipoDocumento = 2;
+			Pagamento = "";
+			 
 		}
 
 		public string Pagamento { get; set; }

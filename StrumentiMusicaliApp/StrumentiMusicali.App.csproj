@@ -13,6 +13,9 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -25,11 +28,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -66,8 +66,10 @@
     </Reference>
     <Reference Include="DevExpress.Data.v18.1">
     </Reference>
+    <Reference Include="DevExpress.Sparkline.v18.1.Core, Version=18.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Utils.v18.1">
     </Reference>
+    <Reference Include="DevExpress.Xpo.v18.1, Version=18.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraBars.v18.1">
     </Reference>
     <Reference Include="DevExpress.XtraBars.v18.1.Design">
@@ -80,6 +82,8 @@
     </Reference>
     <Reference Include="DevExpress.XtraCharts.v18.1.Design">
     </Reference>
+    <Reference Include="DevExpress.XtraGrid.v18.1, Version=18.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraLayout.v18.1, Version=18.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPrinting.v18.1">
     </Reference>
     <Reference Include="DevExpress.XtraCharts.v18.1.UI">
@@ -127,8 +131,13 @@
     <Compile Include="Core\Controllers\ControllerImmagini.cs" />
     <Compile Include="Core\Controllers\ControllerMagazzino.cs" />
     <Compile Include="Core\Controllers\ControllerRigheFatture.cs" />
-    <Compile Include="Core\Controllers\Fatture\ImportFatture.cs" />
+    <Compile Include="Core\Controllers\Imports\ImportFatture.cs" />
+    <Compile Include="Core\Controllers\Imports\ImportMagazziniExcel.cs" />
     <Compile Include="Core\Controllers\SaveEntityManager.cs" />
+    <Compile Include="Core\Events\Generics\Add.cs" />
+    <Compile Include="Core\Events\Generics\RemovePriority.cs" />
+    <Compile Include="Core\Events\Generics\AddPriority.cs" />
+    <Compile Include="Core\Events\Generics\Remove.cs" />
     <Compile Include="Core\Events\Generics\UpdateList.cs" />
     <Compile Include="Core\Events\Fatture\ApriFatturazione.cs" />
     <Compile Include="Core\Events\Fatture\EditFattura.cs" />
@@ -260,8 +269,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\ISettingsReader.cs" />
     <Compile Include="Settings\UserSettings.cs" />
+    <Compile Include="View\Utility\MySortableBindingList.cs" />
     <Compile Include="View\Utility\UtilityView.cs" />
     <Compile Include="View\Utility\OrdinaTab.cs" />
+    <None Include="Resources\Down.png" />
+    <None Include="Resources\Up.png" />
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="View\BaseControl\ElementiDettaglio\EDBase.resx">
       <DependentUpon>EDBase.cs</DependentUpon>

@@ -1,5 +1,4 @@
-﻿using StrumentiMusicali.Library.Repo;
-using System.Linq;
+﻿using StrumentiMusicali.App.Core.Controllers.Imports;
 
 namespace TestMOdel
 {
@@ -7,10 +6,7 @@ namespace TestMOdel
 	{
 		private static void Main(string[] args)
 		{
-			using (var uof = new UnitOfWork())
-			{
-				uof.ArticoliRepository.Find(a => 1 == 1).Select(a => a.Titolo);
-			}
+			
 		}
 	}
 }

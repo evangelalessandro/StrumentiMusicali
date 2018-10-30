@@ -10,74 +10,88 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StrumentiMusicali.App.View.FattureRighe
 {
-	internal class FattureRigheDetailView : BaseDataControl 
+	internal class FattureRigheDetailView : BaseDataControl
 	{
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
 
 		public FattureRigheDetailView(ControllerRigheFatture controllerRigheFatture)
-			:base()
+			: base()
 		{
 			InitializeComponent();
-			EDTesto artCNT = AggiungiTesto("Articolo");
-			artCNT.Width = 40;
-
-			var descCNT = AggiungiTesto("Descrizione");
-			descCNT.Width = 100;
-
-			var qtaCNT = AggiungiNumerico("Quantità");
-
-			var prezzoCNT = AggiungiNumerico("Prezzo");
-
-			var importo = AggiungiNumerico("Importo");
-
-			var ivaCNT = AggiungiTesto("Iva"); 
-			ivaCNT.Width = 30;
-			 
 			using (var uof = new UnitOfWork())
 			{
-				ivaCNT.SetListSuggest(uof.FattureRigheRepository.Find(a => 1 == 1).Where(a => a.IvaApplicata != "").Select(a => a.IvaApplicata).Distinct().ToArray());
-			}
 
-			Action action = new Action(() =>
-			{
-				if (this.IsDisposed)
-					return;
-				descCNT.BindProprieta("Descrizione", controllerRigheFatture.SelectedItem);
-				ivaCNT.BindProprieta("IvaApplicata", controllerRigheFatture.SelectedItem);
-				artCNT.BindProprieta("CodiceArticoloOld", controllerRigheFatture.SelectedItem);
-				qtaCNT.BindProprieta("Qta", controllerRigheFatture.SelectedItem);
-				 
-				prezzoCNT.BindProprieta("PrezzoUnitario", controllerRigheFatture.SelectedItem);
-				importo.BindProprieta("Importo", controllerRigheFatture.SelectedItem);
 
-			});
+				EDTesto artCNT = AggiungiTesto("Articolo");
+				artCNT.Width = 40;
 
-			action.BeginInvoke(null, null);
-			(controllerRigheFatture as INotifyPropertyChanged).PropertyChanged += (a, b) =>
-			{
+				var descCNT = AggiungiTesto("Descrizione",
+					null
+					);
+				descCNT.Width = 140;
+
+				var qtaCNT = AggiungiNumerico("Quantità");
+
+				var prezzoCNT = AggiungiNumericoDecimal("Prezzo");
+				prezzoCNT.Width = 80;
+
+				var importo = AggiungiNumericoDecimal("Importo");
+				importo.Width = 80;
+				importo.Enabled = false;
+
+				var ivaCNT = AggiungiTesto("Iva",
+					uof.FattureRigheRepository.Find(a => 1 == 1).Where(a => a.IvaApplicata != "").Select(a => a.IvaApplicata)
+					.Distinct().ToList());
+				ivaCNT.Width = 30;
+
+
+
+
+
+				Action action = new Action(() =>
+				{
+					if (this.IsDisposed)
+						return;
+					descCNT.BindProprieta("Descrizione", controllerRigheFatture.SelectedItem);
+					ivaCNT.BindProprieta("IvaApplicata", controllerRigheFatture.SelectedItem);
+					artCNT.BindProprieta("CodiceArticoloOld", controllerRigheFatture.SelectedItem);
+					qtaCNT.BindProprieta("Qta", controllerRigheFatture.SelectedItem);
+
+					prezzoCNT.BindProprieta("PrezzoUnitario", controllerRigheFatture.SelectedItem);
+					importo.BindProprieta("Importo", controllerRigheFatture.SelectedItem);
+
+				});
+
 				action.BeginInvoke(null, null);
+				(controllerRigheFatture as INotifyPropertyChanged).PropertyChanged += (a, b) =>
+				{
+					action.BeginInvoke(null, null);
 
-			};
-			_subcribe = EventAggregator.Instance().Subscribe<ItemSelected<FatturaRigaItem, FatturaRiga>>((a) =>
-			{
-				action.BeginInvoke(null, null);
+				};
+				_subcribe = EventAggregator.Instance().Subscribe<ItemSelected<FatturaRigaItem, FatturaRiga>>((a) =>
+				{
+					action.BeginInvoke(null, null);
 
+				}
+				);
 			}
-			);
-
 		}
 
-		private EDTesto AggiungiTesto(string titolo)
+		private EDTesto AggiungiTesto(string titolo, List<string> suggestTestList)
 		{
 			var artCNT = new EDTesto();
+			if (suggestTestList != null)
+				artCNT.SetListSuggest(suggestTestList.ToArray());
 			artCNT.Titolo = titolo;
 			flowLayoutPanel1.Controls.Add(artCNT);
 			return artCNT;
+		}
+		private EDTesto AggiungiTesto(string titolo)
+		{
+			return AggiungiTesto(titolo, null);
 		}
 
 		private EDNumeric AggiungiNumerico(string titolo)
@@ -86,11 +100,17 @@ namespace StrumentiMusicali.App.View.FattureRighe
 			qtaCNT.Titolo = titolo;
 			flowLayoutPanel1.Controls.Add(qtaCNT);
 			qtaCNT.Width = 40;
-			qtaCNT.SetMinMax(0, 10000);
+			qtaCNT.SetMinMax(0, 10000, 0);
+			return qtaCNT;
+		}
+		private EDNumeric AggiungiNumericoDecimal(string titolo)
+		{
+			var qtaCNT = AggiungiNumerico(titolo);
+			qtaCNT.SetMinMax(0, 10000, 2);
 			return qtaCNT;
 		}
 
-		Subscription<ItemSelected<FatturaRigaItem, FatturaRiga>> _subcribe;
+		private Subscription<ItemSelected<FatturaRigaItem, FatturaRiga>> _subcribe;
 		// NOTE: Leave out the finalizer altogether if this class doesn't
 		// own unmanaged resources, but leave the other methods
 		// exactly as they are.

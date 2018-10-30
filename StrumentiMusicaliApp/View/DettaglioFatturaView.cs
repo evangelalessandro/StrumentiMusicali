@@ -1,13 +1,17 @@
 ﻿using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Events.Fatture;
+using StrumentiMusicali.App.Core.Events.Generics;
+using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.FattureRighe;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -36,6 +40,7 @@ namespace StrumentiMusicali.App.View
 		{
 			if (_controllerRighe!=null)
 				_controllerRighe.Dispose();
+			_controllerRighe = null;
 			foreach (Control item in tabPage2.Controls)
 			{
 				item.Dispose();
@@ -53,16 +58,18 @@ namespace StrumentiMusicali.App.View
 		{
 			using (var uof = new UnitOfWork())
 			{
-				var listPagamenti = new List<string>();
-				listPagamenti.Add(("Seleziona pagamento"));
-				listPagamenti.Add(("Bonifico Bancario"));
-				listPagamenti.Add(("Rimessa Diretta"));
+				var listPagamenti = new List<Tuple<string, string>>();
+				listPagamenti.Add(new Tuple<string, string>("","Seleziona pagamento"));
+				listPagamenti.Add(new Tuple<string, string>("Bonifico Bancario", "Bonifico Bancario"));
+				listPagamenti.Add(new Tuple<string, string>("Rimessa Diretta", "Rimessa Diretta"));
+				listPagamenti.Add(new Tuple<string, string>("CONTRASSEGNO CONTANTI", "CONTRASSEGNO CONTANTI"));
+
 
 				cboPagamento.DataSource = listPagamenti.Select(a =>
 						new
 						{
-							ID = a,
-							Descrizione = a
+							ID = a.Item1,
+							Descrizione = a.Item2
 						}
 						).ToList();
 				cboPagamento.DisplayMember = "Descrizione";
@@ -76,22 +83,25 @@ namespace StrumentiMusicali.App.View
 				txtNote1.Values = uof.FatturaRepository.Find(a => true).Select(a => a.Note1).Distinct().ToList().ToArray();
 				txtNote2.Values = uof.FatturaRepository.Find(a => true).Select(a => a.Note2).Distinct().ToList().ToArray();
 
-				txtRagioneSociale.Values =
-					uof.ClientiRepository.Find(a => true).Select(a => a.RagioneSociale).Distinct().ToList().ToArray();
-
+			 
+				cboClienteID.Properties.DataSource= uof.ClientiRepository.Find(a => true).Select(a => new { a.ID, a.RagioneSociale, a.PIVA}).Distinct().ToList().ToArray();
+				cboClienteID.Properties.ValueMember = "ID";
+				cboClienteID.Properties.DisplayMember = "RagioneSociale";
+				cboClienteID.Properties.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.AutoFilter;
+				cboClienteID.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
 			}
 		}
 
 		private void TxtRagioneSociale_TextChanged(object sender, EventArgs e)
 		{
-			using (var uof = new UnitOfWork())
-			{
-				var finded = uof.ClientiRepository.Find(a => a.RagioneSociale == txtRagioneSociale.Text).Select(a => a.PIVA).FirstOrDefault();
-				if (finded != null && finded.Length > 0)
-				{
-					txtPIVA.Text = finded;
-				}
-			}
+			//using (var uof = new UnitOfWork())
+			//{
+			//	var finded = uof.ClientiRepository.Find(a => a.RagioneSociale == txtRagioneSociale.Text).Select(a => a.PIVA).FirstOrDefault();
+			//	if (finded != null && finded.Length > 0)
+			//	{
+			//		txtPIVA.Text = finded;
+			//	}
+			//}
 		}
 
 		private async void frm_Load(object sender, EventArgs e)
@@ -104,6 +114,9 @@ namespace StrumentiMusicali.App.View
 
 			UtilityView.SetDataBind(this, _controllerFatturazione.SelectedItem);
 
+			 
+			cboClienteID.EditValueChanged += CboClienteID_EditValueChanged;
+						 
 			txtRagioneSociale.TextChanged += TxtRagioneSociale_TextChanged;
 
 
@@ -116,6 +129,23 @@ namespace StrumentiMusicali.App.View
 			}
 
 		}
+
+		private void CboClienteID_EditValueChanged(object sender, EventArgs e)
+		{
+			var valCli = (int) cboClienteID.EditValue ;
+			using (var uof = new UnitOfWork())
+			{
+				var cliente = uof.ClientiRepository.Find(a => a.ID == valCli).FirstOrDefault();
+
+				_controllerFatturazione.SelectedItem.RagioneSociale = cliente.RagioneSociale;
+				_controllerFatturazione.SelectedItem.PIVA= cliente.PIVA;
+
+				Debug.WriteLine(cliente.RagioneSociale);
+				this.Validate();
+			}
+		}
+
+ 
 
 		private async Task AddElemet()
 		{
@@ -142,6 +172,11 @@ namespace StrumentiMusicali.App.View
 		{
 			if (tabControl1.SelectedTab == tabPage2)
 			{
+				if (_controllerFatturazione.SelectedItem.ID == 0)
+				{
+					tabControl1.SelectedTab = tabPage1;
+					return;
+				}
 				RefreshRighe();
 			}
 			UpdateButtonState();
@@ -159,12 +194,16 @@ namespace StrumentiMusicali.App.View
 		private void UpdateButtonState()
 		{
 			if (_menuTab!=null)
-			{ 
-				//_menuTab.Tabs[0].Pannelli[0].Enabled = tabControl1.SelectedTab == tabPage2;
+			{
+				ribPannelRighe.Enabled = tabControl1.SelectedTab == tabPage2 && 
+					_controllerFatturazione.SelectedItem.ID>0;
 				
+
+
 			}
 		}
 		MenuTab _menuTab = null;
+		RibbonMenuPanel ribPannelRighe = null;
 		public MenuTab GetMenu()
 		{
 			if (_menuTab==null)
@@ -174,15 +213,39 @@ namespace StrumentiMusicali.App.View
 				var tab =_menuTab.Add("Principale");
 				var ribPannel =tab.Add("Principale");
 				var ribSave = ribPannel.Add("Save", Properties.Resources.Save);
+				ribPannelRighe = tab.Add("Righe");
+				ribPannelRighe.Add("Aggiungi", Properties.Resources.Add).Click += (a,b)=> {
+					EventAggregator.Instance().Publish<Add<FatturaRigaItem, FatturaRiga>>(new Add<FatturaRigaItem, FatturaRiga>());
+				}; 
+				ribPannelRighe.Add("Rimuovi", Properties.Resources.Remove).Click
+					+= (a, b) => {
+						EventAggregator.Instance().Publish<Remove<FatturaRigaItem, FatturaRiga>>(new Remove<FatturaRigaItem, FatturaRiga>());
+					};
+
+				ribPannelRighe.Add("Meno prioritario", Properties.Resources.Up).Click += (a, b) => {
+					EventAggregator.Instance().Publish<AddPriority<FatturaRigaItem, FatturaRiga>>(
+						new AddPriority<FatturaRigaItem, FatturaRiga>());
+				};
+				ribPannelRighe.Add("Più prioritario", Properties.Resources.Down).Click
+					+= (a, b) => {
+						EventAggregator.Instance().Publish<RemovePriority<FatturaRigaItem, FatturaRiga>>(
+							new RemovePriority<FatturaRigaItem, FatturaRiga>());
+					};
+
+
 				ribSave.Click += (a, e) =>
 				{
 					this.Validate();
 					EventAggregator.Instance().Publish<FatturaSave>(new FatturaSave());
+
+					txtID.Text = _controllerFatturazione.SelectedItem.ID.ToString();
 					UpdateButtonState();
 				};
 			}
 			return _menuTab;
 			 
 		}
+
+		 
 	}
 }

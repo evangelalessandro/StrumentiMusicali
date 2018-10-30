@@ -37,6 +37,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 						uof.Commit();
 
 						var righeFatturaList = ImportRigheFatture(connection, fattureList);
+						OrdinaRighe(righeFatturaList);
 
 						uof.FattureRigheRepository.AddRange(righeFatturaList.ToList());
 						uof.Commit();
@@ -48,7 +49,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 						uof.Commit();
 
 						var ddtrigheList = ImportRigheDDT(connection, ddtList);
-
+						OrdinaRighe(ddtrigheList);
 						uof.DDTRigheRepository.AddRange(ddtrigheList);
 						uof.Commit();
 
@@ -59,6 +60,33 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 			catch (Exception ex)
 			{
 				MessageManager.NotificaError("Si è verificato un errore nell'importazione", ex);
+			}
+		}
+
+		private static void OrdinaRighe(List<DDTRiga> righeFatturaList)
+		{
+			var list = righeFatturaList.Select(a => new { a, a.DDTID}).GroupBy(a => a.DDTID).ToList();
+			foreach (var itemGr in list)
+			{
+				int ordine = 0;
+				foreach (var item in itemGr.OrderBy(a => a.a.OrdineVisualizzazione).ToList())
+				{
+					item.a.OrdineVisualizzazione = ordine;
+					ordine++;
+				}
+			}
+		}
+		private static void OrdinaRighe(List<FatturaRiga> righeFatturaList)
+		{
+			var list = righeFatturaList.Select(a => new { a, a.FatturaID }).GroupBy(a => a.FatturaID).ToList();
+			foreach (var itemGr in list)
+			{
+				int ordine = 0;
+				foreach (var item in itemGr.OrderBy(a => a.a.OrdineVisualizzazione).ToList())
+				{
+					item.a.OrdineVisualizzazione = ordine;
+					ordine++;
+				}
 			}
 		}
 
@@ -134,7 +162,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 						continue;
 					}
 					riga.FatturaID = fattura.ID;
-
+					
 					listaFattureRighe.Add(riga);
 				}
 				catch (Exception ex)

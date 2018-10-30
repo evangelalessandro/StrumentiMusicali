@@ -1,6 +1,9 @@
 ﻿using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Item;
+using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
+using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View
@@ -8,6 +11,8 @@ namespace StrumentiMusicali.App.View
 	public class FattureRigheListView : BaseControl.BaseGridViewGeneric<FatturaRigaItem, ControllerRigheFatture, FatturaRiga>
 	{
 		ControllerRigheFatture _controllerRigheFatture;
+
+		 
 		public FattureRigheListView(ControllerRigheFatture controllerRigheFatture)
 			: base(controllerRigheFatture)
 		{
@@ -18,9 +23,24 @@ namespace StrumentiMusicali.App.View
 		private void FattureRigheListView_Load(object sender, System.EventArgs e)
 		{
 			_controllerRigheFatture.RefreshList(null);
-			dgvRighe.DataSource = _controllerRigheFatture.DataSource;
+			dgvRighe.DataSource = _controllerRigheFatture.DataSource ;
+
+			 
 			dgvRighe.Refresh();
+			EventAggregator.Instance().Subscribe<UpdateList<FatturaRiga>>(RefreshList);
+
 			dgvRighe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+		}
+
+		private void RefreshList(UpdateList<FatturaRiga> obj)
+		{
+			this.Invalidate();
+
+			dgvRighe.DataSource = _controllerRigheFatture.DataSource;
+
+			dgvRighe.Refresh();
+			dgvRighe.Update();
+
 		}
 
 		public override void FormatGrid()

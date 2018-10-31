@@ -6,7 +6,6 @@ using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
@@ -19,15 +18,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			EventAggregator.Instance().Subscribe<ApriGestioneMagazzino>((a) =>
 		   {
-			   using (var frm = new Form())
+
+			   using (var view = new View.ScaricoMagazzino(this))
 			   {
-				   using (var view = new View.ScaricoMagazzino(this))
-				   {
-					   view.Dock = DockStyle.Fill;
-					   frm.Controls.Add(view);
-					   frm.ShowDialog();
-				   }
+				   this.ShowView(view, Settings.enAmbienti.ScaricoMagazzino);
 			   }
+
 		   });
 			EventAggregator.Instance().Subscribe<ScaricaQtaMagazzino>(ScaricaMagazzino);
 			EventAggregator.Instance().Subscribe<CaricaQtaMagazzino>(CaricaMagazzino);

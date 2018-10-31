@@ -4,6 +4,7 @@ using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.View.DatiMittenteFattura;
+using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -41,13 +42,26 @@ namespace StrumentiMusicali.App.Core
 
 		private void Apri(ApriAmbiente obj)
 		{
-			if (obj.TipoEnviroment==enTipoEnviroment.SettingFatture)
+			switch (obj.TipoEnviroment)
 			{
-				using (var view =new MittenteFatturaView())
-				{
-					this.ShowView(view,Settings.enAmbienti.SettingFatture);
-				}
+				case enTipoEnviroment.Fatturazione:
+					break;
+				case enTipoEnviroment.SettingFatture:
+					using (var view = new MittenteFatturaView())
+					{
+						this.ShowView(view, Settings.enAmbienti.SettingFatture);
+					}
+					break;
+				case enTipoEnviroment.SettingUrl:
+					using (var view = new DatiSitoView())
+					{
+						this.ShowView(view, Settings.enAmbienti.SettingSito);
+					}
+					break;
+				default:
+					break;
 			}
+			 
 		}
 
 		~ControllerMaster()

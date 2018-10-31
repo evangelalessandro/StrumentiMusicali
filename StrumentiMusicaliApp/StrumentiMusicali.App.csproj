@@ -290,7 +290,13 @@
     <Compile Include="View\BaseControl\ElementiDettaglio\EDTesto.Designer.cs">
       <DependentUpon>EDTesto.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\DatiMittenteFattura\MittenteFatturaView.cs">
+    <Compile Include="View\BaseControl\SettingBaseView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Settings\DatiSitoView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Settings\MittenteFatturaView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\DettaglioFatturaView.cs">
@@ -372,7 +378,13 @@
     <EmbeddedResource Include="View\BaseControl\ElementiDettaglio\EDTesto.resx">
       <DependentUpon>EDTesto.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\DatiMittenteFattura\MittenteFatturaView.resx">
+    <EmbeddedResource Include="View\BaseControl\SettingBaseView.resx">
+      <DependentUpon>SettingBaseView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Settings\DatiSitoView.resx">
+      <DependentUpon>DatiSitoView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Settings\MittenteFatturaView.resx">
       <DependentUpon>MittenteFatturaView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\DettaglioFatturaView.resx">

@@ -32,6 +32,8 @@ namespace StrumentiMusicali.App.Settings
 		Articolo,
 		ArticoliList,
 		Magazzino,
-		SettingFatture
+		SettingFatture,
+		SettingSito,
+		ScaricoMagazzino
 	}
 }

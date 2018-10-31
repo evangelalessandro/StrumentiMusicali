@@ -166,11 +166,27 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 					break;
 			}
 			sb.Append(Separatore);
-			sb.Append(art.Marca.Substring(0, 100));
+			if (art.Marca.Length>100)
+				sb.Append(art.Marca.Substring(0, 100));
+			else
+			{
+				sb.Append(art.Marca);
+			}
 			sb.Append(Separatore);
-			sb.Append(art.Titolo.Substring(0, 100));
+			if (art.Titolo.Length > 100)
+				sb.Append(art.Titolo.Substring(0, 100));
+			else
+			{
+				sb.Append(art.Titolo);
+			} 
 			sb.Append(Separatore);
-			sb.Append(art.Testo.Substring(0, 2000).Replace(Environment.NewLine, "<br/>"));
+			if (art.Testo.Length > 2000)
+				sb.Append(art.Testo.Substring(0, 2000).Replace(Environment.NewLine, "<br/>"));
+			else
+			{
+				sb.Append(art.Testo.Replace(Environment.NewLine, "<br/>"));
+			}
+			
 			sb.Append(Separatore);
 			//Prezzo
 			if (art.PrezzoARichiesta)
@@ -179,11 +195,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 			}
 			else
 			{
-				sb.Append(art.Prezzo.ToString("0,00"));
+				sb.Append(art.Prezzo.ToString("0.00"));
 				if (art.PrezzoBarrato > 0)
 				{
 					sb.Append(";");
-					sb.Append(art.PrezzoBarrato.ToString("0,00"));
+					sb.Append(art.PrezzoBarrato.ToString("0.00"));
 				}
 			}
 			sb.Append(Separatore);
@@ -265,7 +281,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 
 		private string GetTempFolder()
 		{
-			var name = Path.Combine(Application.ExecutablePath, "TEMP");
+			var name = Path.Combine( (System.IO.Path.GetDirectoryName(Application.ExecutablePath)), "TEMP");
 			if (!Directory.Exists(name))
 			{
 				Directory.CreateDirectory(name);

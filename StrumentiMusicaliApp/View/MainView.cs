@@ -102,11 +102,14 @@ namespace StrumentiMusicali.App
 			var tabImportExport = _menuTab.Add(@"Impostazioni");
 			var panel1 = tabImportExport.Add("Principale");
 			var ribSetting = panel1.Add("Dati fattura mittente", Properties.Resources.Settings);
-
-
+			var ribSettingUrl = panel1.Add("Dati Sito & Upload", Properties.Resources.Settings);
 			ribSetting.Click += (s, e) =>
 			{
 				EventAggregator.Instance().Publish(new ApriAmbiente(enTipoEnviroment.SettingFatture));
+			};
+			ribSettingUrl.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new ApriAmbiente(enTipoEnviroment.SettingUrl));
 			};
 		}
 
@@ -173,7 +176,7 @@ namespace StrumentiMusicali.App
 			{
 				EventAggregator.Instance().Publish(new ImportArticoliCSVMercatino());
 			};
-			ribImportCsv.Click += (s, e) =>
+			ribInvio.Click += (s, e) =>
 			{
 				EventAggregator.Instance().Publish(new InvioArticoliCSV());
 			};

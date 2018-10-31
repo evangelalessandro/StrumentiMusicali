@@ -17,7 +17,8 @@ namespace StrumentiMusicali.App.Core.Events.Generics
 	public enum enTipoEnviroment
 	{
 		Fatturazione,
-		SettingFatture
+		SettingFatture,
+		SettingUrl
 
 	}
 }

@@ -54,7 +54,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			if (!CheckFolderImmagini())
 				return;
-			var folderFoto = ReadSetting().settingSito.UrlCompletaImmagini;
+			var folderFoto = ReadSetting().settingSito.CartellaLocaleImmagini;
 			try
 			{
 				if (!MessageManager.QuestionMessage("Sei sicuro di voler cancellare l'immagine selezionata?"))
@@ -183,7 +183,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				return;
 			try
 			{
-				var folderFoto = ReadSetting().settingSito.UrlCompletaImmagini;
+				var folderFoto = ReadSetting().settingSito.CartellaLocaleImmagini;
 				using (var save = new SaveEntityManager())
 				{
 					var uof = save.UnitOfWork;

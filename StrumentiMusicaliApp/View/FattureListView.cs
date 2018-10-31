@@ -5,6 +5,7 @@ using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
+using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
@@ -177,14 +178,14 @@ namespace StrumentiMusicali.App.View
 
 		private void FattureListView_Disposed(object sender, EventArgs e)
 		{
-			var fatt = _baseController.ReadSetting(Settings.enAmbienti.FattureList);
+			var fatt = _baseController.ReadSetting(enAmbienti.FattureList);
 			fatt.LastStringaRicerca = txtCerca.Text;
-			_baseController.SaveSetting(Settings.enAmbienti.FattureList, fatt);
+			_baseController.SaveSetting(enAmbienti.FattureList, fatt);
 		}
 
 		private async void Form_Load(object sender, EventArgs e)
 		{
-			var fatt = _baseController.ReadSetting(Settings.enAmbienti.FattureList);
+			var fatt = _baseController.ReadSetting(enAmbienti.FattureList);
 			UpdateButtonState();
 			await RefreshData();
 

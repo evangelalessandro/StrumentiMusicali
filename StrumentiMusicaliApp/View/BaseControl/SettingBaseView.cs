@@ -5,33 +5,25 @@ using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.BaseControl;
 using StrumentiMusicali.App.View.BaseControl.ElementiDettaglio;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace StrumentiMusicali.App.View.DatiMittenteFattura
+namespace StrumentiMusicali.App.View.BaseControl
 {
-	public class MittenteFatturaView : BaseDataControl, IMenu
+	public class SettingBaseView : BaseDataControl, IMenu
 	{
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-		private DatiMittente _datiMittente;
-		private BaseController controller;
-		public MittenteFatturaView()
+	 
+		public SettingBaseView()
 			: base()
 		{
 			InitializeComponent();
 
-			controller = new BaseController();
-
-			_datiMittente = controller.ReadSetting().datiMittente;
-
-			if (_datiMittente == null)
-				_datiMittente = new DatiMittente();
-			if (_datiMittente.UfficioRegistroImp == null)
-				_datiMittente.UfficioRegistroImp = new DatiMittente.UfficioRegistro();
-			BindProp(_datiMittente, "");
+		 
 		}
 
-		private void BindProp(object objToBind, string prefixText)
+		public void BindProp(object objToBind, string prefixText)
 		{
 			foreach (var item in Utility.UtilityView.GetProperties(objToBind))
 			{
@@ -123,7 +115,7 @@ namespace StrumentiMusicali.App.View.DatiMittenteFattura
 		// NOTE: Leave out the finalizer altogether if this class doesn't
 		// own unmanaged resources, but leave the other methods
 		// exactly as they are.
-		~MittenteFatturaView()
+		~SettingBaseView()
 		{
 			// Finalizer calls Dispose(false)
 			Dispose(false);
@@ -186,22 +178,25 @@ namespace StrumentiMusicali.App.View.DatiMittenteFattura
 
 			rib1.Click += (a, e) =>
 			{
-				Salva();
+				if (OnSave != null)
+					OnSave(this, new EventArgs());
 			};
 
 		}
+		public event EventHandler<EventArgs> OnSave;
+		
 
-		private void Salva()
-		{
-			using (var cur = new CursorManager())
-			{
-				this.Validate();
-				var setting = controller.ReadSetting();
-				setting.datiMittente = _datiMittente;
-				controller.SaveSetting(setting);
+		//private void Salva()
+		//{
+		//	using (var cur = new CursorManager())
+		//	{
+		//		this.Validate();
+		//		var setting = controller.ReadSetting();
+		//		setting.datiMittente = _datiMittente;
+		//		controller.SaveSetting(setting);
 
-				MessageManager.NotificaInfo(MessageManager.GetMessage(Core.Controllers.enSaveOperation.OpSave));
-			}
-		}
+		//		MessageManager.NotificaInfo(MessageManager.GetMessage(Core.Controllers.enSaveOperation.OpSave));
+		//	}
+		//}
 	}
 }

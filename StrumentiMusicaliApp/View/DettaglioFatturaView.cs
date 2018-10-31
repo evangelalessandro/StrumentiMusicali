@@ -29,7 +29,6 @@ namespace StrumentiMusicali.App.View
 		{
 			_controllerFatturazione = controllerFatturazione;
 			InitializeComponent();
-			
 		}
 
 		/// <summary>
@@ -38,24 +37,21 @@ namespace StrumentiMusicali.App.View
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
-			if (_controllerRighe!=null)
+			if (_controllerRighe != null)
 			{
-				
 				_controllerRighe.Dispose();
 			}
-				
+
 			_controllerRighe = null;
 			foreach (Control item in tabPage2.Controls)
 			{
 				item.Dispose();
 				GC.SuppressFinalize(item);
 			}
-			
+
 			if (disposing && (components != null))
 			{
 				components.Dispose();
-
-				
 			}
 			base.Dispose(disposing);
 		}
@@ -65,11 +61,10 @@ namespace StrumentiMusicali.App.View
 			using (var uof = new UnitOfWork())
 			{
 				var listPagamenti = new List<Tuple<string, string>>();
-				listPagamenti.Add(new Tuple<string, string>("","Seleziona pagamento"));
+				listPagamenti.Add(new Tuple<string, string>("", "Seleziona pagamento"));
 				listPagamenti.Add(new Tuple<string, string>("Bonifico Bancario", "Bonifico Bancario"));
 				listPagamenti.Add(new Tuple<string, string>("Rimessa Diretta", "Rimessa Diretta"));
 				listPagamenti.Add(new Tuple<string, string>("CONTRASSEGNO CONTANTI", "CONTRASSEGNO CONTANTI"));
-
 
 				cboPagamento.DataSource = listPagamenti.Select(a =>
 						new
@@ -89,8 +84,7 @@ namespace StrumentiMusicali.App.View
 				txtNote1.Values = uof.FatturaRepository.Find(a => true).Select(a => a.Note1).Distinct().ToList().ToArray();
 				txtNote2.Values = uof.FatturaRepository.Find(a => true).Select(a => a.Note2).Distinct().ToList().ToArray();
 
-			 
-				cboClienteID.Properties.DataSource= uof.ClientiRepository.Find(a => true).Select(a => new { a.ID, a.RagioneSociale, a.PIVA}).Distinct().ToList().ToArray();
+				cboClienteID.Properties.DataSource = uof.ClientiRepository.Find(a => true).Select(a => new { a.ID, a.RagioneSociale, a.PIVA }).Distinct().ToList().ToArray();
 				cboClienteID.Properties.ValueMember = "ID";
 				cboClienteID.Properties.DisplayMember = "RagioneSociale";
 				cboClienteID.Properties.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.AutoFilter;
@@ -120,38 +114,32 @@ namespace StrumentiMusicali.App.View
 
 			UtilityView.SetDataBind(this, _controllerFatturazione.SelectedItem);
 
-			 
 			cboClienteID.EditValueChanged += CboClienteID_EditValueChanged;
-						 
-			txtRagioneSociale.TextChanged += TxtRagioneSociale_TextChanged;
 
+			txtRagioneSociale.TextChanged += TxtRagioneSociale_TextChanged;
 
 			using (var ord = new Utility.OrdinaTab())
 			{
 				ord.OrderTab(pnl1Alto);
 				ord.OrderTab(pnl2Testo);
 				ord.OrderTab(pnl3Basso);
-
 			}
-
 		}
 
 		private void CboClienteID_EditValueChanged(object sender, EventArgs e)
 		{
-			var valCli = (int) cboClienteID.EditValue ;
+			var valCli = (int)cboClienteID.EditValue;
 			using (var uof = new UnitOfWork())
 			{
 				var cliente = uof.ClientiRepository.Find(a => a.ID == valCli).FirstOrDefault();
 
 				_controllerFatturazione.SelectedItem.RagioneSociale = cliente.RagioneSociale;
-				_controllerFatturazione.SelectedItem.PIVA= cliente.PIVA;
+				_controllerFatturazione.SelectedItem.PIVA = cliente.PIVA;
 
 				Debug.WriteLine(cliente.RagioneSociale);
 				this.Validate();
 			}
 		}
-
- 
 
 		private async Task AddElemet()
 		{
@@ -193,51 +181,49 @@ namespace StrumentiMusicali.App.View
 			_controllerRighe.UpdateDataSource();
 		}
 
-		
-
-		
-
 		private void UpdateButtonState()
 		{
-			if (_menuTab!=null)
+			if (_menuTab != null)
 			{
-				ribPannelRighe.Enabled = tabControl1.SelectedTab == tabPage2 && 
-					_controllerFatturazione.SelectedItem.ID>0;
-				
-
-
+				ribPannelRighe.Enabled = tabControl1.SelectedTab == tabPage2 &&
+					_controllerFatturazione.SelectedItem.ID > 0;
 			}
 		}
-		MenuTab _menuTab = null;
-		RibbonMenuPanel ribPannelRighe = null;
+
+		private MenuTab _menuTab = null;
+		private RibbonMenuPanel ribPannelRighe = null;
+
 		public MenuTab GetMenu()
 		{
-			if (_menuTab==null)
+			if (_menuTab == null)
 			{
 				_menuTab = new MenuTab();
-				
-				var tab =_menuTab.Add("Principale");
-				var ribPannel =tab.Add("Principale");
+
+				var tab = _menuTab.Add("Principale");
+				var ribPannel = tab.Add("Principale");
 				var ribSave = ribPannel.Add("Save", Properties.Resources.Save);
 				ribPannelRighe = tab.Add("Righe");
-				ribPannelRighe.Add("Aggiungi", Properties.Resources.Add).Click += (a,b)=> {
+				ribPannelRighe.Add("Aggiungi", Properties.Resources.Add).Click += (a, b) =>
+				{
 					EventAggregator.Instance().Publish<Add<FatturaRigaItem, FatturaRiga>>(new Add<FatturaRigaItem, FatturaRiga>());
-				}; 
+				};
 				ribPannelRighe.Add("Rimuovi", Properties.Resources.Remove).Click
-					+= (a, b) => {
+					+= (a, b) =>
+					{
 						EventAggregator.Instance().Publish<Remove<FatturaRigaItem, FatturaRiga>>(new Remove<FatturaRigaItem, FatturaRiga>());
 					};
 
-				ribPannelRighe.Add("Meno prioritario", Properties.Resources.Up).Click += (a, b) => {
+				ribPannelRighe.Add("Meno prioritario", Properties.Resources.Up).Click += (a, b) =>
+				{
 					EventAggregator.Instance().Publish<AddPriority<FatturaRigaItem, FatturaRiga>>(
 						new AddPriority<FatturaRigaItem, FatturaRiga>());
 				};
 				ribPannelRighe.Add("Più prioritario", Properties.Resources.Down).Click
-					+= (a, b) => {
+					+= (a, b) =>
+					{
 						EventAggregator.Instance().Publish<RemovePriority<FatturaRigaItem, FatturaRiga>>(
 							new RemovePriority<FatturaRigaItem, FatturaRiga>());
 					};
-
 
 				ribSave.Click += (a, e) =>
 				{
@@ -249,9 +235,6 @@ namespace StrumentiMusicali.App.View
 				};
 			}
 			return _menuTab;
-			 
 		}
-
-		 
 	}
 }

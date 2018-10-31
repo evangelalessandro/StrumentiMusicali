@@ -2,6 +2,8 @@
 using NLog.Targets;
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Controllers.Base;
+using StrumentiMusicali.App.Core.Events.Generics;
+using StrumentiMusicali.App.View.DatiMittenteFattura;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -9,15 +11,15 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core
 {
-	public class ControllerMaster :  BaseController
+	public class ControllerMaster : BaseController
 	{
 		private ControllerArticoli _controllerArticoli;
 		private ControllerImmagini _controllerImmagini;
 		private ControllerMagazzino _controllerMagazzino;
 		private ControllerFatturazione _controllerFatturazione;
 
-		public ControllerMaster() 
-			:base()
+		public ControllerMaster()
+			: base()
 		{
 			ConfigureNLog();
 			_controllerArticoli = new ControllerArticoli();
@@ -25,11 +27,29 @@ namespace StrumentiMusicali.App.Core
 			_controllerMagazzino = new ControllerMagazzino();
 			_controllerFatturazione = new ControllerFatturazione();
 
+			EventAggregator.Instance().Subscribe<ApriAmbiente>(Apri);
+
 			Application.ThreadException += Application_ThreadException;
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new MainView(this));
+			using (var mainView = new MainView(this))
+			{
+				this.ShowView(mainView, Settings.enAmbienti.Main);
+			}
+
 		}
+
+		private void Apri(ApriAmbiente obj)
+		{
+			if (obj.TipoEnviroment==enTipoEnviroment.SettingFatture)
+			{
+				using (var view =new MittenteFatturaView())
+				{
+					this.ShowView(view,Settings.enAmbienti.SettingFatture);
+				}
+			}
+		}
+
 		~ControllerMaster()
 		{
 			_controllerFatturazione.Dispose();
@@ -41,6 +61,7 @@ namespace StrumentiMusicali.App.Core
 			_controllerMagazzino.Dispose();
 			_controllerMagazzino = null;
 		}
+
 		public static void LogMethod(string level, string message, string exception, string stacktrace, string classLine)
 		{
 			try
@@ -59,8 +80,6 @@ namespace StrumentiMusicali.App.Core
 			}
 		}
 
-
-
 		private void ConfigureNLog()
 		{
 			MethodCallTarget target = new MethodCallTarget();
@@ -77,13 +96,7 @@ namespace StrumentiMusicali.App.Core
 
 		private void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
 		{
-			
 			_logger.Error(e.Exception, "Application_ThreadException", null);
- 		}
-
-		
-		
-
-		
+		}
 	}
 }

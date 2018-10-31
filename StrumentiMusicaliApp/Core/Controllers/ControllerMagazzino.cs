@@ -20,7 +20,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			EventAggregator.Instance().Subscribe<ApriGestioneMagazzino>((a) =>
 		   {
 			   using (var frm = new Form())
-			   { 
+			   {
 				   using (var view = new View.ScaricoMagazzino(this))
 				   {
 					   view.Dock = DockStyle.Fill;

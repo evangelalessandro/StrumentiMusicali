@@ -3,7 +3,7 @@
 namespace StrumentiMusicali.Library.Entity
 {
 	public class DDTRiga : RigaDoc
-	{ 
+	{
 		[Required]
 		public int DDTID { get; set; }
 

@@ -6,10 +6,10 @@ namespace StrumentiMusicali.Library.Entity
 {
 	public class Deposito : BaseEntity
 	{
-        [Key]
+		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int ID { get; set; }
-        public string NomeDeposito { get; set; }
 
-    }
+		public string NomeDeposito { get; set; }
+	}
 }

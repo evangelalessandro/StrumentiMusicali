@@ -1,12 +1,12 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Controllers.Fatture;
 using StrumentiMusicali.App.Core.Events.Fatture;
+using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.View;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
-using StrumentiMusicali.Library.Repo;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -16,11 +16,11 @@ namespace StrumentiMusicali.App.Core.Controllers
 	public class ControllerFatturazione : BaseController
 	{
 		public Fattura SelectedItem { get; set; } = new Fattura();
-		 
+
 		public ControllerFatturazione() : base()
 		{
 			EventAggregator.Instance().Subscribe<ImportaFattureAccess>(ImportaFatture);
-			EventAggregator.Instance().Subscribe<ApriFatturazione>(ApriAmbiente);
+			EventAggregator.Instance().Subscribe<ApriAmbiente>(ApriAmbiente);
 			EventAggregator.Instance().Subscribe<NuovaFattura>(AddFattura);
 			EventAggregator.Instance().Subscribe<EditFattura>(FatturaEdit);
 			EventAggregator.Instance().Subscribe<FatturaSave>(Save);
@@ -30,9 +30,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void Save(FatturaSave obj)
 		{
-			using (var saveManager =new SaveEntityManager())
+			using (var saveManager = new SaveEntityManager())
 			{
-				if (SelectedItem.Pagamento.Length==0)
+				if (SelectedItem.Pagamento.Length == 0)
 				{
 					MessageManager.NotificaWarnig("Occorre impostare il pagamento");
 					return;
@@ -49,16 +49,13 @@ namespace StrumentiMusicali.App.Core.Controllers
 				{
 					uof.FatturaRepository.Add(SelectedItem);
 				}
-				
+
 				if (saveManager.SaveEntity(enSaveOperation.OpSave))
 				{
 					EventAggregator.Instance().Publish<FattureListUpdate>(new FattureListUpdate());
 				}
 			}
-			
 		}
-
-
 
 		~ControllerFatturazione()
 		{
@@ -69,6 +66,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				this.SaveSetting(Settings.enAmbienti.FattureList, dato);
 			}
 		}
+
 		private void DelFattura(EliminaFattura obj)
 		{
 			try
@@ -90,7 +88,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 							new FattureListUpdate());
 					}
 				}
-
 			}
 			catch (Exception ex)
 			{
@@ -108,10 +105,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			using (var view = new DettaglioFatturaView(this))
 			{
-				ShowView(view,Settings.enAmbienti.Fattura);
+				ShowView(view, Settings.enAmbienti.Fattura);
 			}
 		}
-
 
 		private void AddFattura(NuovaFattura obj)
 		{
@@ -119,12 +115,14 @@ namespace StrumentiMusicali.App.Core.Controllers
 			ShowDettaglio();
 		}
 
-		private void ApriAmbiente(ApriFatturazione obj)
+		private void ApriAmbiente(ApriAmbiente obj)
 		{
-
-			using (var view = new FattureListView(this))
+			if (obj.TipoEnviroment == enTipoEnviroment.Fatturazione)
 			{
-				view.ShowDialog();
+				using (var view = new FattureListView(this))
+				{
+					ShowView(view, Settings.enAmbienti.FattureList);
+				}
 			}
 		}
 
@@ -149,7 +147,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 								importa.ImportAccessDB(res.FileName);
 							}
 						}
-
 					}
 				}
 			}
@@ -158,6 +155,5 @@ namespace StrumentiMusicali.App.Core.Controllers
 				ExceptionManager.ManageError(ex);
 			}
 		}
-
 	}
 }

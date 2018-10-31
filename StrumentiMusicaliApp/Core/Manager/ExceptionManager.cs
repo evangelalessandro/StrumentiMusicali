@@ -21,8 +21,7 @@ namespace StrumentiMusicali.App.Core.Manager
 					MessageManager.NotificaError("Si è verificato un errore nell'ultima operazione", ex);
 				}
 			}
-			_logger.Error(ex,"Errore", new object[0]);
-			
+			_logger.Error(ex, "Errore", new object[0]);
 		}
 	}
 }

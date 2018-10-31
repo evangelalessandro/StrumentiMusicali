@@ -3,21 +3,17 @@ using System;
 
 namespace StrumentiMusicali.App
 {
-	static class Program
-    {
-        /// <summary>
-        /// Punto di ingresso principale dell'applicazione.
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-
-			
-			using (var controller=new ControllerMaster())
+	internal static class Program
+	{
+		/// <summary>
+		/// Punto di ingresso principale dell'applicazione.
+		/// </summary>
+		[STAThread]
+		private static void Main()
+		{
+			using (var controller = new ControllerMaster())
 			{
-				
 			}
 		}
-		
-    }
+	}
 }

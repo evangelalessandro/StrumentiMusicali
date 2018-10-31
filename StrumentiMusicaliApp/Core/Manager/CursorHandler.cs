@@ -17,11 +17,13 @@ namespace StrumentiMusicali.App.Core.Manager
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
+
 		~CursorManager()
 		{
 			// Finalizer calls Dispose(false)
 			Dispose(false);
 		}
+
 		protected virtual void Dispose(bool disposing)
 		{
 			if (disposing)

@@ -3,29 +3,24 @@ using FatturaElettronica.FatturaElettronicaBody;
 using FatturaElettronica.Impostazioni;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-
-
 
 namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 {
-
 	internal class FattElettronica
 	{
 		public DatiMittente DatiMittente { get; set; }
 		public DatiDestinatario DatiDestinatario { get; set; }
 		public List<FatturaHeader> FattureList { get; set; }
+
 		public void ScriviFattura(int idFattura)
 		{
-
-			var fattura = Fattura.CreateInstance(DatiMittente.VersoPA ? Instance.PubblicaAmministrazione: Instance.Privati);
+			var fattura = Fattura.CreateInstance(DatiMittente.VersoPA ? Instance.PubblicaAmministrazione : Instance.Privati);
 
 			DatiTrasmissione(fattura);
 			DatiMittenteFattura(fattura);
 			DatiCommittenteFattura(fattura);
 			IscrizioneRegistroImpresa(fattura);
-
 
 			foreach (var item in FattureList)
 			{
@@ -33,7 +28,6 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 				fattura.Body.Add(body);
 				ImpostaDatiSingolaFattura(body, item);
 			}
-
 		}
 
 		private void ImpostaDatiSingolaFattura(Body body, FatturaHeader itemFattura)
@@ -74,6 +68,7 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 				case enTipoPagamento.Contanti:
 					dettPg.ModalitaPagamento = "MP01";
 					break;
+
 				case enTipoPagamento.Bonifico:
 					dettPg.ModalitaPagamento = "MP05";
 					if (string.IsNullOrEmpty(DatiMittente.IBAN))
@@ -82,12 +77,12 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 					}
 					dettPg.IBAN = DatiMittente.IBAN;
 					break;
+
 				case enTipoPagamento.Contrassegno:
 					throw new Exception("Manca il tipo pagamento");
 
 				default:
 					throw new Exception("Manca il tipo pagamento");
-
 			}
 
 			dettPg.ImportoPagamento = body.DatiBeniServizi.DatiRiepilogo.Select(a => a.ImponibileImporto + a.Imposta).Sum();
@@ -98,11 +93,8 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 
 		private void AggiungiRiepilogoIva(Body body, FatturaHeader itemFattura)
 		{
-
-
 			foreach (var itemIva in itemFattura.Righe.ToList().GroupBy(a => a.AliquotaIVA).ToList())
 			{
-
 				FatturaElettronica.FatturaElettronicaBody.DatiBeniServizi.DatiRiepilogo riepilogoLinea = new FatturaElettronica.FatturaElettronicaBody.DatiBeniServizi.DatiRiepilogo();
 				riepilogoLinea.AliquotaIVA = itemIva.Key;
 				riepilogoLinea.ImponibileImporto = itemIva.Sum(a => a.PrezzoTotale);
@@ -110,7 +102,6 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 
 				body.DatiBeniServizi.DatiRiepilogo.Add(riepilogoLinea);
 			}
-
 		}
 
 		private void AggiungiRighe(Body body, FatturaHeader item)
@@ -129,9 +120,9 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 				linea.NumeroLinea = body.DatiBeniServizi.DettaglioLinee.Count + 1;
 
 				body.DatiBeniServizi.DettaglioLinee.Add(linea);
-
 			}
 		}
+
 		private void DatiCommittenteFattura(Fattura fattura)
 		{
 			var rel = fattura.Header.CessionarioCommittente.DatiAnagrafici;
@@ -144,9 +135,6 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 			codice fiscale del cedente/prestatore che sarà composto di 11 caratteri
 			numerici, se trattasi di persona giuridica, oppure di 16 caratteri
 			alfanumerici, se trattasi di persona fisica.			*/
-
-
-
 
 			if (DatiDestinatario.PersonaGiuridica)
 			{
@@ -165,6 +153,7 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 			sede.Provincia = DatiDestinatario.ProvinciaSigla;
 			sede.Nazione = "IT";
 		}
+
 		private void DatiMittenteFattura(Fattura fattura)
 		{
 			fattura.Header.CedentePrestatore.DatiAnagrafici.IdFiscaleIVA.IdPaese = "IT";
@@ -174,7 +163,6 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 			codice fiscale del cedente/prestatore che sarà composto di 11 caratteri
 			numerici, se trattasi di persona giuridica, oppure di 16 caratteri
 			alfanumerici, se trattasi di persona fisica.			*/
-
 
 			fattura.Header.CedentePrestatore.DatiAnagrafici.CodiceFiscale = DatiMittente.PersonaGiuridica ? DatiMittente.PIVA : DatiMittente.CodiceFiscale;
 			if (DatiMittente.PersonaGiuridica)
@@ -234,7 +222,7 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 				31 marzo 2014;
 				se la fattura è destinata ad un soggetto privato, il campo deve contenere il
 				codice di 7 caratteri che il Sistema di Interscambio ha attribuito a chi, in
-				qualità di titolare di un canale di trasmissione diverso dalla PEC abilitato a 
+				qualità di titolare di un canale di trasmissione diverso dalla PEC abilitato a
 				ricevere fatture elettroniche, ne abbia fatto richiesta attraverso l’apposita
 				funzionalità presente sul sito www.fatturapa.gov.it; se la fattura deve
 				essere recapitata ad un soggetto che intende ricevere le fatture
@@ -249,7 +237,6 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 				{
 					fattura.Header.DatiTrasmissione.CodiceDestinatario = "0000000";
 				}
-
 			}
 			else
 			{

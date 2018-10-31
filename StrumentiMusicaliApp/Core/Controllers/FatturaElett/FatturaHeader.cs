@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 {
@@ -16,23 +13,31 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 		public List<FatturaRighe> Righe { get; set; } = new List<FatturaRighe>();
 		public enTipoPagamento ModalitaPagamento { get; set; } = enTipoPagamento.Nessuno;
 	}
+
 	internal enum enTipoDocumento
 	{
 		[Description("fattura")]
 		TD01,
+
 		[Description("acconto/anticipo su fattura")]
 		TD02,
+
 		[Description("acconto/anticipo su parcella")]
 		TD03,
+
 		[Description("nota di credito")]
 		TD04,
+
 		[Description("nota di debito")]
 		TD05,
+
 		[Description("parcella")]
 		TD06,
+
 		[Description("autofattura")]
 		TD20
 	}
+
 	internal enum enTipoPagamento
 	{
 		Nessuno,
@@ -40,13 +45,13 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 		Bonifico,
 		Contrassegno,
 	}
+
 	internal class FatturaRighe
 	{
 		public string Descrizione { get; set; }
 		public decimal? QTA { get; set; }
 		public decimal PrezzoUnitario { get; set; }
 		public decimal PrezzoTotale { get; set; }
-
 
 		/// <summary>
 		/// valore compreso tra 0 e iva (22 in caso di iva al 22%

@@ -26,8 +26,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 					Import(res.FileName);
 				}
 			}
-
 		}
+
 		private void Import(string fileName)
 		{
 			var dt = new DataTable();
@@ -42,7 +42,6 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 					OleDbDataReader dr = cmd.ExecuteReader();
 					dt.Load(dr);
 				}
-
 			}
 			if (dt.Rows.Count > 1)
 			{
@@ -55,9 +54,6 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 					dt.Rows[0].Delete();
 					dt.Rows[1].Delete();
 				}
-
-
-
 			}
 			dt.AcceptChanges();
 
@@ -76,22 +72,20 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 				Condizione = a.Field<string>(9),
 			}).Where(a => a.Categoria != null && a.Categoria.Length > 0 && a.Marca != null && a.Marca.Length > 0).ToList();
 
-
 			using (var uof = new UnitOfWork())
 			{
 				var listCategorie = uof.CategorieRepository.Find(a => true).ToList();
 				foreach (var item in list.ToList())
 				{
-
 					var magItem = new Magazzino();
 					var articolo = new Articolo();
-					var categoriaSel= listCategorie.Where(a => a.Categoria.ToUpper() == item.Categoria.ToUpper()).FirstOrDefault();
+					var categoriaSel = listCategorie.Where(a => a.Categoria.ToUpper() == item.Categoria.ToUpper()).FirstOrDefault();
 
 					articolo.Marca = item.Marca;
-					articolo.Categoria= categoriaSel.ID;
-					articolo.Prezzo =  int.Parse( item.PrezzoVendita);
-					articolo.Testo= (item.DescrBreve);
-					articolo.Titolo= item.Marca + " " + item.Modello + " " + item.DescrBreve + " " + item.Colore;
+					articolo.Categoria = categoriaSel.ID;
+					articolo.Prezzo = int.Parse(item.PrezzoVendita);
+					articolo.Testo = (item.DescrBreve);
+					articolo.Titolo = item.Marca + " " + item.Modello + " " + item.DescrBreve + " " + item.Colore;
 
 					magItem.Articolo = articolo;
 
@@ -101,6 +95,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 			}
 			Console.WriteLine();
 		}
+
 		public string ConnectionString(string FileName, string Header)
 		{
 			OleDbConnectionStringBuilder Builder = new OleDbConnectionStringBuilder();
@@ -119,7 +114,5 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 
 			return Builder.ConnectionString;
 		}
-
 	}
 }
-

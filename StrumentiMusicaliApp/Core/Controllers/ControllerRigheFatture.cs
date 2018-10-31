@@ -103,7 +103,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 					}).OrderBy(a => a.Entity.OrdineVisualizzazione).ThenBy(a => a.ID).ToList();
 				}
 
-				DataSource =new View.Utility.MySortableBindingList<FatturaRigaItem>( list);
+				DataSource = new View.Utility.MySortableBindingList<FatturaRigaItem>(list);
 			}
 			catch (Exception ex)
 			{
@@ -123,15 +123,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 				EventAggregator.Instance().UnSbscribe(_subRemove);
 				EventAggregator.Instance().UnSbscribe(_addPrio);
 				EventAggregator.Instance().UnSbscribe(_removePrio);
-
-
 			}
 			// free native resources if there are any.
 		}
 
 		private void CambiaPriorita(bool aumenta)
 		{
-
 			if (_controllerFatturazione.SelectedItem.ID == 0)
 				return;
 
@@ -163,7 +160,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 											itemToUpdate.OrdineVisualizzazione++;
 										}
 										item.OrdineVisualizzazione--;
-
 									}
 									else
 									{
@@ -173,7 +169,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 											itemToUpdateTwo.OrdineVisualizzazione--;
 										}
 										item.OrdineVisualizzazione++;
-
 									}
 								}
 							}
@@ -197,7 +192,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 					ExceptionManager.ManageError(ex);
 				}
 			}
-
 		}
 
 		private void RiselezionaSelezionato()

@@ -3,26 +3,22 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StrumentiMusicali.App.View.Utility
 {
 	public class MySortableBindingList<T> : BindingList<T>
 	{
-
 		// reference to the list provided at the time of instantiation
-		List<T> originalList;
+		private List<T> originalList;
 
-		ListSortDirection sortDirection;
-
-		PropertyDescriptor sortProperty;
+		private ListSortDirection sortDirection;
+		private PropertyDescriptor sortProperty;
 
 		// function that refereshes the contents of the base classes collection of elements
-		Action<MySortableBindingList<T>, List<T>> populateBaseList = (a, b) => a.ResetItems(b);
+		private Action<MySortableBindingList<T>, List<T>> populateBaseList = (a, b) => a.ResetItems(b);
 
 		// a cache of functions that perform the sorting for a given type, property, and sort direction
-		static Dictionary<string, Func<List<T>, IEnumerable<T>>> cachedOrderByExpressions =
+		private static Dictionary<string, Func<List<T>, IEnumerable<T>>> cachedOrderByExpressions =
 			new Dictionary<string, Func<List<T>, IEnumerable<T>>>();
 
 		public MySortableBindingList()
@@ -46,7 +42,7 @@ namespace StrumentiMusicali.App.View.Utility
 		{
 			/*
              Look for an appropriate sort method in the cache if not found .
-             Call CreateOrderByMethod to create one. 
+             Call CreateOrderByMethod to create one.
              Apply it to the original list.
              Notify any bound controls that the sort has been applied.
              */
@@ -101,20 +97,17 @@ namespace StrumentiMusicali.App.View.Utility
 
 		protected override void RemoveSortCore()
 		{
-
 			ResetItems(originalList);
 		}
 
 		private void ResetItems(List<T> items)
 		{
-
 			base.ClearItems();
 
 			for (int i = 0; i < items.Count; i++)
 			{
 				base.InsertItem(i, items[i]);
 			}
-
 		}
 
 		protected override bool SupportsSortingCore {
@@ -138,7 +131,6 @@ namespace StrumentiMusicali.App.View.Utility
 
 		protected override void OnListChanged(ListChangedEventArgs e)
 		{
-
 			originalList = base.Items.ToList();
 		}
 	}

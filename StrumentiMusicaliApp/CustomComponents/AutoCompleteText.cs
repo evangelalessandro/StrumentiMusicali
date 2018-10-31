@@ -40,8 +40,6 @@ namespace StrumentiMusicali.App.CustomComponents
 			_listBox.BringToFront();
 		}
 
-
-
 		private void ResetListBox()
 		{
 			_listBox.Visible = false;
@@ -83,8 +81,6 @@ namespace StrumentiMusicali.App.CustomComponents
 						e.Handled = true;
 						break;
 					}
-
-
 			}
 		}
 
@@ -97,6 +93,7 @@ namespace StrumentiMusicali.App.CustomComponents
 						return true;
 					else
 						return false;
+
 				default:
 					return base.IsInputKey(keyData);
 			}
@@ -166,6 +163,5 @@ namespace StrumentiMusicali.App.CustomComponents
 				return new List<String>(result);
 			}
 		}
-
 	}
 }

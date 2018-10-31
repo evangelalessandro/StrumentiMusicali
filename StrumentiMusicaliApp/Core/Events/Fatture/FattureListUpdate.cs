@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StrumentiMusicali.App.Core.Events.Fatture
+﻿namespace StrumentiMusicali.App.Core.Events.Fatture
 {
-	class FattureListUpdate
+	internal class FattureListUpdate
 	{
 	}
 }

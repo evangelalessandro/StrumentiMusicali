@@ -1,9 +1,9 @@
 ﻿using NLog;
 using StrumentiMusicali.App.Core;
-using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Events.Fatture;
+using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
@@ -20,140 +20,32 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App
 {
-	public partial class MainView : Form, IMenu
+	public partial class MainView : UserControl, IMenu
 	{
 		private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
 		private BaseController _baseController;
+
+		private MenuTab _menuTab = null;
+
+		private RibbonMenuButton ribCercaArticolo;
+
+		private RibbonMenuButton ribDeleteArt;
+
+		private RibbonMenuButton ribDuplicaArt;
+
+		private RibbonMenuButton ribEditArt;
 
 		public MainView(BaseController baseController)
 		{
 			_baseController = baseController;
 			InitializeComponent();
 			dgvMaster.SelectionChanged += DgvMaster_SelectionChanged;
-			ribCerca.Click += RibCerca_Click;
-			ribDelete.Click += (s, e) =>
-			{
-				using (var curs = new CursorManager())
-				{
-					EventAggregator.Instance().Publish<ArticoloDelete>(new ArticoloDelete(GetCurrentItemSelected()));
-				}
-			};
-			ribImportArticoli.Click += (s, e) =>
-			{
-				EventAggregator.Instance().Publish<ImportArticoli>(new ImportArticoli());
-			};
-			ribCaricaMagazzino.Click += (s, e) =>
-			{
-				EventAggregator.Instance().Publish(new ApriGestioneMagazzino());
-			};
-			ribCaricaMagazzino.LargeImage = StrumentiMusicali.App.Properties.Resources.Magazzino;
-
-			ribImportFattureAccess.Click += (s, e) =>
-			{
-				EventAggregator.Instance().Publish(new ImportaFattureAccess());
-			};
-			ribBtnApriFatturazione.LargeImage = StrumentiMusicali.App.Properties.Resources.Apri_Fatturazione;
-			ribBtnApriFatturazione.Click += (s, e) =>
-			{
-				EventAggregator.Instance().Publish(new ApriFatturazione());
-			};
 
 			txtCerca.KeyUp += TxtCerca_KeyUp;
 			EventAggregator.Instance().Subscribe<ArticoliToUpdate>(UpdateList);
-			this.Disposed += FmrMain_Disposed;
+
 			_logger.Debug("Form main init");
-		}
-
-		private void FmrMain_Disposed(object sender, EventArgs e)
-		{
-			var dato = _baseController.ReadSetting(Settings.enAmbienti.Main);
-			dato.FormMainWindowState = this.WindowState;
-			dato.SizeFormMain = this.Size;
-			_baseController.SaveSetting(Settings.enAmbienti.Main, dato);
-		}
-
-		private async void UpdateList(ArticoliToUpdate obj)
-		{
-			await RefreshData();
-		}
-
-		private async void TxtCerca_KeyUp(object sender, KeyEventArgs e)
-		{
-			if (e.KeyCode == Keys.Return)
-			{
-				var dato = _baseController.ReadSetting(Settings.enAmbienti.Main);
-				dato.LastStringaRicerca = txtCerca.Text;
-				_baseController.SaveSetting(Settings.enAmbienti.Main,dato);
-				await RefreshData();
-			}
-		}
-
-		private void RibCerca_Click(object sender, EventArgs e)
-		{
-			bool visibleCerca = pnlCerca.Visible;
-			pnlCerca.Visible = !visibleCerca;
-			splitter1.Visible = !visibleCerca;
-			if (!visibleCerca)
-			{
-				pnlArticoli.Dock = DockStyle.Fill;
-			}
-			else
-			{
-				pnlCerca.Dock = DockStyle.Top;
-			}
-			UpdateButtonState();
-		}
-
-		private void DgvMaster_SelectionChanged(object sender, EventArgs e)
-		{
-			UpdateButtonState();
-
-			EventAggregator.Instance().Publish(new ArticoloSelected(GetCurrentItemSelected()));
-		}
-
-		private ArticoloItem GetCurrentItemSelected()
-		{
-			ArticoloItem item = null;
-			if (dgvMaster.SelectedRows.Count > 0)
-			{
-				item = (ArticoloItem)dgvMaster.SelectedRows[0].DataBoundItem;
-			}
-			return item;
-		}
-
-		private void UpdateButtonState()
-		{
-			ribbon1.Enabled = !(dgvMaster.DataSource == null);
-
-			ribEditArt.Enabled = dgvMaster.SelectedRows.Count > 0;
-			ribArtDuplicate.Enabled = dgvMaster.SelectedRows.Count > 0;
-			ribDelete.Enabled = dgvMaster.SelectedRows.Count > 0;
-			ribCerca.Checked = pnlCerca.Visible;
-		}
-
-		private async void Form1_Load(object sender, EventArgs e)
-		{
-			var dato = _baseController.ReadSetting(Settings.enAmbienti.Main);
-			txtCerca.Text = dato.LastStringaRicerca;
-
-			try
-			{
-				this.WindowState = dato.FormMainWindowState;
-				this.Size = dato.SizeFormMain;
-			}
-			catch (Exception ex)
-			{
-				ExceptionManager.ManageError(ex);
-			}
-			UpdateButtonState();
-			await RefreshData();
-
-			await dgvMaster.SelezionaRiga(dato.LastItemSelected); 
-
-			UpdateButtonState();
-
-			_logger.Debug("Form load");
 		}
 
 		public List<ArticoloItem> GetDataAsync()
@@ -188,46 +80,121 @@ namespace StrumentiMusicali.App
 			}
 		}
 
-		private async Task RefreshData()
+		public MenuTab GetMenu()
 		{
-			var data = await Task.Run(() => { return GetDataAsync(); });
-			if (data == null)
-				return;
-			dgvMaster.DataSource = data;
-			dgvMaster.Columns["Pinned"].Visible = false;
-			dgvMaster.Columns["Entity"].Visible = false;
+			if (_menuTab == null)
+			{
+				_menuTab = new MenuTab();
+
+				AggiungiComandiArticolo();
+
+				AggiungiComandiImportExport();
+
+				AggiungiFatturazioneMagazzino();
+
+				AggiungiImpostazioni();
+			}
+			return _menuTab;
 		}
 
-		private void ribAddArt_Click(object sender, EventArgs e)
+		private void AggiungiImpostazioni()
 		{
-			EventAggregator.Instance().Publish(new ArticoloAdd());
+			var tabImportExport = _menuTab.Add(@"Impostazioni");
+			var panel1 = tabImportExport.Add("Principale");
+			var ribSetting = panel1.Add("Dati fattura mittente", Properties.Resources.Settings);
+
+
+			ribSetting.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new ApriAmbiente(enTipoEnviroment.SettingFatture));
+			};
 		}
 
-		private void ribArtDuplicate_Click(object sender, EventArgs e)
+		private void AggiungiComandiArticolo()
 		{
-			using (var curs = new CursorManager())
+			var tabArticoli = _menuTab.Add("Articoli");
+			var panelComandiArticoli = tabArticoli.Add("Comandi Articoli");
+			var ribCreArt = panelComandiArticoli.Add("Crea", Properties.Resources.Add);
+			ribEditArt = panelComandiArticoli.Add(@"Vedi\Modifica", Properties.Resources.Penna);
+			ribDeleteArt = panelComandiArticoli.Add("Cancella", Properties.Resources.Delete);
+			ribDuplicaArt = panelComandiArticoli.Add("Duplica", Properties.Resources.Duplicate);
+			var panelComandiArticoliCerca = tabArticoli.Add("Cerca");
+			ribCercaArticolo = panelComandiArticoliCerca.Add("Cerca", Properties.Resources.Cerca);
+
+			ribCreArt.Click += (a, e) =>
+			{
+				EventAggregator.Instance().Publish(new ArticoloAdd());
+			};
+			ribDeleteArt.Click += (a, e) =>
+			{
+				using (var curs = new CursorManager())
+				{
+					EventAggregator.Instance().Publish<ArticoloDelete>(new ArticoloDelete(GetCurrentItemSelected()));
+				}
+			};
+			ribEditArt.Click += (a, e) =>
+			{
+				EditArticolo();
+			};
+			ribDuplicaArt.Click += (a, e) =>
 			{
 				EventAggregator.Instance().Publish(new ArticoloDuplicate());
-			}
-		}
-
-		private void ribEditArt_Click(object sender, EventArgs e)
-		{
-			EditArticolo();
-		}
-
-		private async void EditArticolo()
-		{
-			var itemSelected = (ArticoloItem)dgvMaster.SelectedRows[0].DataBoundItem;
-			using (var frm = new Forms.DettaglioArticoloView(itemSelected))
+			};
+			ribCercaArticolo.Click += (a, e) =>
 			{
-				_baseController.ShowView(frm,Settings.enAmbienti.Articolo);
-			}
-
-			await RefreshData();
-			await dgvMaster.SelezionaRiga(itemSelected.ID);
+				bool visibleCerca = pnlCerca.Visible;
+				pnlCerca.Visible = !visibleCerca;
+				splitter1.Visible = !visibleCerca;
+				if (!visibleCerca)
+				{
+					pnlArticoli.Dock = DockStyle.Fill;
+				}
+				else
+				{
+					pnlCerca.Dock = DockStyle.Top;
+				}
+				UpdateButtonState();
+			};
 		}
 
+		private void AggiungiComandiImportExport()
+		{
+			var tabImportExport = _menuTab.Add(@"Import\Export");
+			var panel1 = tabImportExport.Add("Export");
+			var ribInvio = panel1.Add("Invio Articoli", Properties.Resources.Upload);
+			var panel2 = tabImportExport.Add("Import");
+			var ribImportCsv = panel1.Add("Import csv mercatino", Properties.Resources.Import);
+			var ribImportFatture = panel1.Add("Fatture Access", Properties.Resources.Fatture_48);
+			ribImportFatture.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new ImportaFattureAccess());
+			};
+			ribImportCsv.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new ImportArticoliCSVMercatino());
+			};
+			ribImportCsv.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new InvioArticoliCSV());
+			};
+		}
+
+		private void AggiungiFatturazioneMagazzino()
+		{
+			var tabImportExport = _menuTab.Add(@"Fatturazione Magazzino");
+			var panel1 = tabImportExport.Add("Ambienti");
+			var ribFatt = panel1.Add("Fatturazione", Properties.Resources.Apri_Fatturazione);
+			ribFatt.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new ApriAmbiente(enTipoEnviroment.Fatturazione));
+			};
+
+			var ribMagaz = panel1.Add("Magazzino", Properties.Resources.Magazzino);
+			ribMagaz.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new ApriGestioneMagazzino());
+			};
+		}
 
 		private void dgvMaster_DoubleClick(object sender, EventArgs e)
 		{
@@ -248,58 +215,92 @@ namespace StrumentiMusicali.App
 					//You handled a double click on row header
 					EditArticolo();
 				}
-				
+			}
+		}
+
+		private void DgvMaster_SelectionChanged(object sender, EventArgs e)
+		{
+			UpdateButtonState();
+
+			EventAggregator.Instance().Publish(new ArticoloSelected(GetCurrentItemSelected()));
+		}
+
+		private async void EditArticolo()
+		{
+			var item = _baseController.ReadSetting().settingSito;
+			if (!item.CheckFolderImmagini())
+			{
+				return;
+			}
+			var itemSelected = (ArticoloItem)dgvMaster.SelectedRows[0].DataBoundItem;
+			using (var frm = new Forms.DettaglioArticoloView(itemSelected, item))
+			{
+				_baseController.ShowView(frm, Settings.enAmbienti.Articolo);
 			}
 
+			await RefreshData();
+			await dgvMaster.SelezionaRiga(itemSelected.ID);
 		}
 
-		public MenuTab GetMenu()
+		private async void Form1_Load(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
+			var dato = _baseController.ReadSetting(Settings.enAmbienti.Main);
+			txtCerca.Text = dato.LastStringaRicerca;
+
+			UpdateButtonState();
+			await RefreshData();
+
+			await dgvMaster.SelezionaRiga(dato.LastItemSelected);
+
+			UpdateButtonState();
+
+			_logger.Debug("Form load");
 		}
 
-		//MenuTab _menuTab = null;
+		private ArticoloItem GetCurrentItemSelected()
+		{
+			ArticoloItem item = null;
+			if (dgvMaster.SelectedRows.Count > 0)
+			{
+				item = (ArticoloItem)dgvMaster.SelectedRows[0].DataBoundItem;
+			}
+			return item;
+		}
 
-		//public MenuTab GetMenu()
-		//{
-		//	if (_menuTab == null)
-		//	{
-		//		_menuTab = new MenuTab();
+		private async Task RefreshData()
+		{
+			var data = await Task.Run(() => { return GetDataAsync(); });
+			if (data == null)
+				return;
+			dgvMaster.DataSource = data;
+			dgvMaster.Columns["Pinned"].Visible = false;
+			dgvMaster.Columns["Entity"].Visible = false;
+		}
 
-		//		var tab = _menuTab.Add("Principale");
-		//		var ribPannel = tab.Add("Principale");
-		//		var ribSave = ribPannel.Add("Save", Properties.Resources.Save);
-		//		ribPannelRighe = tab.Add("Righe");
-		//		ribPannelRighe.Add("Aggiungi", Properties.Resources.Add).Click += (a, b) => {
-		//			EventAggregator.Instance().Publish<Add<FatturaRigaItem, FatturaRiga>>(new Add<FatturaRigaItem, FatturaRiga>());
-		//		};
-		//		ribPannelRighe.Add("Rimuovi", Properties.Resources.Remove).Click
-		//			+= (a, b) => {
-		//				EventAggregator.Instance().Publish<Remove<FatturaRigaItem, FatturaRiga>>(new Remove<FatturaRigaItem, FatturaRiga>());
-		//			};
+		private async void TxtCerca_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Return)
+			{
+				var dato = _baseController.ReadSetting(Settings.enAmbienti.Main);
+				dato.LastStringaRicerca = txtCerca.Text;
+				_baseController.SaveSetting(Settings.enAmbienti.Main, dato);
+				await RefreshData();
+			}
+		}
 
-		//		ribPannelRighe.Add("Meno prioritario", Properties.Resources.Up).Click += (a, b) => {
-		//			EventAggregator.Instance().Publish<AddPriority<FatturaRigaItem, FatturaRiga>>(
-		//				new AddPriority<FatturaRigaItem, FatturaRiga>());
-		//		};
-		//		ribPannelRighe.Add("Più prioritario", Properties.Resources.Down).Click
-		//			+= (a, b) => {
-		//				EventAggregator.Instance().Publish<RemovePriority<FatturaRigaItem, FatturaRiga>>(
-		//					new RemovePriority<FatturaRigaItem, FatturaRiga>());
-		//			};
+		private void UpdateButtonState()
+		{
+			_menuTab.Enabled = !(dgvMaster.DataSource == null);
 
+			ribEditArt.Enabled = dgvMaster.SelectedRows.Count > 0;
+			ribDuplicaArt.Enabled = dgvMaster.SelectedRows.Count > 0;
+			ribDeleteArt.Enabled = dgvMaster.SelectedRows.Count > 0;
+			ribCercaArticolo.Checked = pnlCerca.Visible;
+		}
 
-		//		ribSave.Click += (a, e) =>
-		//		{
-		//			this.Validate();
-		//			EventAggregator.Instance().Publish<FatturaSave>(new FatturaSave());
-
-		//			txtID.Text = _controllerFatturazione.SelectedItem.ID.ToString();
-		//			UpdateButtonState();
-		//		};
-		//	}
-		//	return _menuTab;
-
-		//}
+		private async void UpdateList(ArticoliToUpdate obj)
+		{
+			await RefreshData();
+		}
 	}
 }

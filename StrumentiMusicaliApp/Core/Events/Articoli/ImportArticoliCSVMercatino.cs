@@ -1,6 +1,6 @@
 ﻿namespace StrumentiMusicali.App.Core.Events.Articoli
 {
-	class ImportArticoli
+	internal class ImportArticoliCSVMercatino
 	{
 	}
 }

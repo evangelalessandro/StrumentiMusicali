@@ -15,118 +15,37 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 	{
 		internal readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 		internal readonly string _PathSetting = Path.Combine(Application.StartupPath, @"settings.json");
+
 		public BaseController()
 		{
-
 		}
+
 		public void ShowView(UserControl view, Settings.enAmbienti ambiente)
 		{
 			using (var frm = new Form())
 			{
-				if (view.MinimumSize.Height>0)
+				if (view.MinimumSize.Height > 0)
 				{
 					frm.MinimumSize = new System.Drawing.Size(view.MinimumSize.Width, view.MinimumSize.Height + 190);
-					 
 				}
 
 				view.Dock = DockStyle.Fill;
 				frm.Controls.Add(view);
 				if (view is IMenu)
 				{
-					var menu = ((IMenu)view).GetMenu();
-					Ribbon ribbon1 = new Ribbon();
-					foreach (var tab in menu.Tabs)
-					{
-						var rbTab = (new RibbonTab(tab.Testo));
-						ribbon1.Tabs.Add(rbTab);
-						tab.PropertyChanged += (a, e) => {
-							rbTab.Enabled = tab.Enabled;
-							rbTab.Visible = tab.Visible;
-						};
-
-						foreach (var pannello in tab.Pannelli)
-						{
-							var rbPannel = new RibbonPanel(pannello.Testo);
-							rbTab.Panels.Add(rbPannel);
-							pannello.PropertyChanged += (a, e) => {
-								rbPannel.Enabled = pannello.Enabled;
-								rbPannel.Visible= pannello.Visible;
-							};
-							foreach (var button in pannello.Pulsanti)
-							{
-								var rbButton = new RibbonButton(button.Testo);
-
-								button.PropertyChanged += (a, e) => {
-									rbButton.Enabled = button.Enabled;
-									rbButton.Visible = button.Visible;
-								};
-								rbButton.LargeImage = button.Immagine;
-								rbPannel.Items.Add(rbButton);
-								rbButton.Click += (e, a) =>
-								{
-									button.PerformClick();
-								};
-							}
-						}
-					}
-
-					// 
-					// ribbon1
-					// 
-					ribbon1.Font = new System.Drawing.Font("Segoe UI", 9F);
-					ribbon1.Location = new System.Drawing.Point(0, 0);
-					ribbon1.Margin = new System.Windows.Forms.Padding(2);
-					ribbon1.Minimized = false;
-					ribbon1.Name = "ribbon1";
-					// 
-					// 
-					// 
-					ribbon1.OrbDropDown.BorderRoundness = 8;
-					ribbon1.OrbDropDown.Location = new System.Drawing.Point(0, 0);
-					ribbon1.OrbDropDown.Name = "";
-					ribbon1.OrbDropDown.Size = new System.Drawing.Size(527, 447);
-					ribbon1.OrbDropDown.TabIndex = 0;
-					ribbon1.OrbDropDown.Visible = false;
-					ribbon1.OrbStyle = System.Windows.Forms.RibbonOrbStyle.Office_2010;
-					// 
-					// 
-					// 
-					ribbon1.QuickAccessToolbar.Visible = false;
-					ribbon1.RibbonTabFont = new System.Drawing.Font("Trebuchet MS", 9F);
-					ribbon1.Size = new System.Drawing.Size(851, 167);
-					ribbon1.TabIndex = 0;
-
-					ribbon1.TabsMargin = new System.Windows.Forms.Padding(6, 26, 20, 0);
-					ribbon1.TabSpacing = 3;
-					ribbon1.Text = "ribbon1";
-					ribbon1.Dock = DockStyle.Top;
+					Ribbon ribbon1 = LoadMenu(view);
+					InitRibbon(ribbon1);
 
 					frm.Controls.Add(ribbon1);
 				}
 
-				
-				frm.Load += (a, b) => 
+				frm.Load += (a, b) =>
 				{
-					try
-					{
-						var datiInit = this.ReadSetting(ambiente);
-
-						frm.WindowState = datiInit.FormMainWindowState;
-						frm.Size = datiInit.SizeFormMain;
-					}
-					catch (Exception ex)
-					{
-						ExceptionManager.ManageError(ex);
-					}
+					ReadSettingForm(ambiente, frm);
 				};
 				frm.ShowDialog();
-				
-				var dato = this.ReadSetting(ambiente);
 
-				dato.FormMainWindowState = frm.WindowState;
-				dato.SizeFormMain = frm.Size;
-
-				this.SaveSetting(ambiente, dato);
+				SavSettingForm(ambiente, frm);
 
 				foreach (Control item in frm.Controls)
 				{
@@ -134,6 +53,125 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 				}
 			}
 		}
+
+		private static void InitRibbon(Ribbon ribbon1)
+		{
+			//
+			// ribbon1
+			//
+			ribbon1.Font = new System.Drawing.Font("Segoe UI", 9F);
+			ribbon1.Location = new System.Drawing.Point(0, 0);
+			ribbon1.Margin = new System.Windows.Forms.Padding(2);
+			ribbon1.Minimized = false;
+			ribbon1.Name = "ribbon1";
+			//
+			//
+			//
+			ribbon1.OrbDropDown.BorderRoundness = 8;
+			ribbon1.OrbDropDown.Location = new System.Drawing.Point(0, 0);
+			ribbon1.OrbDropDown.Name = "";
+			ribbon1.OrbDropDown.Size = new System.Drawing.Size(527, 447);
+			ribbon1.OrbDropDown.TabIndex = 0;
+			ribbon1.OrbDropDown.Visible = false;
+			ribbon1.OrbStyle = System.Windows.Forms.RibbonOrbStyle.Office_2010;
+			//
+			//
+			//
+			ribbon1.QuickAccessToolbar.Visible = false;
+			ribbon1.RibbonTabFont = new System.Drawing.Font("Trebuchet MS", 9F);
+			ribbon1.Size = new System.Drawing.Size(851, 167);
+			ribbon1.TabIndex = 0;
+
+			ribbon1.TabsMargin = new System.Windows.Forms.Padding(6, 26, 20, 0);
+			ribbon1.TabSpacing = 3;
+			ribbon1.Text = "ribbon1";
+			ribbon1.Dock = DockStyle.Top;
+		}
+
+		private static Ribbon LoadMenu(UserControl view)
+		{
+			var menu = ((IMenu)view).GetMenu();
+			Ribbon ribbon1 = new Ribbon();
+
+			menu.PropertyChanged += (a, e) =>
+			{
+				ribbon1.Enabled = menu.Enabled;
+				ribbon1.Visible = menu.Visible;
+			};
+
+			foreach (var tab in menu.Tabs)
+			{
+				var rbTab = (new RibbonTab(tab.Testo));
+				ribbon1.Tabs.Add(rbTab);
+				tab.PropertyChanged += (a, e) =>
+				{
+					rbTab.Enabled = tab.Enabled;
+					rbTab.Visible = tab.Visible;
+				};
+
+				foreach (var pannello in tab.Pannelli)
+				{
+					var rbPannel = new RibbonPanel(pannello.Testo);
+					rbTab.Panels.Add(rbPannel);
+					pannello.PropertyChanged += (a, e) =>
+					{
+						rbPannel.Enabled = pannello.Enabled;
+						rbPannel.Visible = pannello.Visible;
+					};
+					foreach (var button in pannello.Pulsanti)
+					{
+						var rbButton = new RibbonButton(button.Testo);
+
+						button.PropertyChanged += (a, e) =>
+						{
+							rbButton.Enabled = button.Enabled;
+							rbButton.Visible = button.Visible;
+							rbButton.Checked = button.Checked;
+						};
+						rbButton.LargeImage = button.Immagine;
+						rbPannel.Items.Add(rbButton);
+						rbButton.Click += (e, a) =>
+						{
+							button.PerformClick();
+						};
+					}
+				}
+			}
+
+			return ribbon1;
+		}
+
+		private void SavSettingForm(enAmbienti ambiente, Form frm)
+		{
+			var dato = this.ReadSetting(ambiente);
+
+			dato.Left = frm.Left;
+			dato.Top = frm.Top;
+			dato.StartPosition = frm.StartPosition;
+			dato.FormMainWindowState = frm.WindowState;
+			dato.SizeFormMain = frm.Size;
+
+			this.SaveSetting(ambiente, dato);
+		}
+
+		private void ReadSettingForm(enAmbienti ambiente, Form frm)
+		{
+			try
+			{
+				var datiInit = this.ReadSetting(ambiente);
+
+				frm.StartPosition = datiInit.StartPosition;
+				frm.WindowState = datiInit.FormMainWindowState;
+				frm.Size = datiInit.SizeFormMain;
+				frm.Left = datiInit.Left;
+				frm.Top = datiInit.Top;
+			}
+			catch (Exception ex)
+			{
+				ExceptionManager.ManageError(ex);
+			}
+		}
+
 		public UserSettings ReadSetting()
 		{
 			UserSettings setting;
@@ -148,6 +186,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			}
 			return setting;
 		}
+
 		public FormRicerca ReadSetting(enAmbienti ambiente)
 		{
 			var setting = ReadSetting();
@@ -170,13 +209,14 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			setting.Form.RemoveAll(a => a.Item1 == ambiente);
 			setting.Form.Add(new Tuple<enAmbienti, FormRicerca>(ambiente, formRicerca));
 			SaveSetting(setting);
-
 		}
+
 		public void SaveSetting(UserSettings settings)
 		{
 			File.WriteAllText(_PathSetting,
 				JsonConvert.SerializeObject(settings));
 		}
+
 		public void Dispose()
 		{
 			Dispose(true);
@@ -198,11 +238,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			if (disposing)
 			{
 				// free managed resources
-
 			}
 			// free native resources if there are any.
-
 		}
-
 	}
 }

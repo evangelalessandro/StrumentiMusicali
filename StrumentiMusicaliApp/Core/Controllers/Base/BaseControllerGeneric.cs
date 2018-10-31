@@ -1,52 +1,41 @@
-﻿using Autofac;
-using Newtonsoft.Json;
-using NLog;
-using PropertyChanged;
+﻿using PropertyChanged;
 using StrumentiMusicali.App.Core.Events.Generics;
-using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Item.Base;
-using StrumentiMusicali.App.Settings;
-using StrumentiMusicali.App.View;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Base;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers.Base
 {
 	[AddINotifyPropertyChangedInterface]
-	public abstract class BaseControllerGeneric<TEntity, TBaseItem> : BaseController , IDisposable
-		where TEntity: BaseEntity
+	public abstract class BaseControllerGeneric<TEntity, TBaseItem> : BaseController, IDisposable
+		where TEntity : BaseEntity
 		where TBaseItem : BaseItem<TEntity>
 	{
-		 
-
 		public BaseControllerGeneric()
 		{
 			Init();
 		}
-		 
 
 		public abstract void RefreshList(UpdateList<TEntity> obj);
 
-		Subscription<UpdateList<TEntity>> _updateList;
-		Subscription<ItemSelected<TBaseItem, TEntity>> _selectItemSub;
+		private Subscription<UpdateList<TEntity>> _updateList;
+		private Subscription<ItemSelected<TBaseItem, TEntity>> _selectItemSub;
+
 		public void Init()
 		{
-			_updateList =	EventAggregator.Instance().Subscribe<UpdateList<TEntity>>(RefreshList);
+			_updateList = EventAggregator.Instance().Subscribe<UpdateList<TEntity>>(RefreshList);
 
-			_selectItemSub =EventAggregator.Instance().Subscribe<ItemSelected<TBaseItem, TEntity>>(
-				(a)=> {
-					if (a.ItemSelected!=null)
-						SelectedItem = a.ItemSelected.Entity; }
+			_selectItemSub = EventAggregator.Instance().Subscribe<ItemSelected<TBaseItem, TEntity>>(
+				(a) =>
+				{
+					if (a.ItemSelected != null)
+						SelectedItem = a.ItemSelected.Entity;
+				}
 				);
-
 		}
+
 		public new void Dispose()
 		{
 			Dispose(true);
@@ -63,28 +52,28 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		}
 
 		// The bulk of the clean-up code is implemented in Dispose(bool)
-		protected virtual new void Dispose(bool disposing)
+		protected new virtual void Dispose(bool disposing)
 		{
 			if (disposing)
 			{
 				// free managed resources
-				EventAggregator.Instance().UnSbscribe( _updateList);
+				EventAggregator.Instance().UnSbscribe(_updateList);
 				EventAggregator.Instance().UnSbscribe(_selectItemSub);
-				if (DataSource!=null)
+				if (DataSource != null)
 					DataSource.Clear();
 				DataSource = null;
 			}
 			// free native resources if there are any.
-
 		}
 
 		public BaseEntity SelectedItem { get; set; }
+
 		[AlsoNotifyFor("DataSource")]
 		public MySortableBindingList<TBaseItem> DataSource { get; set; } = new MySortableBindingList<TBaseItem>();
 
 		internal void UpdateDataSource()
 		{
-			RefreshList(null);	
+			RefreshList(null);
 		}
 	}
 }

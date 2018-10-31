@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View.Utility
 {
 	public class OrdinaTab : IDisposable
 	{
-		int _tabindex = 0;
+		private int _tabindex = 0;
 
 		public void Dispose()
 		{
-			 
 		}
 
 		public void OrderTab(Control parent)
@@ -26,7 +22,6 @@ namespace StrumentiMusicali.App.View.Utility
 					_tabindex++;
 				}
 			}
-
 		}
 	}
 }

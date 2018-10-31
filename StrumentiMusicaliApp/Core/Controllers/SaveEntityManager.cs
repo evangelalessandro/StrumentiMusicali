@@ -8,11 +8,13 @@ namespace StrumentiMusicali.App.Core.Controllers
 	public class SaveEntityManager : IDisposable
 	{
 		private UnitOfWork uof = new UnitOfWork();
+
 		public void Dispose()
 		{
 			uof.Dispose();
 			uof = null;
 		}
+
 		public UnitOfWork UnitOfWork { get { return uof; } }
 
 		public bool SaveEntity(string messaggio)
@@ -21,7 +23,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 			{
 				using (var cursor = new CursorManager())
 				{
-
 					uof.Commit();
 					if (!string.IsNullOrEmpty(messaggio))
 						ShowMessage(messaggio);
@@ -38,35 +39,20 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 			return false;
 		}
+
 		public bool SaveEntity(enSaveOperation operation)
 		{
-			return SaveEntity(GetMessage(operation));
+			return SaveEntity(MessageManager.GetMessage(operation));
 		}
 
-		private string GetMessage(enSaveOperation operation)
-		{
-			switch (operation)
-			{
-				case enSaveOperation.OpSave:
-					return ("Salvataggio avvenuto con successo");
-					
-				case enSaveOperation.OpDelete:
-					return ("Cancellazione avvenuta correttamente!");
-					
-				case enSaveOperation.Duplicazione:
-					return ("Duplicazione avvenuta con successo");
-					
-				default:
-					break;
-			}
-			return "";
-		}
+		
 
 		private void ShowMessage(string messaggio)
 		{
 			MessageManager.NotificaInfo(messaggio);
 		}
 	}
+
 	public enum enSaveOperation
 	{
 		OpSave,

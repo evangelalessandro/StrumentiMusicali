@@ -1,9 +1,11 @@
 ﻿using StrumentiMusicali.App.Core;
 using StrumentiMusicali.App.Core.Controllers;
+using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Events.Image;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
+using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
@@ -40,18 +42,19 @@ namespace StrumentiMusicali.App.Forms
 		private bool modeEdit = false;
 		private System.Windows.Forms.PictureBox pb = new PictureBox();
 
-		public DettaglioArticoloView()
+		SettingSito _settingSito = null;
+		public DettaglioArticoloView(SettingSito settingSito)
 			: base()
 		{
 			InitializeComponent();
 			if (DesignMode)
 				return;
+			_settingSito = settingSito;
 			if (_articolo == null)
 			{
 				_articolo = new StrumentiMusicali.Library.Entity.Articolo() { Testo = "Prova", Titolo = "titolo", Marca = "PRova" };
 			}
 			EventAggregator.Instance().Subscribe<ImageListUpdate>(RefreshImageList);
-
 
 			PanelImage.AllowDrop = true;
 
@@ -77,8 +80,8 @@ namespace StrumentiMusicali.App.Forms
 			this.Resize += FrmArticolo_ResizeEnd;
 		}
 
-		public DettaglioArticoloView(ArticoloItem articolo)
-			: this()
+		public DettaglioArticoloView(ArticoloItem articolo, SettingSito settingSito)
+			: this(settingSito)
 		{
 			_articolo = articolo.Entity;
 			modeEdit = true;
@@ -395,11 +398,12 @@ namespace StrumentiMusicali.App.Forms
 				var imageList = uof.FotoArticoloRepository.Find(a => a.Articolo.ID == _articolo.ID)
 					.OrderBy(a => a.Ordine).ToList();
 
+				
 				foreach (var item in imageList)
 				{
 					try
 					{
-						var itemPhoto = System.IO.Directory.GetFiles(ControllerImmagini.FolderFoto,
+						var itemPhoto = System.IO.Directory.GetFiles(_settingSito.CartellaLocaleImmagini,
 							item.UrlFoto).FirstOrDefault();
 						if (itemPhoto != null)
 						{
@@ -484,6 +488,7 @@ namespace StrumentiMusicali.App.Forms
 				_lastFilter = text;
 			}
 		}
+
 		/// <summary>
 		/// Draw a tab page based on whether it is disabled or enabled.
 		/// </summary>
@@ -512,6 +517,7 @@ namespace StrumentiMusicali.App.Forms
 				}
 			}
 		}
+
 		/// <summary>
 		/// Cancel the selecting event if the TabPage is disabled.
 		/// </summary>
@@ -524,9 +530,10 @@ namespace StrumentiMusicali.App.Forms
 				e.Cancel = true;
 			}
 		}
+
 		private void UpdateButtonState()
 		{
-			tabPage2.Enabled = _articolo != null && _articolo.ID!="" ; 
+			tabPage2.Enabled = _articolo != null && _articolo.ID != "";
 			if (_ribPannelImmagini != null)
 			{
 				_ribPannelImmagini.Enabled = tabControl1.SelectedTab == tabPage2;

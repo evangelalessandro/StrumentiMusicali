@@ -9,12 +9,13 @@ namespace StrumentiMusicali.Library.Entity
 		public int FatturaID { get; set; }
 
 		public virtual Fattura Fattura { get; set; }
+
 		[NotMapped]
-		public decimal Importo { get { return PrezzoUnitario* Qta; } set { } }
+		public decimal Importo { get { return PrezzoUnitario * Qta; } set { } }
 
 		[Required]
 		public decimal PrezzoUnitario { get; set; }
-		 
+
 		public string IvaApplicata { get; set; }
 	}
 }

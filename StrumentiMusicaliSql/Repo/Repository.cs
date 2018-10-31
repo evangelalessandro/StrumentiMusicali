@@ -7,7 +7,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace StrumentiMusicali.Library.Repo
 {
@@ -29,7 +28,6 @@ namespace StrumentiMusicali.Library.Repo
 		{
 			return dbSet.Where(predicate);
 		}
-
 
 		//Implementation of IRepository methods
 		public virtual IEnumerable<T> DataSet { get { return dbSet; } }
@@ -58,7 +56,6 @@ namespace StrumentiMusicali.Library.Repo
 				{
 					(entity as Articolo).ID = "Luc_" + DateTime.Now.Ticks.ToString();
 				}
-
 			}
 			FixDateNull(entity);
 
@@ -88,7 +85,7 @@ namespace StrumentiMusicali.Library.Repo
 			foreach (var item in list.Where(a => a.PropertyType.ToString().Contains("DateTime")))
 			{
 				var val = item.GetValue(entity);
-				if ((val!=null) && (((DateTime)val).Year < 1800))
+				if ((val != null) && (((DateTime)val).Year < 1800))
 				{
 					item.SetValue(entity, null);
 				}
@@ -103,6 +100,7 @@ namespace StrumentiMusicali.Library.Repo
 				.Where(p => (p.Name != "EntityKey" && p.Name != "EntityState"))
 				.Select(p => p).ToList();
 		}
+
 		public virtual void Delete(T entity)
 		{
 			dbSet.Remove(entity);
@@ -127,6 +125,5 @@ namespace StrumentiMusicali.Library.Repo
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
-
 	}
 }

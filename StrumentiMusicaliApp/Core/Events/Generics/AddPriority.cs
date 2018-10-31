@@ -7,6 +7,5 @@ namespace StrumentiMusicali.App.Core.Events.Generics
 		where TEntity : BaseEntity
 		where TBaseItem : BaseItem<TEntity>
 	{
-		 
 	}
 }

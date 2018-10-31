@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StrumentiMusicali.App.Core.Events.Fatture
+namespace StrumentiMusicali.App.Core.Events.Articoli
 {
-	class ApriFatturazione
+	public class InvioArticoliCSV
 	{
 	}
 }

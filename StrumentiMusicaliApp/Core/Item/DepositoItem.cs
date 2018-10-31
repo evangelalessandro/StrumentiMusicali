@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StrumentiMusicali.App.Core.Item
+﻿namespace StrumentiMusicali.App.Core.Item
 {
-	class DepositoItem
+	internal class DepositoItem
 	{
 		public string Descrizione => this.ToString();
 		public int ID { get; set; }
@@ -15,8 +9,7 @@ namespace StrumentiMusicali.App.Core.Item
 
 		public override string ToString()
 		{
-			return NomeDeposito + " Qta:" + Qta.ToString() ; 
+			return NomeDeposito + " Qta:" + Qta.ToString();
 		}
-
 	}
 }

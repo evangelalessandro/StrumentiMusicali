@@ -21,6 +21,7 @@ namespace StrumentiMusicali.App.View.Utility
 			}
 			return default(T);
 		}
+
 		public static async Task SelezionaRiga(this DataGridView dataGrid, string idItem)
 		{
 			for (int i = 0; i < dataGrid.RowCount; i++)
@@ -33,7 +34,7 @@ namespace StrumentiMusicali.App.View.Utility
 				}
 			}
 		}
-		
+
 		public delegate void InvokeIfRequiredDelegate<T>(T obj)
 				where T : ISynchronizeInvoke;
 
@@ -49,13 +50,12 @@ namespace StrumentiMusicali.App.View.Utility
 				action(obj);
 			}
 		}
+
 		public static void SetDataBind(Control parentControl, object businessObject)
 		{
 			FixDateNull(businessObject);
 			parentControl.InvokeIfRequired((b) =>
 			{
-
-
 				var listControlWithTag = FindControlByType<Control>(parentControl).Where(a => a.Tag != null && a.Tag.ToString().Length > 0);
 
 				foreach (var item in GetProperties(businessObject))
@@ -72,7 +72,6 @@ namespace StrumentiMusicali.App.View.Utility
 						}
 						else if (cnt is NumericUpDown)
 						{
-
 							cnt.DataBindings.Add("Value", businessObject, item.Name);
 						}
 						else if (cnt is CheckBox)
@@ -93,7 +92,7 @@ namespace StrumentiMusicali.App.View.Utility
 						else if (cnt is DateEdit)
 						{
 							InitDate(cnt as DateEdit);
-							cnt.DataBindings.Add("DateTime", businessObject, item.Name,	true);
+							cnt.DataBindings.Add("DateTime", businessObject, item.Name, true);
 						}
 						else if (cnt is LookUpEdit)
 						{
@@ -101,11 +100,9 @@ namespace StrumentiMusicali.App.View.Utility
 						}
 					}
 				}
-
 			});
-
 		}
-		
+
 		private static void InitDate(DateEdit de)
 		{
 			de.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -122,6 +119,7 @@ namespace StrumentiMusicali.App.View.Utility
 			//de.Properties.EditFormat.FormatString = DatasDateTimeFormat;
 			//de.Properties.EditMask = DatasDateTimeFormat;
 		}
+
 		public static void FixDateNull(object entity)
 		{
 			var list = GetProperties(entity);
@@ -134,6 +132,7 @@ namespace StrumentiMusicali.App.View.Utility
 				}
 			}
 		}
+
 		public static List<T> FindControlByType<T>(Control mainControl, bool getAllChild = true) where T : Control
 		{
 			List<T> lt = new List<T>();

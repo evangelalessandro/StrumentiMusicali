@@ -203,6 +203,7 @@
     <Compile Include="Core\Controllers\ControllerImmagini.cs" />
     <Compile Include="Core\Controllers\ControllerMagazzino.cs" />
     <Compile Include="Core\Controllers\ControllerRigheFatture.cs" />
+    <Compile Include="Core\Controllers\Exports\ExportArticoliCsv.cs" />
     <Compile Include="Core\Controllers\FatturaElett\DatiDestinatario.cs" />
     <Compile Include="Core\Controllers\FatturaElett\DatiMittente.cs" />
     <Compile Include="Core\Controllers\FatturaElett\Elettronica.cs" />
@@ -211,12 +212,13 @@
     <Compile Include="Core\Controllers\Imports\ImportFatture.cs" />
     <Compile Include="Core\Controllers\Imports\ImportMagazziniExcel.cs" />
     <Compile Include="Core\Controllers\SaveEntityManager.cs" />
+    <Compile Include="Core\Events\Articoli\InvioArticoliCSV.cs" />
     <Compile Include="Core\Events\Generics\Add.cs" />
+    <Compile Include="Core\Events\Generics\ApriAmbiente.cs" />
     <Compile Include="Core\Events\Generics\RemovePriority.cs" />
     <Compile Include="Core\Events\Generics\AddPriority.cs" />
     <Compile Include="Core\Events\Generics\Remove.cs" />
     <Compile Include="Core\Events\Generics\UpdateList.cs" />
-    <Compile Include="Core\Events\Fatture\ApriFatturazione.cs" />
     <Compile Include="Core\Events\Fatture\EditFattura.cs" />
     <Compile Include="Core\Events\Fatture\EliminaFattura.cs" />
     <Compile Include="Core\Events\Fatture\FatturaSave.cs" />
@@ -253,7 +255,7 @@
     <Compile Include="Core\Events\Articoli\ArticoloAdd.cs" />
     <Compile Include="Core\Events\Articoli\ArticoliUpdate.cs" />
     <Compile Include="Core\Events\Articoli\ArticoloSelected.cs" />
-    <Compile Include="Core\Events\Articoli\ImportArticoli.cs" />
+    <Compile Include="Core\Events\Articoli\ImportArticoliCSVMercatino.cs" />
     <Compile Include="Core\Events\Interfaces\FatturaCurrent.cs" />
     <Compile Include="Core\Manager\ExceptionManager.cs" />
     <Compile Include="Core\Events\Image\ImageAdd.cs" />
@@ -263,11 +265,18 @@
     <Content Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Compile Include="Settings\SettingSito.cs" />
     <Compile Include="View\BaseControl\ElementiDettaglio\EDBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\BaseControl\ElementiDettaglio\EDBase.Designer.cs">
       <DependentUpon>EDBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDCheckBok.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDCheckBok.Designer.cs">
+      <DependentUpon>EDCheckBok.cs</DependentUpon>
     </Compile>
     <Compile Include="View\BaseControl\ElementiDettaglio\EDNumeric.cs">
       <SubType>UserControl</SubType>
@@ -326,7 +335,6 @@
     <Compile Include="CustomComponents\AutoCompleteText.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="View\BaseControl\BaseDataControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

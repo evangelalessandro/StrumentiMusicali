@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.CustomComponents
 {
-
 	internal class DateTimePickerBinding : System.Windows.Forms.Binding
 	{
 		public DateTimePickerBinding(object dataSource, string dataMember, DataSourceUpdateMode dataSourceUpdateMode)
@@ -17,7 +12,7 @@ namespace StrumentiMusicali.App.CustomComponents
 			this.Parse += new ConvertEventHandler(DateTimePickerBinding_Parse);
 		}
 
-		void DateTimePickerBinding_Parse(object sender, ConvertEventArgs e)
+		private void DateTimePickerBinding_Parse(object sender, ConvertEventArgs e)
 		{
 			DateTimePicker dateTimePicker = (Control as DateTimePicker);
 			if (dateTimePicker != null)
@@ -36,7 +31,7 @@ namespace StrumentiMusicali.App.CustomComponents
 			}
 		}
 
-		void DateTimePickerBinding_Format(object sender, ConvertEventArgs e)
+		private void DateTimePickerBinding_Format(object sender, ConvertEventArgs e)
 		{
 			DateTimePicker dateTimePicker = (this.Control as DateTimePicker);
 			if (dateTimePicker != null)

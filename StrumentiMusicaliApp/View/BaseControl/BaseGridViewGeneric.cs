@@ -10,12 +10,13 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View.BaseControl
 {
-	public abstract partial class BaseGridViewGeneric<TBaseItem, TController, TEntity> : UserControl,IDisposable
+	public abstract partial class BaseGridViewGeneric<TBaseItem, TController, TEntity> : UserControl, IDisposable
 		where TEntity : BaseEntity
 		where TBaseItem : BaseItem<TEntity>
 		where TController : BaseControllerGeneric<TEntity, TBaseItem>
 	{
 		private TController _controller;
+
 		public BaseGridViewGeneric(TController controller)
 		{
 			InitializeComponent();
@@ -25,21 +26,20 @@ namespace StrumentiMusicali.App.View.BaseControl
 			this.Load += Control_Load;
 			this.dgvRighe.SelectionChanged += DgvMaster_SelectionChanged;
 
-			_selectSub = EventAggregator.Instance().Subscribe<ItemSelected<TBaseItem,TEntity>>((a)=>
-				{
-					{
-						var T= new Task(() => 						{
-							dgvRighe.SelezionaRiga(a.ItemSelected.ID.ToString());
-						});
-						Task.WhenAll(new Task[] { T });
-					};
-				}
+			_selectSub = EventAggregator.Instance().Subscribe<ItemSelected<TBaseItem, TEntity>>((a) =>
+				 {
+					 {
+						 var T = new Task(() =>
+						 {
+							 dgvRighe.SelezionaRiga(a.ItemSelected.ID.ToString());
+						 });
+						 Task.WhenAll(new Task[] { T });
+					 };
+				 }
 			);
-
-			
 		}
 
-		/// <summary> 
+		/// <summary>
 		/// Pulire le risorse in uso.
 		/// </summary>
 		/// <param name="disposing">ha valore true se le risorse gestite devono essere eliminate, false in caso contrario.</param>
@@ -54,6 +54,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			}
 			base.Dispose(disposing);
 		}
+
 		public new void Dispose()
 		{
 			Dispose(true);
@@ -68,8 +69,9 @@ namespace StrumentiMusicali.App.View.BaseControl
 			// Finalizer calls Dispose(false)
 			Dispose(false);
 		}
-		 
-		Subscription<ItemSelected<TBaseItem, TEntity>> _selectSub;
+
+		private Subscription<ItemSelected<TBaseItem, TEntity>> _selectSub;
+
 		private void Control_Load(object sender, EventArgs e)
 		{
 			FormatGrid();
@@ -77,17 +79,17 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 		public abstract void FormatGrid();
 
-
 		private void DgvMaster_SelectionChanged(object sender, EventArgs e)
 		{
 			var item = dgvRighe.GetCurrentItemSelected<TBaseItem>();
-			if (item != null && item.Entity!=null)
+			if (item != null && item.Entity != null)
 			{
 				EventAggregator.Instance().Publish(new ItemSelected<TBaseItem, TEntity>(item));
 
 				_controller.SelectedItem = item.Entity;
 			}
 		}
+
 		private void DgvRighe_DoubleClick(object sender, EventArgs e)
 		{
 			var g = sender as DataGridView;
@@ -108,7 +110,6 @@ namespace StrumentiMusicali.App.View.BaseControl
 					EventAggregator.Instance().Publish<Edit<TBaseItem, TEntity>>(new Edit<TBaseItem, TEntity>());
 				}
 			}
-
 		}
 	}
 }

@@ -8,6 +8,7 @@ namespace StrumentiMusicali.App.Core.Events.Image
 		{
 			FotoArticolo = fotoArticolo;
 		}
+
 		public FotoArticolo FotoArticolo { get; private set; }
 	}
 }

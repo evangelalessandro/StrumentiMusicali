@@ -65,7 +65,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 
 		private static void OrdinaRighe(List<DDTRiga> righeFatturaList)
 		{
-			var list = righeFatturaList.Select(a => new { a, a.DDTID}).GroupBy(a => a.DDTID).ToList();
+			var list = righeFatturaList.Select(a => new { a, a.DDTID }).GroupBy(a => a.DDTID).ToList();
 			foreach (var itemGr in list)
 			{
 				int ordine = 0;
@@ -76,6 +76,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 				}
 			}
 		}
+
 		private static void OrdinaRighe(List<FatturaRiga> righeFatturaList)
 		{
 			var list = righeFatturaList.Select(a => new { a, a.FatturaID }).GroupBy(a => a.FatturaID).ToList();
@@ -162,7 +163,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 						continue;
 					}
 					riga.FatturaID = fattura.ID;
-					
+
 					listaFattureRighe.Add(riga);
 				}
 				catch (Exception ex)
@@ -386,7 +387,6 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 
 		public void Dispose()
 		{
-			 
 		}
 	}
 }

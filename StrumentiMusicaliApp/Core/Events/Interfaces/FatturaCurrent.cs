@@ -4,13 +4,11 @@ using StrumentiMusicali.Library.Entity;
 
 namespace StrumentiMusicali.App.Core.Events
 {
-	public class FatturaCurrent : CurrentItem<FatturaItem,  Fattura>
+	public class FatturaCurrent : CurrentItem<FatturaItem, Fattura>
 	{
-		
 		public FatturaCurrent(FatturaItem itemSelected)
-			:base(itemSelected)
+			: base(itemSelected)
 		{
-			
 		}
 	}
 }

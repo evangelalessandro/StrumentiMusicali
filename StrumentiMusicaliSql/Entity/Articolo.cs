@@ -29,6 +29,7 @@ namespace StrumentiMusicali.Library.Entity
 		[Key]
 		[MaxLength(50), Required]
 		public string ID { get; set; }
+
 		public bool ImmaginiDaCaricare { get; set; } = true;
 
 		[MaxLength(100)]
@@ -48,6 +49,7 @@ namespace StrumentiMusicali.Library.Entity
 
 		[MaxLength(100), Required]
 		public string Titolo { get; set; }
+
 		public string UrlSchedaProdotto { get; set; }
 		public string UrlSchedaProdottoTurbo { get; set; }
 		public bool UsaAnnuncioTurbo { get; set; }

@@ -8,6 +8,7 @@ namespace StrumentiMusicali.App.Core.Events.Articoli
 		{
 			Articolo = articolo;
 		}
+
 		public Articolo Articolo { get; private set; }
 	}
 }

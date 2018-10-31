@@ -6,10 +6,9 @@ using System.Linq;
 
 namespace StrumentiMusicali.Library.Repo
 {
-
 	public class UnitOfWork : IDisposable
 	{
-		//Our database context 
+		//Our database context
 		private ModelSm dbContext = new ModelSm();
 
 		//Private members corresponding to each concrete repository
@@ -23,8 +22,8 @@ namespace StrumentiMusicali.Library.Repo
 				}
 				return _CategorieRepository;
 			}
-
 		}
+
 		private Repository<Deposito> _DepositoRepository;
 
 		public IRepository<Deposito> DepositoRepository {
@@ -35,8 +34,8 @@ namespace StrumentiMusicali.Library.Repo
 				}
 				return _DepositoRepository;
 			}
-
 		}
+
 		private Repository<Magazzino> _MagazzinoRepository;
 
 		public IRepository<Magazzino> MagazzinoRepository {
@@ -59,8 +58,8 @@ namespace StrumentiMusicali.Library.Repo
 				}
 				return _ArticoliRepository;
 			}
-
 		}
+
 		private Repository<Fattura> _FatturaRepository;
 
 		public IRepository<Fattura> FatturaRepository {
@@ -71,8 +70,8 @@ namespace StrumentiMusicali.Library.Repo
 				}
 				return _FatturaRepository;
 			}
-
 		}
+
 		private Repository<DDt> _DDTRepository;
 
 		public IRepository<DDt> DDTRepository {
@@ -83,7 +82,6 @@ namespace StrumentiMusicali.Library.Repo
 				}
 				return _DDTRepository;
 			}
-
 		}
 
 		private Repository<Cliente> _ClientiRepository;
@@ -96,7 +94,6 @@ namespace StrumentiMusicali.Library.Repo
 				}
 				return _ClientiRepository;
 			}
-
 		}
 
 		private Repository<FatturaRiga> _FattureRigheRepository;
@@ -109,8 +106,8 @@ namespace StrumentiMusicali.Library.Repo
 				}
 				return _FattureRigheRepository;
 			}
-
 		}
+
 		private Repository<DDTRiga> _DDTRigheRepository;
 
 		public IRepository<DDTRiga> DDTRigheRepository {
@@ -121,7 +118,6 @@ namespace StrumentiMusicali.Library.Repo
 				}
 				return _DDTRigheRepository;
 			}
-
 		}
 
 		private Repository<FotoArticolo> _FotoArticoloRepository;
@@ -134,8 +130,8 @@ namespace StrumentiMusicali.Library.Repo
 				}
 				return _FotoArticoloRepository;
 			}
-
 		}
+
 		private Repository<EventLog> _EventLogRepository;
 
 		//Accessors for each private repository, creates repository if null
@@ -147,7 +143,6 @@ namespace StrumentiMusicali.Library.Repo
 				}
 				return _EventLogRepository;
 			}
-
 		}
 
 		//Method to save all changes to repositories
@@ -163,13 +158,12 @@ namespace StrumentiMusicali.Library.Repo
 			}
 			catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
 			{
-				if (ex.InnerException.InnerException !=null )
+				if (ex.InnerException.InnerException != null)
 				{
 					throw new Exception(ex.InnerException.InnerException.ToString());
 				}
 				throw new Exception(ex.InnerException.ToString());
 			}
-
 		}
 
 		//IDisposible implementation
@@ -192,6 +186,4 @@ namespace StrumentiMusicali.Library.Repo
 			GC.SuppressFinalize(this);
 		}
 	}
-
-
 }

@@ -13,17 +13,48 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-	internal class ControllerImmagini : BaseController
+	internal class ControllerImmagini : BaseController, IDisposable
 	{
+		Subscription<ImageOrderSet> _subOrderImage;
+		Subscription<ImageAddFiles> _subAddImage;
+		Subscription<ImageRemove> _subRemoveImage;
 		public ControllerImmagini() : base()
 		{
-			EventAggregator.Instance().Subscribe<ImageOrderSet>(OrderImage);
-			EventAggregator.Instance().Subscribe<ImageAddFiles>(AddImageFiles);
-			EventAggregator.Instance().Subscribe<ImageRemove>(RemoveImage);
+			_subOrderImage =	EventAggregator.Instance().Subscribe<ImageOrderSet>(OrderImage);
+			_subAddImage = EventAggregator.Instance().Subscribe<ImageAddFiles>(AddImageFiles);
+			_subRemoveImage = EventAggregator.Instance().Subscribe<ImageRemove>(RemoveImage);
 		}
-
+		// NOTE: Leave out the finalizer altogether if this class doesn't
+		// own unmanaged resources, but leave the other methods
+		// exactly as they are.
+		~ControllerImmagini()
+		{
+			// Finalizer calls Dispose(false)
+			Dispose(false);
+		}
+		// The bulk of the clean-up code is implemented in Dispose(bool)
+		protected new void Dispose(bool disposing)
+		{
+			base.Dispose(disposing);
+			if (disposing)
+			{
+				EventAggregator.Instance().UnSbscribe(_subOrderImage);
+				EventAggregator.Instance().UnSbscribe(_subAddImage);
+				EventAggregator.Instance().UnSbscribe(_subRemoveImage);
+			}
+			// free native resources if there are any.
+		}
+		public new void Dispose()
+		{
+			base.Dispose();
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
 		private void RemoveImage(ImageRemove obj)
 		{
+			if (!CheckFolderImmagini())
+				return;
+			var folderFoto = ReadSetting().settingSito.UrlCompletaImmagini;
 			try
 			{
 				if (!MessageManager.QuestionMessage("Sei sicuro di voler cancellare l'immagine selezionata?"))
@@ -40,8 +71,15 @@ namespace StrumentiMusicali.App.Core.Controllers
 							return;
 						}
 						uof.FotoArticoloRepository.Delete(item);
-						listFileToDelete.Add(Path.Combine(FolderFoto, item.UrlFoto));
-
+						listFileToDelete.Add(Path.Combine(folderFoto, item.UrlFoto));
+						var articolo = uof.ArticoliRepository
+								.Find(a => a.ID == obj.FotoArticolo.ArticoloID).First();
+						/*se cambio immagini devo aggiornare le immagini su, quindi aggiorno il flag*/
+						if (!articolo.ImmaginiDaCaricare)
+						{
+							articolo.ImmaginiDaCaricare = true;
+							uof.ArticoliRepository.Update(articolo);
+						}
 						uof.Commit();
 					}
 				}
@@ -131,17 +169,21 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 		}
 
-		public static string FolderFoto {
-			get {
-				return @"C:\Users\fastcode13042017\Downloads\Mercatino musicale\Immagini";
-				//return Path.Combine(Application.ExecutablePath, "Foto");
-			}
+		/// <summary>
+		/// Controllo la cartella locale per le immagini se è correttamente settata e attiva
+		/// </summary>
+		/// <returns></returns>
+		public bool CheckFolderImmagini()
+		{
+			return ReadSetting().settingSito.CheckFolderImmagini(); 
 		}
-
 		private void AddImageFiles(ImageAddFiles args)
 		{
+			if (!CheckFolderImmagini())
+				return;
 			try
 			{
+				var folderFoto = ReadSetting().settingSito.UrlCompletaImmagini;
 				using (var save = new SaveEntityManager())
 				{
 					var uof = save.UnitOfWork;
@@ -160,7 +202,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 						var file = new FileInfo(item);
 
 						var newName = DateTime.Now.Ticks.ToString() + file.Extension;
-						File.Copy(item, Path.Combine(FolderFoto, newName));
+						File.Copy(item, Path.Combine(folderFoto, newName));
 
 						uof.FotoArticoloRepository.Add(
 							new FotoArticolo()
@@ -170,6 +212,14 @@ namespace StrumentiMusicali.App.Core.Controllers
 								Ordine = maxOrdine
 							});
 						maxOrdine++;
+					}
+					var articolo= uof.ArticoliRepository
+						.Find(a => a.ID == args.Articolo.ID).First();
+					/*se cambio immagini devo aggiornare le immagini su, quindi aggiorno il flag*/
+					if (!articolo.ImmaginiDaCaricare )
+					{ 
+						articolo.ImmaginiDaCaricare = true;
+						uof.ArticoliRepository.Update(articolo);
 					}
 					if (save.SaveEntity(string.Format(@"{0} Immagine\i aggiunta\e", args.Files.Count())))
 					{

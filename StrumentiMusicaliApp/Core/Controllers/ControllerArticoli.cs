@@ -15,7 +15,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 {
 	public class ControllerArticoli : BaseController, IDisposable
 	{
-
 		public ControllerArticoli()
 			: base()
 		{
@@ -26,11 +25,19 @@ namespace StrumentiMusicali.App.Core.Controllers
 			EventAggregator.Instance().Subscribe<ArticoloDuplicate>(DuplicaArticolo);
 
 			EventAggregator.Instance().Subscribe<ImageAdd>(AggiungiImmagine);
-			EventAggregator.Instance().Subscribe<ImportArticoli>(ImportaCsvArticoli);
+			EventAggregator.Instance().Subscribe<ImportArticoliCSVMercatino>(ImportaCsvArticoli);
+			EventAggregator.Instance().Subscribe<InvioArticoliCSV>(InvioArticoli);
 			EventAggregator.Instance().Subscribe<ArticoloSave>(SaveArticolo);
-
-
 		}
+
+		private void InvioArticoli(InvioArticoliCSV obj)
+		{
+			using (var export=new Exports.ExportArticoliCsv())
+			{
+				export.InvioArticoli();
+			}
+		}
+
 		~ControllerArticoli()
 		{
 			var dato = this.ReadSetting(Settings.enAmbienti.ArticoliList);
@@ -40,22 +47,26 @@ namespace StrumentiMusicali.App.Core.Controllers
 				this.SaveSetting(Settings.enAmbienti.ArticoliList, dato);
 			}
 		}
+
 		private ArticoloSelected _ArticoloSelected;
 
 		private void ArticoloSelectedChange(ArticoloSelected obj)
 		{
 			_ArticoloSelected = obj;
-
-
 		}
 
 		private void AggiungiArticolo(ArticoloAdd articoloAdd)
 		{
 			_logger.Info("Apertura ambiente AggiungiArticolo");
-
-			using (var view = new Forms.DettaglioArticoloView())
+			var item = ReadSetting().settingSito;
+			if (!item.CheckFolderImmagini())
 			{
-				ShowView(view,Settings.enAmbienti.Articolo);
+				return;
+			}
+
+			using (var view = new Forms.DettaglioArticoloView(item))
+			{
+				ShowView(view, Settings.enAmbienti.Articolo);
 			}
 		}
 
@@ -95,7 +106,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 				ExceptionManager.ManageError(ex);
 			}
 		}
-		private void ImportaCsvArticoli(ImportArticoli obj)
+
+		private void ImportaCsvArticoli(ImportArticoliCSVMercatino obj)
 		{
 			try
 			{
@@ -251,7 +263,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			try
 			{
-
 				using (var save = new SaveEntityManager())
 				{
 					var uof = save.UnitOfWork;
@@ -267,10 +278,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 					if (
 					save.SaveEntity(enSaveOperation.OpSave))
 					{
-
 					}
 				}
-				
 			}
 			catch (MessageException ex)
 			{
@@ -306,6 +315,5 @@ namespace StrumentiMusicali.App.Core.Controllers
 				ExceptionManager.ManageError(ex);
 			}
 		}
-
 	}
 }

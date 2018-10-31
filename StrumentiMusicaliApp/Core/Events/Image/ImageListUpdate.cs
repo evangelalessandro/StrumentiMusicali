@@ -1,6 +1,6 @@
 ﻿namespace StrumentiMusicali.App.Core.Events.Image
 {
-	class ImageListUpdate
+	internal class ImageListUpdate
 	{
 	}
 }

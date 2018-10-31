@@ -8,6 +8,7 @@ namespace StrumentiMusicali.App.Core.Events.Image
 		{
 			Articolo = articolo;
 		}
+
 		public Articolo Articolo { get; private set; }
 	}
 }

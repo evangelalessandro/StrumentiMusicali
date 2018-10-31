@@ -2,17 +2,14 @@
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
-using System;
-using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View
 {
 	public class FattureRigheListView : BaseControl.BaseGridViewGeneric<FatturaRigaItem, ControllerRigheFatture, FatturaRiga>
 	{
-		ControllerRigheFatture _controllerRigheFatture;
+		private ControllerRigheFatture _controllerRigheFatture;
 
-		 
 		public FattureRigheListView(ControllerRigheFatture controllerRigheFatture)
 			: base(controllerRigheFatture)
 		{
@@ -23,9 +20,8 @@ namespace StrumentiMusicali.App.View
 		private void FattureRigheListView_Load(object sender, System.EventArgs e)
 		{
 			_controllerRigheFatture.RefreshList(null);
-			dgvRighe.DataSource = _controllerRigheFatture.DataSource ;
+			dgvRighe.DataSource = _controllerRigheFatture.DataSource;
 
-			 
 			dgvRighe.Refresh();
 			EventAggregator.Instance().Subscribe<UpdateList<FatturaRiga>>(RefreshList);
 
@@ -40,13 +36,10 @@ namespace StrumentiMusicali.App.View
 
 			dgvRighe.Refresh();
 			dgvRighe.Update();
-
 		}
 
 		public override void FormatGrid()
 		{
-
-
 			var provider = new System.Globalization.CultureInfo("it-IT");
 			//var provider = new System.Globalization.CultureInfo("en");
 
@@ -67,7 +60,6 @@ namespace StrumentiMusicali.App.View
 			dgvRighe.Columns["PrezzoUnitario"].DisplayIndex = 3;
 			dgvRighe.Columns["RigaImporto"].DisplayIndex = 4;
 			dgvRighe.Columns["Iva"].DisplayIndex = 5;
-
 		}
 	}
 }

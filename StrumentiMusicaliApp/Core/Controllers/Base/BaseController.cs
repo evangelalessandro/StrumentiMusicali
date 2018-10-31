@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Newtonsoft.Json;
 using NLog;
+using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
 using System;
@@ -18,7 +19,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		{
 
 		}
-		public void ShowView(UserControl view)
+		public void ShowView(UserControl view, Settings.enAmbienti ambiente)
 		{
 			using (var frm = new Form())
 			{
@@ -102,9 +103,30 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 					frm.Controls.Add(ribbon1);
 				}
-				
 
+				
+				frm.Load += (a, b) => 
+				{
+					try
+					{
+						var datiInit = this.ReadSetting(ambiente);
+
+						frm.WindowState = datiInit.FormMainWindowState;
+						frm.Size = datiInit.SizeFormMain;
+					}
+					catch (Exception ex)
+					{
+						ExceptionManager.ManageError(ex);
+					}
+				};
 				frm.ShowDialog();
+				
+				var dato = this.ReadSetting(ambiente);
+
+				dato.FormMainWindowState = frm.WindowState;
+				dato.SizeFormMain = frm.Size;
+
+				this.SaveSetting(ambiente, dato);
 
 				foreach (Control item in frm.Controls)
 				{
@@ -112,7 +134,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 				}
 			}
 		}
-		private UserSettings ReadSetting()
+		public UserSettings ReadSetting()
 		{
 			UserSettings setting;
 			if (File.Exists(_PathSetting))
@@ -150,7 +172,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			SaveSetting(setting);
 
 		}
-		private void SaveSetting(UserSettings settings)
+		public void SaveSetting(UserSettings settings)
 		{
 			File.WriteAllText(_PathSetting,
 				JsonConvert.SerializeObject(settings));

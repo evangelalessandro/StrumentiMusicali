@@ -27,8 +27,12 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 			_selectSub = EventAggregator.Instance().Subscribe<ItemSelected<TBaseItem,TEntity>>((a)=>
 				{
-					{ dgvRighe.SelezionaRiga(
-						a.ItemSelected.ID.ToString()); };
+					{
+						var T= new Task(() => 						{
+							dgvRighe.SelezionaRiga(a.ItemSelected.ID.ToString());
+						});
+						Task.WhenAll(new Task[] { T });
+					};
 				}
 			);
 
@@ -97,7 +101,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 					//You handled a double click on column header
 					//Do what you need
 				}
-				else if (hti.Type == DataGridViewHitTestType.RowHeader)
+				else if (hti.Type == DataGridViewHitTestType.RowHeader || hti.Type == DataGridViewHitTestType.Cell)
 				{
 					var rowIndex = hti.RowIndex;
 					//You handled a double click on row header

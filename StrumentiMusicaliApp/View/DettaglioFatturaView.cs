@@ -39,7 +39,11 @@ namespace StrumentiMusicali.App.View
 		protected override void Dispose(bool disposing)
 		{
 			if (_controllerRighe!=null)
+			{
+				
 				_controllerRighe.Dispose();
+			}
+				
 			_controllerRighe = null;
 			foreach (Control item in tabPage2.Controls)
 			{
@@ -50,6 +54,8 @@ namespace StrumentiMusicali.App.View
 			if (disposing && (components != null))
 			{
 				components.Dispose();
+
+				
 			}
 			base.Dispose(disposing);
 		}

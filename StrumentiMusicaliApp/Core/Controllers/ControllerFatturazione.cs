@@ -108,7 +108,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			using (var view = new DettaglioFatturaView(this))
 			{
-				ShowView(view);
+				ShowView(view,Settings.enAmbienti.Fattura);
 			}
 		}
 

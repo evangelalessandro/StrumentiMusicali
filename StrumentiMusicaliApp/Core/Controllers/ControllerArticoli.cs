@@ -33,11 +33,11 @@ namespace StrumentiMusicali.App.Core.Controllers
 		}
 		~ControllerArticoli()
 		{
-			var dato = this.ReadSetting(Settings.enAmbienti.Articoli);
+			var dato = this.ReadSetting(Settings.enAmbienti.ArticoliList);
 			if (_ArticoloSelected != null && _ArticoloSelected.ItemSelected != null)
 			{
 				dato.LastItemSelected = _ArticoloSelected.ItemSelected.ID;
-				this.SaveSetting(Settings.enAmbienti.Articoli, dato);
+				this.SaveSetting(Settings.enAmbienti.ArticoliList, dato);
 			}
 		}
 		private ArticoloSelected _ArticoloSelected;
@@ -55,7 +55,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 			using (var view = new Forms.DettaglioArticoloView())
 			{
-				ShowView(view);
+				ShowView(view,Settings.enAmbienti.Articolo);
 			}
 		}
 

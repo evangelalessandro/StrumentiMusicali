@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StrumentiMusicali.App.Core.Controllers.FatturaElett;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -7,9 +8,8 @@ namespace StrumentiMusicali.App.Settings
 {
     public class UserSettings
     {
-
 		public List<Tuple<enAmbienti, FormRicerca>> Form { get; set; }
-
+		public DatiMittente datiMittente { get; set; }
 	}
 	public class FormRicerca
 	{
@@ -21,9 +21,10 @@ namespace StrumentiMusicali.App.Settings
 	public enum enAmbienti
 	{
 		Main,
-		Fatture,
+		Fattura,
 		FattureList,
-		Articoli,
+		Articolo,
+		ArticoliList,
 		Magazzino
 	}
 }

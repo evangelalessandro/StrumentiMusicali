@@ -6,6 +6,8 @@ using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.App.Core.MenuRibbon;
+using StrumentiMusicali.App.View;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
@@ -18,7 +20,7 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App
 {
-	public partial class MainView : Form
+	public partial class MainView : Form, IMenu
 	{
 		private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
@@ -219,7 +221,7 @@ namespace StrumentiMusicali.App
 			var itemSelected = (ArticoloItem)dgvMaster.SelectedRows[0].DataBoundItem;
 			using (var frm = new Forms.DettaglioArticoloView(itemSelected))
 			{
-				_baseController.ShowView(frm);
+				_baseController.ShowView(frm,Settings.enAmbienti.Articolo);
 			}
 
 			await RefreshData();
@@ -240,15 +242,64 @@ namespace StrumentiMusicali.App
 					//You handled a double click on column header
 					//Do what you need
 				}
-				else if (hti.Type == DataGridViewHitTestType.RowHeader)
+				else if (hti.Type == DataGridViewHitTestType.RowHeader || hti.Type == DataGridViewHitTestType.Cell)
 				{
 					var rowIndex = hti.RowIndex;
 					//You handled a double click on row header
 					EditArticolo();
 				}
+				
 			}
 
 		}
-		 
+
+		public MenuTab GetMenu()
+		{
+			throw new NotImplementedException();
+		}
+
+		//MenuTab _menuTab = null;
+
+		//public MenuTab GetMenu()
+		//{
+		//	if (_menuTab == null)
+		//	{
+		//		_menuTab = new MenuTab();
+
+		//		var tab = _menuTab.Add("Principale");
+		//		var ribPannel = tab.Add("Principale");
+		//		var ribSave = ribPannel.Add("Save", Properties.Resources.Save);
+		//		ribPannelRighe = tab.Add("Righe");
+		//		ribPannelRighe.Add("Aggiungi", Properties.Resources.Add).Click += (a, b) => {
+		//			EventAggregator.Instance().Publish<Add<FatturaRigaItem, FatturaRiga>>(new Add<FatturaRigaItem, FatturaRiga>());
+		//		};
+		//		ribPannelRighe.Add("Rimuovi", Properties.Resources.Remove).Click
+		//			+= (a, b) => {
+		//				EventAggregator.Instance().Publish<Remove<FatturaRigaItem, FatturaRiga>>(new Remove<FatturaRigaItem, FatturaRiga>());
+		//			};
+
+		//		ribPannelRighe.Add("Meno prioritario", Properties.Resources.Up).Click += (a, b) => {
+		//			EventAggregator.Instance().Publish<AddPriority<FatturaRigaItem, FatturaRiga>>(
+		//				new AddPriority<FatturaRigaItem, FatturaRiga>());
+		//		};
+		//		ribPannelRighe.Add("Più prioritario", Properties.Resources.Down).Click
+		//			+= (a, b) => {
+		//				EventAggregator.Instance().Publish<RemovePriority<FatturaRigaItem, FatturaRiga>>(
+		//					new RemovePriority<FatturaRigaItem, FatturaRiga>());
+		//			};
+
+
+		//		ribSave.Click += (a, e) =>
+		//		{
+		//			this.Validate();
+		//			EventAggregator.Instance().Publish<FatturaSave>(new FatturaSave());
+
+		//			txtID.Text = _controllerFatturazione.SelectedItem.ID.ToString();
+		//			UpdateButtonState();
+		//		};
+		//	}
+		//	return _menuTab;
+
+		//}
 	}
 }

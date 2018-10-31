@@ -208,7 +208,7 @@ namespace StrumentiMusicali.App.View
 					//You handled a double click on column header
 					//Do what you need
 				}
-				else if (hti.Type == DataGridViewHitTestType.RowHeader)
+				else if (hti.Type == DataGridViewHitTestType.RowHeader || hti.Type == DataGridViewHitTestType.Cell)
 				{
 					var rowIndex = hti.RowIndex;
 					//You handled a double click on row header

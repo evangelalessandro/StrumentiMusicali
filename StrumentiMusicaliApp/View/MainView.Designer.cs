@@ -32,34 +32,36 @@
 			this.ribbon1 = new System.Windows.Forms.Ribbon();
 			this.ribbonTab1 = new System.Windows.Forms.RibbonTab();
 			this.ribbonPanel1 = new System.Windows.Forms.RibbonPanel();
-			this.ribbonPanel2 = new System.Windows.Forms.RibbonPanel();
-			this.ribbonPanel4 = new System.Windows.Forms.RibbonPanel();
-			this.ribbonTab2 = new System.Windows.Forms.RibbonTab();
-			this.ribPnlSetting = new System.Windows.Forms.RibbonPanel();
-			this.ribbonPanel3 = new System.Windows.Forms.RibbonPanel();
-			this.dgvMaster = new System.Windows.Forms.DataGridView();
-			this.pnlArticoli = new System.Windows.Forms.Panel();
-			this.pnlCerca = new System.Windows.Forms.Panel();
-			this.label1 = new System.Windows.Forms.Label();
-			this.txtCerca = new System.Windows.Forms.TextBox();
-			this.splitter1 = new System.Windows.Forms.Splitter();
 			this.ribAddArt = new System.Windows.Forms.RibbonButton();
 			this.ribEditArt = new System.Windows.Forms.RibbonButton();
 			this.ribDelete = new System.Windows.Forms.RibbonButton();
 			this.ribbonButton1 = new System.Windows.Forms.RibbonButton();
 			this.ribbonButton2 = new System.Windows.Forms.RibbonButton();
 			this.ribArtDuplicate = new System.Windows.Forms.RibbonButton();
+			this.ribbonPanel2 = new System.Windows.Forms.RibbonPanel();
 			this.ribCerca = new System.Windows.Forms.RibbonButton();
+			this.ribbonPanel4 = new System.Windows.Forms.RibbonPanel();
 			this.ribCaricaMagazzino = new System.Windows.Forms.RibbonButton();
+			this.ribbonTab2 = new System.Windows.Forms.RibbonTab();
+			this.ribPnlInvioArticoli = new System.Windows.Forms.RibbonPanel();
 			this.ribInvioDati = new System.Windows.Forms.RibbonButton();
+			this.ribbonPanel3 = new System.Windows.Forms.RibbonPanel();
 			this.ribImportArticoli = new System.Windows.Forms.RibbonButton();
 			this.ribbonButton3 = new System.Windows.Forms.RibbonButton();
 			this.ribImportFattureAccess = new System.Windows.Forms.RibbonButton();
-			this.ribbonOrbOptionButton1 = new System.Windows.Forms.RibbonOrbOptionButton();
-			this.ribbonOrbOptionButton2 = new System.Windows.Forms.RibbonOrbOptionButton();
 			this.ribTabFatture = new System.Windows.Forms.RibbonTab();
 			this.ribPnlFatturazione = new System.Windows.Forms.RibbonPanel();
 			this.ribBtnApriFatturazione = new System.Windows.Forms.RibbonButton();
+			this.dgvMaster = new System.Windows.Forms.DataGridView();
+			this.pnlArticoli = new System.Windows.Forms.Panel();
+			this.pnlCerca = new System.Windows.Forms.Panel();
+			this.label1 = new System.Windows.Forms.Label();
+			this.txtCerca = new System.Windows.Forms.TextBox();
+			this.splitter1 = new System.Windows.Forms.Splitter();
+			this.ribbonOrbOptionButton1 = new System.Windows.Forms.RibbonOrbOptionButton();
+			this.ribbonOrbOptionButton2 = new System.Windows.Forms.RibbonOrbOptionButton();
+			this.rbiTabSetting = new System.Windows.Forms.RibbonTab();
+			this.ribPnlSetting = new System.Windows.Forms.RibbonPanel();
 			((System.ComponentModel.ISupportInitialize)(this.dgvMaster)).BeginInit();
 			this.pnlArticoli.SuspendLayout();
 			this.pnlCerca.SuspendLayout();
@@ -92,6 +94,7 @@
 			this.ribbon1.Tabs.Add(this.ribbonTab1);
 			this.ribbon1.Tabs.Add(this.ribbonTab2);
 			this.ribbon1.Tabs.Add(this.ribTabFatture);
+			this.ribbon1.Tabs.Add(this.rbiTabSetting);
 			this.ribbon1.TabsMargin = new System.Windows.Forms.Padding(6, 26, 20, 0);
 			this.ribbon1.TabSpacing = 3;
 			this.ribbon1.Text = "ribbon1";
@@ -113,11 +116,74 @@
 			this.ribbonPanel1.Name = "ribbonPanel1";
 			this.ribbonPanel1.Text = "Comandi Articoli";
 			// 
+			// ribAddArt
+			// 
+			this.ribAddArt.Image = global::StrumentiMusicali.App.Properties.Resources.Add;
+			this.ribAddArt.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Add;
+			this.ribAddArt.Name = "ribAddArt";
+			this.ribAddArt.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribAddArt.SmallImage")));
+			this.ribAddArt.Text = "Crea";
+			this.ribAddArt.Click += new System.EventHandler(this.ribAddArt_Click);
+			// 
+			// ribEditArt
+			// 
+			this.ribEditArt.Image = global::StrumentiMusicali.App.Properties.Resources.Penna;
+			this.ribEditArt.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Penna;
+			this.ribEditArt.Name = "ribEditArt";
+			this.ribEditArt.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribEditArt.SmallImage")));
+			this.ribEditArt.Text = "Vedi\\Modifica";
+			this.ribEditArt.Click += new System.EventHandler(this.ribEditArt_Click);
+			// 
+			// ribDelete
+			// 
+			this.ribDelete.DropDownItems.Add(this.ribbonButton1);
+			this.ribDelete.DropDownItems.Add(this.ribbonButton2);
+			this.ribDelete.Image = global::StrumentiMusicali.App.Properties.Resources.Delete;
+			this.ribDelete.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Delete;
+			this.ribDelete.Name = "ribDelete";
+			this.ribDelete.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribDelete.SmallImage")));
+			this.ribDelete.Text = "Elimina";
+			// 
+			// ribbonButton1
+			// 
+			this.ribbonButton1.Image = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.Image")));
+			this.ribbonButton1.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.LargeImage")));
+			this.ribbonButton1.Name = "ribbonButton1";
+			this.ribbonButton1.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.SmallImage")));
+			this.ribbonButton1.Text = "ribbonButton1";
+			// 
+			// ribbonButton2
+			// 
+			this.ribbonButton2.Image = ((System.Drawing.Image)(resources.GetObject("ribbonButton2.Image")));
+			this.ribbonButton2.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton2.LargeImage")));
+			this.ribbonButton2.Name = "ribbonButton2";
+			this.ribbonButton2.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton2.SmallImage")));
+			this.ribbonButton2.Text = "ribbonButton2";
+			// 
+			// ribArtDuplicate
+			// 
+			this.ribArtDuplicate.Image = global::StrumentiMusicali.App.Properties.Resources.Duplicate;
+			this.ribArtDuplicate.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Duplicate;
+			this.ribArtDuplicate.Name = "ribArtDuplicate";
+			this.ribArtDuplicate.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribArtDuplicate.SmallImage")));
+			this.ribArtDuplicate.Text = "Duplica";
+			this.ribArtDuplicate.Click += new System.EventHandler(this.ribArtDuplicate_Click);
+			// 
 			// ribbonPanel2
 			// 
 			this.ribbonPanel2.Items.Add(this.ribCerca);
 			this.ribbonPanel2.Name = "ribbonPanel2";
 			this.ribbonPanel2.Text = "Altro";
+			// 
+			// ribCerca
+			// 
+			this.ribCerca.CheckOnClick = true;
+			this.ribCerca.FlashIntervall = 50;
+			this.ribCerca.Image = global::StrumentiMusicali.App.Properties.Resources.Cerca;
+			this.ribCerca.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Cerca;
+			this.ribCerca.Name = "ribCerca";
+			this.ribCerca.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribCerca.SmallImage")));
+			this.ribCerca.Text = "Cerca";
 			// 
 			// ribbonPanel4
 			// 
@@ -125,18 +191,34 @@
 			this.ribbonPanel4.Name = "ribbonPanel4";
 			this.ribbonPanel4.Text = "Carico Scarico Magazzino";
 			// 
+			// ribCaricaMagazzino
+			// 
+			this.ribCaricaMagazzino.Image = ((System.Drawing.Image)(resources.GetObject("ribCaricaMagazzino.Image")));
+			this.ribCaricaMagazzino.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribCaricaMagazzino.LargeImage")));
+			this.ribCaricaMagazzino.Name = "ribCaricaMagazzino";
+			this.ribCaricaMagazzino.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribCaricaMagazzino.SmallImage")));
+			this.ribCaricaMagazzino.Text = "Apri";
+			// 
 			// ribbonTab2
 			// 
 			this.ribbonTab2.Name = "ribbonTab2";
-			this.ribbonTab2.Panels.Add(this.ribPnlSetting);
+			this.ribbonTab2.Panels.Add(this.ribPnlInvioArticoli);
 			this.ribbonTab2.Panels.Add(this.ribbonPanel3);
 			this.ribbonTab2.Text = "Import\\Export";
 			// 
-			// ribPnlSetting
+			// ribPnlInvioArticoli
 			// 
-			this.ribPnlSetting.Items.Add(this.ribInvioDati);
-			this.ribPnlSetting.Name = "ribPnlSetting";
-			this.ribPnlSetting.Text = "Invio articoli";
+			this.ribPnlInvioArticoli.Items.Add(this.ribInvioDati);
+			this.ribPnlInvioArticoli.Name = "ribPnlInvioArticoli";
+			this.ribPnlInvioArticoli.Text = "Invio articoli";
+			// 
+			// ribInvioDati
+			// 
+			this.ribInvioDati.Image = global::StrumentiMusicali.App.Properties.Resources.Upload;
+			this.ribInvioDati.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Upload;
+			this.ribInvioDati.Name = "ribInvioDati";
+			this.ribInvioDati.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribInvioDati.SmallImage")));
+			this.ribInvioDati.Text = "Invio Dati";
 			// 
 			// ribbonPanel3
 			// 
@@ -146,6 +228,53 @@
 			this.ribbonPanel3.Items.Add(this.ribImportFattureAccess);
 			this.ribbonPanel3.Name = "ribbonPanel3";
 			this.ribbonPanel3.Text = "Import";
+			// 
+			// ribImportArticoli
+			// 
+			this.ribImportArticoli.DropDownItems.Add(this.ribbonButton3);
+			this.ribImportArticoli.Image = global::StrumentiMusicali.App.Properties.Resources.Import;
+			this.ribImportArticoli.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Import;
+			this.ribImportArticoli.Name = "ribImportArticoli";
+			this.ribImportArticoli.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribImportArticoli.SmallImage")));
+			this.ribImportArticoli.Text = "Articoli mercatino excel csv";
+			// 
+			// ribbonButton3
+			// 
+			this.ribbonButton3.Image = ((System.Drawing.Image)(resources.GetObject("ribbonButton3.Image")));
+			this.ribbonButton3.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton3.LargeImage")));
+			this.ribbonButton3.Name = "ribbonButton3";
+			this.ribbonButton3.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton3.SmallImage")));
+			this.ribbonButton3.Text = "ribbonButton3";
+			// 
+			// ribImportFattureAccess
+			// 
+			this.ribImportFattureAccess.Image = global::StrumentiMusicali.App.Properties.Resources.Fatture_48;
+			this.ribImportFattureAccess.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Fatture_48;
+			this.ribImportFattureAccess.Name = "ribImportFattureAccess";
+			this.ribImportFattureAccess.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribImportFattureAccess.SmallImage")));
+			this.ribImportFattureAccess.Text = "Fatture Access";
+			// 
+			// ribTabFatture
+			// 
+			this.ribTabFatture.Name = "ribTabFatture";
+			this.ribTabFatture.Panels.Add(this.ribPnlFatturazione);
+			this.ribTabFatture.Text = "Fatturazione";
+			// 
+			// ribPnlFatturazione
+			// 
+			this.ribPnlFatturazione.ButtonMoreEnabled = false;
+			this.ribPnlFatturazione.ButtonMoreVisible = false;
+			this.ribPnlFatturazione.Items.Add(this.ribBtnApriFatturazione);
+			this.ribPnlFatturazione.Name = "ribPnlFatturazione";
+			this.ribPnlFatturazione.Text = "Comandi";
+			// 
+			// ribBtnApriFatturazione
+			// 
+			this.ribBtnApriFatturazione.Image = ((System.Drawing.Image)(resources.GetObject("ribBtnApriFatturazione.Image")));
+			this.ribBtnApriFatturazione.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribBtnApriFatturazione.LargeImage")));
+			this.ribBtnApriFatturazione.Name = "ribBtnApriFatturazione";
+			this.ribBtnApriFatturazione.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribBtnApriFatturazione.SmallImage")));
+			this.ribBtnApriFatturazione.Text = "Apri fatturazione";
 			// 
 			// dgvMaster
 			// 
@@ -215,110 +344,6 @@
 			this.splitter1.TabIndex = 4;
 			this.splitter1.TabStop = false;
 			// 
-			// ribAddArt
-			// 
-			this.ribAddArt.Image = global::StrumentiMusicali.App.Properties.Resources.Add;
-			this.ribAddArt.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Add;
-			this.ribAddArt.Name = "ribAddArt";
-			this.ribAddArt.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribAddArt.SmallImage")));
-			this.ribAddArt.Text = "Crea";
-			this.ribAddArt.Click += new System.EventHandler(this.ribAddArt_Click);
-			// 
-			// ribEditArt
-			// 
-			this.ribEditArt.Image = global::StrumentiMusicali.App.Properties.Resources.Penna;
-			this.ribEditArt.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Penna;
-			this.ribEditArt.Name = "ribEditArt";
-			this.ribEditArt.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribEditArt.SmallImage")));
-			this.ribEditArt.Text = "Vedi\\Modifica";
-			this.ribEditArt.Click += new System.EventHandler(this.ribEditArt_Click);
-			// 
-			// ribDelete
-			// 
-			this.ribDelete.DropDownItems.Add(this.ribbonButton1);
-			this.ribDelete.DropDownItems.Add(this.ribbonButton2);
-			this.ribDelete.Image = global::StrumentiMusicali.App.Properties.Resources.Delete;
-			this.ribDelete.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Delete;
-			this.ribDelete.Name = "ribDelete";
-			this.ribDelete.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribDelete.SmallImage")));
-			this.ribDelete.Text = "Elimina";
-			// 
-			// ribbonButton1
-			// 
-			this.ribbonButton1.Image = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.Image")));
-			this.ribbonButton1.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.LargeImage")));
-			this.ribbonButton1.Name = "ribbonButton1";
-			this.ribbonButton1.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.SmallImage")));
-			this.ribbonButton1.Text = "ribbonButton1";
-			// 
-			// ribbonButton2
-			// 
-			this.ribbonButton2.Image = ((System.Drawing.Image)(resources.GetObject("ribbonButton2.Image")));
-			this.ribbonButton2.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton2.LargeImage")));
-			this.ribbonButton2.Name = "ribbonButton2";
-			this.ribbonButton2.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton2.SmallImage")));
-			this.ribbonButton2.Text = "ribbonButton2";
-			// 
-			// ribArtDuplicate
-			// 
-			this.ribArtDuplicate.Image = global::StrumentiMusicali.App.Properties.Resources.Duplicate;
-			this.ribArtDuplicate.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Duplicate;
-			this.ribArtDuplicate.Name = "ribArtDuplicate";
-			this.ribArtDuplicate.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribArtDuplicate.SmallImage")));
-			this.ribArtDuplicate.Text = "Duplica";
-			this.ribArtDuplicate.Click += new System.EventHandler(this.ribArtDuplicate_Click);
-			// 
-			// ribCerca
-			// 
-			this.ribCerca.CheckOnClick = true;
-			this.ribCerca.FlashIntervall = 50;
-			this.ribCerca.Image = global::StrumentiMusicali.App.Properties.Resources.Cerca;
-			this.ribCerca.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Cerca;
-			this.ribCerca.Name = "ribCerca";
-			this.ribCerca.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribCerca.SmallImage")));
-			this.ribCerca.Text = "Cerca";
-			// 
-			// ribCaricaMagazzino
-			// 
-			this.ribCaricaMagazzino.Image = ((System.Drawing.Image)(resources.GetObject("ribCaricaMagazzino.Image")));
-			this.ribCaricaMagazzino.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribCaricaMagazzino.LargeImage")));
-			this.ribCaricaMagazzino.Name = "ribCaricaMagazzino";
-			this.ribCaricaMagazzino.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribCaricaMagazzino.SmallImage")));
-			this.ribCaricaMagazzino.Text = "Apri";
-			// 
-			// ribInvioDati
-			// 
-			this.ribInvioDati.Image = global::StrumentiMusicali.App.Properties.Resources.Upload;
-			this.ribInvioDati.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Upload;
-			this.ribInvioDati.Name = "ribInvioDati";
-			this.ribInvioDati.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribInvioDati.SmallImage")));
-			this.ribInvioDati.Text = "Invio Dati";
-			// 
-			// ribImportArticoli
-			// 
-			this.ribImportArticoli.DropDownItems.Add(this.ribbonButton3);
-			this.ribImportArticoli.Image = global::StrumentiMusicali.App.Properties.Resources.Import;
-			this.ribImportArticoli.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Import;
-			this.ribImportArticoli.Name = "ribImportArticoli";
-			this.ribImportArticoli.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribImportArticoli.SmallImage")));
-			this.ribImportArticoli.Text = "Articoli mercatino excel csv";
-			// 
-			// ribbonButton3
-			// 
-			this.ribbonButton3.Image = ((System.Drawing.Image)(resources.GetObject("ribbonButton3.Image")));
-			this.ribbonButton3.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton3.LargeImage")));
-			this.ribbonButton3.Name = "ribbonButton3";
-			this.ribbonButton3.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton3.SmallImage")));
-			this.ribbonButton3.Text = "ribbonButton3";
-			// 
-			// ribImportFattureAccess
-			// 
-			this.ribImportFattureAccess.Image = global::StrumentiMusicali.App.Properties.Resources.Fatture_48;
-			this.ribImportFattureAccess.LargeImage = global::StrumentiMusicali.App.Properties.Resources.Fatture_48;
-			this.ribImportFattureAccess.Name = "ribImportFattureAccess";
-			this.ribImportFattureAccess.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribImportFattureAccess.SmallImage")));
-			this.ribImportFattureAccess.Text = "Fatture Access";
-			// 
 			// ribbonOrbOptionButton1
 			// 
 			this.ribbonOrbOptionButton1.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbOptionButton1.Image")));
@@ -335,27 +360,16 @@
 			this.ribbonOrbOptionButton2.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbOptionButton2.SmallImage")));
 			this.ribbonOrbOptionButton2.Text = "ribbonOrbOptionButton2";
 			// 
-			// ribTabFatture
+			// rbiTabSetting
 			// 
-			this.ribTabFatture.Name = "ribTabFatture";
-			this.ribTabFatture.Panels.Add(this.ribPnlFatturazione);
-			this.ribTabFatture.Text = "Fatturazione";
+			this.rbiTabSetting.Name = "rbiTabSetting";
+			this.rbiTabSetting.Panels.Add(this.ribPnlSetting);
+			this.rbiTabSetting.Text = "Impostazioni";
 			// 
-			// ribPnlFatturazione
+			// ribPnlSetting
 			// 
-			this.ribPnlFatturazione.ButtonMoreEnabled = false;
-			this.ribPnlFatturazione.ButtonMoreVisible = false;
-			this.ribPnlFatturazione.Items.Add(this.ribBtnApriFatturazione);
-			this.ribPnlFatturazione.Name = "ribPnlFatturazione";
-			this.ribPnlFatturazione.Text = "Comandi";
-			// 
-			// ribBtnApriFatturazione
-			// 
-			this.ribBtnApriFatturazione.Image = ((System.Drawing.Image)(resources.GetObject("ribBtnApriFatturazione.Image")));
-			this.ribBtnApriFatturazione.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribBtnApriFatturazione.LargeImage")));
-			this.ribBtnApriFatturazione.Name = "ribBtnApriFatturazione";
-			this.ribBtnApriFatturazione.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribBtnApriFatturazione.SmallImage")));
-			this.ribBtnApriFatturazione.Text = "Apri fatturazione";
+			this.ribPnlSetting.Name = "ribPnlSetting";
+			this.ribPnlSetting.Text = "ribbonPanel5";
 			// 
 			// MainView
 			// 
@@ -402,7 +416,7 @@
 		private System.Windows.Forms.RibbonButton ribArtDuplicate;
 		private System.Windows.Forms.RibbonOrbOptionButton ribbonOrbOptionButton1;
 		private System.Windows.Forms.RibbonOrbOptionButton ribbonOrbOptionButton2;
-		private System.Windows.Forms.RibbonPanel ribPnlSetting;
+		private System.Windows.Forms.RibbonPanel ribPnlInvioArticoli;
 		private System.Windows.Forms.RibbonButton ribInvioDati;
 		private System.Windows.Forms.RibbonPanel ribbonPanel3;
 		private System.Windows.Forms.RibbonButton ribImportArticoli;
@@ -413,6 +427,8 @@
 		private System.Windows.Forms.RibbonTab ribTabFatture;
 		private System.Windows.Forms.RibbonPanel ribPnlFatturazione;
 		private System.Windows.Forms.RibbonButton ribBtnApriFatturazione;
+		private System.Windows.Forms.RibbonTab rbiTabSetting;
+		private System.Windows.Forms.RibbonPanel ribPnlSetting;
 	}
 }
 

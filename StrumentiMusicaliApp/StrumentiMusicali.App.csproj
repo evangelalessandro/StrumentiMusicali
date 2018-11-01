@@ -229,6 +229,7 @@
     <Compile Include="Core\Controllers\Imports\ImportFatture.cs" />
     <Compile Include="Core\Controllers\Imports\ImportMagazziniExcel.cs" />
     <Compile Include="Core\Controllers\SaveEntityManager.cs" />
+    <Compile Include="Core\Controllers\Stampa\Fattura.cs" />
     <Compile Include="Core\Events\Articoli\InvioArticoliCSV.cs" />
     <Compile Include="Core\Events\Generics\Add.cs" />
     <Compile Include="Core\Events\Generics\ApriAmbiente.cs" />
@@ -250,7 +251,6 @@
     <Compile Include="Core\Events\Image\ImageOrderSet.cs" />
     <Compile Include="Core\Events\Articoli\ArticoloSave.cs" />
     <Compile Include="Core\Events\Interfaces\ArticoloCurrent.cs" />
-    <Compile Include="Core\Events\Magazzino\ApriGestioneMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\MovimentiUpdate.cs" />
     <Compile Include="Core\Events\Magazzino\MovimentoMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\CaricaQtaMagazzino.cs" />
@@ -283,6 +283,7 @@
     <Content Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Compile Include="Settings\DatiIntestazioneFattura.cs" />
     <Compile Include="Settings\SettingSito.cs" />
     <Compile Include="View\BaseControl\ElementiDettaglio\EDBase.cs">
       <SubType>UserControl</SubType>
@@ -317,10 +318,7 @@
     <Compile Include="View\LogView.Designer.cs">
       <DependentUpon>LogView.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Settings\DatiSitoView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="View\Settings\MittenteFatturaView.cs">
+    <Compile Include="View\Settings\GenericSettingView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\DettaglioFatturaView.cs">
@@ -414,11 +412,8 @@
     <EmbeddedResource Include="View\LogView.resx">
       <DependentUpon>LogView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\Settings\DatiSitoView.resx">
-      <DependentUpon>DatiSitoView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Settings\MittenteFatturaView.resx">
-      <DependentUpon>MittenteFatturaView.cs</DependentUpon>
+    <EmbeddedResource Include="View\Settings\GenericSettingView.resx">
+      <DependentUpon>GenericSettingView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\DettaglioFatturaView.resx">
       <DependentUpon>DettaglioFatturaView.cs</DependentUpon>

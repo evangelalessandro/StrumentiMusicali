@@ -7,6 +7,7 @@ using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
+using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
@@ -103,16 +104,23 @@ namespace StrumentiMusicali.App
 		{
 			var tabImportExport = _menuTab.Add(@"Impostazioni");
 			var panel1 = tabImportExport.Add("Principale");
-			var ribSetting = panel1.Add("Dati fattura mittente", Properties.Resources.Settings);
-			var ribSettingUrl = panel1.Add("Dati Sito & Upload", Properties.Resources.Settings);
-			ribSetting.Click += (s, e) =>
+			var rib1 = panel1.Add("Dati fattura mittente", Properties.Resources.Settings);
+			rib1.Click += (s, e) =>
 			{
-				EventAggregator.Instance().Publish(new ApriAmbiente(enTipoEnviroment.SettingFatture));
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.SettingFatture));
 			};
-			ribSettingUrl.Click += (s, e) =>
+			var rib2 = panel1.Add("Dati Sito & Upload", Properties.Resources.Settings);
+			rib2.Click += (s, e) =>
 			{
-				EventAggregator.Instance().Publish(new ApriAmbiente(enTipoEnviroment.SettingUrl));
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.SettingSito));
 			};
+
+			var rib3 = panel1.Add("Intestazione stampa fattura", Properties.Resources.Settings);
+			rib3.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.SettingStampa));
+			};
+
 		}
 		private void AggiungiTabLog()
 		{
@@ -121,7 +129,7 @@ namespace StrumentiMusicali.App
 			var ribSetting = panel1.Add("Visualizza log", Properties.Resources.LogView_48);
 			ribSetting.Click += (s, e) =>
 			{
-				EventAggregator.Instance().Publish(new ApriAmbiente(enTipoEnviroment.LogView));
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.LogView));
 			};
 			 
 		}
@@ -176,11 +184,12 @@ namespace StrumentiMusicali.App
 		private void AggiungiComandiImportExport()
 		{
 			var tabImportExport = _menuTab.Add(@"Import\Export");
-			var panel1 = tabImportExport.Add("Export");
-			var ribInvio = panel1.Add("Invio Articoli", Properties.Resources.Upload);
-			var panel2 = tabImportExport.Add("Import");
-			var ribImportCsv = panel1.Add("Import csv mercatino", Properties.Resources.ImportCsv);
-			var ribImportFatture = panel1.Add("Fatture Access", Properties.Resources.ImportInvoice);
+			var pnlExport = tabImportExport.Add("Export");
+			var ribInvio = pnlExport.Add("Invio Articoli", Properties.Resources.Upload);
+
+			var pnlImport = tabImportExport.Add("Import");
+			var ribImportCsv = pnlImport.Add("Import csv mercatino", Properties.Resources.ImportCsv);
+			var ribImportFatture = pnlImport.Add("Fatture Access", Properties.Resources.ImportInvoice);
 			ribImportFatture.Click += (s, e) =>
 			{
 				EventAggregator.Instance().Publish(new ImportaFattureAccess());
@@ -202,13 +211,13 @@ namespace StrumentiMusicali.App
 			var ribFatt = panel1.Add("Fatturazione", Properties.Resources.Invoice);
 			ribFatt.Click += (s, e) =>
 			{
-				EventAggregator.Instance().Publish(new ApriAmbiente(enTipoEnviroment.Fatturazione));
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.FattureList));
 			};
 
 			var ribMagaz = panel1.Add("Magazzino", Properties.Resources.UnloadWareHouse);
 			ribMagaz.Click += (s, e) =>
 			{
-				EventAggregator.Instance().Publish(new ApriGestioneMagazzino());
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.ScaricoMagazzino));
 			};
 		}
 

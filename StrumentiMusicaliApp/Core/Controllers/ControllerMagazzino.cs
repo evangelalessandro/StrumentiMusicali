@@ -1,7 +1,9 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
+using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -16,14 +18,15 @@ namespace StrumentiMusicali.App.Core.Controllers
 		public ControllerMagazzino()
 			: base()
 		{
-			EventAggregator.Instance().Subscribe<ApriGestioneMagazzino>((a) =>
+			EventAggregator.Instance().Subscribe<ApriAmbiente>((a) =>
 		   {
-
-			   using (var view = new View.ScaricoMagazzino(this))
+			   if (a.TipoEnviroment == enAmbienti.ScaricoMagazzino)
 			   {
-				   this.ShowView(view, Settings.enAmbienti.ScaricoMagazzino);
+				   using (var view = new View.ScaricoMagazzino(this))
+				   {
+					   this.ShowView(view, Settings.enAmbienti.ScaricoMagazzino);
+				   }
 			   }
-
 		   });
 			EventAggregator.Instance().Subscribe<ScaricaQtaMagazzino>(ScaricaMagazzino);
 			EventAggregator.Instance().Subscribe<CaricaQtaMagazzino>(CaricaMagazzino);

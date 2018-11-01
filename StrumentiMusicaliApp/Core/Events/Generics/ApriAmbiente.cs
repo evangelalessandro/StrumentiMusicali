@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StrumentiMusicali.App.Settings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,18 +9,11 @@ namespace StrumentiMusicali.App.Core.Events.Generics
 {
 	class ApriAmbiente
 	{
-		public ApriAmbiente(enTipoEnviroment tipoEnviroment)
+		public ApriAmbiente(enAmbienti tipoEnviroment)
 		{
 			TipoEnviroment = tipoEnviroment;
 		}
-		public enTipoEnviroment TipoEnviroment { get; private set; }
+		public enAmbienti TipoEnviroment { get; private set; }
 	}
-	public enum enTipoEnviroment
-	{
-		Fatturazione,
-		SettingFatture,
-		SettingUrl,
-		LogView,
-
-	}
+	 
 }

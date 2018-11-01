@@ -3,8 +3,9 @@ using NLog.Targets;
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Events.Generics;
+using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
-using StrumentiMusicali.App.View.DatiMittenteFattura;
 using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
@@ -45,31 +46,113 @@ namespace StrumentiMusicali.App.Core
 		{
 			switch (obj.TipoEnviroment)
 			{
-				case enTipoEnviroment.LogView:
+				case enAmbienti.LogView:
 					using (var controller = new ControllerLog())
 					{
 						using (var view = new LogView(controller))
 						{
-							this.ShowView(view, Settings.enAmbienti.LogView);
+							this.ShowView(view, obj.TipoEnviroment);
 						}
 					}
 					break;
-				case enTipoEnviroment.SettingFatture:
-					using (var view = new MittenteFatturaView())
-					{
-						this.ShowView(view, Settings.enAmbienti.SettingFatture);
-					}
+				case enAmbienti.SettingFatture:
+					
+					ApriSettingMittenteFattura();
 					break;
-				case enTipoEnviroment.SettingUrl:
-					using (var view = new DatiSitoView())
-					{
-						this.ShowView(view, Settings.enAmbienti.SettingSito);
-					}
+				case enAmbienti.SettingSito:
+
+					ApriSettingSito();
+					break;
+				case enAmbienti.SettingStampa:
+					ApriSettingStampaFattura();
 					break;
 				default:
 					break;
 			}
 
+		}
+		private void ApriSettingMittenteFattura()
+		{
+			var setItem = this.ReadSetting().datiMittente;
+			if (setItem == null)
+			{
+				setItem = new Controllers.FatturaElett.DatiMittente();
+			}
+			if (setItem.UfficioRegistroImp == null)
+			{
+				setItem.UfficioRegistroImp = new Controllers.FatturaElett.DatiMittente.UfficioRegistro();
+			}
+			using (var view = new GenericSettingView(setItem))
+			{
+				view.OnSave += (a, b) =>
+				{
+					using (var cur = new CursorManager())
+					{
+						view.Validate();
+						var setting = this.ReadSetting();
+						setting.datiMittente= setItem;
+						this.SaveSetting(setting);
+
+						MessageManager.NotificaInfo(
+							MessageManager.GetMessage(
+								Core.Controllers.enSaveOperation.OpSave));
+					}
+				};
+				this.ShowView(view, enAmbienti.SettingFatture);
+			}
+		}
+		private void ApriSettingStampaFattura()
+		{
+			var setItem = this.ReadSetting().DatiIntestazione;
+			if (setItem == null)
+			{
+				setItem = new DatiIntestazioneStampaFattura();
+			}
+			using (var view = new GenericSettingView(setItem))
+			{
+				view.OnSave += (a, b) =>
+				{
+					using (var cur = new CursorManager())
+					{
+						view.Validate();
+						var setting = this.ReadSetting();
+						setting.DatiIntestazione = setItem;
+						this.SaveSetting(setting);
+
+						MessageManager.NotificaInfo(
+							MessageManager.GetMessage(
+								Core.Controllers.enSaveOperation.OpSave));
+					}
+				};
+				this.ShowView(view, Settings.enAmbienti.SettingStampa);
+			}
+		}
+
+		private void ApriSettingSito()
+		{
+			SettingSito settingSito = this.ReadSetting().settingSito;
+			if (settingSito == null)
+			{
+				settingSito = new SettingSito();
+			}
+			using (var view = new GenericSettingView(settingSito))
+			{
+				view.OnSave += (a, b) =>
+				{
+					using (var cur = new CursorManager())
+					{
+						view.Validate();
+						var setting = this.ReadSetting();
+						setting.settingSito = settingSito;
+						this.SaveSetting(setting);
+
+						MessageManager.NotificaInfo(
+							MessageManager.GetMessage(
+								Core.Controllers.enSaveOperation.OpSave));
+					}
+				};
+				this.ShowView(view, Settings.enAmbienti.SettingSito);
+			}
 		}
 
 		~ControllerMaster()

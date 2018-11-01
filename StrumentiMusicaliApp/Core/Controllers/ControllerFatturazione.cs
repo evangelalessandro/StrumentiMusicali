@@ -4,6 +4,7 @@ using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
@@ -117,7 +118,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void ApriAmbiente(ApriAmbiente obj)
 		{
-			if (obj.TipoEnviroment == enTipoEnviroment.Fatturazione)
+			if (obj.TipoEnviroment == enAmbienti.FattureList)
 			{
 				using (var view = new FattureListView(this))
 				{

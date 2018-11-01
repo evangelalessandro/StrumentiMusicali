@@ -27,7 +27,7 @@ namespace StrumentiMusicali.App.View.BaseControl.ElementiDettaglio
 		{
 			var textSize = TextRenderer.MeasureText(Titolo, label1.Font).Width;
 			if (this.Width< textSize || SetMinSize)
-			this.Width= textSize +20;
+				this.Width= textSize +20;
 
 		}
 		public bool SetMinSize { get; set; }

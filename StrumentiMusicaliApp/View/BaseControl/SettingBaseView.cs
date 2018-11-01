@@ -62,6 +62,18 @@ namespace StrumentiMusicali.App.View.BaseControl
 					var cnt = AggiungiNumericoDecimal(titolo);
 					BindObj(item, cnt, objToBind);
 				}
+				else if (item.PropertyType.FullName.Contains("Int32"))
+				{
+					var cnt = AggiungiNumerico(titolo);
+					BindObj(item, cnt, objToBind);
+				}
+				else if (item.PropertyType.FullName.Contains("DateTime"))
+				{
+
+					var cnt = AggiungiDateTime(titolo);
+					BindObj(item, cnt, objToBind);
+					
+				}
 				else
 				{
 					if (!item.PropertyType.Name.StartsWith("System."))
@@ -82,6 +94,12 @@ namespace StrumentiMusicali.App.View.BaseControl
 			controlBase.Tag = item.Name;
 			controlBase.BindProprieta(item.Name, objToBind);
 			controlBase.Height = 50;
+			if (item.Name == "DataCreazione"
+				|| item.Name == "DataUltimaModifica"
+				|| item.Name == "ID")
+			{
+				controlBase.Enabled = false;
+			}
 		}
 
 		private EDCheckBok AggiungiCheck(string titolo)
@@ -113,8 +131,17 @@ namespace StrumentiMusicali.App.View.BaseControl
 			var qtaCNT = new EDNumeric();
 			qtaCNT.Titolo = titolo;
 			flowLayoutPanel1.Controls.Add(qtaCNT);
-			qtaCNT.SetMinSize = true;
-			qtaCNT.SetMinMax(0, 10000, 0);
+			qtaCNT.SetMinSize = false;
+			if (titolo=="Cap")
+			{
+				qtaCNT.SetMinMax(0, 9999999, 0);
+
+			}
+			else
+			{
+				qtaCNT.SetMinMax(0, 10000000, 0);
+
+			}
 			return qtaCNT;
 		}
 
@@ -124,6 +151,17 @@ namespace StrumentiMusicali.App.View.BaseControl
 			qtaCNT.SetMinMax(0, 10000, 2);
 			return qtaCNT;
 		}
+		private EDDateTime AggiungiDateTime(string titolo)
+		{
+			var qtaCNT = new EDDateTime();
+			qtaCNT.Titolo = titolo;
+			flowLayoutPanel1.Controls.Add(qtaCNT);
+			qtaCNT.SetMinSize = true;
+			
+			return qtaCNT; ;
+		}
+
+		
 
 		// NOTE: Leave out the finalizer altogether if this class doesn't
 		// own unmanaged resources, but leave the other methods

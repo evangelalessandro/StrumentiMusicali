@@ -219,6 +219,7 @@
     <Compile Include="Core\Controllers\ControllerImmagini.cs" />
     <Compile Include="Core\Controllers\ControllerLog.cs" />
     <Compile Include="Core\Controllers\ControllerMagazzino.cs" />
+    <Compile Include="Core\Controllers\ControllerClienti.cs" />
     <Compile Include="Core\Controllers\ControllerRigheFatture.cs" />
     <Compile Include="Core\Controllers\Exports\ExportArticoliCsv.cs" />
     <Compile Include="Core\Controllers\FatturaElett\DatiDestinatario.cs" />
@@ -236,6 +237,7 @@
     <Compile Include="Core\Events\Generics\RemovePriority.cs" />
     <Compile Include="Core\Events\Generics\AddPriority.cs" />
     <Compile Include="Core\Events\Generics\Remove.cs" />
+    <Compile Include="Core\Events\Generics\Save.cs" />
     <Compile Include="Core\Events\Generics\UpdateList.cs" />
     <Compile Include="Core\Events\Fatture\EditFattura.cs" />
     <Compile Include="Core\Events\Fatture\EliminaFattura.cs" />
@@ -264,6 +266,7 @@
     <Compile Include="Core\Item\CategoriaItem.cs" />
     <Compile Include="Core\Controllers\ControllerMaster.cs" />
     <Compile Include="Core\Item\DepositoItem.cs" />
+    <Compile Include="Core\Item\ClientiItem.cs" />
     <Compile Include="Core\Item\LogItem.cs" />
     <Compile Include="Core\Item\MovimentoItem.cs" />
     <Compile Include="Core\Manager\CursorHandler.cs" />
@@ -285,6 +288,15 @@
     </Content>
     <Compile Include="Settings\DatiIntestazioneFattura.cs" />
     <Compile Include="Settings\SettingSito.cs" />
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDDateTime.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDDateTime.Designer.cs">
+      <DependentUpon>EDDateTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\ClientiListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="View\MainView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -394,6 +406,7 @@
     <Compile Include="View\Utility\MySortableBindingList.cs" />
     <Compile Include="View\Utility\UtilityView.cs" />
     <Compile Include="View\Utility\OrdinaTab.cs" />
+    <None Include="Resources\Customer_48.png" />
     <None Include="Resources\Print_48.png" />
     <None Include="Resources\ImmagineMancante.png" />
     <None Include="Resources\Warning_24.png" />

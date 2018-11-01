@@ -5,11 +5,12 @@ using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Base;
 using System;
+using System.ComponentModel;
 
 namespace StrumentiMusicali.App.Core.Controllers.Base
 {
 	[AddINotifyPropertyChangedInterface]
-	public abstract class BaseControllerGeneric<TEntity, TBaseItem> : BaseController, IDisposable
+	public abstract class BaseControllerGeneric<TEntity, TBaseItem> : BaseController, IDisposable//, INotifyPropertyChanged
 		where TEntity : BaseEntity
 		where TBaseItem : BaseItem<TEntity>
 	{
@@ -22,6 +23,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 		private Subscription<UpdateList<TEntity>> _updateList;
 		private Subscription<ItemSelected<TBaseItem, TEntity>> _selectItemSub;
+
+//		public event PropertyChangedEventHandler PropertyChanged;
 
 		public void Init()
 		{
@@ -67,8 +70,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		}
 
 		public BaseEntity SelectedItem { get; set; }
-
-		[AlsoNotifyFor("DataSource")]
+		 
 		public MySortableBindingList<TBaseItem> DataSource { get; set; } = new MySortableBindingList<TBaseItem>();
 
 		internal void UpdateDataSource()

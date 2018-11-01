@@ -45,7 +45,7 @@ namespace StrumentiMusicali.App
 			{
 				_menuTab = new MenuTab();
 
-				AggiungiFatturazioneMagazzino();
+				AggiungiPrincipale();
 				
 				AggiungiImpostazioni();
 
@@ -115,16 +115,20 @@ namespace StrumentiMusicali.App
 			};
 		}
 
-		private void AggiungiFatturazioneMagazzino()
+		private void AggiungiPrincipale()
 		{
-			var tabImportExport = _menuTab.Add(@"Fatturazione Magazzino");
+			var tabImportExport = _menuTab.Add(@"Principale");
 			var panel1 = tabImportExport.Add("Ambienti");
 			var ribFatt = panel1.Add("Fatturazione", Properties.Resources.Invoice);
 			ribFatt.Click += (s, e) =>
 			{
 				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.FattureList));
 			};
-
+			var rib2 = panel1.Add("Clienti", Properties.Resources.Customer_48);
+			rib2.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.ClientiList));
+			};
 			var ribMagaz = panel1.Add("Magazzino", Properties.Resources.UnloadWareHouse);
 			ribMagaz.Click += (s, e) =>
 			{

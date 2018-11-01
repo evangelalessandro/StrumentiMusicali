@@ -38,5 +38,7 @@ namespace StrumentiMusicali.App.Settings
 		SettingStampa,
 		ScaricoMagazzino,
 		LogView,
+		ClientiList,
+		Cliente,
 	}
 }

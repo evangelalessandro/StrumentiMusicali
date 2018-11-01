@@ -64,6 +64,15 @@ namespace StrumentiMusicali.App.Core
 						}
 					}
 					break;
+				case enAmbienti.ClientiList:
+					using (var controller = new ControllerClienti())
+					{
+						using (var view = new ClientiListView(controller))
+						{
+							this.ShowView(view, obj.TipoEnviroment);
+						}
+					}
+					break;
 				case enAmbienti.SettingFatture:
 					
 					ApriSettingMittenteFattura();

@@ -63,6 +63,14 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		{
 			switch (ambiente)
 			{
+				case enAmbienti.ClientiList:
+					frm.Icon = GetIco(Properties.Resources.Customer_48);
+					frm.Text = "Clienti";
+					break;
+				case enAmbienti.Cliente:
+					frm.Icon = GetIco(Properties.Resources.Customer_48);
+					frm.Text = "Cliente";
+					break;
 				case enAmbienti.Main:
 					frm.Icon = GetIco(Properties.Resources.StrumentoMusicale);
 					frm.Text = "Principale";

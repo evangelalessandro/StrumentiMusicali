@@ -27,7 +27,7 @@ namespace StrumentiMusicali.Library.Model
 			modelBuilder.Entity<DDTRiga>().ToTable("DDTRighe");
 
 			modelBuilder.Entity<Cliente>().ToTable("Clienti");
-
+			 
 			modelBuilder.Entity<Articolo>().Property(e => e.Prezzo).HasPrecision(19, 2);
 			modelBuilder.Entity<Articolo>().Property(e => e.PrezzoBarrato).HasPrecision(19, 2);
 		}

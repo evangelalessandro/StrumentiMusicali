@@ -2,12 +2,8 @@
 using StrumentiMusicali.App.Core;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Events.Articoli;
-using StrumentiMusicali.App.Core.Events.Fatture;
-using StrumentiMusicali.App.Core.Events.Generics;
-using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
-using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
@@ -93,7 +89,7 @@ namespace StrumentiMusicali.App
 			return _menuTab;
 		}
 
- 		private void AggiungiComandiArticolo()
+		private void AggiungiComandiArticolo()
 		{
 			var tabArticoli = _menuTab.Add("Articoli");
 			var panelComandiArticoli = tabArticoli.Add("Comandi Articoli");
@@ -226,21 +222,24 @@ namespace StrumentiMusicali.App
 		{
 			if (e.KeyCode == Keys.Return)
 			{
-				var dato = _baseController.ReadSetting(Settings.enAmbienti.Main);
+				var dato = _baseController.ReadSetting(Settings.enAmbienti.ArticoliList);
 				dato.LastStringaRicerca = txtCerca.Text;
-				_baseController.SaveSetting(Settings.enAmbienti.Main, dato);
+				_baseController.SaveSetting(Settings.enAmbienti.ArticoliList, dato);
 				await RefreshData();
 			}
 		}
 
 		private void UpdateButtonState()
 		{
-			_menuTab.Enabled = !(dgvMaster.DataSource == null);
+			if (_menuTab != null)
+			{
+				_menuTab.Enabled = !(dgvMaster.DataSource == null);
 
-			ribEditArt.Enabled = dgvMaster.SelectedRows.Count > 0;
-			ribDuplicaArt.Enabled = dgvMaster.SelectedRows.Count > 0;
-			ribDeleteArt.Enabled = dgvMaster.SelectedRows.Count > 0;
-			ribCercaArticolo.Checked = pnlCerca.Visible;
+				ribEditArt.Enabled = dgvMaster.SelectedRows.Count > 0;
+				ribDuplicaArt.Enabled = dgvMaster.SelectedRows.Count > 0;
+				ribDeleteArt.Enabled = dgvMaster.SelectedRows.Count > 0;
+				ribCercaArticolo.Checked = pnlCerca.Visible;
+			}
 		}
 
 		private async void UpdateList(ArticoliToUpdate obj)

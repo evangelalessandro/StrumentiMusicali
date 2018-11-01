@@ -17,7 +17,12 @@ namespace StrumentiMusicali.Library.Core
 			}
 			Messages = sb.ToString();
 		}
+		public MessageException(string message)
+			: base()
 
+		{
+			Messages = message;
+		}
 		public string Messages { get; private set; }
 	}
 }

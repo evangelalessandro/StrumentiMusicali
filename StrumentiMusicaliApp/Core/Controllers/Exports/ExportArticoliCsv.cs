@@ -2,6 +2,7 @@
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
+using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -18,7 +19,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 {
 	internal class ExportArticoliCsv : IDisposable
 	{
-		private const string Separatore = "§";
+		private const String Separatore = "§";
 		private List<FotoArticolo> _fotoToUpload = new List<FotoArticolo>();
 		private SettingSito _settingSito;
 
@@ -91,8 +92,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 							uof.ArticoliRepository.Update(item);
 						}
 
-						ftpUpFile(fileMercatino, _settingSito.UrlCompletoFileMercatino);
-						ftpUpFile(fileEcommerce, _settingSito.UrlCompletoFileEcommerce);
+						UploadEndRetray(fileMercatino, _settingSito.UrlCompletoFileMercatino);
+						UploadEndRetray(fileEcommerce, _settingSito.UrlCompletoFileEcommerce);
 
 						uof.Commit();
 					}
@@ -144,14 +145,14 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 
 		private void ExportLineBase(Settings.SettingSito settingSito, List<FotoArticolo> fotoList, StringBuilder sb, Articolo art)
 		{
-			var fotoOrdinate = fotoList.Where(b => b.Articolo.ImmaginiDaCaricare = true && b.ArticoloID == art.ID).OrderBy(b => b.Ordine).ToList();
+			var fotoOrdinate = fotoList.Where(b => b.Articolo.ImmaginiDaCaricare && b.ArticoloID == art.ID).OrderBy(b => b.Ordine).ToList();
 
 			foreach (var item in fotoOrdinate)
 			{
 				var file = Path.Combine(_settingSito.CartellaLocaleImmagini, item.UrlFoto);
 				if (!File.Exists(file))
 				{ 
-					throw new Exception(string.Format( "Errore, manca l'immagine {0} dell'articolo con codice {1}, nome file {2}."
+					throw new MessageException(string.Format( "Errore, manca l'immagine {0} dell'articolo con codice {1}, nome file {2}."
 						, item.Articolo.ID + " Titolo:" + item.Articolo.Titolo 
 						,item.Ordine
 						,file
@@ -240,10 +241,15 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 			List<Articolo> listArticoli = uof.ArticoliRepository.Find(a => a.CaricainEcommerce).ToList();
 
 			var fileEcommerceContent = ExportFile(listArticoli, magazzinoGiac, fotoList);
-
-			var fileEcommerce = Path.Combine(GetTempFolder(), _settingSito.SoloNomeFileEcommerce);
-			File.WriteAllText(fileEcommerce, fileEcommerceContent.ToString(), Encoding.ASCII);
+			string fileEcommerce = SaveFileCsv(fileEcommerceContent, _settingSito.SoloNomeFileEcommerce);
 			MessageManager.NotificaInfo("Creato file E-Commerce");
+			return fileEcommerce;
+		}
+
+		private string SaveFileCsv(StringBuilder fileEcommerceContent,string nomeFile)
+		{
+			var fileEcommerce = Path.Combine(GetTempFolder(), nomeFile);
+			File.WriteAllText(fileEcommerce, fileEcommerceContent.ToString(), Encoding.Unicode);
 			return fileEcommerce;
 		}
 
@@ -259,9 +265,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 			List<Articolo> listArticoli = uof.ArticoliRepository.Find(a => a.CaricainMercatino
 														&& a.CaricainEcommerce).ToList();
 			var fileMercatinoContent = ExportFile(listArticoli, magazzinoGiac, fotoList);
-			var fileMercatino = Path.Combine(GetTempFolder(), _settingSito.SoloNomeFileMercatino);
-			File.WriteAllText(fileMercatino, fileMercatinoContent.ToString(), Encoding.ASCII);
-
+			var fileMercatino = SaveFileCsv(fileMercatinoContent, _settingSito.SoloNomeFileMercatino);
 			MessageManager.NotificaInfo("Creato file Mercatino");
 			return fileMercatino;
 		}
@@ -274,23 +278,23 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 		/// <returns></returns>
 		private bool ftpUpFile(string filePath, string ftpUri)
 		{
+			string file = "";
 			try
 			{
 				//create full uri path
-				string file = ftpUri + "/" + Path.GetFileName(filePath);
-
+				file = Path.Combine( ftpUri ,Path.GetFileName(filePath));
+				_logger.Debug(string.Format("Upload file {0} in {1} iniziato", file, filePath));
 				//ftp the file to Uri path via the ftp STOR command
 				// (ignoring the the Byte[] array return since it is always empty in this case)
 				_webClient.UploadFile(file, filePath);
-				Debug.WriteLine("Upload complete.");
+				_logger.Debug(string.Format("Upload file {0} in {1} terminato", file, filePath));
 				return true;
 			}
 			catch (Exception ex)
 			{
-				ExceptionManager.ManageError(ex, true);
-				//WebException is frequenty thrown for this condition:
-				//    "An error occurred while uploading the file"
-				Console.WriteLine(ex.Message);
+				_logger.Error(string.Format("Upload non riuscito del file {0} in {1} ", file, filePath));
+
+				ExceptionManager.ManageError(ex, false);
 				return false;
 			}
 		}
@@ -315,23 +319,40 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 
 			_webClient.Credentials = new NetworkCredential("dlpuser@dlptest.com", "e73jzTRTNqCN9PYAAjjn");
 			bool UploadCompleted;
-			int wait = 100;
-
+			
 			var baseLocalFolder = _settingSito.CartellaLocaleImmagini;
 			var folderFtpImmagini = _settingSito.UrlCompletaImmagini;
 			//loop through files in folder and upload
 			foreach (var file in _fotoToUpload)
 			{
-				do
-				{
-					UploadCompleted = ftpUpFile(Path.Combine(baseLocalFolder, file.UrlFoto), folderFtpImmagini);
-					if (!UploadCompleted)
-					{
-						Thread.Sleep(wait);
-						wait += 1000; //wait an extra second after each failed attempt
-					}
-				} while (!UploadCompleted);
+				var fileToUpload = Path.Combine(baseLocalFolder, file.UrlFoto);
+
+				UploadCompleted = UploadEndRetray(fileToUpload, folderFtpImmagini);
 			}
+		}
+
+		private bool UploadEndRetray(string fileToUpload, string destFtpFolder)
+		{
+			int wait = 100;
+
+			bool UploadCompleted;
+			var retry = 0;
+			do
+			{
+				UploadCompleted = ftpUpFile(fileToUpload, destFtpFolder);
+				if (!UploadCompleted)
+				{
+					retry++;
+					Thread.Sleep(wait);
+					wait += 500; //wait an extra second after each failed attempt
+
+					if (retry == 5)
+					{
+						throw new MessageException("Non si riesce a fare upload del file " + fileToUpload);
+					}
+				}
+			} while (!UploadCompleted);
+			return UploadCompleted;
 		}
 
 		private class GiacenzaArt

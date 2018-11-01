@@ -1,6 +1,4 @@
 ﻿using StrumentiMusicali.App.Core;
-using StrumentiMusicali.App.Core.Controllers;
-using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Events.Image;
 using StrumentiMusicali.App.Core.Manager;
@@ -41,8 +39,7 @@ namespace StrumentiMusicali.App.Forms
 		private string _lastFilter = "";
 		private bool modeEdit = false;
 		private System.Windows.Forms.PictureBox pb = new PictureBox();
-
-		SettingSito _settingSito = null;
+		private SettingSito _settingSito = null;
 		public DettaglioArticoloView(SettingSito settingSito)
 			: base()
 		{
@@ -398,31 +395,41 @@ namespace StrumentiMusicali.App.Forms
 				var imageList = uof.FotoArticoloRepository.Find(a => a.Articolo.ID == _articolo.ID)
 					.OrderBy(a => a.Ordine).ToList();
 
-				
+
 				foreach (var item in imageList)
 				{
 					try
 					{
-						var itemPhoto = System.IO.Directory.GetFiles(_settingSito.CartellaLocaleImmagini,
+						var itemPhoto = System.IO.Directory.GetFiles(
+							_settingSito.CartellaLocaleImmagini,
 							item.UrlFoto).FirstOrDefault();
-						if (itemPhoto != null)
+						
+						PictureBox pb = new PictureBox();
+						pb.SizeMode = PictureBoxSizeMode.Zoom;
+						if (itemPhoto == null)
 						{
-							PictureBox pb = new PictureBox();
-							pb.SizeMode = PictureBoxSizeMode.Zoom;
-							pb.Load(itemPhoto);
+							pb.Image = Properties.Resources.ImmagineMancante;
+							MessageManager.NotificaWarnig("Manca l'immagine " +
+							Path.Combine(_settingSito.CartellaLocaleImmagini,
+							item.UrlFoto));
 
-							pb.Click += Pb_Click;
-							pb.MouseClick += Pb_MouseClick;
-							pb.MouseMove += Pb_MouseMove;
-
-							pb.Padding = new Padding(10);
-
-							PanelImage.Controls.Add(pb);
-							/*nel tag salvo l'elemento entity*/
-							pb.Tag = item;
-
-							_imageList.Add(pb);
 						}
+						else
+						{
+							pb.Load(itemPhoto);
+						}
+						pb.Click += Pb_Click;
+						pb.MouseClick += Pb_MouseClick;
+						pb.MouseMove += Pb_MouseMove;
+
+						pb.Padding = new Padding(10);
+
+						PanelImage.Controls.Add(pb);
+						/*nel tag salvo l'elemento entity*/
+						pb.Tag = item;
+
+						_imageList.Add(pb);
+
 						UpdateColor();
 						ResizeImage();
 					}

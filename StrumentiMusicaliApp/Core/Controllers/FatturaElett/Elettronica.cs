@@ -134,7 +134,8 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 			/* CodiceFiscale=  il campo, se valorizzato, deve contenere il
 			codice fiscale del cedente/prestatore che sarà composto di 11 caratteri
 			numerici, se trattasi di persona giuridica, oppure di 16 caratteri
-			alfanumerici, se trattasi di persona fisica.			*/
+			alfanumerici, se trattasi di persona fisica.
+			*/
 
 			if (DatiDestinatario.PersonaGiuridica)
 			{
@@ -162,7 +163,8 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 			/* CodiceFiscale=  il campo, se valorizzato, deve contenere il
 			codice fiscale del cedente/prestatore che sarà composto di 11 caratteri
 			numerici, se trattasi di persona giuridica, oppure di 16 caratteri
-			alfanumerici, se trattasi di persona fisica.			*/
+			alfanumerici, se trattasi di persona fisica.
+			*/
 
 			fattura.Header.CedentePrestatore.DatiAnagrafici.CodiceFiscale = DatiMittente.PersonaGiuridica ? DatiMittente.PIVA : DatiMittente.CodiceFiscale;
 			if (DatiMittente.PersonaGiuridica)
@@ -206,7 +208,8 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 			fattura.Header.DatiTrasmissione.ProgressivoInvio = DatiMittente.ProgressivoInvio;
 			/*assume valore fisso pari a “FPA12”, se la fattura è
 				destinata ad una pubblica amministrazione, oppure “FPR12”, se la fattura è
-				destinata ad un soggetto privato.			*/
+				destinata ad un soggetto privato.
+			*/
 			fattura.Header.DatiTrasmissione.FormatoTrasmissione = DatiMittente.VersoPA ? "FPA12" : "FPR12";
 
 			if (!DatiMittente.VersoPA)
@@ -228,7 +231,8 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 				essere recapitata ad un soggetto che intende ricevere le fatture
 				elettroniche attraverso il canale PEC, il campo deve essere valorizzato con
 				sette zeri (“0000000”) e deve essere valorizzato il campo PECDestinatario
-				(1.1.6).				*/
+				(1.1.6).
+				*/
 				if (DatiDestinatario.RicezioneConCodicePec && !string.IsNullOrEmpty(DatiDestinatario.CodicePEC))
 				{
 					fattura.Header.DatiTrasmissione.CodiceDestinatario = DatiDestinatario.CodicePEC;

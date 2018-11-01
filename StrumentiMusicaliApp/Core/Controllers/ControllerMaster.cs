@@ -46,6 +46,15 @@ namespace StrumentiMusicali.App.Core
 		{
 			switch (obj.TipoEnviroment)
 			{
+				case enAmbienti.ArticoliList:
+					using (var controller = new ControllerArticoli())
+					{
+						using (var view = new ArticoliListView(controller))
+						{
+							this.ShowView(view, obj.TipoEnviroment);
+						}
+					}
+					break;
 				case enAmbienti.LogView:
 					using (var controller = new ControllerLog())
 					{

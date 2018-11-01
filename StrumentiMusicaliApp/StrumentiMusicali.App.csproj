@@ -285,6 +285,12 @@
     </Content>
     <Compile Include="Settings\DatiIntestazioneFattura.cs" />
     <Compile Include="Settings\SettingSito.cs" />
+    <Compile Include="View\MainView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\MainView.Designer.cs">
+      <DependentUpon>MainView.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\BaseControl\ElementiDettaglio\EDBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -354,11 +360,11 @@
       <DependentUpon>Test.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Utility\IMenu.cs" />
-    <Compile Include="View\MainView.cs">
+    <Compile Include="View\ArticoliListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\MainView.Designer.cs">
-      <DependentUpon>MainView.cs</DependentUpon>
+    <Compile Include="View\ArticoliListView.Designer.cs">
+      <DependentUpon>ArticoliListView.cs</DependentUpon>
     </Compile>
     <Compile Include="CustomComponents\AutoCompleteText.cs">
       <SubType>Component</SubType>
@@ -398,6 +404,9 @@
     <None Include="Resources\Down.png" />
     <None Include="Resources\Up.png" />
     <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="View\MainView.resx">
+      <DependentUpon>MainView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\BaseControl\ElementiDettaglio\EDBase.resx">
       <DependentUpon>EDBase.cs</DependentUpon>
     </EmbeddedResource>
@@ -428,8 +437,8 @@
     <EmbeddedResource Include="View\FattureRighe\FattureRigheDetailView.resx">
       <DependentUpon>FattureRigheDetailView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\MainView.resx">
-      <DependentUpon>MainView.cs</DependentUpon>
+    <EmbeddedResource Include="View\ArticoliListView.resx">
+      <DependentUpon>ArticoliListView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\BaseControl\BaseDataControl.resx">
       <DependentUpon>BaseDataControl.cs</DependentUpon>

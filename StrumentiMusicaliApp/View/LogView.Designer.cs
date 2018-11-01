@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainView));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ArticoliListView));
 			this.dgvMaster = new System.Windows.Forms.DataGridView();
 			this.pnlArticoli = new System.Windows.Forms.Panel();
 			this.pnlCerca = new System.Windows.Forms.Panel();

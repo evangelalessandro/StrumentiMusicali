@@ -1,6 +1,7 @@
 ﻿using NLog;
 
 using StrumentiMusicali.App.Core.Controllers;
+using StrumentiMusicali.App.Core.Controllers.Stampa;
 using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
@@ -137,8 +138,13 @@ namespace StrumentiMusicali.App.View
 				}
 				UpdateButtonState();
 			};
+			var pnlStampa = tabArticoli.Add("Stampa");
+			var ribStampa = pnlStampa.Add("Avvia stampa", Properties.Resources.Print_48);
+			ribStampa.Click += (a, e) =>
+			 {
+				 _baseController.StampaFattura();
+			 };
 		}
-
 		private void dgvMaster_DoubleClick(object sender, EventArgs e)
 		{
 			var g = sender as DataGridView;
@@ -163,7 +169,17 @@ namespace StrumentiMusicali.App.View
 
 		private void DgvMaster_SelectionChanged(object sender, EventArgs e)
 		{
-			UpdateButtonState();
+			try
+			{
+				if (dgvMaster.SelectedRows.Count>0)
+					_baseController.SelectedItem = dgvMaster.GetCurrentItemSelected<FatturaItem>().Entity;
+				UpdateButtonState();
+			}
+			catch (Exception ex)
+			{
+
+				ExceptionManager.ManageError(ex);
+			}
 		}
 
 		private async void Edit()

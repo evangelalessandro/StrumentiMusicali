@@ -335,7 +335,7 @@
       <DependentUpon>BaseGridViewGeneric.cs</DependentUpon>
     </Compile>
     <Compile Include="View\FattureListView.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\FattureListView.Designer.cs">
       <DependentUpon>FattureListView.cs</DependentUpon>
@@ -355,7 +355,7 @@
     </Compile>
     <Compile Include="View\Utility\IMenu.cs" />
     <Compile Include="View\MainView.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\MainView.Designer.cs">
       <DependentUpon>MainView.cs</DependentUpon>
@@ -388,6 +388,7 @@
     <Compile Include="View\Utility\MySortableBindingList.cs" />
     <Compile Include="View\Utility\UtilityView.cs" />
     <Compile Include="View\Utility\OrdinaTab.cs" />
+    <None Include="Resources\Print_48.png" />
     <None Include="Resources\ImmagineMancante.png" />
     <None Include="Resources\Warning_24.png" />
     <None Include="Resources\Error_24.png" />
@@ -461,6 +462,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="TemplateExcel\ProtoFatt.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -5,6 +5,7 @@ using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -153,7 +154,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			var menu = ((IMenu)view).GetMenu();
 			Ribbon ribbon1 = new Ribbon();
 
-			menu.PropertyChanged += (a, e) =>
+			(menu as INotifyPropertyChanged) .PropertyChanged += (a, e) =>
 			{
 				ribbon1.Enabled = menu.Enabled;
 				ribbon1.Visible = menu.Visible;
@@ -163,7 +164,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			{
 				var rbTab = (new RibbonTab(tab.Testo));
 				ribbon1.Tabs.Add(rbTab);
-				tab.PropertyChanged += (a, e) =>
+				(tab as INotifyPropertyChanged).PropertyChanged += (a, e) =>
 				{
 					rbTab.Enabled = tab.Enabled;
 					rbTab.Visible = tab.Visible;
@@ -173,7 +174,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 				{
 					var rbPannel = new RibbonPanel(pannello.Testo);
 					rbTab.Panels.Add(rbPannel);
-					pannello.PropertyChanged += (a, e) =>
+					(pannello as INotifyPropertyChanged).PropertyChanged += (a, e) =>
 					{
 						rbPannel.Enabled = pannello.Enabled;
 						rbPannel.Visible = pannello.Visible;
@@ -182,7 +183,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 					{
 						var rbButton = new RibbonButton(button.Testo);
 
-						button.PropertyChanged += (a, e) =>
+						(button as INotifyPropertyChanged) .PropertyChanged += (a, e) =>
 						{
 							rbButton.Enabled = button.Enabled;
 							rbButton.Visible = button.Visible;

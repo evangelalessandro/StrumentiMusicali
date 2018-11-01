@@ -1,5 +1,6 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Controllers.Fatture;
+using StrumentiMusicali.App.Core.Controllers.Stampa;
 using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Item;
@@ -150,6 +151,30 @@ namespace StrumentiMusicali.App.Core.Controllers
 						}
 					}
 				}
+			}
+			catch (Exception ex)
+			{
+				ExceptionManager.ManageError(ex);
+			}
+		}
+
+		internal void StampaFattura()
+		{
+			_logger.Info("Avvio stampa");
+			try
+			{
+				using (var cursorManger = new CursorManager())
+				{
+					using (var stampa = new StampaFattura())
+					{
+						stampa.Stampa(
+							ReadSetting().DatiIntestazione,
+							SelectedItem);
+
+						_logger.Info("Stampa completata correttamente.");
+					}
+				}
+
 			}
 			catch (Exception ex)
 			{

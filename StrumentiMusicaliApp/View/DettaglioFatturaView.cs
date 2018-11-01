@@ -233,6 +233,13 @@ namespace StrumentiMusicali.App.View
 					txtID.Text = _controllerFatturazione.SelectedItem.ID.ToString();
 					UpdateButtonState();
 				};
+
+				var pnlStampa = tab.Add("Stampa");
+				var ribStampa = pnlStampa.Add("Avvia stampa", Properties.Resources.Print_48);
+				ribStampa.Click += (a, e) =>
+				{
+					_controllerFatturazione.StampaFattura();
+				};
 			}
 			return _menuTab;
 		}

@@ -6,15 +6,14 @@ using System.Drawing;
 
 namespace StrumentiMusicali.App.Core.MenuRibbon
 {
-	public class RibbonMenuButton : BaseRibbonItem, INotifyPropertyChanged
+	[AddINotifyPropertyChangedInterface]
+	public class RibbonMenuButton : BaseRibbonItem
 	{
 		public Bitmap Immagine { get; set; }
 		public bool Checked { get; set; } = false;
 
 		public event EventHandler Click;
-
-		public event PropertyChangedEventHandler PropertyChanged;
-
+		 
 		public void PerformClick()
 		{
 			if (Click != null)
@@ -23,11 +22,13 @@ namespace StrumentiMusicali.App.Core.MenuRibbon
 	}
 
 	//[ImplementPropertyChanged]
-	[AddINotifyPropertyChangedInterface]
-	public class BaseRibbonItem : INotifyPropertyChanged
+	//[AddINotifyPropertyChangedInterface]
+	public class BaseRibbonItem  : INotifyPropertyChanged
 	{
 		public string Testo { get; set; }
-		public bool Enabled { get; set; } = true;
+		[AlsoNotifyForAttribute("Visible")]
+		public bool Enabled { get;
+			set; } = true;
 
 		public bool Visible { get; set; } = true;
 

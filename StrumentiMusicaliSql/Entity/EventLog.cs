@@ -1,16 +1,16 @@
-﻿using System;
+﻿using StrumentiMusicali.Library.Entity.Base;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StrumentiMusicali.Library.Entity
 {
-	public class EventLog
+	public class EventLog :BaseEntity
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int ID { get; set; }
 
-		public DateTime TimeStamp { get; set; } = DateTime.Now;
 		public string Evento { get; set; }
 		public string TipoEvento { get; set; }
 		public string Errore { get; set; }

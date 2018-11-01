@@ -8,9 +8,9 @@ namespace StrumentiMusicali.App.Core.Manager
 	{
 		private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
-		public static void ManageError(Exception ex, bool noShowNotification = false)
+		public static void ManageError(Exception ex, bool DontShowNotification = false)
 		{
-			if (!noShowNotification)
+			if (!DontShowNotification)
 			{
 				if (ex is MessageException)
 				{

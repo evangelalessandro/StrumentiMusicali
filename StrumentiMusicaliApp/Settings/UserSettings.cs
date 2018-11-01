@@ -34,6 +34,7 @@ namespace StrumentiMusicali.App.Settings
 		Magazzino,
 		SettingFatture,
 		SettingSito,
-		ScaricoMagazzino
+		ScaricoMagazzino,
+		LogView,
 	}
 }

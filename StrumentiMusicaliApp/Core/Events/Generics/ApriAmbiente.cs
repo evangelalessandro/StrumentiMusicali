@@ -18,7 +18,8 @@ namespace StrumentiMusicali.App.Core.Events.Generics
 	{
 		Fatturazione,
 		SettingFatture,
-		SettingUrl
+		SettingUrl,
+		LogView,
 
 	}
 }

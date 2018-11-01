@@ -5,6 +5,8 @@ using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
 using System;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -24,6 +26,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		{
 			using (var frm = new Form())
 			{
+				ImpostaIconaETesto(ambiente, frm);
+
 				if (view.MinimumSize.Height > 0)
 				{
 					frm.MinimumSize = new System.Drawing.Size(view.MinimumSize.Width, view.MinimumSize.Height + 190);
@@ -54,6 +58,62 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			}
 		}
 
+		private void ImpostaIconaETesto(enAmbienti ambiente, Form frm)
+		{
+			switch (ambiente)
+			{
+				case enAmbienti.Main:
+					frm.Icon = GetIco(Properties.Resources.StrumentoMusicale);
+					frm.Text = "Principale";
+					break;
+				case enAmbienti.Fattura:
+					frm.Icon = GetIco(Properties.Resources.Invoice);
+					frm.Text = "Fattura";
+					break;
+				case enAmbienti.FattureList:
+					frm.Icon = GetIco(Properties.Resources.Invoice);
+					frm.Text = "Fatture";
+					break;
+				case enAmbienti.Articolo:
+					frm.Icon = GetIco(Properties.Resources.StrumentoMusicale);
+					frm.Text = "Articolo";
+					break;
+				case enAmbienti.ArticoliList:
+					frm.Icon = GetIco(Properties.Resources.StrumentoMusicale);
+					frm.Text = "Articoli";
+					break;
+				case enAmbienti.Magazzino:
+					frm.Icon = GetIco(Properties.Resources.UnloadWareHouse);
+					frm.Text = "Magazzino";
+					break;
+				case enAmbienti.SettingFatture:
+					frm.Icon = GetIco(Properties.Resources.Settings);
+					frm.Text = "Impostazioni fatture";
+					break;
+				case enAmbienti.SettingSito:
+					frm.Icon = GetIco(Properties.Resources.Settings);
+					frm.Text = "Impostazioni sito";
+					break;
+				case enAmbienti.ScaricoMagazzino:
+					frm.Icon = GetIco(Properties.Resources.UnloadWareHouse);
+					frm.Text = "Scarico Magazzino";
+					break;
+				case enAmbienti.LogView:
+					frm.Icon = GetIco(Properties.Resources.LogView_48);
+					frm.Text = "Visualizzatore dei log";
+					break;
+				default:
+					break;
+			}
+		}
+
+		private Icon GetIco(Bitmap bitmap)
+		{
+			Bitmap bm = new Bitmap(bitmap);
+
+			// Convert to an icon and use for the form's icon.
+			return Icon.FromHandle(bm.GetHicon());
+		}
 		private static void InitRibbon(Ribbon ribbon1)
 		{
 			//

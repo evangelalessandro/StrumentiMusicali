@@ -1,4 +1,5 @@
-﻿using StrumentiMusicali.App.Core.Controllers.Base;
+﻿using NLog;
+using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.Library.Entity;
@@ -33,11 +34,13 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 			_fotoToUpload.Clear();
 			_fotoToUpload = null;
 		}
+		internal readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
 		public void InvioArticoli()
 		{
 			using (var controller = new ControllerImmagini())
 			{
+ 
 				if (!controller.CheckFolderImmagini())
 					return;
 			}
@@ -143,6 +146,18 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 		{
 			var fotoOrdinate = fotoList.Where(b => b.Articolo.ImmaginiDaCaricare = true && b.ArticoloID == art.ID).OrderBy(b => b.Ordine).ToList();
 
+			foreach (var item in fotoOrdinate)
+			{
+				var file = Path.Combine(_settingSito.CartellaLocaleImmagini, item.UrlFoto);
+				if (!File.Exists(file))
+				{ 
+					throw new Exception(string.Format( "Errore, manca l'immagine {0} dell'articolo con codice {1}, nome file {2}."
+						, item.Articolo.ID + " Titolo:" + item.Articolo.Titolo 
+						,item.Ordine
+						,file
+						));
+				}
+			}
 			AddFotoToUpload(fotoOrdinate);
 
 			sb.Append(art.ID + Separatore);
@@ -272,6 +287,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 			}
 			catch (Exception ex)
 			{
+				ExceptionManager.ManageError(ex, true);
 				//WebException is frequenty thrown for this condition:
 				//    "An error occurred while uploading the file"
 				Console.WriteLine(ex.Message);
@@ -297,7 +313,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 		{
 			//webClient.Credentials = new NetworkCredential(ArgList["-user"], ArgList["-pwd"]);
 
-			_webClient.Credentials = new NetworkCredential();
+			_webClient.Credentials = new NetworkCredential("dlpuser@dlptest.com", "e73jzTRTNqCN9PYAAjjn");
 			bool UploadCompleted;
 			int wait = 100;
 

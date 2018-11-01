@@ -93,6 +93,8 @@ namespace StrumentiMusicali.App
 				AggiungiFatturazioneMagazzino();
 
 				AggiungiImpostazioni();
+
+				AggiungiTabLog();
 			}
 			return _menuTab;
 		}
@@ -112,17 +114,28 @@ namespace StrumentiMusicali.App
 				EventAggregator.Instance().Publish(new ApriAmbiente(enTipoEnviroment.SettingUrl));
 			};
 		}
+		private void AggiungiTabLog()
+		{
+			var tabImportExport = _menuTab.Add(@"Log");
+			var panel1 = tabImportExport.Add("Principale");
+			var ribSetting = panel1.Add("Visualizza log", Properties.Resources.LogView_48);
+			ribSetting.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new ApriAmbiente(enTipoEnviroment.LogView));
+			};
+			 
+		}
 
 		private void AggiungiComandiArticolo()
 		{
 			var tabArticoli = _menuTab.Add("Articoli");
 			var panelComandiArticoli = tabArticoli.Add("Comandi Articoli");
 			var ribCreArt = panelComandiArticoli.Add("Crea", Properties.Resources.Add);
-			ribEditArt = panelComandiArticoli.Add(@"Vedi\Modifica", Properties.Resources.Penna);
+			ribEditArt = panelComandiArticoli.Add(@"Vedi\Modifica", Properties.Resources.Edit);
 			ribDeleteArt = panelComandiArticoli.Add("Cancella", Properties.Resources.Delete);
 			ribDuplicaArt = panelComandiArticoli.Add("Duplica", Properties.Resources.Duplicate);
 			var panelComandiArticoliCerca = tabArticoli.Add("Cerca");
-			ribCercaArticolo = panelComandiArticoliCerca.Add("Cerca", Properties.Resources.Cerca);
+			ribCercaArticolo = panelComandiArticoliCerca.Add("Cerca", Properties.Resources.Find);
 
 			ribCreArt.Click += (a, e) =>
 			{
@@ -166,8 +179,8 @@ namespace StrumentiMusicali.App
 			var panel1 = tabImportExport.Add("Export");
 			var ribInvio = panel1.Add("Invio Articoli", Properties.Resources.Upload);
 			var panel2 = tabImportExport.Add("Import");
-			var ribImportCsv = panel1.Add("Import csv mercatino", Properties.Resources.Import);
-			var ribImportFatture = panel1.Add("Fatture Access", Properties.Resources.Fatture_48);
+			var ribImportCsv = panel1.Add("Import csv mercatino", Properties.Resources.ImportCsv);
+			var ribImportFatture = panel1.Add("Fatture Access", Properties.Resources.ImportInvoice);
 			ribImportFatture.Click += (s, e) =>
 			{
 				EventAggregator.Instance().Publish(new ImportaFattureAccess());
@@ -186,13 +199,13 @@ namespace StrumentiMusicali.App
 		{
 			var tabImportExport = _menuTab.Add(@"Fatturazione Magazzino");
 			var panel1 = tabImportExport.Add("Ambienti");
-			var ribFatt = panel1.Add("Fatturazione", Properties.Resources.Apri_Fatturazione);
+			var ribFatt = panel1.Add("Fatturazione", Properties.Resources.Invoice);
 			ribFatt.Click += (s, e) =>
 			{
 				EventAggregator.Instance().Publish(new ApriAmbiente(enTipoEnviroment.Fatturazione));
 			};
 
-			var ribMagaz = panel1.Add("Magazzino", Properties.Resources.Magazzino);
+			var ribMagaz = panel1.Add("Magazzino", Properties.Resources.UnloadWareHouse);
 			ribMagaz.Click += (s, e) =>
 			{
 				EventAggregator.Instance().Publish(new ApriGestioneMagazzino());

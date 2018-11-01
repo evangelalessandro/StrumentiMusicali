@@ -99,11 +99,11 @@ namespace StrumentiMusicali.App.View
 			var tabArticoli = _menuTab.Add("Principale");
 			var panelComandiArticoli = tabArticoli.Add("Comandi");
 			var ribCreArt = panelComandiArticoli.Add("Crea", Properties.Resources.Add);
-			ribEditArt = panelComandiArticoli.Add(@"Vedi\Modifica", Properties.Resources.Penna);
+			ribEditArt = panelComandiArticoli.Add(@"Vedi\Modifica", Properties.Resources.Edit);
 			ribDeleteArt = panelComandiArticoli.Add("Cancella", Properties.Resources.Delete);
 			ribDuplicaArt = panelComandiArticoli.Add("Duplica", Properties.Resources.Duplicate);
 			var panelComandiArticoliCerca = tabArticoli.Add("Cerca");
-			ribCercaArticolo = panelComandiArticoliCerca.Add("Cerca", Properties.Resources.Cerca);
+			ribCercaArticolo = panelComandiArticoliCerca.Add("Cerca", Properties.Resources.Find);
 
 			ribCreArt.Click += (a, e) =>
 			{

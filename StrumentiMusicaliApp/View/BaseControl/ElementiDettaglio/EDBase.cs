@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View.BaseControl.ElementiDettaglio
@@ -10,6 +11,16 @@ namespace StrumentiMusicali.App.View.BaseControl.ElementiDettaglio
 			InitializeComponent();
 			this.MaximumSize = new Size(1000, 150);
 			this.Load += EDBase_Load;
+			this.Paint += SettingBaseView_Paint;
+			this.BackColor = Color.Transparent;
+		}
+		private void SettingBaseView_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
+		{
+			var graphics = e.Graphics;
+			var gradient_rectangle = new System.Drawing.Rectangle(0, 0, this.Width, this.Height);
+			System.Drawing.Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(gradient_rectangle, System.Drawing.Color.AliceBlue,
+				System.Drawing.Color.LightBlue, System.Drawing.Drawing2D.LinearGradientMode.Vertical);
+			graphics.FillRectangle(b, gradient_rectangle);
 		}
 
 		private void EDBase_Load(object sender, System.EventArgs e)

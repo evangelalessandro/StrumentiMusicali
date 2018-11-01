@@ -20,7 +20,20 @@ namespace StrumentiMusicali.App.View.BaseControl
 		{
 			InitializeComponent();
 
-		 
+			this.Paint += SettingBaseView_Paint;
+		}
+
+		private void SettingBaseView_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
+		{
+			var graphics = e.Graphics;
+			var gradient_rectangle = new System.Drawing.Rectangle(0, 0, this.Width, this.Height);
+			//System.Drawing.Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(gradient_rectangle, 
+			//	System.Drawing.Color.DeepSkyBlue,
+			//	System.Drawing.Color.CornflowerBlue, 65f);
+			System.Drawing.Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(gradient_rectangle, System.Drawing.Color.AliceBlue,
+				System.Drawing.Color.LightBlue, System.Drawing.Drawing2D.LinearGradientMode.Horizontal);
+
+			graphics.FillRectangle(b, gradient_rectangle);
 		}
 
 		public void BindProp(object objToBind, string prefixText)
@@ -140,7 +153,6 @@ namespace StrumentiMusicali.App.View.BaseControl
 			//
 			// flowLayoutPanel1
 			//
-			this.flowLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
 			this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.flowLayoutPanel1.Location = new System.Drawing.Point(10, 10);
 			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -150,7 +162,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			// FattureRigheDetailView
 			//
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.BackColor = System.Drawing.SystemColors.ActiveCaption;
+			this.BackColor = System.Drawing.Color.Transparent;
 			this.Controls.Add(this.flowLayoutPanel1);
 			this.DoubleBuffered = true;
 			this.Name = "MittenteFatturaView";

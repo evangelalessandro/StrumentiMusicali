@@ -3,6 +3,7 @@ using NLog.Targets;
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Events.Generics;
+using StrumentiMusicali.App.View;
 using StrumentiMusicali.App.View.DatiMittenteFattura;
 using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.Library.Core;
@@ -44,7 +45,14 @@ namespace StrumentiMusicali.App.Core
 		{
 			switch (obj.TipoEnviroment)
 			{
-				case enTipoEnviroment.Fatturazione:
+				case enTipoEnviroment.LogView:
+					using (var controller = new ControllerLog())
+					{
+						using (var view = new LogView(controller))
+						{
+							this.ShowView(view, Settings.enAmbienti.LogView);
+						}
+					}
 					break;
 				case enTipoEnviroment.SettingFatture:
 					using (var view = new MittenteFatturaView())
@@ -61,7 +69,7 @@ namespace StrumentiMusicali.App.Core
 				default:
 					break;
 			}
-			 
+
 		}
 
 		~ControllerMaster()
@@ -83,7 +91,7 @@ namespace StrumentiMusicali.App.Core
 				using (var uof = new UnitOfWork())
 				{
 					uof.EventLogRepository.Add(new StrumentiMusicali.Library.Entity.EventLog()
-					{ TipoEvento = level, Errore = message, TimeStamp = DateTime.Now, InnerException = exception, StackTrace = stacktrace, Class = classLine });
+					{ TipoEvento = level, Errore = message, DataCreazione = DateTime.Now, InnerException = exception, StackTrace = stacktrace, Class = classLine });
 
 					uof.Commit();
 				}

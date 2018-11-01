@@ -201,6 +201,7 @@
     <Compile Include="Core\Controllers\ControllerArticoli.cs" />
     <Compile Include="Core\Controllers\ControllerFatturazione.cs" />
     <Compile Include="Core\Controllers\ControllerImmagini.cs" />
+    <Compile Include="Core\Controllers\ControllerLog.cs" />
     <Compile Include="Core\Controllers\ControllerMagazzino.cs" />
     <Compile Include="Core\Controllers\ControllerRigheFatture.cs" />
     <Compile Include="Core\Controllers\Exports\ExportArticoliCsv.cs" />
@@ -247,6 +248,7 @@
     <Compile Include="Core\Item\CategoriaItem.cs" />
     <Compile Include="Core\Controllers\ControllerMaster.cs" />
     <Compile Include="Core\Item\DepositoItem.cs" />
+    <Compile Include="Core\Item\LogItem.cs" />
     <Compile Include="Core\Item\MovimentoItem.cs" />
     <Compile Include="Core\Manager\CursorHandler.cs" />
     <Compile Include="Core\Events\Image\ImageRemove.cs" />
@@ -292,6 +294,12 @@
     </Compile>
     <Compile Include="View\BaseControl\SettingBaseView.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\LogView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\LogView.Designer.cs">
+      <DependentUpon>LogView.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Settings\DatiSitoView.cs">
       <SubType>UserControl</SubType>
@@ -366,6 +374,11 @@
     <Compile Include="View\Utility\MySortableBindingList.cs" />
     <Compile Include="View\Utility\UtilityView.cs" />
     <Compile Include="View\Utility\OrdinaTab.cs" />
+    <None Include="Resources\Warning_24.png" />
+    <None Include="Resources\Error_24.png" />
+    <None Include="Resources\Info_24.png" />
+    <None Include="Resources\StrumentoMusicale.png" />
+    <None Include="Resources\LogView_48.png" />
     <None Include="Resources\Down.png" />
     <None Include="Resources\Up.png" />
     <EmbeddedResource Include="Properties\licenses.licx" />
@@ -380,6 +393,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\BaseControl\SettingBaseView.resx">
       <DependentUpon>SettingBaseView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\LogView.resx">
+      <DependentUpon>LogView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Settings\DatiSitoView.resx">
       <DependentUpon>DatiSitoView.cs</DependentUpon>

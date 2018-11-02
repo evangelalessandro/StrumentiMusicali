@@ -2,10 +2,12 @@
 using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Events.Image;
 using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.App.Forms;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,7 +34,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void InvioArticoli(InvioArticoliCSV obj)
 		{
-			using (var export=new Exports.ExportArticoliCsv())
+			using (var export = new Exports.ExportArticoliCsv())
 			{
 				export.InvioArticoli();
 			}
@@ -64,7 +66,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				return;
 			}
 
-			using (var view = new Forms.DettaglioArticoloView(item))
+			using (var view = new DettaglioArticoloView(item))
 			{
 				ShowView(view, Settings.enAmbienti.Articolo);
 			}
@@ -244,12 +246,29 @@ namespace StrumentiMusicali.App.Core.Controllers
 					return;
 				using (var save = new SaveEntityManager())
 				{
-					var item = save.UnitOfWork.ArticoliRepository.Find(a => a.ID == obj.ItemSelected.ID).FirstOrDefault();
-					_logger.Info(string.Format("Cancellazione articolo /r/n{0} /r/n{1}", item.Titolo, item.ID));
-					save.UnitOfWork.ArticoliRepository.Delete(item);
-					if (save.SaveEntity(enSaveOperation.OpDelete))
+					using (var immaginiController = new ControllerImmagini())
 					{
-						EventAggregator.Instance().Publish<ArticoliToUpdate>(new ArticoliToUpdate());
+
+
+						var item = save.UnitOfWork.ArticoliRepository.Find(a => a.ID == obj.ItemSelected.ID).FirstOrDefault();
+						_logger.Info(string.Format("Cancellazione articolo /r/n{0} /r/n{1}", item.Titolo, item.ID));
+
+						if (!immaginiController.CheckFolderImmagini())
+							return;
+						var folderFoto = ReadSetting().settingSito.CartellaLocaleImmagini;
+						var listFile = new List<string>();
+						foreach (var itemFoto in save.UnitOfWork.FotoArticoloRepository.Find(a => a.ArticoloID == item.ID))
+						{
+							immaginiController.RimuoviItemDaRepo(
+								folderFoto, listFile, save.UnitOfWork, itemFoto);
+						}
+						immaginiController.DeleteFile(listFile);
+
+						save.UnitOfWork.ArticoliRepository.Delete(item);
+						if (save.SaveEntity(enSaveOperation.OpDelete))
+						{
+							EventAggregator.Instance().Publish<ArticoliToUpdate>(new ArticoliToUpdate());
+						}
 					}
 				}
 			}

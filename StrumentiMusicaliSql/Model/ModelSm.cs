@@ -1,5 +1,6 @@
 using StrumentiMusicali.Library.Entity;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace StrumentiMusicali.Library.Model
 {
@@ -14,6 +15,9 @@ namespace StrumentiMusicali.Library.Model
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
+			modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+			modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
 			modelBuilder.Entity<Deposito>().ToTable("Depositi");
 			modelBuilder.Entity<Magazzino>().ToTable("Magazzino");
 			modelBuilder.Entity<Articolo>().ToTable("Articoli");

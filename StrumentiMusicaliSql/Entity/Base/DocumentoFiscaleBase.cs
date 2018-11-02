@@ -12,6 +12,8 @@ namespace StrumentiMusicali.Library.Entity
 		public int ID { get; set; }
 
 		[Required]
+		[StringLength(10)]
+		[Index(IsUnique = true)]
 		public string Codice { get; set; }
 
 		[Required]
@@ -22,7 +24,7 @@ namespace StrumentiMusicali.Library.Entity
 
 		[Required]
 		public int ClienteID { get; set; }
-
+		
 		public virtual Cliente Cliente { get; set; }
 		public int TipoDocumento { get; set; }
 		public string TrasportoACura { get; set; }
@@ -32,8 +34,11 @@ namespace StrumentiMusicali.Library.Entity
 		public string AspettoEsterno { get; set; }
 		public int NumeroColli { get; set; }
 		public int PesoKg { get; set; }
+		[DataType(DataType.Date)]
 		public DateTime? DataTrasporto { get; set; }
+		[DataType(DataType.Time)]
 		public DateTime? OraTrasporto { get; set; }
+		[DataType(DataType.MultilineText)]
 		public string Note1 { get; set; }
 		public string Note2 { get; set; }
 	}

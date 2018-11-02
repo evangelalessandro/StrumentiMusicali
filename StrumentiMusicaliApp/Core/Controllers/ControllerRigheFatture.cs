@@ -4,6 +4,7 @@ using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
@@ -23,9 +24,10 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private Subscription<Remove<FatturaRigaItem, FatturaRiga>> _subRemove;
 
-		private Subscription<FatturaSave> _subSave;
+		private Subscription<Save<FatturaRigaItem,FatturaRiga>> _subSave;
 
 		public ControllerRigheFatture(ControllerFatturazione controllerFatturazione)
+			:base(enAmbienti.FattureRigheList,enAmbienti.FattureRigheDett)
 		{
 			_controllerFatturazione = controllerFatturazione;
 
@@ -58,7 +60,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 					}
 				}
 			});
-			_subSave = EventAggregator.Instance().Subscribe<FatturaSave>((a) =>
+			_subSave = EventAggregator.Instance().Subscribe<Save<FatturaRigaItem,FatturaRiga>>((a) =>
 		   {
 			   Save(null);
 		   });
@@ -88,7 +90,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 				using (var uof = new UnitOfWork())
 				{
-					list = uof.FattureRigheRepository.Find(a => a.FatturaID == _controllerFatturazione.SelectedItem.ID
+					list = uof.FattureRigheRepository.Find(a => a.FatturaID == _controllerFatturazione.EditItem.ID
 
 					).Select(a => new FatturaRigaItem
 					{
@@ -129,7 +131,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void CambiaPriorita(bool aumenta)
 		{
-			if (_controllerFatturazione.SelectedItem.ID == 0)
+			if (_controllerFatturazione.EditItem.ID == 0)
 				return;
 
 			var itemSel = ((FatturaRiga)SelectedItem);
@@ -206,12 +208,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 				}));
 		}
 
-		private void Save(FatturaSave obj)
+		private void Save(Save<FatturaRigaItem,FatturaRiga> obj)
 		{
 			using (var saveManager = new SaveEntityManager())
 			{
-				((FatturaRiga)SelectedItem).FatturaID = _controllerFatturazione.SelectedItem.ID;
-				if (_controllerFatturazione.SelectedItem.ID == 0)
+				((FatturaRiga)SelectedItem).FatturaID = _controllerFatturazione.EditItem.ID;
+				if (_controllerFatturazione.EditItem.ID == 0)
 					return;
 				var uof = saveManager.UnitOfWork;
 				if ((((FatturaRiga)SelectedItem).ID > 0))

@@ -31,7 +31,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 			catch (MessageException ex)
 			{
-				ExceptionManager.ManageError(ex);
+				MessageManager.NotificaWarnig (ex.Messages);
 			}
 			catch (Exception ex)
 			{

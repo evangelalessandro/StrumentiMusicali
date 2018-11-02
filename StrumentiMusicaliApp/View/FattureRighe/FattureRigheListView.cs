@@ -1,5 +1,6 @@
 ﻿using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Item;
+using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View.BaseControl;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;

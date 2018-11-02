@@ -160,6 +160,11 @@ namespace StrumentiMusicali.Library.Repo
 			{
 				if (ex.InnerException.InnerException != null)
 				{
+					if (ex.InnerException.InnerException.Message.Contains(
+						"Cannot insert duplicate key row in object 'dbo.Fatture' with unique index 'IX_Codice'. The duplicate key value is ("))
+					{
+						throw new MessageException("Il campo codice della documento è già presente");
+					}
 					throw new Exception(ex.InnerException.InnerException.ToString());
 				}
 				throw new Exception(ex.InnerException.ToString());

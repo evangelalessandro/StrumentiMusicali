@@ -3,6 +3,7 @@ using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
@@ -14,11 +15,11 @@ using System.Threading.Tasks;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-	[AddINotifyPropertyChangedInterface]
+	//[AddINotifyPropertyChangedInterface]
 	public class ControllerLog : BaseControllerGeneric<EventLog, LogItem>
 	{
 		public ControllerLog()
-			:base()
+			:base(enAmbienti.LogViewList,enAmbienti.LogView)
 		{
 			EventAggregator.Instance().Subscribe<Remove<LogItem, EventLog>>(
 				(b)=> {
@@ -44,7 +45,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 			);
 
 		}
-		public string TestoRicerca { get; set; } = "";
 		public override void RefreshList(UpdateList<EventLog> obj)
 		{
 			try

@@ -10,6 +10,7 @@ using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
@@ -28,6 +29,16 @@ namespace StrumentiMusicali.App.View
 			: base()
 		{
 			_controllerFatturazione = controllerFatturazione;
+			if (_controllerFatturazione is INotifyPropertyChanged)
+			{
+				(_controllerFatturazione as INotifyPropertyChanged).PropertyChanged += (a, b) =>
+				{
+					var prop = b.PropertyName;
+					//if (prop=="SelectedItem")
+					//	UtilityView.SetDataBind(this, _controllerFatturazione.SelectedItem);
+
+				};
+			}
 			InitializeComponent();
 		}
 
@@ -112,7 +123,7 @@ namespace StrumentiMusicali.App.View
 
 			UpdateButtonState();
 
-			UtilityView.SetDataBind(this, _controllerFatturazione.SelectedItem);
+			UtilityView.SetDataBind(this, _controllerFatturazione.EditItem);
 
 			cboClienteID.EditValueChanged += CboClienteID_EditValueChanged;
 
@@ -133,8 +144,9 @@ namespace StrumentiMusicali.App.View
 			{
 				var cliente = uof.ClientiRepository.Find(a => a.ID == valCli).FirstOrDefault();
 
-				_controllerFatturazione.SelectedItem.RagioneSociale = cliente.RagioneSociale;
-				_controllerFatturazione.SelectedItem.PIVA = cliente.PIVA;
+				var item = (_controllerFatturazione.EditItem);
+				item.RagioneSociale = cliente.RagioneSociale;
+				item.PIVA = cliente.PIVA;
 
 				Debug.WriteLine(cliente.RagioneSociale);
 				this.Validate();
@@ -166,7 +178,7 @@ namespace StrumentiMusicali.App.View
 		{
 			if (tabControl1.SelectedTab == tabPage2)
 			{
-				if (_controllerFatturazione.SelectedItem.ID == 0)
+				if (((Fattura)_controllerFatturazione.EditItem).ID == 0)
 				{
 					tabControl1.SelectedTab = tabPage1;
 					return;
@@ -228,7 +240,8 @@ namespace StrumentiMusicali.App.View
 				ribSave.Click += (a, e) =>
 				{
 					this.Validate();
-					EventAggregator.Instance().Publish<FatturaSave>(new FatturaSave());
+					EventAggregator.Instance().Publish<Save<FatturaItem,Fattura>>(
+						new Save<FatturaItem, Fattura>());
 
 					txtID.Text = _controllerFatturazione.SelectedItem.ID.ToString();
 					UpdateButtonState();
@@ -238,7 +251,7 @@ namespace StrumentiMusicali.App.View
 				var ribStampa = pnlStampa.Add("Avvia stampa", Properties.Resources.Print_48);
 				ribStampa.Click += (a, e) =>
 				{
-					_controllerFatturazione.StampaFattura();
+					_controllerFatturazione.StampaFattura(_controllerFatturazione.EditItem);
 				};
 			}
 			return _menuTab;

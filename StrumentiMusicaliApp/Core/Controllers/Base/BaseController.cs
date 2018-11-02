@@ -18,6 +18,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 	{
 		internal readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 		internal readonly string _PathSetting = Path.Combine(Application.StartupPath, @"settings.json");
+		public const string TagCerca = "CERCA";
 
 		public BaseController()
 		{
@@ -58,62 +59,95 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 				}
 			}
 		}
-
+		public string TestoAmbiente(enAmbienti ambiente)
+		{
+			switch (ambiente)
+			{
+				case enAmbienti.ClientiList:
+					return"Clienti";
+					
+				case enAmbienti.Cliente:
+					return"Cliente";
+					
+				case enAmbienti.Main:
+					return"Principale";
+					
+				case enAmbienti.Fattura:
+					return"Fattura";
+					
+				case enAmbienti.FattureList:
+					return"Fatture";
+					
+				case enAmbienti.Articolo:
+					return"Articolo";
+					
+				case enAmbienti.ArticoliList:
+					return"Articoli";
+					
+				case enAmbienti.Magazzino:
+					return"Magazzino";
+					
+				case enAmbienti.SettingFatture:
+					return "Impostazioni fatture";
+					
+				case enAmbienti.SettingSito:
+					return "Impostazioni sito";
+					
+				case enAmbienti.ScaricoMagazzino:
+					return "Scarico Magazzino";
+					
+				case enAmbienti.LogView:
+				 	return "Visualizzatore dei log";
+					
+				default:
+					return "NIENTE DI IMPOSTATO";
+					
+			}
+		}
 		private void ImpostaIconaETesto(enAmbienti ambiente, Form frm)
 		{
 			switch (ambiente)
 			{
 				case enAmbienti.ClientiList:
 					frm.Icon = GetIco(Properties.Resources.Customer_48);
-					frm.Text = "Clienti";
 					break;
 				case enAmbienti.Cliente:
 					frm.Icon = GetIco(Properties.Resources.Customer_48);
-					frm.Text = "Cliente";
 					break;
 				case enAmbienti.Main:
 					frm.Icon = GetIco(Properties.Resources.StrumentoMusicale);
-					frm.Text = "Principale";
 					break;
 				case enAmbienti.Fattura:
 					frm.Icon = GetIco(Properties.Resources.Invoice);
-					frm.Text = "Fattura";
 					break;
 				case enAmbienti.FattureList:
 					frm.Icon = GetIco(Properties.Resources.Invoice);
-					frm.Text = "Fatture";
 					break;
 				case enAmbienti.Articolo:
 					frm.Icon = GetIco(Properties.Resources.StrumentoMusicale);
-					frm.Text = "Articolo";
 					break;
 				case enAmbienti.ArticoliList:
 					frm.Icon = GetIco(Properties.Resources.StrumentoMusicale);
-					frm.Text = "Articoli";
 					break;
 				case enAmbienti.Magazzino:
 					frm.Icon = GetIco(Properties.Resources.UnloadWareHouse);
-					frm.Text = "Magazzino";
 					break;
 				case enAmbienti.SettingFatture:
 					frm.Icon = GetIco(Properties.Resources.Settings);
-					frm.Text = "Impostazioni fatture";
 					break;
 				case enAmbienti.SettingSito:
 					frm.Icon = GetIco(Properties.Resources.Settings);
-					frm.Text = "Impostazioni sito";
 					break;
 				case enAmbienti.ScaricoMagazzino:
 					frm.Icon = GetIco(Properties.Resources.UnloadWareHouse);
-					frm.Text = "Scarico Magazzino";
 					break;
 				case enAmbienti.LogView:
 					frm.Icon = GetIco(Properties.Resources.LogView_48);
-					frm.Text = "Visualizzatore dei log";
 					break;
 				default:
 					break;
 			}
+			frm.Text = TestoAmbiente(ambiente);
 		}
 
 		private Icon GetIco(Bitmap bitmap)

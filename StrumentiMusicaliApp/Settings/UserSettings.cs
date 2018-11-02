@@ -16,7 +16,7 @@ namespace StrumentiMusicali.App.Settings
 
 	public class FormRicerca
 	{
-		public string LastStringaRicerca { get; set; }
+		public string LastStringaRicerca { get; set; } = "";
 		public Size SizeFormMain { get; set; } = new Size(400, 400);
 		public string LastItemSelected { get; set; }
 		public FormWindowState FormMainWindowState { get; set; } = FormWindowState.Maximized;
@@ -38,7 +38,10 @@ namespace StrumentiMusicali.App.Settings
 		SettingStampa,
 		ScaricoMagazzino,
 		LogView,
+		LogViewList,
 		ClientiList,
 		Cliente,
+		FattureRigheList,
+		FattureRigheDett,
 	}
 }

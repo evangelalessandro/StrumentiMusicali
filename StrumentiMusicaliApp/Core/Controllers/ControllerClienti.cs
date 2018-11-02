@@ -4,6 +4,7 @@ using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
@@ -27,6 +28,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		//public event PropertyChangedEventHandler PropertyChanged;
 
 		public ControllerClienti()
+			:base(enAmbienti.ClientiList,enAmbienti.Cliente)
 		{
 			 
 			SelectedItem = new Cliente();
@@ -82,6 +84,10 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			try
 			{
+				if (string.IsNullOrEmpty(TestoRicerca))
+				{
+					TestoRicerca = "";
+				}
 				var list = new List<ClientiItem>();
 
 				using (var uof = new UnitOfWork())
@@ -99,7 +105,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 						||
 						a.Via.Contains(TestoRicerca)
 						||
-						TestoRicerca==""
+						TestoRicerca=="" 
 					).ToList().Select(a => new ClientiItem(a)
 					{
 						ID = a.ID.ToString(), 
@@ -116,8 +122,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				{ ExceptionManager.ManageError(ex); }).BeginInvoke(null, null);
 			}
 		}
-		public string TestoRicerca { get; set; } = "";
-										   // The bulk of the clean-up code is implemented in Dispose(bool)
+		 								   // The bulk of the clean-up code is implemented in Dispose(bool)
 		protected new void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);

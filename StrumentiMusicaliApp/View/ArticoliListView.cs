@@ -4,6 +4,7 @@ using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
+using StrumentiMusicali.App.Forms;
 using StrumentiMusicali.App.View;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
@@ -174,7 +175,7 @@ namespace StrumentiMusicali.App
 				return;
 			}
 			var itemSelected = (ArticoloItem)dgvMaster.SelectedRows[0].DataBoundItem;
-			using (var frm = new Forms.DettaglioArticoloView(itemSelected, item))
+			using (var frm = new DettaglioArticoloView(itemSelected, item))
 			{
 				_baseController.ShowView(frm, Settings.enAmbienti.Articolo);
 			}

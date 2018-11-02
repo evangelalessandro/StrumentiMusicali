@@ -70,8 +70,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 						{
 							return;
 						}
-						uof.FotoArticoloRepository.Delete(item);
-						listFileToDelete.Add(Path.Combine(folderFoto, item.UrlFoto));
+						RimuoviItemDaRepo(folderFoto, listFileToDelete, uof, item);
 						var articolo = uof.ArticoliRepository
 								.Find(a => a.ID == obj.FotoArticolo.ArticoloID).First();
 						/*se cambio immagini devo aggiornare le immagini su, quindi aggiorno il flag*/
@@ -84,22 +83,32 @@ namespace StrumentiMusicali.App.Core.Controllers
 					}
 				}
 				EventAggregator.Instance().Publish<ImageListUpdate>(new ImageListUpdate());
-
-				Application.DoEvents();
-				Thread.Sleep(1000);
-
-				foreach (var item in listFileToDelete)
-				{
-					Application.DoEvents();
-					Thread.Sleep(100);
-					File.Delete(item);
-				}
+				DeleteFile(listFileToDelete);
 				MessageManager.NotificaInfo("Eliminazione avvenuta con successo");
 			}
 			catch (Exception ex)
 			{
 				ExceptionManager.ManageError(ex);
 			}
+		}
+
+		public void DeleteFile(List<string> listFileToDelete)
+		{
+			Application.DoEvents();
+			Thread.Sleep(1000);
+
+			foreach (var item in listFileToDelete)
+			{
+				Application.DoEvents();
+				Thread.Sleep(100);
+				File.Delete(item);
+			}
+		}
+
+		public void RimuoviItemDaRepo(string folderFoto, List<string> listFileToDelete, UnitOfWork uof, FotoArticolo item)
+		{
+			uof.FotoArticoloRepository.Delete(item);
+			listFileToDelete.Add(Path.Combine(folderFoto, item.UrlFoto));
 		}
 
 		private void OrderImage(ImageOrderSet obj)

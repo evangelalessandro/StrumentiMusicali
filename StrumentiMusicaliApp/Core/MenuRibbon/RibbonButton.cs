@@ -1,19 +1,21 @@
 ﻿using PropertyChanged;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 
 namespace StrumentiMusicali.App.Core.MenuRibbon
 {
+
 	[AddINotifyPropertyChangedInterface]
 	public class RibbonMenuButton : BaseRibbonItem
 	{
 		public Bitmap Immagine { get; set; }
 		public bool Checked { get; set; } = false;
-
+		public bool EnableOnlyExistItem { get; set; } 
 		public event EventHandler Click;
-		 
+		public string Tag { get; set; }
 		public void PerformClick()
 		{
 			if (Click != null)
@@ -39,9 +41,10 @@ namespace StrumentiMusicali.App.Core.MenuRibbon
 	{
 		public List<RibbonMenuButton> Pulsanti { get; set; } = new List<RibbonMenuButton>();
 
-		internal RibbonMenuButton Add(string titolo, Bitmap bitmap)
+		internal RibbonMenuButton Add(string titolo, Bitmap bitmap, bool enableOnlyOnEdit=false)
 		{
 			RibbonMenuButton button = new RibbonMenuButton() { Testo = titolo, Immagine = bitmap };
+			button.EnableOnlyExistItem = enableOnlyOnEdit;
 			Pulsanti.Add(button);
 			return button;
 		}
@@ -61,6 +64,18 @@ namespace StrumentiMusicali.App.Core.MenuRibbon
 
 	public class MenuTab : BaseRibbonItem
 	{
+		public void ApplyValidation(bool itemSelected)
+		{
+			foreach (var item in Tabs.SelectMany(a=>a.Pannelli).SelectMany(a=>a.Pulsanti).Where(a=>a.EnableOnlyExistItem))
+			{
+				item.Enabled = itemSelected;
+			}
+		}
+		public List<RibbonMenuButton> ItemByTag(string tag)
+		{
+			return Tabs.SelectMany(a => a.Pannelli).SelectMany(a => a.Pulsanti).Where(a => a.Tag == tag).ToList();
+			 
+		}
 		public List<RibbonMenuTab> Tabs { get; set; } = new List<RibbonMenuTab>();
 
 		internal RibbonMenuTab Add(string text)

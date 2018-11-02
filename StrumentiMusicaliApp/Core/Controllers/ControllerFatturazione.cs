@@ -1,4 +1,5 @@
-﻿using StrumentiMusicali.App.Core.Controllers.Base;
+﻿using PropertyChanged;
+using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Controllers.Fatture;
 using StrumentiMusicali.App.Core.Controllers.Stampa;
 using StrumentiMusicali.App.Core.Events.Fatture;
@@ -9,67 +10,69 @@ using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Repo;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-	public class ControllerFatturazione : BaseController
-	{
-		public Fattura SelectedItem { get; set; } = new Fattura();
-
-		public ControllerFatturazione() : base()
+	[AddINotifyPropertyChangedInterface]
+	public class ControllerFatturazione : BaseControllerGeneric<Fattura,FatturaItem>
+	{ 
+		
+		public ControllerFatturazione() : 
+			base(enAmbienti.FattureList,enAmbienti.Fattura)
 		{
 			EventAggregator.Instance().Subscribe<ImportaFattureAccess>(ImportaFatture);
 			EventAggregator.Instance().Subscribe<ApriAmbiente>(ApriAmbiente);
-			EventAggregator.Instance().Subscribe<NuovaFattura>(AddFattura);
-			EventAggregator.Instance().Subscribe<EditFattura>(FatturaEdit);
-			EventAggregator.Instance().Subscribe<FatturaSave>(Save);
+			EventAggregator.Instance().Subscribe<Add<FatturaItem, Fattura>>(AddFattura);
+			EventAggregator.Instance().Subscribe<Edit<FatturaItem,Fattura>>(FatturaEdit);
+			EventAggregator.Instance().Subscribe<Save<FatturaItem, Fattura>>(Save);
 
-			EventAggregator.Instance().Subscribe<EliminaFattura>(DelFattura);
+			EventAggregator.Instance().Subscribe<Remove<FatturaItem, Fattura>>(DelFattura);
+			///comando di stampa
+			AggiungiComandi();
 		}
 
-		private void Save(FatturaSave obj)
+		private void Save(Save<FatturaItem, Fattura> obj)
 		{
 			using (var saveManager = new SaveEntityManager())
 			{
-				if (SelectedItem.Pagamento.Length == 0)
+				if (string.IsNullOrEmpty(EditItem.Pagamento))
 				{
 					MessageManager.NotificaWarnig("Occorre impostare il pagamento");
 					return;
 				}
 
 				var uof = saveManager.UnitOfWork;
-				SelectedItem.Data = SelectedItem.Data.Date;
+				EditItem.Data = EditItem.Data.Date;
 
-				if (SelectedItem.ID > 0)
+				if (EditItem.ID > 0)
 				{
-					uof.FatturaRepository.Update(SelectedItem);
+					uof.FatturaRepository.Update(EditItem);
 				}
 				else
 				{
-					uof.FatturaRepository.Add(SelectedItem);
+					uof.FatturaRepository.Add(EditItem);
 				}
 
 				if (saveManager.SaveEntity(enSaveOperation.OpSave))
 				{
-					EventAggregator.Instance().Publish<FattureListUpdate>(new FattureListUpdate());
+					EventAggregator.Instance().Publish<UpdateList<Fattura>>(
+							new UpdateList<Fattura>());
 				}
 			}
 		}
-
+		
 		~ControllerFatturazione()
 		{
-			var dato = this.ReadSetting(Settings.enAmbienti.FattureList);
-			if (SelectedItem != null && SelectedItem != null && SelectedItem.ID > 0)
-			{
-				dato.LastItemSelected = SelectedItem.ID.ToString();
-				this.SaveSetting(Settings.enAmbienti.FattureList, dato);
-			}
+			
 		}
 
-		private void DelFattura(EliminaFattura obj)
+		private void DelFattura(Remove<FatturaItem, Fattura> obj)
 		{
 			try
 			{
@@ -78,16 +81,22 @@ namespace StrumentiMusicali.App.Core.Controllers
 				using (var saveEntity = new SaveEntityManager())
 				{
 					var uof = saveEntity.UnitOfWork;
-					int val = int.Parse(obj.ItemSelected.ID);
+					int val = ((Fattura) SelectedItem).ID;
 					var item = uof.FatturaRepository.Find(a => a.ID == val).FirstOrDefault();
 					_logger.Info(string.Format("Cancellazione fattura/r/n codice {0} /r/n Numero {1}",
 						item.Codice, item.ID));
+
+					foreach (var itemRiga in uof.FattureRigheRepository.Find(a => a.FatturaID == val))
+					{
+						uof.FattureRigheRepository.Delete(itemRiga);
+					}
+
 					uof.FatturaRepository.Delete(item);
 
 					if (saveEntity.SaveEntity(enSaveOperation.OpDelete))
 					{
-						EventAggregator.Instance().Publish<FattureListUpdate>(
-							new FattureListUpdate());
+						EventAggregator.Instance().Publish<UpdateList<Fattura>>(
+							new UpdateList<Fattura>());
 					}
 				}
 			}
@@ -97,9 +106,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 		}
 
-		private void FatturaEdit(EditFattura obj)
-		{
-			SelectedItem = ((FatturaItem)obj.ItemSelected).Entity;
+		private void FatturaEdit(Edit<FatturaItem, Fattura> edit)
+		{ 
+			EditItem = (Fattura) SelectedItem;
 			ShowDettaglio();
 		}
 
@@ -111,9 +120,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 		}
 
-		private void AddFattura(NuovaFattura obj)
+		private void AddFattura(Add<FatturaItem, Fattura> obj)
 		{
-			SelectedItem = new Fattura();
+			EditItem = new Fattura();
 			ShowDettaglio();
 		}
 
@@ -121,7 +130,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			if (obj.TipoEnviroment == enAmbienti.FattureList)
 			{
-				using (var view = new FattureListView(this))
+				using (var view = new FattureListView(this, enAmbienti.FattureList, enAmbienti.Fattura))
 				{
 					ShowView(view, Settings.enAmbienti.FattureList);
 				}
@@ -158,7 +167,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 		}
 
-		internal void StampaFattura()
+		internal void StampaFattura(Fattura fattura)
 		{
 			_logger.Info("Avvio stampa");
 			try
@@ -169,7 +178,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 					{
 						stampa.Stampa(
 							ReadSetting().DatiIntestazione,
-							SelectedItem);
+							fattura);
 
 						_logger.Info("Stampa completata correttamente.");
 					}
@@ -179,6 +188,51 @@ namespace StrumentiMusicali.App.Core.Controllers
 			catch (Exception ex)
 			{
 				ExceptionManager.ManageError(ex);
+			}
+		}
+		private void AggiungiComandi()
+		{
+			var pnlStampa = GetMenu().Tabs[0].Add("Stampa");
+			var ribStampa = pnlStampa.Add("Avvia stampa", Properties.Resources.Print_48,true);
+			ribStampa.Click += (a, e) =>
+			{
+				StampaFattura((Fattura)SelectedItem);
+			};
+		}
+
+		public override void RefreshList(UpdateList<Fattura> obj)
+		{
+			 
+			try
+			{
+				var datoRicerca = TestoRicerca;
+				var list = new List<FatturaItem>();
+
+				using (var uof = new UnitOfWork())
+				{
+					list = uof.FatturaRepository.Find(a => datoRicerca == ""
+					   || a.RagioneSociale.Contains(datoRicerca)
+						|| a.PIVA.Contains(datoRicerca)
+						|| a.Codice.Contains(datoRicerca)
+
+					).Select(a => new FatturaItem
+					{
+						ID = a.ID.ToString(),
+						Data = a.Data,
+						Entity = a,
+						PIVA = a.PIVA,
+						Codice = a.Codice,
+						RagioneSociale = a.RagioneSociale
+					}).OrderByDescending(a => a.ID).Take(100).ToList();
+				}
+
+				DataSource=new View.Utility.MySortableBindingList<FatturaItem>( list);
+			}
+			catch (Exception ex)
+			{
+				new Task(new Action(() =>
+				{ ExceptionManager.ManageError(ex); })).Wait();
+				
 			}
 		}
 	}

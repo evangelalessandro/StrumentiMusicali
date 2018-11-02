@@ -234,20 +234,14 @@
     <Compile Include="Core\Events\Articoli\InvioArticoliCSV.cs" />
     <Compile Include="Core\Events\Generics\Add.cs" />
     <Compile Include="Core\Events\Generics\ApriAmbiente.cs" />
+    <Compile Include="Core\Events\Generics\ViewRicerca.cs" />
     <Compile Include="Core\Events\Generics\RemovePriority.cs" />
     <Compile Include="Core\Events\Generics\AddPriority.cs" />
     <Compile Include="Core\Events\Generics\Remove.cs" />
     <Compile Include="Core\Events\Generics\Save.cs" />
     <Compile Include="Core\Events\Generics\UpdateList.cs" />
-    <Compile Include="Core\Events\Fatture\EditFattura.cs" />
-    <Compile Include="Core\Events\Fatture\EliminaFattura.cs" />
-    <Compile Include="Core\Events\Fatture\FatturaSave.cs" />
-    <Compile Include="Core\Events\Fatture\FattureListUpdate.cs" />
     <Compile Include="Core\Events\Fatture\FattureUpdate.cs" />
     <Compile Include="Core\Events\Fatture\ImportaFattureAccess.cs" />
-    <Compile Include="Core\Events\Fatture\NuovaFattura.cs" />
-    <Compile Include="Core\Events\Fatture\Righe\AggiungiFatturaRiga.cs" />
-    <Compile Include="Core\Events\Fatture\Righe\EliminaFatturaRiga.cs" />
     <Compile Include="Core\Events\Image\ImageAddFiles.cs" />
     <Compile Include="Core\Events\Image\ImageListUpdate.cs" />
     <Compile Include="Core\Events\Image\ImageOrderSet.cs" />
@@ -297,6 +291,24 @@
     <Compile Include="View\ClientiListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="View\DettaglioArticoloView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\DettaglioArticoloView.Designer.cs">
+      <DependentUpon>DettaglioArticoloView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DettaglioFatturaView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\DettaglioFatturaView.Designer.cs">
+      <DependentUpon>DettaglioFatturaView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\FattureListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\FattureListView.Designer.cs">
+      <DependentUpon>FattureListView.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\MainView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -339,24 +351,12 @@
     <Compile Include="View\Settings\GenericSettingView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\DettaglioFatturaView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="View\DettaglioFatturaView.Designer.cs">
-      <DependentUpon>DettaglioFatturaView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Core\Events\Generics\Edit.cs" />
     <Compile Include="View\BaseControl\BaseGridViewGeneric.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\BaseControl\BaseGridViewGeneric.Designer.cs">
       <DependentUpon>BaseGridViewGeneric.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\FattureListView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="View\FattureListView.Designer.cs">
-      <DependentUpon>FattureListView.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\Events\Generics\ItemSelected.cs" />
     <Compile Include="View\FattureRighe\FattureRigheDetailView.cs">
@@ -393,12 +393,6 @@
     <Compile Include="View\ScaricoMagazzino.Designer.cs">
       <DependentUpon>ScaricoMagazzino.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\DettaglioArticoloView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="View\DettaglioArticoloView.Designer.cs">
-      <DependentUpon>DettaglioArticoloView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\ISettingsReader.cs" />
@@ -417,6 +411,15 @@
     <None Include="Resources\Down.png" />
     <None Include="Resources\Up.png" />
     <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="View\DettaglioArticoloView.resx">
+      <DependentUpon>DettaglioArticoloView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DettaglioFatturaView.resx">
+      <DependentUpon>DettaglioFatturaView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\FattureListView.resx">
+      <DependentUpon>FattureListView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\MainView.resx">
       <DependentUpon>MainView.cs</DependentUpon>
     </EmbeddedResource>
@@ -438,14 +441,8 @@
     <EmbeddedResource Include="View\Settings\GenericSettingView.resx">
       <DependentUpon>GenericSettingView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\DettaglioFatturaView.resx">
-      <DependentUpon>DettaglioFatturaView.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="View\BaseControl\BaseGridViewGeneric.resx">
       <DependentUpon>BaseGridViewGeneric.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\FattureListView.resx">
-      <DependentUpon>FattureListView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\FattureRighe\FattureRigheDetailView.resx">
       <DependentUpon>FattureRigheDetailView.cs</DependentUpon>
@@ -455,9 +452,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\BaseControl\BaseDataControl.resx">
       <DependentUpon>BaseDataControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\DettaglioArticoloView.resx">
-      <DependentUpon>DettaglioArticoloView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

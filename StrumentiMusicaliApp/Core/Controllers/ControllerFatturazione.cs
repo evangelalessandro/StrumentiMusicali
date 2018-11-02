@@ -28,16 +28,16 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			EventAggregator.Instance().Subscribe<ImportaFattureAccess>(ImportaFatture);
 			EventAggregator.Instance().Subscribe<ApriAmbiente>(ApriAmbiente);
-			EventAggregator.Instance().Subscribe<Add<FatturaItem, Fattura>>(AddFattura);
-			EventAggregator.Instance().Subscribe<Edit<FatturaItem,Fattura>>(FatturaEdit);
-			EventAggregator.Instance().Subscribe<Save<FatturaItem, Fattura>>(Save);
+			EventAggregator.Instance().Subscribe<Add<Fattura>>(AddFattura);
+			EventAggregator.Instance().Subscribe<Edit<Fattura>>(FatturaEdit);
+			EventAggregator.Instance().Subscribe<Save<Fattura>>(Save);
 
-			EventAggregator.Instance().Subscribe<Remove<FatturaItem, Fattura>>(DelFattura);
+			EventAggregator.Instance().Subscribe<Remove<Fattura>>(DelFattura);
 			///comando di stampa
 			AggiungiComandi();
 		}
 
-		private void Save(Save<FatturaItem, Fattura> obj)
+		private void Save(Save<Fattura> obj)
 		{
 			using (var saveManager = new SaveEntityManager())
 			{
@@ -72,7 +72,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			
 		}
 
-		private void DelFattura(Remove<FatturaItem, Fattura> obj)
+		private void DelFattura(Remove<Fattura> obj)
 		{
 			try
 			{
@@ -106,7 +106,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 		}
 
-		private void FatturaEdit(Edit<FatturaItem, Fattura> edit)
+		private void FatturaEdit(Edit<Fattura> edit)
 		{ 
 			EditItem = (Fattura) SelectedItem;
 			ShowDettaglio();
@@ -120,7 +120,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 		}
 
-		private void AddFattura(Add<FatturaItem, Fattura> obj)
+		private void AddFattura(Add<Fattura> obj)
 		{
 			EditItem = new Fattura();
 			ShowDettaglio();

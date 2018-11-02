@@ -3,9 +3,7 @@ using StrumentiMusicali.Library.Entity.Base;
 
 namespace StrumentiMusicali.App.Core.Events.Generics
 {
-	public class AddPriority<TBaseItem, TEntity>
-		where TEntity : BaseEntity
-		where TBaseItem : BaseItem<TEntity>
+	public class AddPriority<TEntity> where TEntity : BaseEntity
 	{
 	}
 }

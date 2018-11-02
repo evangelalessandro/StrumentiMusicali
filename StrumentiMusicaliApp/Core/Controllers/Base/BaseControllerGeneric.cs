@@ -28,6 +28,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			TestoRicerca = ReadSetting(ambiente).LastStringaRicerca;
 
 		}
+		 
+
 		~BaseControllerGeneric()
 		{
 			// Finalizer calls Dispose(false)
@@ -136,19 +138,19 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 			ribCreArt.Click += (a, e) =>
 			{
-				EventAggregator.Instance().Publish(new Add<TBaseItem, TEntity>());
+				EventAggregator.Instance().Publish(new Add<TEntity>());
 			};
 			ribDeleteArt.Click += (a, e) =>
 			{
-				EventAggregator.Instance().Publish(new Remove<TBaseItem, TEntity>());
+				EventAggregator.Instance().Publish(new Remove<TEntity>());
 			};
 			ribEditArt.Click += (a, e) =>
 			{
-				EventAggregator.Instance().Publish(new Edit<TBaseItem, TEntity>());
+				EventAggregator.Instance().Publish(new Edit<TEntity>());
 			};
 			ribCercaArticolo.Click += (a, e) =>
 			{
-				EventAggregator.Instance().Publish(new ViewRicerca<TBaseItem, TEntity>());
+				EventAggregator.Instance().Publish(new ViewRicerca<TEntity>());
 			};
 		}
 

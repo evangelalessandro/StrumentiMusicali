@@ -234,6 +234,7 @@
     <Compile Include="Core\Events\Articoli\InvioArticoliCSV.cs" />
     <Compile Include="Core\Events\Generics\Add.cs" />
     <Compile Include="Core\Events\Generics\ApriAmbiente.cs" />
+    <Compile Include="Core\Events\Generics\BaseGeneric.cs" />
     <Compile Include="Core\Events\Generics\ViewRicerca.cs" />
     <Compile Include="Core\Events\Generics\RemovePriority.cs" />
     <Compile Include="Core\Events\Generics\AddPriority.cs" />
@@ -245,7 +246,6 @@
     <Compile Include="Core\Events\Image\ImageAddFiles.cs" />
     <Compile Include="Core\Events\Image\ImageListUpdate.cs" />
     <Compile Include="Core\Events\Image\ImageOrderSet.cs" />
-    <Compile Include="Core\Events\Articoli\ArticoloSave.cs" />
     <Compile Include="Core\Events\Interfaces\ArticoloCurrent.cs" />
     <Compile Include="Core\Events\Magazzino\MovimentiUpdate.cs" />
     <Compile Include="Core\Events\Magazzino\MovimentoMagazzino.cs" />
@@ -265,11 +265,7 @@
     <Compile Include="Core\Item\MovimentoItem.cs" />
     <Compile Include="Core\Manager\CursorHandler.cs" />
     <Compile Include="Core\Events\Image\ImageRemove.cs" />
-    <Compile Include="Core\Events\Articoli\ArticoloDelete.cs" />
     <Compile Include="Core\Events\Articoli\ArticoloDuplicate.cs" />
-    <Compile Include="Core\Events\Articoli\ArticoloAdd.cs" />
-    <Compile Include="Core\Events\Articoli\ArticoliUpdate.cs" />
-    <Compile Include="Core\Events\Articoli\ArticoloSelected.cs" />
     <Compile Include="Core\Events\Articoli\ImportArticoliCSVMercatino.cs" />
     <Compile Include="Core\Events\Interfaces\FatturaCurrent.cs" />
     <Compile Include="Core\Manager\ExceptionManager.cs" />
@@ -374,9 +370,6 @@
     <Compile Include="View\Utility\IMenu.cs" />
     <Compile Include="View\ArticoliListView.cs">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="View\ArticoliListView.Designer.cs">
-      <DependentUpon>ArticoliListView.cs</DependentUpon>
     </Compile>
     <Compile Include="CustomComponents\AutoCompleteText.cs">
       <SubType>Component</SubType>

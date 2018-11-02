@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace StrumentiMusicali.App.Core.Events.Generics
 { 
-	public class Save<TEntity> where TEntity : BaseEntity
+	public class BaseGeneric<TEntity> where TEntity : BaseEntity
 	{ 
 	}
 }

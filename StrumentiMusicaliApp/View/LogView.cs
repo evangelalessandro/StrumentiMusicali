@@ -89,8 +89,8 @@ namespace StrumentiMusicali.App.View
 			ribDeleteArt.Click += (a, e) =>
 			{
 
-				EventAggregator.Instance().Publish<Remove<LogItem, EventLog>>(
-					new Remove<LogItem, EventLog>());
+				EventAggregator.Instance().Publish<Remove<EventLog>>(
+					new Remove<EventLog>());
 
 			};
 

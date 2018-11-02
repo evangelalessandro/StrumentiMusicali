@@ -1,8 +1,10 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Events.Articoli;
+using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Events.Image;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Forms;
+using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
@@ -11,27 +13,49 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-	public class ControllerArticoli : BaseController, IDisposable
+	public class ControllerArticoli : BaseControllerGeneric<Articolo,
+		ArticoloItem>, IDisposable
 	{
+		//private List<Subscription<object>> subList = new List<Subscription<object>>();
 		public ControllerArticoli()
-			: base()
+			: base(enAmbienti.ArticoliList, enAmbienti.Articolo)
 		{
-			EventAggregator.Instance().Subscribe<ArticoloSelected>(ArticoloSelectedChange);
+			
+		    EventAggregator.Instance().Subscribe<Add<Articolo>>(AggiungiArticolo);
+			EventAggregator.Instance().Subscribe<Edit<Articolo>>(EditArt);
 
-			EventAggregator.Instance().Subscribe<ArticoloAdd>(AggiungiArticolo);
-			EventAggregator.Instance().Subscribe<ArticoloDelete>(DeleteArticolo);
+
+			EventAggregator.Instance().Subscribe<Remove<Articolo>>(DeleteArticolo);
 			EventAggregator.Instance().Subscribe<ArticoloDuplicate>(DuplicaArticolo);
 
 			EventAggregator.Instance().Subscribe<ImageAdd>(AggiungiImmagine);
 			EventAggregator.Instance().Subscribe<ImportArticoliCSVMercatino>(ImportaCsvArticoli);
 			EventAggregator.Instance().Subscribe<InvioArticoliCSV>(InvioArticoli);
-			EventAggregator.Instance().Subscribe<ArticoloSave>(SaveArticolo);
+			EventAggregator.Instance().Subscribe<Save<Articolo>>(SaveArticolo);
+
+
+			AggiungiComandi();
+		}
+		public new void Dispose()
+		{
+			 
 		}
 
+		private void AggiungiComandi()
+		{
+			var pnl = GetMenu().Tabs[0].Pannelli.Last();
+			var rib1 = pnl.Add("Duplica", Properties.Resources.Duplicate, true);
+			rib1.Click += (a, e) =>
+			{
+				EventAggregator.Instance().Publish<ArticoloDuplicate>(new ArticoloDuplicate());
+
+			};
+		}
 		private void InvioArticoli(InvioArticoliCSV obj)
 		{
 			using (var export = new Exports.ExportArticoliCsv())
@@ -43,21 +67,29 @@ namespace StrumentiMusicali.App.Core.Controllers
 		~ControllerArticoli()
 		{
 			var dato = this.ReadSetting(Settings.enAmbienti.ArticoliList);
-			if (_ArticoloSelected != null && _ArticoloSelected.ItemSelected != null)
+			if (SelectedItem != null )
 			{
-				dato.LastItemSelected = _ArticoloSelected.ItemSelected.ID;
+				dato.LastItemSelected = SelectedItem.ID;
 				this.SaveSetting(Settings.enAmbienti.ArticoliList, dato);
 			}
 		}
 
-		private ArticoloSelected _ArticoloSelected;
+		  
 
-		private void ArticoloSelectedChange(ArticoloSelected obj)
+		private void EditArt(Edit<Articolo> obj)
 		{
-			_ArticoloSelected = obj;
+			var item = ReadSetting().settingSito;
+			if (!item.CheckFolderImmagini())
+			{
+				return;
+			}
+			EditItem = SelectedItem;
+			using (var view = new DettaglioArticoloView(this, item))
+			{
+				ShowView(view, Settings.enAmbienti.Articolo);
+			}
 		}
-
-		private void AggiungiArticolo(ArticoloAdd articoloAdd)
+		private void AggiungiArticolo(object articoloAdd)
 		{
 			_logger.Info("Apertura ambiente AggiungiArticolo");
 			var item = ReadSetting().settingSito;
@@ -65,8 +97,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 			{
 				return;
 			}
-
-			using (var view = new DettaglioArticoloView(item))
+			EditItem = new Articolo();
+			using (var view = new DettaglioArticoloView(this, item))
 			{
 				ShowView(view, Settings.enAmbienti.Articolo);
 			}
@@ -79,8 +111,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 				using (var saveEntity = new SaveEntityManager())
 				{
 					var uof = saveEntity.UnitOfWork;
-					var itemCurrent = ((ArticoloItem)(_ArticoloSelected.ItemSelected)).Entity;
-					uof.ArticoliRepository.Add(new StrumentiMusicali.Library.Entity.Articolo()
+					var itemCurrent = (SelectedItem);
+					var art=
+					(new StrumentiMusicali.Library.Entity.Articolo()
 					{
 						Categoria = itemCurrent.Categoria,
 						Condizione = itemCurrent.Condizione,
@@ -95,11 +128,15 @@ namespace StrumentiMusicali.App.Core.Controllers
 						DataUltimaModifica = DateTime.Now,
 						DataCreazione = DateTime.Now
 					});
-
+					uof.ArticoliRepository.Add(art);
 					if (saveEntity.SaveEntity(enSaveOperation.Duplicazione))
 					{
 						_logger.Info("Duplica articolo");
-						EventAggregator.Instance().Publish<ArticoliToUpdate>(new ArticoliToUpdate());
+
+						SelectedItem = art;
+						EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>());
+
+						 
 					}
 				}
 			}
@@ -148,7 +185,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 								}
 							}
 						}
-						EventAggregator.Instance().Publish<ArticoliToUpdate>(new ArticoliToUpdate());
+						EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>());
 						MessageManager.NotificaInfo("Terminata importazione articoli");
 					}
 				}
@@ -238,7 +275,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			return progress;
 		}
 
-		private void DeleteArticolo(ArticoloDelete obj)
+		private void DeleteArticolo(object obj)
 		{
 			try
 			{
@@ -250,7 +287,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 					{
 
 
-						var item = save.UnitOfWork.ArticoliRepository.Find(a => a.ID == obj.ItemSelected.ID).FirstOrDefault();
+						var item = save.UnitOfWork.ArticoliRepository.Find(a => a.ID ==
+						this.SelectedItem.ID).FirstOrDefault();
 						_logger.Info(string.Format("Cancellazione articolo /r/n{0} /r/n{1}", item.Titolo, item.ID));
 
 						if (!immaginiController.CheckFolderImmagini())
@@ -267,7 +305,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 						save.UnitOfWork.ArticoliRepository.Delete(item);
 						if (save.SaveEntity(enSaveOperation.OpDelete))
 						{
-							EventAggregator.Instance().Publish<ArticoliToUpdate>(new ArticoliToUpdate());
+							EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>());
 						}
 					}
 				}
@@ -278,25 +316,26 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 		}
 
-		private void SaveArticolo(ArticoloSave arg)
+		private void SaveArticolo(object arg)
 		{
 			try
 			{
 				using (var save = new SaveEntityManager())
 				{
 					var uof = save.UnitOfWork;
-					if (string.IsNullOrEmpty(arg.Articolo.ID)
-						|| uof.ArticoliRepository.Find(a => a.ID == arg.Articolo.ID).Count() == 0)
+					if (string.IsNullOrEmpty(EditItem.ID)
+						|| uof.ArticoliRepository.Find(a => a.ID == EditItem.ID).Count() == 0)
 					{
-						uof.ArticoliRepository.Add(arg.Articolo);
+						uof.ArticoliRepository.Add(EditItem);
 					}
 					else
 					{
-						uof.ArticoliRepository.Update(arg.Articolo);
+						uof.ArticoliRepository.Update(EditItem);
 					}
 					if (
 					save.SaveEntity(enSaveOperation.OpSave))
 					{
+
 					}
 				}
 			}
@@ -332,6 +371,38 @@ namespace StrumentiMusicali.App.Core.Controllers
 			catch (Exception ex)
 			{
 				ExceptionManager.ManageError(ex);
+			}
+		}
+
+		public override void RefreshList(UpdateList<Articolo> obj)
+		{
+			try
+			{
+				var datoRicerca = TestoRicerca;
+				List<ArticoloItem> list = new List<ArticoloItem>();
+
+				using (var uof = new UnitOfWork())
+				{
+					list = uof.ArticoliRepository.Find(a => datoRicerca == "" || a.Titolo.Contains(datoRicerca)
+						|| a.Testo.Contains(datoRicerca)
+					).Select(a => new ArticoloItem
+					{
+						ID = a.ID,
+						Titolo = a.Titolo,
+						Entity = a,
+						DataCreazione = a.DataCreazione,
+						DataModifica = a.DataUltimaModifica,
+						//Pinned = a.Pinned
+					}).ToList();
+				}
+
+				DataSource = new View.Utility.MySortableBindingList<ArticoloItem>(list);
+			}
+			catch (Exception ex)
+			{
+				new Task(new Action(() =>
+				{ ExceptionManager.ManageError(ex); })).Wait();
+
 			}
 		}
 	}

@@ -1,5 +1,7 @@
 ﻿using StrumentiMusicali.App.Core;
+using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Events.Articoli;
+using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Events.Image;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
@@ -32,26 +34,21 @@ namespace StrumentiMusicali.App.Forms
 		protected Image nextImage;
 		protected PictureBox thumbnail;
 		protected bool validData;
-		private StrumentiMusicali.Library.Entity.Articolo _articolo = null;
 		private static List<CategoriaItem> _categoriList = new List<CategoriaItem>();
 		private FotoArticolo _fotoArticoloSelected = null;
 		private List<PictureBox> _imageList = new List<PictureBox>();
 		private string _lastFilter = "";
-		private bool modeEdit = false;
 		private System.Windows.Forms.PictureBox pb = new PictureBox();
 		private SettingSito _settingSito = null;
-		public DettaglioArticoloView(SettingSito settingSito)
+		public DettaglioArticoloView(ControllerArticoli articoloController, SettingSito settingSito)
 			: base()
 		{
+			_articoloController = articoloController;
 			InitializeComponent();
 			if (DesignMode)
 				return;
 			_settingSito = settingSito;
-			if (_articolo == null)
-			{
-				_articolo = new StrumentiMusicali.Library.Entity.Articolo() { Testo = "Prova", Titolo = "titolo", Marca = "PRova" };
-			}
-			EventAggregator.Instance().Subscribe<ImageListUpdate>(RefreshImageList);
+		 	EventAggregator.Instance().Subscribe<ImageListUpdate>(RefreshImageList);
 
 			PanelImage.AllowDrop = true;
 
@@ -76,13 +73,8 @@ namespace StrumentiMusicali.App.Forms
 			PanelImage.Controls.Add(pb);
 			this.Resize += FrmArticolo_ResizeEnd;
 		}
-
-		public DettaglioArticoloView(ArticoloItem articolo, SettingSito settingSito)
-			: this(settingSito)
-		{
-			_articolo = articolo.Entity;
-			modeEdit = true;
-		}
+		ControllerArticoli _articoloController;
+		 
 
 		public delegate void AssignImageDlgt();
 
@@ -243,20 +235,17 @@ namespace StrumentiMusicali.App.Forms
 						 new DrawItemEventHandler(PageTab_DrawItem);
 			this.tabControl1.Selecting +=
 				new TabControlCancelEventHandler(PageTab_Selecting);
-			if (modeEdit == false)
-			{
-				_articolo = new StrumentiMusicali.Library.Entity.Articolo();
-			}
+			 
 
 			FillCombo();
 			UpdateButtonState();
 
 			chkPrezzoARichiesta.CheckedChanged += ChkPrezzoARichiesta_CheckedChanged;
 
-			UtilityView.SetDataBind(this, _articolo);
+			UtilityView.SetDataBind(this, _articoloController.EditItem);
 			using (var uof = new UnitOfWork())
 			{
-				var giacenza = uof.MagazzinoRepository.Find(a => a.ArticoloID == _articolo.ID)
+				var giacenza = uof.MagazzinoRepository.Find(a => a.ArticoloID == _articoloController.EditItem.ID)
 					.Select(a => a.Qta).DefaultIfEmpty(0).Sum(a => a);
 
 				txtGiacenza.Value = giacenza;
@@ -297,7 +286,7 @@ namespace StrumentiMusicali.App.Forms
 				var list = new List<string>() { lastFilename };
 
 				EventAggregator.Instance().Publish<ImageAddFiles>(
-					new ImageAddFiles(_articolo, list));
+					new ImageAddFiles(_articoloController.EditItem, list));
 
 				//AdjustView();
 				if (pb.Image != null)
@@ -392,7 +381,7 @@ namespace StrumentiMusicali.App.Forms
 			_imageList.Clear();
 			using (var uof = new UnitOfWork())
 			{
-				var imageList = uof.FotoArticoloRepository.Find(a => a.Articolo.ID == _articolo.ID)
+				var imageList = uof.FotoArticoloRepository.Find(a => a.Articolo.ID == _articoloController.EditItem.ID)
 					.OrderBy(a => a.Ordine).ToList();
 
 
@@ -540,7 +529,8 @@ namespace StrumentiMusicali.App.Forms
 
 		private void UpdateButtonState()
 		{
-			tabPage2.Enabled = _articolo != null && _articolo.ID != "";
+			tabPage2.Enabled = _articoloController.EditItem != null 
+				&& _articoloController.EditItem.ID != "";
 			if (_ribPannelImmagini != null)
 			{
 				_ribPannelImmagini.Enabled = tabControl1.SelectedTab == tabPage2;
@@ -592,7 +582,7 @@ namespace StrumentiMusicali.App.Forms
 
 				ribAdd.Click += (a, e) =>
 				{
-					EventAggregator.Instance().Publish<ImageAdd>(new ImageAdd(_articolo));
+					EventAggregator.Instance().Publish<ImageAdd>(new ImageAdd(_articoloController.EditItem));
 				};
 
 				_ribRemove = _ribPannelImmagini.Add(
@@ -611,7 +601,8 @@ namespace StrumentiMusicali.App.Forms
 				{
 					this.txtID.Focus();
 					this.Validate();
-					EventAggregator.Instance().Publish<ArticoloSave>(new ArticoloSave(_articolo));
+					EventAggregator.Instance().Publish<Save<Articolo>>(
+						new Save<Articolo>());
 					UpdateButtonState();
 				};
 			}

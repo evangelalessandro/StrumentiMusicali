@@ -21,7 +21,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		public ControllerLog()
 			:base(enAmbienti.LogViewList,enAmbienti.LogView)
 		{
-			EventAggregator.Instance().Subscribe<Remove<LogItem, EventLog>>(
+			EventAggregator.Instance().Subscribe<Remove<EventLog>>(
 				(b)=> {
 					using (var saveEntity=new SaveEntityManager())
 					{

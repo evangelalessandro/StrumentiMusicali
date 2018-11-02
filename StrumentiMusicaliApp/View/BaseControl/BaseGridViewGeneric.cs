@@ -24,7 +24,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 		private System.Windows.Forms.Splitter splitter1;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox txtCerca;
-		private Subscription<ViewRicerca<TBaseItem, TEntity>> viewRicerca;
+		private Subscription<ViewRicerca<TEntity>> viewRicerca;
 		public TController Controller { get; private set; }
 
 		public BaseGridViewGeneric(TController controllerItem)
@@ -39,7 +39,9 @@ namespace StrumentiMusicali.App.View.BaseControl
 			this.Load += Control_Load;
 			this.dgvRighe.SelectionChanged += DgvMaster_SelectionChanged;
 
-			_selectSub = EventAggregator.Instance().Subscribe<ItemSelected<TBaseItem, TEntity>>((a) =>
+			_selectSub = EventAggregator.Instance().
+				Subscribe<ItemSelected<TBaseItem, TEntity>>(
+				(a) =>
 				 {
 					 {
 						 var T = new Task(() =>
@@ -50,11 +52,11 @@ namespace StrumentiMusicali.App.View.BaseControl
 					 };
 				 }
 			);
-			_subEdit = EventAggregator.Instance().Subscribe<Edit<TBaseItem, TEntity>>((a) =>
+			_subEdit = EventAggregator.Instance().Subscribe<Edit<TEntity>>((a) =>
 			{
 				EditItem();
 			});
-			viewRicerca = EventAggregator.Instance().Subscribe<ViewRicerca<TBaseItem, TEntity>>((a) =>
+			viewRicerca = EventAggregator.Instance().Subscribe<ViewRicerca<TEntity>>((a) =>
 			{
 				bool visibleCerca = pnlCerca.Visible;
 				pnlCerca.Visible = !visibleCerca;
@@ -72,7 +74,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			txtCerca.KeyUp += TxtCerca_KeyUp;
 		}
 
-		private Subscription<Edit<TBaseItem, TEntity>> _subEdit;
+		private Subscription<Edit<TEntity>> _subEdit;
 
 		private void Init()
 		{
@@ -237,8 +239,8 @@ namespace StrumentiMusicali.App.View.BaseControl
 					view.OnSave += (a, b) =>
 					{
 						view.Validate();
-						EventAggregator.Instance().Publish<Save<TBaseItem, TEntity>>
-						(new Save<TBaseItem, TEntity>());
+						EventAggregator.Instance().Publish<Save<TEntity>>
+						(new Save<TEntity>());
 					};
 					Controller.ShowView(view, Controller.AmbienteDettaglio);
 				}
@@ -301,7 +303,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 				{
 					var rowIndex = hti.RowIndex;
 					//You handled a double click on row header
-					EventAggregator.Instance().Publish<Edit<TBaseItem, TEntity>>(new Edit<TBaseItem, TEntity>());
+					EventAggregator.Instance().Publish<Edit<TEntity>>(new Edit<TEntity>());
 				}
 			}
 		}

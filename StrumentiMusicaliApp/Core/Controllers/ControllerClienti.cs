@@ -19,11 +19,11 @@ namespace StrumentiMusicali.App.Core.Controllers
 	public class ControllerClienti : BaseControllerGeneric<Cliente, ClientiItem>, 
 		IDisposable//, INotifyPropertyChanged
 	{ 
-		private Subscription<Add<ClientiItem, Cliente>> _selectSub;
+		private Subscription<Add<Cliente>> _selectSub;
 
-		private Subscription<Remove<ClientiItem, Cliente>> _subRemove;
+		private Subscription<Remove<Cliente>> _subRemove;
 
-		private Subscription<Save<ClientiItem, Cliente>> _subSave;
+		private Subscription<Save<Cliente>> _subSave;
 
 		//public event PropertyChangedEventHandler PropertyChanged;
 
@@ -34,11 +34,11 @@ namespace StrumentiMusicali.App.Core.Controllers
 			SelectedItem = new Cliente();
 
 		 
-			_selectSub = EventAggregator.Instance().Subscribe<Add<ClientiItem, Cliente>>((a) =>
+			_selectSub = EventAggregator.Instance().Subscribe<Add<Cliente>>((a) =>
 			{
 				SelectedItem = new Cliente() { RagioneSociale="Nuovo cliente"};
 			});
-			_subRemove = EventAggregator.Instance().Subscribe<Remove<ClientiItem, Cliente>>((a) =>
+			_subRemove = EventAggregator.Instance().Subscribe<Remove<Cliente>>((a) =>
 			{
 				if (!MessageManager.QuestionMessage("Sei sicuro di volere eliminare la riga selezionata?"))
 					return;
@@ -58,7 +58,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 					}
 				}
 			});
-			_subSave = EventAggregator.Instance().Subscribe<Save<ClientiItem, Cliente>>((a) =>
+			_subSave = EventAggregator.Instance().Subscribe<Save<Cliente>>((a) =>
 		   {
 			   Save(null);
 		   });
@@ -149,7 +149,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				}));
 		}
 
-		private void Save(Save<ClientiItem, Cliente> obj)
+		private void Save(Save<Cliente> obj)
 		{
 			using (var saveManager = new SaveEntityManager())
 			{

@@ -17,14 +17,14 @@ namespace StrumentiMusicali.App.Core.Controllers
 	[AddINotifyPropertyChangedInterface]
 	public class ControllerRigheFatture : BaseControllerGeneric<FatturaRiga, FatturaRigaItem>, IDisposable
 	{
-		private Subscription<RemovePriority<FatturaRigaItem, FatturaRiga>> _addPrio;
+		private Subscription<RemovePriority<FatturaRiga>> _addPrio;
 		private ControllerFatturazione _controllerFatturazione;
-		private Subscription<AddPriority<FatturaRigaItem, FatturaRiga>> _removePrio;
-		private Subscription<Add<FatturaRigaItem, FatturaRiga>> _selectSub;
+		private Subscription<AddPriority<FatturaRiga>> _removePrio;
+		private Subscription<Add<FatturaRiga>> _selectSub;
 
-		private Subscription<Remove<FatturaRigaItem, FatturaRiga>> _subRemove;
+		private Subscription<Remove<FatturaRiga>> _subRemove;
 
-		private Subscription<Save<FatturaRigaItem,FatturaRiga>> _subSave;
+		private Subscription<Save<FatturaRiga>> _subSave;
 
 		public ControllerRigheFatture(ControllerFatturazione controllerFatturazione)
 			:base(enAmbienti.FattureRigheList,enAmbienti.FattureRigheDett)
@@ -33,14 +33,14 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 			SelectedItem = new FatturaRiga();
 
-			_removePrio = EventAggregator.Instance().Subscribe<AddPriority<FatturaRigaItem, FatturaRiga>>((a) => { CambiaPriorita(true); }); ;
-			_addPrio = EventAggregator.Instance().Subscribe<RemovePriority<FatturaRigaItem, FatturaRiga>>((a) => { CambiaPriorita(false); }); ;
+			_removePrio = EventAggregator.Instance().Subscribe<AddPriority< FatturaRiga>>((a) => { CambiaPriorita(true); }); ;
+			_addPrio = EventAggregator.Instance().Subscribe<RemovePriority<FatturaRiga>>((a) => { CambiaPriorita(false); }); ;
 
-			_selectSub = EventAggregator.Instance().Subscribe<Add<FatturaRigaItem, FatturaRiga>>((a) =>
+			_selectSub = EventAggregator.Instance().Subscribe<Add<FatturaRiga>>((a) =>
 			{
 				SelectedItem = new FatturaRiga() { IvaApplicata = "22" };
 			});
-			_subRemove = EventAggregator.Instance().Subscribe<Remove<FatturaRigaItem, FatturaRiga>>((a) =>
+			_subRemove = EventAggregator.Instance().Subscribe<Remove<FatturaRiga>>((a) =>
 			{
 				if (!MessageManager.QuestionMessage("Sei sicuro di volere eliminare la riga selezionata?"))
 					return;
@@ -60,7 +60,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 					}
 				}
 			});
-			_subSave = EventAggregator.Instance().Subscribe<Save<FatturaRigaItem,FatturaRiga>>((a) =>
+			_subSave = EventAggregator.Instance().Subscribe<Save<FatturaRiga>>((a) =>
 		   {
 			   Save(null);
 		   });
@@ -208,7 +208,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				}));
 		}
 
-		private void Save(Save<FatturaRigaItem,FatturaRiga> obj)
+		private void Save(Save<FatturaRiga> obj)
 		{
 			using (var saveManager = new SaveEntityManager())
 			{

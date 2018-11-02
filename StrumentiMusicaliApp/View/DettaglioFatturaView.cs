@@ -217,31 +217,31 @@ namespace StrumentiMusicali.App.View
 				ribPannelRighe = tab.Add("Righe");
 				ribPannelRighe.Add("Aggiungi", Properties.Resources.Add).Click += (a, b) =>
 				{
-					EventAggregator.Instance().Publish<Add<FatturaRigaItem, FatturaRiga>>(new Add<FatturaRigaItem, FatturaRiga>());
+					EventAggregator.Instance().Publish<Add<FatturaRiga>>(new Add<FatturaRiga>());
 				};
 				ribPannelRighe.Add("Rimuovi", Properties.Resources.Remove).Click
 					+= (a, b) =>
 					{
-						EventAggregator.Instance().Publish<Remove<FatturaRigaItem, FatturaRiga>>(new Remove<FatturaRigaItem, FatturaRiga>());
+						EventAggregator.Instance().Publish<Remove<FatturaRiga>>(new Remove<FatturaRiga>());
 					};
 
 				ribPannelRighe.Add("Meno prioritario", Properties.Resources.Up).Click += (a, b) =>
 				{
-					EventAggregator.Instance().Publish<AddPriority<FatturaRigaItem, FatturaRiga>>(
-						new AddPriority<FatturaRigaItem, FatturaRiga>());
+					EventAggregator.Instance().Publish<AddPriority<FatturaRiga>>(
+						new AddPriority<FatturaRiga>());
 				};
 				ribPannelRighe.Add("Più prioritario", Properties.Resources.Down).Click
 					+= (a, b) =>
 					{
-						EventAggregator.Instance().Publish<RemovePriority<FatturaRigaItem, FatturaRiga>>(
-							new RemovePriority<FatturaRigaItem, FatturaRiga>());
+						EventAggregator.Instance().Publish<RemovePriority<FatturaRiga>>(
+							new RemovePriority<FatturaRiga>());
 					};
 
 				ribSave.Click += (a, e) =>
 				{
 					this.Validate();
-					EventAggregator.Instance().Publish<Save<FatturaItem,Fattura>>(
-						new Save<FatturaItem, Fattura>());
+					EventAggregator.Instance().Publish<Save<Fattura>>(
+						new Save<Fattura>());
 
 					txtID.Text = _controllerFatturazione.SelectedItem.ID.ToString();
 					UpdateButtonState();

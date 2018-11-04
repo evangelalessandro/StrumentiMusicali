@@ -1,21 +1,22 @@
-﻿using FatturaElettronica;
+﻿
 using FatturaElettronica.FatturaElettronicaBody;
 using FatturaElettronica.Impostazioni;
+using StrumentiMusicali.Library.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 {
-	internal class FattElettronica
+	internal class FattElettronica :IDisposable
 	{
 		public DatiMittente DatiMittente { get; set; }
-		public DatiDestinatario DatiDestinatario { get; set; }
-		public List<FatturaHeader> FattureList { get; set; }
+		public Cliente DatiDestinatario { get; set; }
+		public List<FatturaHeader> FattureList { get; set; } = new List<FatturaHeader>();
 
 		public void ScriviFattura(int idFattura)
 		{
-			var fattura = Fattura.CreateInstance(DatiMittente.VersoPA ? Instance.PubblicaAmministrazione : Instance.Privati);
+			var fattura = FatturaElettronica.Fattura.CreateInstance(DatiMittente.VersoPA ? Instance.PubblicaAmministrazione : Instance.Privati);
 
 			DatiTrasmissione(fattura);
 			DatiMittenteFattura(fattura);
@@ -123,7 +124,7 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 			}
 		}
 
-		private void DatiCommittenteFattura(Fattura fattura)
+		private void DatiCommittenteFattura(FatturaElettronica.Fattura fattura)
 		{
 			var rel = fattura.Header.CessionarioCommittente.DatiAnagrafici;
 			if (DatiDestinatario.PersonaGiuridica)
@@ -148,14 +149,14 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 				rel.CodiceFiscale = DatiDestinatario.CodiceFiscale;
 			}
 			var sede = fattura.Header.CessionarioCommittente.Sede;
-			sede.Indirizzo = DatiDestinatario.IndirizzoConCivico;
-			sede.CAP = DatiDestinatario.Cap;
-			sede.Comune = DatiDestinatario.Comune;
-			sede.Provincia = DatiDestinatario.ProvinciaSigla;
+			sede.Indirizzo = DatiDestinatario.Indirizzo.IndirizzoConCivico;
+			sede.CAP = DatiDestinatario.Indirizzo.Cap.Trim();
+			sede.Comune = DatiDestinatario.Indirizzo.Comune;
+			sede.Provincia = DatiDestinatario.Indirizzo.ProvinciaSigla;
 			sede.Nazione = "IT";
 		}
 
-		private void DatiMittenteFattura(Fattura fattura)
+		private void DatiMittenteFattura(FatturaElettronica.Fattura fattura)
 		{
 			fattura.Header.CedentePrestatore.DatiAnagrafici.IdFiscaleIVA.IdPaese = "IT";
 			fattura.Header.CedentePrestatore.DatiAnagrafici.IdFiscaleIVA.IdCodice = DatiMittente.PIVA;
@@ -175,14 +176,14 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 				fattura.Header.CedentePrestatore.DatiAnagrafici.Anagrafica.Cognome = DatiMittente.Cognome;
 			}
 			fattura.Header.CedentePrestatore.DatiAnagrafici.RegimeFiscale = DatiMittente.RegimeFiscale;
-			fattura.Header.CedentePrestatore.Sede.Indirizzo = DatiMittente.IndirizzoConCivico;
-			fattura.Header.CedentePrestatore.Sede.CAP = DatiMittente.Cap;
-			fattura.Header.CedentePrestatore.Sede.Comune = DatiMittente.Comune;
-			fattura.Header.CedentePrestatore.Sede.Provincia = DatiMittente.ProvinciaSigla;
+			fattura.Header.CedentePrestatore.Sede.Indirizzo = DatiMittente.Indirizzo.IndirizzoConCivico;
+			fattura.Header.CedentePrestatore.Sede.CAP = DatiMittente.Indirizzo.Cap;
+			fattura.Header.CedentePrestatore.Sede.Comune = DatiMittente.Indirizzo.Comune;
+			fattura.Header.CedentePrestatore.Sede.Provincia = DatiMittente.Indirizzo.ProvinciaSigla;
 			fattura.Header.CedentePrestatore.Sede.Nazione = "IT";
 		}
 
-		private void IscrizioneRegistroImpresa(Fattura fattura)
+		private void IscrizioneRegistroImpresa(FatturaElettronica.Fattura fattura)
 		{
 			if (DatiMittente.IscrittoRegistroImprese)
 			{
@@ -201,7 +202,7 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 			}
 		}
 
-		private void DatiTrasmissione(Fattura fattura)
+		private void DatiTrasmissione(FatturaElettronica.Fattura fattura)
 		{
 			fattura.Header.DatiTrasmissione.IdTrasmittente.IdPaese = "IT";
 			fattura.Header.DatiTrasmissione.IdTrasmittente.IdCodice = DatiMittente.CodiceFiscale;
@@ -233,9 +234,10 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 				sette zeri (“0000000”) e deve essere valorizzato il campo PECDestinatario
 				(1.1.6).
 				*/
-				if (DatiDestinatario.RicezioneConCodicePec && !string.IsNullOrEmpty(DatiDestinatario.CodicePEC))
+				if (DatiDestinatario.PecConfig.RicezioneConCodicePec && 
+					!string.IsNullOrEmpty(DatiDestinatario.PecConfig.CodicePec))
 				{
-					fattura.Header.DatiTrasmissione.CodiceDestinatario = DatiDestinatario.CodicePEC;
+					fattura.Header.DatiTrasmissione.CodiceDestinatario = DatiDestinatario.PecConfig.CodicePec;
 				}
 				else
 				{
@@ -248,10 +250,15 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 			}
 			fattura.Header.DatiTrasmissione.ContattiTrasmittente.Email = DatiMittente.Email;
 			fattura.Header.DatiTrasmissione.ContattiTrasmittente.Telefono = DatiMittente.Telefono;
-			if (!DatiMittente.VersoPA && !DatiDestinatario.RicezioneConCodicePec)
+			if (!DatiMittente.VersoPA && !DatiDestinatario.PecConfig.RicezioneConCodicePec)
 			{
-				fattura.Header.DatiTrasmissione.PECDestinatario = DatiDestinatario.EmailPEC;
+				fattura.Header.DatiTrasmissione.PECDestinatario = DatiDestinatario.PecConfig.EmailPec;
 			}
+		}
+
+		public void Dispose()
+		{
+			
 		}
 	}
 }

@@ -25,8 +25,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private Subscription<Save<Cliente>> _subSave;
 
-		//public event PropertyChangedEventHandler PropertyChanged;
-
+		 
 		public ControllerClienti()
 			:base(enAmbienti.ClientiList,enAmbienti.Cliente)
 		{
@@ -37,6 +36,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			_selectSub = EventAggregator.Instance().Subscribe<Add<Cliente>>((a) =>
 			{
 				SelectedItem = new Cliente() { RagioneSociale="Nuovo cliente"};
+				ShowEditView();
 			});
 			_subRemove = EventAggregator.Instance().Subscribe<Remove<Cliente>>((a) =>
 			{
@@ -99,11 +99,13 @@ namespace StrumentiMusicali.App.Core.Controllers
 						||
 						a.Telefono.Contains(TestoRicerca)
 						||
-						a.Citta.Contains(TestoRicerca)
+						a.Indirizzo.Citta.Contains(TestoRicerca)
+						||
+						a.Indirizzo.Comune.Contains(TestoRicerca)
 						||
 						a.Cellulare.Contains(TestoRicerca)
 						||
-						a.Via.Contains(TestoRicerca)
+						a.Indirizzo.IndirizzoConCivico.Contains(TestoRicerca)
 						||
 						TestoRicerca=="" 
 					).ToList().Select(a => new ClientiItem(a)

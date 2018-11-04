@@ -1,5 +1,6 @@
 ﻿using NLog;
 using StrumentiMusicali.App.Core.Controllers;
+using System;
 using System.Windows.Forms;
 using Tulpep.NotificationWindow;
 
@@ -52,7 +53,7 @@ namespace StrumentiMusicali.App.Core
 		}
 		 
 
-		public static void NotificaWarnig(string info)
+		public static void NotificaWarnig(string info,Action action =null )
 		{
 			PopupNotifier popup = new PopupNotifier();
 			popup.Image = StrumentiMusicali.App.Properties.Resources.warning_64;
@@ -61,6 +62,11 @@ namespace StrumentiMusicali.App.Core
 			popup.OptionsMenu = getContextMenu(info);
 			popup.ShowOptionsButton = true;
 			popup.Popup();
+
+			if (action!=null)
+			{
+				popup.Click += (a, b) => { action.Invoke(); };
+			}
 
 			_logger.Warn(info);
 		}

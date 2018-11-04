@@ -1,5 +1,6 @@
 ﻿using PropertyChanged;
 using StrumentiMusicali.App.Core.Controllers.Base;
+using StrumentiMusicali.App.Core.Controllers.FatturaElett;
 using StrumentiMusicali.App.Core.Controllers.Fatture;
 using StrumentiMusicali.App.Core.Controllers.Stampa;
 using StrumentiMusicali.App.Core.Events.Fatture;
@@ -13,18 +14,18 @@ using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-	[AddINotifyPropertyChangedInterface]
-	public class ControllerFatturazione : BaseControllerGeneric<Fattura,FatturaItem>
-	{ 
-		
-		public ControllerFatturazione() : 
-			base(enAmbienti.FattureList,enAmbienti.Fattura)
+	public class ControllerFatturazione : BaseControllerGeneric<Fattura, FatturaItem>
+	{
+
+		public ControllerFatturazione() :
+			base(enAmbienti.FattureList, enAmbienti.Fattura)
 		{
 			EventAggregator.Instance().Subscribe<ImportaFattureAccess>(ImportaFatture);
 			EventAggregator.Instance().Subscribe<ApriAmbiente>(ApriAmbiente);
@@ -37,6 +38,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			AggiungiComandi();
 		}
 
+		 
 		private void Save(Save<Fattura> obj)
 		{
 			using (var saveManager = new SaveEntityManager())
@@ -52,6 +54,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 				if (EditItem.ID > 0)
 				{
+					EditItem=CalcolaTotali(EditItem);
 					uof.FatturaRepository.Update(EditItem);
 				}
 				else
@@ -66,10 +69,10 @@ namespace StrumentiMusicali.App.Core.Controllers
 				}
 			}
 		}
-		
+
 		~ControllerFatturazione()
 		{
-			
+
 		}
 
 		private void DelFattura(Remove<Fattura> obj)
@@ -81,7 +84,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				using (var saveEntity = new SaveEntityManager())
 				{
 					var uof = saveEntity.UnitOfWork;
-					int val = ((Fattura) SelectedItem).ID;
+					int val = ((Fattura)SelectedItem).ID;
 					var item = uof.FatturaRepository.Find(a => a.ID == val).FirstOrDefault();
 					_logger.Info(string.Format("Cancellazione fattura/r/n codice {0} /r/n Numero {1}",
 						item.Codice, item.ID));
@@ -107,8 +110,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 		}
 
 		private void FatturaEdit(Edit<Fattura> edit)
-		{ 
-			EditItem = (Fattura) SelectedItem;
+		{
+			EditItem = (Fattura)SelectedItem;
 			ShowDettaglio();
 		}
 
@@ -174,11 +177,112 @@ namespace StrumentiMusicali.App.Core.Controllers
 			{
 				using (var cursorManger = new CursorManager())
 				{
-					using (var stampa = new StampaFattura())
+					using (var stampaFattura = new StampaFattura())
 					{
-						stampa.Stampa(
-							ReadSetting().DatiIntestazione,
-							fattura);
+						var setting = ReadSetting().DatiIntestazione;
+						if (setting == null)
+						{
+							setting = new DatiIntestazioneStampaFattura();
+						}
+						if (setting.Validate())
+						{
+							stampaFattura.Stampa(
+										setting,
+										fattura);
+							_logger.Info("Stampa completata correttamente.");
+
+						}
+
+					}
+				}
+
+			}
+			catch (Exception ex)
+			{
+				ExceptionManager.ManageError(ex);
+			}
+		}
+		public static Fattura CalcolaTotali(Fattura fattura)
+		{
+			using (var uof = new UnitOfWork())
+			{
+				var fattItem = uof.FatturaRepository.Find(a => a.ID == fattura.ID).
+							Select(a => new { a.RigheFattura, a }).First();
+
+				List<FatturaRiga> righeFatt = fattItem.RigheFattura.ToList();
+				decimal importoIvaTot = 0;
+				decimal imponibileIVaTot = 0;
+ 
+				foreach (var item in righeFatt.Where(a => a.Importo > 0 && a.IvaApplicata.Length > 0).GroupBy(a => a.IvaApplicata).OrderBy(a => a.Key))
+				{
+					var imponibileIva = item.Select(a => a.Importo).DefaultIfEmpty(0).Sum();
+					decimal importoIva = 0;
+					decimal val;
+					if (decimal.TryParse(item.Key, out val))
+					{
+						importoIva = imponibileIva * ((decimal)val) / ((decimal)100);
+					}
+					importoIvaTot += importoIva;
+					imponibileIVaTot += imponibileIva;
+				}
+				fattura.TotaleIva= (importoIvaTot);
+				fattura.ImponibileIva =(imponibileIVaTot);
+				fattura.TotaleFattura=(imponibileIVaTot + importoIvaTot);
+				return fattura;
+			}
+		}
+		private void ImpostaQuadroIVa()
+		{
+			
+		}
+		private void GeneraFatturaXml(Fattura selectedItem)
+		{
+			_logger.Info("Avvio stampa");
+			try
+			{
+				using (var cursorManger = new CursorManager())
+				{
+					using (var stampa = new FattElettronica())
+					{
+						var setting = ReadSetting();
+						stampa.DatiMittente = setting.datiMittente;
+
+						using (var uof = new UnitOfWork())
+						{
+
+							var fatt = uof.FatturaRepository.Find(a => a.ID == selectedItem.ID)
+								.Select(a => new { Fattura = a, a.Cliente, a.RigheFattura }).First();
+							stampa.DatiDestinatario = fatt.Cliente;
+
+							FatturaHeader header = new FatturaHeader();
+							header.Righe =
+								fatt.RigheFattura.ToList().Select(a =>
+
+								new FatturaElett.FatturaRighe()
+								{
+									Descrizione = a.Descrizione,
+									QTA = a.Qta,
+									PrezzoUnitario = a.PrezzoUnitario,
+									PrezzoTotale = a.Importo,
+									AliquotaIVA = Iva(a.IvaApplicata)
+
+								}
+							).ToList();
+							header.Numero = fatt.Fattura.Codice;
+							if (fatt.Fattura.Pagamento.ToUpperInvariant().Contains("Bonifico".ToUpperInvariant()))
+								header.ModalitaPagamento = enTipoPagamento.Bonifico;
+							else if (fatt.Fattura.Pagamento.ToUpperInvariant().Contains("Contrassegno".ToUpperInvariant()))
+								header.ModalitaPagamento = enTipoPagamento.Contrassegno;
+							else if (fatt.Fattura.Pagamento.ToUpperInvariant().Contains("CONTRASSEGNO".ToUpperInvariant()))
+								header.ModalitaPagamento = enTipoPagamento.Contanti;
+							header.Data = fatt.Fattura.Data;
+							header.ImportoTotaleDocumento= fatt.Fattura.TotaleFattura;
+
+							stampa.FattureList.Add(header);
+							stampa.ScriviFattura(fatt.Fattura.ID);
+						}
+						//stampa.DatiDestinatario.
+						////stampa.ScriviFattura()
 
 						_logger.Info("Stampa completata correttamente.");
 					}
@@ -189,20 +293,35 @@ namespace StrumentiMusicali.App.Core.Controllers
 			{
 				ExceptionManager.ManageError(ex);
 			}
+
+		}
+		private int Iva(string val)
+		{
+			var valiva = 0;
+			if (int.TryParse(val.Trim(), out valiva))
+				return valiva;
+			return 0;
 		}
 		private void AggiungiComandi()
 		{
 			var pnlStampa = GetMenu().Tabs[0].Add("Stampa");
-			var ribStampa = pnlStampa.Add("Avvia stampa", Properties.Resources.Print_48,true);
+			var ribStampa = pnlStampa.Add("Avvia stampa", Properties.Resources.Print_48, true);
 			ribStampa.Click += (a, e) =>
 			{
 				StampaFattura((Fattura)SelectedItem);
 			};
+
+			var ribStampaXml = pnlStampa.Add("Genera fattura xml", Properties.Resources.Fattura_xml_48, true);
+			ribStampaXml.Click += (a, e) =>
+			{
+				GeneraFatturaXml((Fattura)SelectedItem);
+			};
 		}
+
 
 		public override void RefreshList(UpdateList<Fattura> obj)
 		{
-			 
+
 			try
 			{
 				var datoRicerca = TestoRicerca;
@@ -226,13 +345,13 @@ namespace StrumentiMusicali.App.Core.Controllers
 					}).OrderByDescending(a => a.ID).Take(100).ToList();
 				}
 
-				DataSource=new View.Utility.MySortableBindingList<FatturaItem>( list);
+				DataSource = new View.Utility.MySortableBindingList<FatturaItem>(list);
 			}
 			catch (Exception ex)
 			{
 				new Task(new Action(() =>
 				{ ExceptionManager.ManageError(ex); })).Wait();
-				
+
 			}
 		}
 	}

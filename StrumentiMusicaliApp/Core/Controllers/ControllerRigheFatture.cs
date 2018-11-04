@@ -1,6 +1,5 @@
 ﻿using PropertyChanged;
 using StrumentiMusicali.App.Core.Controllers.Base;
-using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
@@ -27,26 +26,26 @@ namespace StrumentiMusicali.App.Core.Controllers
 		private Subscription<Save<FatturaRiga>> _subSave;
 
 		public ControllerRigheFatture(ControllerFatturazione controllerFatturazione)
-			:base(enAmbienti.FattureRigheList,enAmbienti.FattureRigheDett)
+			: base(enAmbienti.FattureRigheList, enAmbienti.FattureRigheDett)
 		{
 			_controllerFatturazione = controllerFatturazione;
 
 			SelectedItem = new FatturaRiga();
 
-			_removePrio = EventAggregator.Instance().Subscribe<AddPriority< FatturaRiga>>((a) => { CambiaPriorita(true); }); ;
+			_removePrio = EventAggregator.Instance().Subscribe<AddPriority<FatturaRiga>>((a) => { CambiaPriorita(true); }); ;
 			_addPrio = EventAggregator.Instance().Subscribe<RemovePriority<FatturaRiga>>((a) => { CambiaPriorita(false); }); ;
 
 			EventAggregator.Instance().Subscribe<Save<FatturaRiga>>((a) =>
 			{
 
 			});
-				_selectSub = EventAggregator.Instance().Subscribe<Add<FatturaRiga>>((a) =>
-			{
-				SelectedItem = new FatturaRiga() { IvaApplicata = "22" };
+			_selectSub = EventAggregator.Instance().Subscribe<Add<FatturaRiga>>((a) =>
+		{
+			SelectedItem = new FatturaRiga() { IvaApplicata = "22" };
 
-				ShowEditView();
-				
-			});
+			ShowEditView();
+
+		});
 			_subRemove = EventAggregator.Instance().Subscribe<Remove<FatturaRiga>>((a) =>
 			{
 				if (!MessageManager.QuestionMessage("Sei sicuro di volere eliminare la riga selezionata?"))
@@ -62,6 +61,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 						if (saveManager.SaveEntity(enSaveOperation.OpDelete))
 						{
+							AggiornaTotaliFattura();
+
 							EventAggregator.Instance().Publish<UpdateList<FatturaRiga>>(new UpdateList<FatturaRiga>());
 						}
 					}
@@ -71,6 +72,19 @@ namespace StrumentiMusicali.App.Core.Controllers
 		   {
 			   Save(null);
 		   });
+		}
+
+		private void AggiornaTotaliFattura()
+		{
+
+			var item = ControllerFatturazione.CalcolaTotali(
+					_controllerFatturazione.EditItem);
+
+			_controllerFatturazione.EditItem = item;
+
+			EventAggregator.Instance().Publish(new RebindItemUpdated<Fattura>());
+			EventAggregator.Instance().Publish(new Save<Fattura>());
+
 		}
 
 		// NOTE: Leave out the finalizer altogether if this class doesn't
@@ -99,8 +113,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 				{
 					list = uof.FattureRigheRepository.Find(a => a.FatturaID == _controllerFatturazione.EditItem.ID
 
-					).Where(a=>a.Descrizione.Contains(TestoRicerca) ||
-					TestoRicerca=="").Select(a => new FatturaRigaItem
+					).Where(a => a.Descrizione.Contains(TestoRicerca) ||
+					TestoRicerca == "").Select(a => new FatturaRigaItem
 					{
 						ID = a.ID,
 						CodiceArt = a.CodiceArticoloOld,
@@ -204,7 +218,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 		}
 
-		 
+
 		private void Save(Save<FatturaRiga> obj)
 		{
 			using (var saveManager = new SaveEntityManager())
@@ -214,7 +228,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 					return;
 				var uof = saveManager.UnitOfWork;
 				if ((((FatturaRiga)SelectedItem).ID > 0))
-				{
+				{ 
 					uof.FattureRigheRepository.Update((FatturaRiga)SelectedItem);
 				}
 				else
@@ -224,6 +238,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 				if (saveManager.SaveEntity(enSaveOperation.OpSave))
 				{
+					AggiornaTotaliFattura();
+
 					RiselezionaSelezionato();
 				}
 			}

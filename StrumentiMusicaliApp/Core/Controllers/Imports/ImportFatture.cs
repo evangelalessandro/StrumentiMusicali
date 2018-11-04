@@ -1,4 +1,5 @@
 ﻿using NLog;
+using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -22,43 +23,112 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 				using (var connection = new OleDbConnection(string.Format("Provider=Microsoft.JET.OLEDB.4.0;" + "data source={0}", file)))
 				{
 					connection.Open();
-
-					using (var uof = new UnitOfWork())
+					try
 					{
-						var clientiList = ImportClienti(connection);
 
-						uof.ClientiRepository.AddRange(clientiList);
-						uof.Commit();
 
-						MessageManager.NotificaInfo("Importazione clienti!");
-						var fattureList = ImportTestateFatture(connection, clientiList);
-
-						foreach (var item in fattureList)
+						using (var uof = new UnitOfWork())
 						{
-							uof.FatturaRepository.Add(item);
+							ProgressManager.Instance().Visible = true;
+							ProgressManager.Instance().Value = 0;
+
+							var clientiList = ImportClienti(connection);
+							ProgressManager.Instance().Max = clientiList.Count();
+							ProgressManager.Instance().Messaggio = ("Inizio clienti");
+
+							foreach (var item in clientiList)
+							{
+								uof.ClientiRepository.Add(item);
+								ProgressManager.Instance().Value++;
+
+							}
 							uof.Commit();
+
+							ProgressManager.Instance().Messaggio = ("clienti finiti");
+							var fattureList = ImportTestateFatture(connection, clientiList);
+
+							ProgressManager.Instance().Messaggio = "Inizio fatture";
+							ProgressManager.Instance().Max = fattureList.Count();
+							ProgressManager.Instance().Value = 0;
+
+							foreach (var item in fattureList)
+							{
+								uof.FatturaRepository.Add(item);
+								ProgressManager.Instance().Value++;
+							}
+							ProgressManager.Instance().Messaggio = "Fatture finite";
+							uof.Commit();
+							ProgressManager.Instance().Value = 0;
+							ProgressManager.Instance().Max = fattureList.Count();
+							ProgressManager.Instance().Messaggio = "Aggiorna totali fatture";
+
+							foreach (var item in fattureList)
+							{
+								uof.FatturaRepository.Update(
+								ControllerFatturazione.CalcolaTotali(item)
+								);
+								ProgressManager.Instance().Value++;
+								
+							}
+							uof.Commit();
+							ProgressManager.Instance().Messaggio = "Fine agg. totali fatture";
+
+							ProgressManager.Instance().Value = 0;
+
+
+							var righeFatturaList = ImportRigheFatture(connection, fattureList);
+							OrdinaRighe(righeFatturaList);
+
+							ProgressManager.Instance().Max = righeFatturaList.Count();
+							ProgressManager.Instance().Messaggio = "Inizio Fatture righe";
+
+							foreach (var item in righeFatturaList)
+							{
+								uof.FattureRigheRepository.Add(item);
+								ProgressManager.Instance().Value++;
+							}
+
+							ProgressManager.Instance().Messaggio = "Fatture righe finite";
+							uof.Commit();
+
+							var ddtList = ImportDDT(connection, clientiList);
+							ProgressManager.Instance().Value = 0;
+
+							ProgressManager.Instance().Max = ddtList.Count;
+							ProgressManager.Instance().Messaggio = "Inizio DDT";
+
+							foreach (var item in ddtList)
+							{
+								uof.DDTRepository.Add(item);
+								ProgressManager.Instance().Value++;
+							}
+							ProgressManager.Instance().Messaggio = "Ddt finiti";
+
+							uof.Commit();
+
+
+							var ddtrigheList = ImportRigheDDT(connection, ddtList);
+							ProgressManager.Instance().Messaggio = "Inizio Ddt righe";
+
+							OrdinaRighe(ddtrigheList);
+							ProgressManager.Instance().Value = 0;
+							ProgressManager.Instance().Max = ddtrigheList.Count;
+							foreach (var item in ddtrigheList)
+							{
+								uof.DDTRigheRepository.Add(item);
+								ProgressManager.Instance().Value++;
+							}
+							ProgressManager.Instance().Messaggio = "Ddt righe finiti";
+
+							uof.Commit();
+
+							MessageManager.NotificaInfo("Importazione completata correttamente!");
 						}
-
-
-
-						var righeFatturaList = ImportRigheFatture(connection, fattureList);
-						OrdinaRighe(righeFatturaList);
-
-						uof.FattureRigheRepository.AddRange(righeFatturaList.ToList());
-						uof.Commit();
-
-						MessageManager.NotificaInfo("Importazione fatture!");
-						var ddtList = ImportDDT(connection, clientiList);
-
-						uof.DDTRepository.AddRange(ddtList);
-						uof.Commit();
-
-						var ddtrigheList = ImportRigheDDT(connection, ddtList);
-						OrdinaRighe(ddtrigheList);
-						uof.DDTRigheRepository.AddRange(ddtrigheList);
-						uof.Commit();
-
-						MessageManager.NotificaInfo("Importazione completata correttamente!");
+					}
+					finally
+					{
+						ProgressManager.Instance().Messaggio="";
+						ProgressManager.Instance().Visible = false;
 					}
 				}
 			}
@@ -349,15 +419,33 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 					{
 						CodiceClienteOld = int.Parse(a["cod_cliente"].ToString()),
 						Cellulare = (a["Cellulare"].ToString()),
-						Citta = (a["Città"].ToString()),
+						Indirizzo = new Indirizzo()
+						{
+							Citta = (a["Città"].ToString()),
+							IndirizzoConCivico = (a["Via"].ToString()),
+						},
+
 						Fax = (a["Fax"].ToString()),
 						LuogoDestinazione = (a["Luogo destinazione"].ToString()),
 						NomeBanca = (a["Banca Nome"].ToString()),
 						PIVA = (a["P_IVA -  Cod_Fisc"].ToString()),
 						RagioneSociale = (a["Ragione sociale - Nome Cognome"].ToString()),
 						Telefono = (a["Telefono"].ToString()),
-						Via = (a["Via"].ToString()),
+
 					};
+					if (cliente.PIVA.Length == 16 && !cliente.PIVA.Contains("."))
+					{
+						cliente.CodiceFiscale = cliente.PIVA;
+					}
+					else if (cliente.PIVA.Length > 16 && cliente.PIVA.Contains("/"))
+					{
+						var split = cliente.PIVA.Split('/');
+						if (split[0].Length == 11 && split[1].Length == 16)
+						{
+							cliente.CodiceFiscale = split[1];
+							cliente.PIVA = split[0];
+						}
+					}
 					var datoR = a["Banca ABI"].ToString();
 					if (datoR != "")
 						cliente.BancaAbi = int.Parse(datoR);
@@ -366,7 +454,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 						cliente.BancaCab = int.Parse(datoR);
 					datoR = a["CAP"].ToString();
 					if (datoR != "")
-						cliente.Cap = int.Parse(datoR);
+						cliente.Indirizzo.Cap = datoR;
 
 					listaClienti.Add(
 						 cliente

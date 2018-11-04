@@ -22,7 +22,7 @@ namespace StrumentiMusicali.App.View
 		private ControllerFatturazione _controllerFatturazione;
 
 		private ControllerRigheFatture _controllerRighe;
-
+		Subscription<RebindItemUpdated<Fattura>> _bindSub;
 		public DettaglioFatturaView(ControllerFatturazione controllerFatturazione)
 			: base()
 		{
@@ -38,6 +38,9 @@ namespace StrumentiMusicali.App.View
 				};
 			}
 			InitializeComponent();
+
+
+			_bindSub =	EventAggregator.Instance().Subscribe<RebindItemUpdated<Fattura>>((a)=> { RebindEditItem(); });
 		}
 
 		/// <summary>
@@ -50,7 +53,7 @@ namespace StrumentiMusicali.App.View
 			{
 				_controllerRighe.Dispose();
 			}
-
+			EventAggregator.Instance().UnSbscribe(_bindSub);
 			_controllerRighe = null;
 			foreach (Control item in tabPage2.Controls)
 			{
@@ -190,6 +193,7 @@ namespace StrumentiMusicali.App.View
 			{
 				ribPannelRighe.Enabled = tabControl1.SelectedTab == tabPage2 &&
 					_controllerFatturazione.SelectedItem.ID > 0;
+				GetMenu().ApplyValidation(_controllerFatturazione.EditItem.ID > 0);
 			}
 		}
 
@@ -239,13 +243,29 @@ namespace StrumentiMusicali.App.View
 				};
 
 				var pnlStampa = tab.Add("Stampa");
-				var ribStampa = pnlStampa.Add("Avvia stampa", Properties.Resources.Print_48);
+				var ribStampa = pnlStampa.Add("Avvia stampa", Properties.Resources.Print_48,true);
 				ribStampa.Click += (a, e) =>
 				{
 					_controllerFatturazione.StampaFattura(_controllerFatturazione.EditItem);
 				};
+
+				var pnl2 = tab.Add("Totali");
+				var rib01 = pnl2.Add("Aggiorna totali", Properties.Resources.Totali_Aggiorna_48,true);
+				rib01.Click += (a, e) =>
+				{
+					RebindEditItem();
+
+				};
 			}
 			return _menuTab;
+		}
+
+		private void RebindEditItem()
+		{
+			Validate();
+			_controllerFatturazione.EditItem = ControllerFatturazione.CalcolaTotali(_controllerFatturazione.EditItem);
+
+			UtilityView.SetDataBind(this, null, _controllerFatturazione.EditItem);
 		}
 	}
 }

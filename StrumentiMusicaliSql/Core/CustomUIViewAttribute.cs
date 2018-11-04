@@ -1,15 +1,17 @@
 ﻿using System;
- 
+
 namespace StrumentiMusicali.Library.Core
 {
-
 	public class CustomUIViewAttribute : Attribute
 	{
-		public CustomUIViewAttribute() 
+		public CustomUIViewAttribute()
 		{
-		 
 		}
-		public int Width { get; set; }
+
+		public int Width { get; set; } = 200;
+
+		public int MultiLine { get; set; } = 0;
+
 		/// <summary>
 		/// ordine di visualizzazione nella form
 		/// </summary>
@@ -21,5 +23,4 @@ namespace StrumentiMusicali.Library.Core
 
 		public bool DateTimeView { get; set; }
 	}
-
 }

@@ -222,11 +222,9 @@
     <Compile Include="Core\Controllers\ControllerClienti.cs" />
     <Compile Include="Core\Controllers\ControllerRigheFatture.cs" />
     <Compile Include="Core\Controllers\Exports\ExportArticoliCsv.cs" />
-    <Compile Include="Core\Controllers\FatturaElett\DatiDestinatario.cs" />
     <Compile Include="Core\Controllers\FatturaElett\DatiMittente.cs" />
     <Compile Include="Core\Controllers\FatturaElett\Elettronica.cs" />
     <Compile Include="Core\Controllers\FatturaElett\FatturaHeader.cs" />
-    <Compile Include="Core\Controllers\FatturaElett\SoggettoFattura.cs" />
     <Compile Include="Core\Controllers\Imports\ImportFatture.cs" />
     <Compile Include="Core\Controllers\Imports\ImportMagazziniExcel.cs" />
     <Compile Include="Core\Controllers\SaveEntityManager.cs" />
@@ -235,6 +233,7 @@
     <Compile Include="Core\Events\Generics\Add.cs" />
     <Compile Include="Core\Events\Generics\ApriAmbiente.cs" />
     <Compile Include="Core\Events\Generics\BaseGeneric.cs" />
+    <Compile Include="Core\Events\Generics\RebindItemUpdated.cs" />
     <Compile Include="Core\Events\Generics\ViewRicerca.cs" />
     <Compile Include="Core\Events\Generics\RemovePriority.cs" />
     <Compile Include="Core\Events\Generics\AddPriority.cs" />
@@ -271,6 +270,7 @@
     <Compile Include="Core\Manager\ExceptionManager.cs" />
     <Compile Include="Core\Events\Image\ImageAdd.cs" />
     <Compile Include="Core\Manager\MessageManager.cs" />
+    <Compile Include="Core\Manager\ProgressManager.cs" />
     <Compile Include="Core\MenuRibbon\RibbonButton.cs" />
     <Compile Include="CustomComponents\DateTimePickerBinding.cs" />
     <Content Include="FodyWeavers.xml">
@@ -387,6 +387,8 @@
     <Compile Include="View\Utility\MySortableBindingList.cs" />
     <Compile Include="View\Utility\UtilityView.cs" />
     <Compile Include="View\Utility\OrdinaTab.cs" />
+    <None Include="Resources\Totali_Aggiorna_48.png" />
+    <None Include="Resources\Fattura_xml_48.png" />
     <None Include="Resources\Close_48.png" />
     <None Include="Resources\Save_Close.png" />
     <None Include="Resources\Customer_48.png" />

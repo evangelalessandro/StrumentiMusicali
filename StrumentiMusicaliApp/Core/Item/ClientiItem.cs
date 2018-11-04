@@ -19,9 +19,9 @@ namespace StrumentiMusicali.App.Core.Item
 			 
 			PIVA= item.PIVA;
 			RagioneSociale= item.RagioneSociale;
-			Via= item.Via;
+			Via= item.Indirizzo.IndirizzoConCivico;
 			DataCreazione = item.DataCreazione;
-			Citta= item.Citta;
+			Citta= item.Indirizzo.Citta;
 			Telefono= item.Telefono;
 			Fax= item.Fax;
 			Cellulare= item.Cellulare;

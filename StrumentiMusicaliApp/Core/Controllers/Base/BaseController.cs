@@ -26,6 +26,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 		public void ShowView(UserControl view, Settings.enAmbienti ambiente)
 		{
+			Ribbon ribbon1 = null;
 			using (var frm = new Form())
 			{
 				ImpostaIconaETesto(ambiente, frm);
@@ -39,10 +40,15 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 				frm.Controls.Add(view);
 				if (view is IMenu)
 				{
-					Ribbon ribbon1 = LoadMenu(view);
+					ribbon1 = LoadMenu(view);
 					InitRibbon(ribbon1);
 
 					frm.Controls.Add(ribbon1);
+				}
+				if (ambiente==enAmbienti.Main)
+				{ 
+					AddStatusBarProgress(frm);
+					ProgressManager.Instance().RaiseProChange();
 				}
 				if (view is GenericSettingView)
 				{
@@ -58,12 +64,76 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 				SavSettingForm(ambiente, frm);
 
-				foreach (Control item in frm.Controls)
+				if (ribbon1!=null)
 				{
-					item.Dispose();
+					foreach (var itemTab in ribbon1.Tabs.ToList())
+					{
+						foreach (var itemPnl in itemTab.Panels.ToList())
+						{
+							foreach (var itemButt in itemPnl.Items.ToList())
+							{
+								itemPnl.Items.Remove(itemButt);
+								itemButt.Dispose();
+							}
+							itemTab.Panels.Remove(itemPnl);
+							itemPnl.Dispose();
+						}
+						ribbon1.Tabs.Remove(itemTab);
+						itemTab.Dispose();
+					}
+					ribbon1.Dispose();
+
 				}
 			}
 		}
+
+		private void AddStatusBarProgress(Form form)
+		{
+			 // StatusBar
+			// 
+			ToolStripStatusLabel StatusBar = new System.Windows.Forms.ToolStripStatusLabel();
+			StatusBar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			StatusBar.ForeColor = System.Drawing.Color.Blue;
+			StatusBar.LinkColor = System.Drawing.Color.Navy;
+			StatusBar.Name = "StatusBar";
+			StatusBar.Size = new System.Drawing.Size(732, 20);
+			StatusBar.Spring = true;
+			StatusBar.Text = "Status Messages Go Here";
+			StatusBar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// ProgressBar
+			// 
+			ToolStripProgressBar ProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+			ProgressBar.ForeColor = System.Drawing.Color.Yellow;
+			ProgressBar.Name = "ProgressBar";
+			ProgressBar.Size = new System.Drawing.Size(400, 19);
+		
+			// 
+			// StatusStrip
+			// 
+			ToolStrip StatusStrip = new System.Windows.Forms.ToolStrip();
+			StatusStrip.Dock = System.Windows.Forms.DockStyle.Bottom;
+			StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			 StatusBar, ProgressBar});
+			StatusStrip.Location = new System.Drawing.Point(0, 0);
+			StatusStrip.Name = "StatusStrip";
+			StatusStrip.Size = new System.Drawing.Size(899, 25);
+			StatusStrip.TabIndex = 0;
+
+			(ProgressManager.Instance() as INotifyPropertyChanged).PropertyChanged += (a, b) =>
+			{
+
+				StatusStrip.Visible = ProgressManager.Instance().Visible;
+				ProgressBar.Maximum = ProgressManager.Instance().Max;
+				ProgressBar.Value = ProgressManager.Instance().Value;
+				StatusBar.Text = ProgressManager.Instance().Messaggio;
+				Application.DoEvents();
+
+			};
+
+			form.Controls.Add(StatusStrip);
+		}
+
 		public string TestoAmbiente(enAmbienti ambiente)
 		{
 			switch (ambiente)
@@ -162,7 +232,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			// Convert to an icon and use for the form's icon.
 			return Icon.FromHandle(bm.GetHicon());
 		}
-		private static void InitRibbon(Ribbon ribbon1)
+		private void InitRibbon(Ribbon ribbon1)
 		{
 			//
 			// ribbon1

@@ -568,7 +568,7 @@ namespace StrumentiMusicali.App.View
 			this.numericUpDown4.Name = "numericUpDown4";
 			this.numericUpDown4.Size = new System.Drawing.Size(169, 29);
 			this.numericUpDown4.TabIndex = 16;
-			this.numericUpDown4.Tag = "ImportoTotale";
+			this.numericUpDown4.Tag = "TotaleFattura";
 			this.numericUpDown4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.numericUpDown4.ThousandsSeparator = true;
 			// 
@@ -624,7 +624,7 @@ namespace StrumentiMusicali.App.View
 			this.txtPrezzo.Name = "txtPrezzo";
 			this.txtPrezzo.Size = new System.Drawing.Size(169, 29);
 			this.txtPrezzo.TabIndex = 8;
-			this.txtPrezzo.Tag = "ImportoTotale";
+			this.txtPrezzo.Tag = "ImponibileIva";
 			this.txtPrezzo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.txtPrezzo.ThousandsSeparator = true;
 			// 

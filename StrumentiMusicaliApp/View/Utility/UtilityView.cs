@@ -71,6 +71,10 @@ namespace StrumentiMusicali.App.View.Utility
 						if (cnt is TextBox)
 						{
 							cnt.DataBindings.Add("Text", businessObject, item.Name);
+							if (attribute!=null && attribute.MultiLine>0)
+							{
+								(cnt as TextBox).Multiline = true;
+							}
 						}
 						else if (cnt is NumericUpDown)
 						{

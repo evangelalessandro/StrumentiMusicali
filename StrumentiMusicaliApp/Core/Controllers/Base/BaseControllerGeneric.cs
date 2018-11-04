@@ -15,8 +15,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 {
 	[AddINotifyPropertyChangedInterface]
 	public abstract class BaseControllerGeneric<TEntity, TBaseItem> : BaseController, IMenu, IDisposable//, INotifyPropertyChanged
-		where TEntity : BaseEntity,new()
-		where TBaseItem : BaseItem<TEntity>,new()
+		where TEntity : BaseEntity, new()
+		where TBaseItem : BaseItem<TEntity>, new()
 	{
 		public BaseControllerGeneric(enAmbienti ambiente, enAmbienti ambienteDettaglio)
 		{
@@ -29,7 +29,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			TestoRicerca = ReadSetting(ambiente).LastStringaRicerca;
 
 		}
-		 
+
 
 		~BaseControllerGeneric()
 		{
@@ -43,12 +43,18 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		public string TestoRicerca { get; set; } = "";
 		public abstract void RefreshList(UpdateList<TEntity> obj);
 
-		public TEntity EditItem { get; set; } = new TEntity();
 
+		public TEntity EditItem {
+			get => _editItem;
+			set { _editItem = value;
+				
+			}
+
+		} 
 		private Subscription<UpdateList<TEntity>> _updateList;
 		private Subscription<ItemSelected<TBaseItem, TEntity>> _selectItemSub;
 
-//		public event PropertyChangedEventHandler PropertyChanged;
+		//		public event PropertyChangedEventHandler PropertyChanged;
 
 		public void Init()
 		{
@@ -144,9 +150,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		//private RibbonMenuButton ribDuplicaArt;
 
 		private RibbonMenuButton ribEditArt;
+		private TEntity _editItem = new TEntity();
 
 		public enAmbienti AmbienteMenu { get; set; }
-		
+
 		private void AggiungiComandi()
 		{
 
@@ -155,7 +162,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			var ribCreArt = panelComandiArticoli.Add("Crea", Properties.Resources.Add);
 			ribCreArt.Tag = MenuTab.TagAdd;
 
-			ribEditArt = panelComandiArticoli.Add(@"Vedi\Modifica", Properties.Resources.Edit,true);
+			ribEditArt = panelComandiArticoli.Add(@"Vedi\Modifica", Properties.Resources.Edit, true);
 			ribEditArt.Tag = MenuTab.TagEdit;
 
 			ribDeleteArt = panelComandiArticoli.Add("Cancella", Properties.Resources.Delete, true);
@@ -183,6 +190,6 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 				EventAggregator.Instance().Publish(new ViewRicerca<TEntity>());
 			};
 		}
-		 
+
 	}
 }

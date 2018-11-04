@@ -41,33 +41,32 @@ namespace StrumentiMusicali.App.View
 		//	dgvRighe.Update();
 		//}
 
-		public override async void FormatGrid()
+		public override void FormatGrid()
 		{
-			await Task.Run(() =>
-
-			 this.InvokeIfRequired((b) =>
-			{
-				var provider = new System.Globalization.CultureInfo("it-IT");
-				//var provider = new System.Globalization.CultureInfo("en");
-
+			this.InvokeIfRequired((b) =>
+		   {
+			   var provider = new System.Globalization.CultureInfo("it-IT");
+			   //var provider = new System.Globalization.CultureInfo("en");
+			   if (dgvRighe.Columns.Count == 0)
+				   return;
 				dgvRighe.Columns["PrezzoUnitario"].DefaultCellStyle.FormatProvider = provider;
-				dgvRighe.Columns["PrezzoUnitario"].DefaultCellStyle.Format = "C2";
-				dgvRighe.Columns["PrezzoUnitario"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+			   dgvRighe.Columns["PrezzoUnitario"].DefaultCellStyle.Format = "C2";
+			   dgvRighe.Columns["PrezzoUnitario"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
-				dgvRighe.Columns["RigaImporto"].DefaultCellStyle.FormatProvider = provider;
-				dgvRighe.Columns["RigaImporto"].DefaultCellStyle.Format = "C2";
-				dgvRighe.Columns["RigaImporto"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+			   dgvRighe.Columns["RigaImporto"].DefaultCellStyle.FormatProvider = provider;
+			   dgvRighe.Columns["RigaImporto"].DefaultCellStyle.Format = "C2";
+			   dgvRighe.Columns["RigaImporto"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
-				dgvRighe.Columns["Entity"].Visible = false;
-				dgvRighe.Columns["ID"].Visible = false;
-				dgvRighe.AutoResizeColumns();
-				dgvRighe.Columns["CodiceArt"].DisplayIndex = 0;
-				dgvRighe.Columns["RigaDescrizione"].DisplayIndex = 1;
-				dgvRighe.Columns["RigaQta"].DisplayIndex = 2;
-				dgvRighe.Columns["PrezzoUnitario"].DisplayIndex = 3;
-				dgvRighe.Columns["RigaImporto"].DisplayIndex = 4;
-				dgvRighe.Columns["Iva"].DisplayIndex = 5;
-			}));
+			   dgvRighe.Columns["Entity"].Visible = false;
+			   dgvRighe.Columns["ID"].Visible = false;
+			   dgvRighe.AutoResizeColumns();
+			   dgvRighe.Columns["CodiceArt"].DisplayIndex = 0;
+			   dgvRighe.Columns["RigaDescrizione"].DisplayIndex = 1;
+			   dgvRighe.Columns["RigaQta"].DisplayIndex = 2;
+			   dgvRighe.Columns["PrezzoUnitario"].DisplayIndex = 3;
+			   dgvRighe.Columns["RigaImporto"].DisplayIndex = 4;
+			   dgvRighe.Columns["Iva"].DisplayIndex = 5;
+		   });
 		}
 	}
 }

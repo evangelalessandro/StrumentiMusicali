@@ -93,9 +93,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
 			_excel.Range("TipoDocumento").Value = fattura.TipoDocumento == 2 ? "Fattura" : "DDT";
 
 			_excel.Range("ClienteRagioneSociale").Value = fattura.Cliente.RagioneSociale;
-			_excel.Range("ClienteIndirizzo").Value = fattura.Cliente.Via;
-			_excel.Range("ClienteCap").Value = fattura.Cliente.Cap;
-			_excel.Range("ClienteCitta").Value = fattura.Cliente.Citta;
+			_excel.Range("ClienteIndirizzo").Value = fattura.Cliente.Indirizzo.IndirizzoConCivico;
+			_excel.Range("ClienteCap").Value = fattura.Cliente.Indirizzo.Cap;
+			_excel.Range("ClienteCitta").Value = fattura.Cliente.Indirizzo.Citta;
 			_excel.Range("ClientePIVACF").Value = "CF - PIVA:" + fattura.Cliente.PIVA;
 			_excel.Range("CodiceCliente").Value = fattura.Cliente.ID;
 

@@ -28,35 +28,47 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// numericUpDown1
+			// toolStrip1
 			// 
-			this.numericUpDown1.Location = new System.Drawing.Point(437, 151);
-			this.numericUpDown1.Name = "numericUpDown1";
-			this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
-			this.numericUpDown1.TabIndex = 0;
-			this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripProgressBar1});
+			this.toolStrip1.Location = new System.Drawing.Point(0, 425);
+			this.toolStrip1.Name = "toolStrip1";
+			this.toolStrip1.Size = new System.Drawing.Size(800, 25);
+			this.toolStrip1.TabIndex = 0;
+			this.toolStrip1.Text = "toolStrip1";
+			// 
+			// toolStripProgressBar1
+			// 
+			this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+			this.toolStripProgressBar1.Size = new System.Drawing.Size(200, 22);
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(800, 450);
-			this.Controls.Add(this.numericUpDown1);
+			this.Controls.Add(this.toolStrip1);
 			this.Name = "Form1";
 			this.Text = "Form1";
 			this.Load += new System.EventHandler(this.Form1_Load);
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+			this.toolStrip1.ResumeLayout(false);
+			this.toolStrip1.PerformLayout();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
 		#endregion
 
-		private System.Windows.Forms.NumericUpDown numericUpDown1;
+		private System.Windows.Forms.ToolStrip toolStrip1;
+		private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
 	}
 }
 

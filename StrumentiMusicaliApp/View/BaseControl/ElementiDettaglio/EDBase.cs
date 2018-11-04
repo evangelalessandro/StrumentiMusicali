@@ -10,7 +10,7 @@ namespace StrumentiMusicali.App.View.BaseControl.ElementiDettaglio
 		public EDBase()
 		{
 			InitializeComponent();
-			this.MaximumSize = new Size(1000, 150);
+			this.MaximumSize = new Size(1000, 1000);
 			this.Load += EDBase_Load;
 			this.Paint += SettingBaseView_Paint;
 			this.BackColor = Color.Transparent;

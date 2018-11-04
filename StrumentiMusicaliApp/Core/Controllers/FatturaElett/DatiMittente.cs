@@ -1,12 +1,12 @@
-﻿namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
+﻿using StrumentiMusicali.Library.Entity;
+
+namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 {
-	public class DatiMittente : SoggettoFattura
+	public class DatiMittente : Cliente
 	{
-		public string Email { get; set; }
 		public string ProgressivoInvio { get; set; }
 		public bool VersoPA { get; set; }
-		public string Telefono { get; internal set; }
-
+		
 		public bool SoggettoARitenuta { get; set; }
 		public bool IscrittoRegistroImprese { get; set; }
 		public UfficioRegistro UfficioRegistroImp { get; set; } = new UfficioRegistro();

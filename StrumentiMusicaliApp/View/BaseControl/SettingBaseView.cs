@@ -70,6 +70,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 				{
 					newControl  = AggiungiTesto(titolo);
 					newControl.Width = 250;
+
 					
 				}
 				else if (item.PropertyType.FullName.Contains("Boolean"))
@@ -94,9 +95,8 @@ namespace StrumentiMusicali.App.View.BaseControl
 				}
 				else
 				{
+
 					if (item!=null && (!item.PropertyType.Name.StartsWith("System.")
-						&&
-						!item.PropertyType.FullName.Contains("Library.Entity")
 						))
 					{
 
@@ -119,6 +119,11 @@ namespace StrumentiMusicali.App.View.BaseControl
 			controlBase.Tag = item.Name;
 			controlBase.BindProprieta(attribute,item.Name, objToBind);
 			controlBase.Height = 50;
+			if (attribute!=null && attribute.MultiLine>0)
+			{
+				controlBase.Height = 50* (attribute.MultiLine+1);
+
+			}
 			if (item.Name == "DataCreazione"
 				|| item.Name == "DataUltimaModifica"
 				|| item.Name == "ID")

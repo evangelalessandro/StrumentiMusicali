@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace StrumentiMusicali.Library.Entity
 {
@@ -12,10 +13,11 @@ namespace StrumentiMusicali.Library.Entity
 		}
 		[Required]
 		public string Pagamento { get; set; }
-		public decimal ImportoTotale { get; set; }
+		public decimal ImponibileIva { get; set; }
 		public decimal TotaleIva { get; set; }
 		public decimal TotaleFattura { get; set; }
+		 
 
-
+		public virtual ICollection<FatturaRiga> RigheFattura { get; set; }
 	}
 }

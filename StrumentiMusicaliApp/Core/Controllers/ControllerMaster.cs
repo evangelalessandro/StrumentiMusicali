@@ -99,6 +99,14 @@ namespace StrumentiMusicali.App.Core
 			{
 				setItem.UfficioRegistroImp = new Controllers.FatturaElett.DatiMittente.UfficioRegistro();
 			}
+			if (setItem.Indirizzo== null)
+			{
+				setItem.Indirizzo = new Library.Entity.Indirizzo();
+			}
+			if (setItem.PecConfig == null)
+			{
+				setItem.PecConfig = new Library.Entity.PecConfig();
+			}
 			using (var view = new GenericSettingView(setItem))
 			{
 				view.OnSave += (a, b) =>

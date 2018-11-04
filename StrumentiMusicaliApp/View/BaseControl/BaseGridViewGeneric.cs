@@ -155,6 +155,8 @@ namespace StrumentiMusicali.App.View.BaseControl
 			{
 				// free managed resources
 				EventAggregator.Instance().UnSbscribe(_selectSub);
+				EventAggregator.Instance().UnSbscribe(viewRicerca);
+				EventAggregator.Instance().UnSbscribe(_subEdit);
 
 				components.Dispose();
 			}
@@ -172,8 +174,6 @@ namespace StrumentiMusicali.App.View.BaseControl
 		// exactly as they are.
 		~BaseGridViewGeneric()
 		{
-			EventAggregator.Instance().UnSbscribe(viewRicerca);
-			EventAggregator.Instance().UnSbscribe(_subEdit);
 			// Finalizer calls Dispose(false)
 			Dispose(false);
 		}
@@ -257,7 +257,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 			}
 		}
-		private async void RefreshList(UpdateList<TEntity> obj)
+		private void RefreshList(UpdateList<TEntity> obj)
 		{
 			 
 			ForceUpdateGridAsync();

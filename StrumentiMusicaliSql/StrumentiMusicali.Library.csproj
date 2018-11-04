@@ -34,6 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Data.v18.1, Version=18.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpo.v18.1, Version=18.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -59,6 +61,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\ComboDataAttribute.cs" />
+    <Compile Include="Core\CustomUIViewAttribute.cs" />
+    <Compile Include="Core\CustomHideUIAttribute.cs" />
     <Compile Include="Core\EventAggregator.cs" />
     <Compile Include="Core\MessageException.cs" />
     <Compile Include="Entity\Articolo.cs" />
@@ -75,9 +80,9 @@
     <Compile Include="Entity\Magazzino.cs" />
     <Compile Include="Entity\Fatture\DDTRiga.cs" />
     <Compile Include="Entity\Fatture\FatturaRiga.cs" />
-    <Compile Include="Migrations\201810260947596_Init.cs" />
-    <Compile Include="Migrations\201810260947596_Init.Designer.cs">
-      <DependentUpon>201810260947596_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201811032254048_Init.cs" />
+    <Compile Include="Migrations\201811032254048_Init.Designer.cs">
+      <DependentUpon>201811032254048_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
@@ -97,8 +102,8 @@
     <Content Include="Note\TextFile1.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201810260947596_Init.resx">
-      <DependentUpon>201810260947596_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201811032254048_Init.resx">
+      <DependentUpon>201811032254048_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

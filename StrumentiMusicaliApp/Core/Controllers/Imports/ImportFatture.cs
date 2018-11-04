@@ -33,8 +33,13 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 						MessageManager.NotificaInfo("Importazione clienti!");
 						var fattureList = ImportTestateFatture(connection, clientiList);
 
-						uof.FatturaRepository.AddRange(fattureList);
-						uof.Commit();
+						foreach (var item in fattureList)
+						{
+							uof.FatturaRepository.Add(item);
+							uof.Commit();
+						}
+
+
 
 						var righeFatturaList = ImportRigheFatture(connection, fattureList);
 						OrdinaRighe(righeFatturaList);
@@ -273,7 +278,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 						TrasportoACura = (a["Trasporto a cura"].ToString()),
 						Vettore = (a["Vettore"].ToString()),
 					};
-
+					if (string.IsNullOrEmpty(fattura.Pagamento))
+					{
+						fattura.Pagamento = "Rimessa Diretta";
+					}
 					var dato = a["Data Trasporto"].ToString();
 					if (dato.Length > 0)
 					{

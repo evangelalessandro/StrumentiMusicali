@@ -1,9 +1,7 @@
 ﻿using StrumentiMusicali.App.Core.Controllers;
-using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Generics;
-using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.MenuRibbon;
-using StrumentiMusicali.App.View.FattureRighe;
+using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
@@ -123,7 +121,7 @@ namespace StrumentiMusicali.App.View
 
 			UpdateButtonState();
 
-			UtilityView.SetDataBind(this, _controllerFatturazione.EditItem);
+			UtilityView.SetDataBind(this,null, _controllerFatturazione.EditItem);
 
 			cboClienteID.EditValueChanged += CboClienteID_EditValueChanged;
 
@@ -159,18 +157,11 @@ namespace StrumentiMusicali.App.View
 			{
 				_controllerRighe = new ControllerRigheFatture(_controllerFatturazione);
 				var controlFattRigheList = new FattureRigheListView(_controllerRighe);
-				var controlFattRigheDetail = new FattureRigheDetailView(_controllerRighe);
-
+				 
 				controlFattRigheList.Height = 200;
-				controlFattRigheList.Dock = DockStyle.Top;
+				controlFattRigheList.Dock = DockStyle.Fill;
 				tabPage2.Controls.Add(controlFattRigheList);
-				var spit = new Splitter() { Dock = DockStyle.Top, Height = 20, BackColor = System.Drawing.Color.Green, };
-				tabPage2.Controls.Add(spit);
-				spit.BringToFront();
-				tabPage2.Controls.Add(controlFattRigheDetail);
-				controlFattRigheDetail.Height = 200;
-				controlFattRigheDetail.Dock = DockStyle.Fill;
-				controlFattRigheDetail.BringToFront();
+				  
 			});
 		}
 

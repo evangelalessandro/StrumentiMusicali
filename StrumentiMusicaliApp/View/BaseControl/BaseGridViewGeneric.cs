@@ -8,6 +8,7 @@ using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Base;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,7 +17,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 {
 	public abstract partial class BaseGridViewGeneric<TBaseItem, TController, TEntity> : UserControl, IDisposable
 		where TEntity : BaseEntity, new()
-		where TBaseItem : BaseItem<TEntity>
+		where TBaseItem : BaseItem<TEntity>,new()
 		where TController : BaseControllerGeneric<TEntity, TBaseItem>
 	{
 		private System.Windows.Forms.Panel pnlArticoli;
@@ -46,7 +47,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 					 {
 						 var T = new Task(() =>
 						 {
-							 dgvRighe.SelezionaRiga(a.ItemSelected.ID.ToString());
+							 dgvRighe.SelezionaRiga(a.ItemSelected.ID);
 						 });
 						 Task.WhenAll(new Task[] { T });
 					 };
@@ -187,7 +188,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			UpdateButtonState();
 		}
 
-		public abstract void FormatGrid();
+		public abstract  void FormatGrid();
 
 		private void DgvMaster_SelectionChanged(object sender, EventArgs e)
 		{
@@ -215,11 +216,6 @@ namespace StrumentiMusicali.App.View.BaseControl
 		public event EventHandler<CancelEventArgs> onEditItemShowView;
 		private async void EditItem()
 		{
-			var item = Controller.ReadSetting().settingSito;
-			if (!item.CheckFolderImmagini())
-			{
-				return;
-			}
 			bool skipView = false;
 			var itemSelected = UtilityView.GetCurrentItemSelected<TBaseItem>(dgvRighe);
 			if (onEditItemShowView != null)
@@ -234,23 +230,18 @@ namespace StrumentiMusicali.App.View.BaseControl
 			}
 			if (!skipView)
 			{
-				using (var view = new GenericSettingView(itemSelected.Entity))
-				{
-					view.OnSave += (a, b) =>
-					{
-						view.Validate();
-						EventAggregator.Instance().Publish<Save<TEntity>>
-						(new Save<TEntity>());
-					};
-					Controller.ShowView(view, Controller.AmbienteDettaglio);
-				}
+				Controller.ShowEditView();
 			}
 			Controller.RefreshList(null);
 			dgvRighe.DataSource = Controller.DataSource;
 			dgvRighe.Update();
 			FormatGrid();
+			if (itemSelected!=null)
 			await dgvRighe.SelezionaRiga(itemSelected.ID);
 		}
+
+
+
 		private void UpdateButtonState()
 		{
 			if (GetMenu() != null)
@@ -268,22 +259,31 @@ namespace StrumentiMusicali.App.View.BaseControl
 		}
 		private async void RefreshList(UpdateList<TEntity> obj)
 		{
-			await Task.Run(() =>
+			 
+			ForceUpdateGridAsync();
 
-			this.InvokeIfRequired((b) =>
-			{
+			FormatGrid();
 
-				{
-					this.Invalidate();
 
-					dgvRighe.DataSource = Controller.DataSource;
+			//this.InvokeIfRequired((b) =>
+			//{
 
-					dgvRighe.Refresh();
-					dgvRighe.Update();
-					FormatGrid();
-				}
-			}
-			));
+			//	{
+			//	}
+			//}
+			//)).Wait();
+			
+		}
+
+		private void ForceUpdateGridAsync()
+		{
+			this.Invalidate();
+
+			dgvRighe.DataSource = Controller.DataSource;
+
+			dgvRighe.Refresh();
+			//dgvRighe.Update();
+				
 		}
 
 		private void DgvRighe_DoubleClick(object sender, EventArgs e)

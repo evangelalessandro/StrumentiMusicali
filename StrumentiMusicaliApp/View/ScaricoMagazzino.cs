@@ -51,7 +51,7 @@ namespace StrumentiMusicali.App.View
 			};
 			txtQta.Tag = "Qta";
 			cboDeposito.Tag = "Deposito";
-			UtilityView.SetDataBind(this, _controllerMagazzino.SelectedItem);
+			UtilityView.SetDataBind(this,null, _controllerMagazzino.SelectedItem);
 			this.Load += ScaricoMagazzino_Load;
 
 			EventAggregator.Instance().Subscribe<MovimentiUpdate>(RefreshData);
@@ -164,7 +164,7 @@ namespace StrumentiMusicali.App.View
 
 		private async void txtCodiceABarre_TextChanged(object sender, EventArgs e)
 		{
-			_controllerMagazzino.SelectedItem.ArticoloID = "";
+			_controllerMagazzino.SelectedItem.ArticoloID = 0;
 			lblTitoloArt.Text = "";
 			RefreshData(new MovimentiUpdate());
 			await UpdateButton();
@@ -174,7 +174,8 @@ namespace StrumentiMusicali.App.View
 		{
 			try
 			{
-				var enableB = _controllerMagazzino.SelectedItem.ArticoloID != "" && _controllerMagazzino.SelectedItem.Qta > 0 && _controllerMagazzino.SelectedItem.Deposito > 0;
+				var enableB = _controllerMagazzino.SelectedItem.ArticoloID != 0
+					&& _controllerMagazzino.SelectedItem.Qta > 0 && _controllerMagazzino.SelectedItem.Deposito > 0;
 				ribCarica.Enabled = enableB;
 				ribScarica.Enabled = enableB;
 				this.Validate();

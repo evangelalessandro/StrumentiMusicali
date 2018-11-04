@@ -1,7 +1,6 @@
 ﻿using NLog;
 
 using StrumentiMusicali.App.Core.Controllers;
-using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.MenuRibbon;

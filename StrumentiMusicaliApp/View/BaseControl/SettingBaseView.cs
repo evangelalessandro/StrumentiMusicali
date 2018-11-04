@@ -5,7 +5,10 @@ using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.BaseControl;
 using StrumentiMusicali.App.View.BaseControl.ElementiDettaglio;
+using StrumentiMusicali.Library.Core;
 using System;
+using System.Linq;
+
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -38,45 +41,63 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 		public void BindProp(object objToBind, string prefixText)
 		{
-			foreach (var item in Utility.UtilityView.GetProperties(objToBind))
+			foreach (var item in Utility.UtilityView.GetProperties(objToBind).OrderBy(a=>
 			{
+				var sel = (CustomUIViewAttribute)a.GetCustomAttributes(typeof(CustomUIViewAttribute), true).FirstOrDefault();
+				if (sel==null || sel.Ordine==0 )
+				{
+					return 100;
+				}
+				return sel.Ordine;
+			}
+			))
+			{
+				var hideAttr=item.CustomAttributes.Where(a => a.AttributeType == typeof(CustomHideUIAttribute)).FirstOrDefault();
+				if (hideAttr!=null)
+					continue;
+				 
+				var widthAttr = (CustomUIViewAttribute)item.GetCustomAttributes(typeof(CustomUIViewAttribute),true).FirstOrDefault();
+					
+
 				var titolo = string.Join(" ", Regex.Split(item.Name, @"(?<!^)(?=[A-Z])"));
 				if (item.Name.CompareTo(item.Name.ToUpperInvariant()) == 0)
 				{
 					titolo = item.Name;
 				}
 				titolo = prefixText + titolo;
+				EDBase newControl = null;
 				if (item.PropertyType.FullName.Contains("String"))
 				{
-					EDTesto artCNT = AggiungiTesto(titolo);
-					artCNT.Width = 250;
-					BindObj(item, artCNT, objToBind);
+					newControl  = AggiungiTesto(titolo);
+					newControl.Width = 250;
+					
 				}
 				else if (item.PropertyType.FullName.Contains("Boolean"))
 				{
-					var cnt = AggiungiCheck(titolo);
-					BindObj(item, cnt, objToBind);
+					newControl = AggiungiCheck(titolo);
+					 
 				}
 				else if (item.PropertyType.FullName.Contains("Decimal"))
 				{
-					var cnt = AggiungiNumericoDecimal(titolo);
-					BindObj(item, cnt, objToBind);
+					newControl= AggiungiNumericoDecimal(titolo);
+					 
 				}
 				else if (item.PropertyType.FullName.Contains("Int32"))
 				{
-					var cnt = AggiungiNumerico(titolo);
-					BindObj(item, cnt, objToBind);
+					newControl= AggiungiNumerico(titolo);
+					
 				}
 				else if (item.PropertyType.FullName.Contains("DateTime"))
 				{
-
-					var cnt = AggiungiDateTime(titolo);
-					BindObj(item, cnt, objToBind);
+					newControl= AggiungiDateTime(titolo, widthAttr);
 					
 				}
 				else
 				{
-					if (!item.PropertyType.Name.StartsWith("System."))
+					if (item!=null && (!item.PropertyType.Name.StartsWith("System.")
+						&&
+						!item.PropertyType.FullName.Contains("Library.Entity")
+						))
 					{
 
 						BindProp(item.GetValue(objToBind), "[" + titolo + "]  ");
@@ -86,19 +107,27 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 					}
 				}
+				if (newControl!=null)
+				{
+					BindObj(item, newControl, objToBind, widthAttr);
+				}
 			}
 		}
 
-		private void BindObj(System.Reflection.PropertyInfo item, EDBase controlBase, object objToBind)
+		private void BindObj(System.Reflection.PropertyInfo item, EDBase controlBase, object objToBind, CustomUIViewAttribute attribute)
 		{
 			controlBase.Tag = item.Name;
-			controlBase.BindProprieta(item.Name, objToBind);
+			controlBase.BindProprieta(attribute,item.Name, objToBind);
 			controlBase.Height = 50;
 			if (item.Name == "DataCreazione"
 				|| item.Name == "DataUltimaModifica"
 				|| item.Name == "ID")
 			{
 				controlBase.Enabled = false;
+			}
+			if (attribute!=null)
+			{
+				controlBase.Width = attribute.Width;
 			}
 		}
 
@@ -151,12 +180,12 @@ namespace StrumentiMusicali.App.View.BaseControl
 			qtaCNT.SetMinMax(0, 10000, 2);
 			return qtaCNT;
 		}
-		private EDDateTime AggiungiDateTime(string titolo)
+		private EDDateTime AggiungiDateTime(string titolo, CustomUIViewAttribute widthAttr)
 		{
 			var qtaCNT = new EDDateTime();
 			qtaCNT.Titolo = titolo;
 			flowLayoutPanel1.Controls.Add(qtaCNT);
-			qtaCNT.SetMinSize = true;
+			
 			
 			return qtaCNT; ;
 		}
@@ -231,22 +260,28 @@ namespace StrumentiMusicali.App.View.BaseControl
 				if (OnSave != null)
 					OnSave(this, new EventArgs());
 			};
+			var rib2 = panelComandiArticoli.Add("Salva e chiudi", Properties.Resources.Save_Close);
 
+			rib2.Click += (a, e) =>
+			{
+				if (OnSave != null)
+					OnSave(this, new EventArgs());
+
+				if (OnClose != null)
+					OnClose(this, new EventArgs());
+			};
+			var rib3 = panelComandiArticoli.Add("Chiudi", Properties.Resources.Close_48);
+
+			rib3.Click += (a, e) =>
+			{
+				if (OnClose != null)
+					OnClose(this, new EventArgs());
+			};
 		}
 		public event EventHandler<EventArgs> OnSave;
-		
+		public event EventHandler<EventArgs> OnClose;
 
-		//private void Salva()
-		//{
-		//	using (var cur = new CursorManager())
-		//	{
-		//		this.Validate();
-		//		var setting = controller.ReadSetting();
-		//		setting.datiMittente = _datiMittente;
-		//		controller.SaveSetting(setting);
 
-		//		MessageManager.NotificaInfo(MessageManager.GetMessage(Core.Controllers.enSaveOperation.OpSave));
-		//	}
-		//}
+
 	}
 }

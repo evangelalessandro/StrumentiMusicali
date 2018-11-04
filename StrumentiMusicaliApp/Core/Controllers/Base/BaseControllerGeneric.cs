@@ -4,6 +4,7 @@ using StrumentiMusicali.App.Core.Item.Base;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
+using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Base;
@@ -15,7 +16,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 	[AddINotifyPropertyChangedInterface]
 	public abstract class BaseControllerGeneric<TEntity, TBaseItem> : BaseController, IMenu, IDisposable//, INotifyPropertyChanged
 		where TEntity : BaseEntity,new()
-		where TBaseItem : BaseItem<TEntity>
+		where TBaseItem : BaseItem<TEntity>,new()
 	{
 		public BaseControllerGeneric(enAmbienti ambiente, enAmbienti ambienteDettaglio)
 		{
@@ -92,8 +93,31 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			// free native resources if there are any.
 		}
 
+		internal void RiselezionaSelezionato()
+		{
+			var item = (TEntity)SelectedItem;
+			EventAggregator.Instance().Publish<UpdateList<TEntity>>(new UpdateList<TEntity>());
+			EventAggregator.Instance().Publish<ItemSelected<TBaseItem, TEntity>>(
+				new ItemSelected<TBaseItem, TEntity>(new TBaseItem()
+				{
+					ID = item.ID,
+					Entity = item
+				}));
+		}
 		public TEntity SelectedItem { get; set; }
-		 
+		public void ShowEditView()
+		{
+			using (var view = new GenericSettingView(this.SelectedItem))
+			{
+				view.OnSave += (a, b) =>
+				{
+					view.Validate();
+					EventAggregator.Instance().Publish<Save<TEntity>>
+					(new Save<TEntity>());
+				};
+				ShowView(view, AmbienteDettaglio);
+			}
+		}
 		public MySortableBindingList<TBaseItem> DataSource { get; set; } = new MySortableBindingList<TBaseItem>();
 
 		internal void UpdateDataSource()
@@ -153,10 +177,6 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 				EventAggregator.Instance().Publish(new ViewRicerca<TEntity>());
 			};
 		}
-
-		private void ShowEditView()
-		{
-			throw new NotImplementedException();
-		}
+		 
 	}
 }

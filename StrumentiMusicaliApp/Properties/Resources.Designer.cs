@@ -73,6 +73,16 @@ namespace StrumentiMusicali.App.Properties {
         /// <summary>
         ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Close_48 {
+            get {
+                object obj = ResourceManager.GetObject("Close_48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Customer_48 {
             get {
                 object obj = ResourceManager.GetObject("Customer_48", resourceCulture);
@@ -296,6 +306,16 @@ namespace StrumentiMusicali.App.Properties {
         internal static System.Drawing.Bitmap Save {
             get {
                 object obj = ResourceManager.GetObject("Save", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Save_Close {
+            get {
+                object obj = ResourceManager.GetObject("Save_Close", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

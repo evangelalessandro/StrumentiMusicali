@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using StrumentiMusicali.Library.Core;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
@@ -33,11 +34,13 @@ namespace StrumentiMusicali.App.View.BaseControl.ElementiDettaglio
 		public bool SetMinSize { get; set; }
 		public string Titolo { get { return label1.Text; } set { label1.Text = value; } }
 
-		public virtual void BindProprieta(string nomeProp, object businessObject)
+		public virtual void BindProprieta(CustomUIViewAttribute attribute,
+			string nomeProp, object businessObject
+			)
 		{
 			ControlToBind.Tag = nomeProp;
 
-			Utility.UtilityView.SetDataBind(this, businessObject);
+			Utility.UtilityView.SetDataBind(this, attribute, businessObject);
 		}
 
 		public Control ControlToBind { get; set; }

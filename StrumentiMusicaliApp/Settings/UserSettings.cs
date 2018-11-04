@@ -18,7 +18,7 @@ namespace StrumentiMusicali.App.Settings
 	{
 		public string LastStringaRicerca { get; set; } = "";
 		public Size SizeFormMain { get; set; } = new Size(400, 400);
-		public string LastItemSelected { get; set; }
+		public int LastItemSelected { get; set; }
 		public FormWindowState FormMainWindowState { get; set; } = FormWindowState.Maximized;
 		public FormStartPosition StartPosition { get; set; }
 		public int Top { get; set; }

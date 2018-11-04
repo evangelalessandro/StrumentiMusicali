@@ -28,6 +28,7 @@ namespace StrumentiMusicali.App.View
 			this.label2 = new System.Windows.Forms.Label();
 			this.cboPagamento = new System.Windows.Forms.ComboBox();
 			this.pnl1Alto = new System.Windows.Forms.Panel();
+			this.cboClienteID = new DevExpress.XtraEditors.LookUpEdit();
 			this.dateEdit3 = new DevExpress.XtraEditors.DateEdit();
 			this.dateEdit2 = new DevExpress.XtraEditors.DateEdit();
 			this.dateEdit1 = new DevExpress.XtraEditors.DateEdit();
@@ -66,8 +67,8 @@ namespace StrumentiMusicali.App.View
 			this.txtPrezzo = new System.Windows.Forms.NumericUpDown();
 			this.label3 = new System.Windows.Forms.Label();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
-			this.cboClienteID = new DevExpress.XtraEditors.LookUpEdit();
 			this.pnl1Alto.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.cboClienteID.Properties)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dateEdit3.Properties.CalendarTimeProperties)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dateEdit3.Properties)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dateEdit2.Properties.CalendarTimeProperties)).BeginInit();
@@ -83,7 +84,6 @@ namespace StrumentiMusicali.App.View
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzo)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.cboClienteID.Properties)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// lblID
@@ -195,6 +195,16 @@ namespace StrumentiMusicali.App.View
 			this.pnl1Alto.Size = new System.Drawing.Size(1136, 187);
 			this.pnl1Alto.TabIndex = 31;
 			// 
+			// cboClienteID
+			// 
+			this.cboClienteID.Location = new System.Drawing.Point(814, 40);
+			this.cboClienteID.Name = "cboClienteID";
+			this.cboClienteID.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+			this.cboClienteID.Size = new System.Drawing.Size(297, 20);
+			this.cboClienteID.TabIndex = 56;
+			this.cboClienteID.Tag = "ClienteID";
+			// 
 			// dateEdit3
 			// 
 			this.dateEdit3.EditValue = null;
@@ -305,8 +315,6 @@ namespace StrumentiMusicali.App.View
 			// 
 			// txtAspettoBeni
 			// 
-			this.txtAspettoBeni.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtAspettoBeni.Location = new System.Drawing.Point(931, 103);
 			this.txtAspettoBeni.Margin = new System.Windows.Forms.Padding(4);
 			this.txtAspettoBeni.MaxLength = 100;
@@ -328,8 +336,6 @@ namespace StrumentiMusicali.App.View
 			// 
 			// txtVettore
 			// 
-			this.txtVettore.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtVettore.Location = new System.Drawing.Point(715, 103);
 			this.txtVettore.Margin = new System.Windows.Forms.Padding(4);
 			this.txtVettore.MaxLength = 100;
@@ -351,8 +357,6 @@ namespace StrumentiMusicali.App.View
 			// 
 			// txtPorto
 			// 
-			this.txtPorto.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtPorto.Location = new System.Drawing.Point(516, 103);
 			this.txtPorto.Margin = new System.Windows.Forms.Padding(4);
 			this.txtPorto.MaxLength = 100;
@@ -374,8 +378,6 @@ namespace StrumentiMusicali.App.View
 			// 
 			// txtCausaleTrasporto
 			// 
-			this.txtCausaleTrasporto.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtCausaleTrasporto.Location = new System.Drawing.Point(265, 103);
 			this.txtCausaleTrasporto.Margin = new System.Windows.Forms.Padding(4);
 			this.txtCausaleTrasporto.MaxLength = 100;
@@ -407,8 +409,6 @@ namespace StrumentiMusicali.App.View
 			// 
 			// txtPIVA
 			// 
-			this.txtPIVA.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtPIVA.Location = new System.Drawing.Point(605, 40);
 			this.txtPIVA.Margin = new System.Windows.Forms.Padding(4);
 			this.txtPIVA.MaxLength = 100;
@@ -462,8 +462,6 @@ namespace StrumentiMusicali.App.View
 			// 
 			// txtTrasportoACura
 			// 
-			this.txtTrasportoACura.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtTrasportoACura.Location = new System.Drawing.Point(14, 103);
 			this.txtTrasportoACura.Margin = new System.Windows.Forms.Padding(4);
 			this.txtTrasportoACura.MaxLength = 100;
@@ -650,16 +648,6 @@ namespace StrumentiMusicali.App.View
 			this.tabPage2.Text = "Righe";
 			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
-			// cboClienteID
-			// 
-			this.cboClienteID.Location = new System.Drawing.Point(814, 40);
-			this.cboClienteID.Name = "cboClienteID";
-			this.cboClienteID.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-			this.cboClienteID.Size = new System.Drawing.Size(297, 20);
-			this.cboClienteID.TabIndex = 56;
-			this.cboClienteID.Tag = "ClienteID";
-			// 
 			// DettaglioFatturaView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -674,6 +662,7 @@ namespace StrumentiMusicali.App.View
 			this.Load += new System.EventHandler(this.frm_Load);
 			this.pnl1Alto.ResumeLayout(false);
 			this.pnl1Alto.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.cboClienteID.Properties)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dateEdit3.Properties.CalendarTimeProperties)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dateEdit3.Properties)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dateEdit2.Properties.CalendarTimeProperties)).EndInit();
@@ -691,7 +680,6 @@ namespace StrumentiMusicali.App.View
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzo)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.cboClienteID.Properties)).EndInit();
 			this.ResumeLayout(false);
 
 		}

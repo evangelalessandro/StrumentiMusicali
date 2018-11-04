@@ -6,12 +6,9 @@ namespace StrumentiMusicali.Library.Entity
 {
 	public class Magazzino : BaseEntity
 	{
-		[Key]
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int ID { get; set; }
-
+		 
 		[Required]
-		public string ArticoloID { get; set; }
+		public int ArticoloID { get; set; }
 
 		public virtual Articolo Articolo { get; set; }
 

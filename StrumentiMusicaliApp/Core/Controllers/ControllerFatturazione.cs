@@ -217,7 +217,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 					).Select(a => new FatturaItem
 					{
-						ID = a.ID.ToString(),
+						ID = a.ID,
 						Data = a.Data,
 						Entity = a,
 						PIVA = a.PIVA,

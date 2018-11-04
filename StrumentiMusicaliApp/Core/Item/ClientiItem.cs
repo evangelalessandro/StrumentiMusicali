@@ -14,7 +14,7 @@ namespace StrumentiMusicali.App.Core.Item
 		public ClientiItem(Cliente item)
 			: base()
 		{
-			ID = item.ID.ToString();
+			ID = item.ID;
 
 			 
 			PIVA= item.PIVA;

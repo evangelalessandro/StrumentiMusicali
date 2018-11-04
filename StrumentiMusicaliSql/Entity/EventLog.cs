@@ -6,10 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace StrumentiMusicali.Library.Entity
 {
 	public class EventLog :BaseEntity
-	{
-		[Key]
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int ID { get; set; }
+	{ 
 
 		public string Evento { get; set; }
 		public string TipoEvento { get; set; }

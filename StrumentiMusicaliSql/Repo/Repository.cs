@@ -50,13 +50,7 @@ namespace StrumentiMusicali.Library.Repo
 				item.DataUltimaModifica = DateTime.Now;
 				item.DataCreazione = DateTime.Now;
 			}
-			if (entity is Articolo)
-			{
-				if (string.IsNullOrEmpty((entity as Articolo).ID))
-				{
-					(entity as Articolo).ID = "Luc_" + DateTime.Now.Ticks.ToString();
-				}
-			}
+			 
 			FixDateNull(entity);
 
 			dbSet.Add(entity);

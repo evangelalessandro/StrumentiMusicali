@@ -4,6 +4,7 @@ using NLog;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
+using StrumentiMusicali.App.View.Settings;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -44,7 +45,12 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 					frm.Controls.Add(ribbon1);
 				}
-
+				if (view is GenericSettingView)
+				{
+					(view as GenericSettingView).OnClose += (
+						b, c) => { frm.Close(); };
+				}
+				
 				frm.Load += (a, b) =>
 				{
 					ReadSettingForm(ambiente, frm);

@@ -242,7 +242,7 @@ namespace StrumentiMusicali.App.Forms
 
 			chkPrezzoARichiesta.CheckedChanged += ChkPrezzoARichiesta_CheckedChanged;
 
-			UtilityView.SetDataBind(this, _articoloController.EditItem);
+			UtilityView.SetDataBind(this,null, _articoloController.EditItem);
 			using (var uof = new UnitOfWork())
 			{
 				var giacenza = uof.MagazzinoRepository.Find(a => a.ArticoloID == _articoloController.EditItem.ID)
@@ -530,7 +530,7 @@ namespace StrumentiMusicali.App.Forms
 		private void UpdateButtonState()
 		{
 			tabPage2.Enabled = _articoloController.EditItem != null 
-				&& _articoloController.EditItem.ID != "";
+				&& _articoloController.EditItem.ID != 0;
 			if (_ribPannelImmagini != null)
 			{
 				_ribPannelImmagini.Enabled = tabControl1.SelectedTab == tabPage2;

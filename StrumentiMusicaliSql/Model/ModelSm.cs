@@ -10,6 +10,7 @@ namespace StrumentiMusicali.Library.Model
 			: base("name=ModelSm")
 		{
 			this.Configuration.LazyLoadingEnabled = true;
+			this.Configuration.ProxyCreationEnabled = false;
 			Database.SetInitializer<ModelSm>(new MigrateDatabaseToLatestVersion<ModelSm, Migrations.Configuration>());
 		}
 

@@ -6,11 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace StrumentiMusicali.Library.Entity
 {
 	public abstract class DocumentoFiscaleBase : BaseEntity
-	{
-		[Key]
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int ID { get; set; }
-
+	{ 
 		[Required]
 		[StringLength(10)]
 		[Index(IsUnique = true)]

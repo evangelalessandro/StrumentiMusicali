@@ -238,7 +238,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 			var artNew = (new StrumentiMusicali.Library.Entity.Articolo()
 			{
-				ID = (dat[0]),
 				Categoria = int.Parse(dat[1]),
 				Condizione = cond,
 				Marca = dat[3],
@@ -249,11 +248,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				PrezzoBarrato = prezzoBarrato,
 				BoxProposte = int.Parse(dat[9]) == 1 ? true : false
 			});
-			if (artNew.ID == "")
-			{
-				progress++;
-				artNew.ID = "Luc_" + DateTime.Now.Ticks.ToString() + progress.ToString();
-			}
+			 
 			uof.ArticoliRepository.Add(artNew);
 			var foto = dat[7];
 			if (foto.Length > 0)
@@ -323,7 +318,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				using (var save = new SaveEntityManager())
 				{
 					var uof = save.UnitOfWork;
-					if (string.IsNullOrEmpty(EditItem.ID)
+					if (EditItem.ID <=0
 						|| uof.ArticoliRepository.Find(a => a.ID == EditItem.ID).Count() == 0)
 					{
 						uof.ArticoliRepository.Add(EditItem);

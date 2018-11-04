@@ -36,9 +36,16 @@ namespace StrumentiMusicali.App.Core.Controllers
 			_removePrio = EventAggregator.Instance().Subscribe<AddPriority< FatturaRiga>>((a) => { CambiaPriorita(true); }); ;
 			_addPrio = EventAggregator.Instance().Subscribe<RemovePriority<FatturaRiga>>((a) => { CambiaPriorita(false); }); ;
 
-			_selectSub = EventAggregator.Instance().Subscribe<Add<FatturaRiga>>((a) =>
+			EventAggregator.Instance().Subscribe<Save<FatturaRiga>>((a) =>
+			{
+
+			});
+				_selectSub = EventAggregator.Instance().Subscribe<Add<FatturaRiga>>((a) =>
 			{
 				SelectedItem = new FatturaRiga() { IvaApplicata = "22" };
+
+				ShowEditView();
+				
 			});
 			_subRemove = EventAggregator.Instance().Subscribe<Remove<FatturaRiga>>((a) =>
 			{
@@ -92,9 +99,10 @@ namespace StrumentiMusicali.App.Core.Controllers
 				{
 					list = uof.FattureRigheRepository.Find(a => a.FatturaID == _controllerFatturazione.EditItem.ID
 
-					).Select(a => new FatturaRigaItem
+					).Where(a=>a.Descrizione.Contains(TestoRicerca) ||
+					TestoRicerca=="").Select(a => new FatturaRigaItem
 					{
-						ID = a.ID.ToString(),
+						ID = a.ID,
 						CodiceArt = a.CodiceArticoloOld,
 						RigaDescrizione = a.Descrizione,
 						Entity = a,
@@ -196,18 +204,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 		}
 
-		private void RiselezionaSelezionato()
-		{
-			var item = (FatturaRiga)SelectedItem;
-			EventAggregator.Instance().Publish<UpdateList<FatturaRiga>>(new UpdateList<FatturaRiga>());
-			EventAggregator.Instance().Publish<ItemSelected<FatturaRigaItem, FatturaRiga>>(
-				new ItemSelected<FatturaRigaItem, FatturaRiga>(new FatturaRigaItem()
-				{
-					ID = item.ID.ToString(),
-					Entity = item
-				}));
-		}
-
+		 
 		private void Save(Save<FatturaRiga> obj)
 		{
 			using (var saveManager = new SaveEntityManager())
@@ -225,7 +222,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 					uof.FattureRigheRepository.Add((FatturaRiga)SelectedItem);
 				}
 
-				if (saveManager.SaveEntity(""))
+				if (saveManager.SaveEntity(enSaveOperation.OpSave))
 				{
 					RiselezionaSelezionato();
 				}

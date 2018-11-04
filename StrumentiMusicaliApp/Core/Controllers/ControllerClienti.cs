@@ -108,7 +108,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 						TestoRicerca=="" 
 					).ToList().Select(a => new ClientiItem(a)
 					{
-						ID = a.ID.ToString(), 
+						ID = a.ID, 
 						Entity = a,
 						 
 					}).OrderBy(a => a.RagioneSociale).ToList();
@@ -137,17 +137,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 		}
 
 		 
-		private void RiselezionaSelezionato()
-		{
-			var item = (Cliente)SelectedItem;
-			EventAggregator.Instance().Publish<UpdateList<Cliente>>(new UpdateList<Cliente>());
-			EventAggregator.Instance().Publish<ItemSelected<ClientiItem, Cliente>>(
-				new ItemSelected<ClientiItem, Cliente>(new ClientiItem()
-				{
-					ID = item.ID.ToString(),
-					Entity = item
-				}));
-		}
 
 		private void Save(Save<Cliente> obj)
 		{

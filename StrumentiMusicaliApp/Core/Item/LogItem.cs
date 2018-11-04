@@ -14,7 +14,7 @@ namespace StrumentiMusicali.App.Core.Item
 		public LogItem(EventLog eventLog)
 			: base()
 		{
-			ID = eventLog.ID.ToString();
+			ID = eventLog.ID;
 
 			if (eventLog.TipoEvento == "Error")
 			{

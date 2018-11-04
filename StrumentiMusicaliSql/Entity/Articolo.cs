@@ -26,10 +26,7 @@ namespace StrumentiMusicali.Library.Entity
 
 		public enCondizioneArticolo Condizione { get; set; } = enCondizioneArticolo.Nuovo;
 
-		[Key]
-		[MaxLength(50), Required]
-		public string ID { get; set; }
-
+ 
 		public bool ImmaginiDaCaricare { get; set; } = true;
 
 		[MaxLength(100)]

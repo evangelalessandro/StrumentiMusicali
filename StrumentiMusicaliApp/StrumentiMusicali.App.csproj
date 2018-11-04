@@ -355,9 +355,6 @@
       <DependentUpon>BaseGridViewGeneric.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\Events\Generics\ItemSelected.cs" />
-    <Compile Include="View\FattureRighe\FattureRigheDetailView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="View\FattureRighe\FattureRigheListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -393,6 +390,8 @@
     <Compile Include="View\Utility\MySortableBindingList.cs" />
     <Compile Include="View\Utility\UtilityView.cs" />
     <Compile Include="View\Utility\OrdinaTab.cs" />
+    <None Include="Resources\Close_48.png" />
+    <None Include="Resources\Save_Close.png" />
     <None Include="Resources\Customer_48.png" />
     <None Include="Resources\Print_48.png" />
     <None Include="Resources\ImmagineMancante.png" />
@@ -436,9 +435,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\BaseControl\BaseGridViewGeneric.resx">
       <DependentUpon>BaseGridViewGeneric.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\FattureRighe\FattureRigheDetailView.resx">
-      <DependentUpon>FattureRigheDetailView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\ArticoliListView.resx">
       <DependentUpon>ArticoliListView.cs</DependentUpon>

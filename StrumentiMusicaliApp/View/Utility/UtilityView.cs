@@ -1,6 +1,8 @@
 ﻿using DevExpress.XtraEditors;
 using StrumentiMusicali.App.Core.Item.Base;
 using StrumentiMusicali.App.CustomComponents;
+using StrumentiMusicali.App.View.BaseControl.ElementiDettaglio;
+using StrumentiMusicali.Library.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,7 +24,7 @@ namespace StrumentiMusicali.App.View.Utility
 			return default(T);
 		}
 
-		public static async Task SelezionaRiga(this DataGridView dataGrid, string idItem)
+		public static async Task SelezionaRiga(this DataGridView dataGrid, int idItem)
 		{
 			for (int i = 0; i < dataGrid.RowCount; i++)
 			{
@@ -51,7 +53,7 @@ namespace StrumentiMusicali.App.View.Utility
 			}
 		}
 
-		public static void SetDataBind(Control parentControl, object businessObject)
+		public static void SetDataBind(Control parentControl, CustomUIViewAttribute attribute,object businessObject)
 		{
 			FixDateNull(businessObject);
 			parentControl.InvokeIfRequired((b) =>
@@ -91,7 +93,7 @@ namespace StrumentiMusicali.App.View.Utility
 						}
 						else if (cnt is DateEdit)
 						{
-							InitDate(cnt as DateEdit);
+							InitDate(cnt as DateEdit, attribute);
 							cnt.DataBindings.Add("DateTime", businessObject, item.Name, true);
 						}
 						else if (cnt is LookUpEdit)
@@ -103,21 +105,45 @@ namespace StrumentiMusicali.App.View.Utility
 			});
 		}
 
-		private static void InitDate(DateEdit de)
+		private static void InitDate(DateEdit de, Library.Core.CustomUIViewAttribute attribute)
 		{
 			de.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
 
 			de.Properties.NullDate = DateTime.MinValue;
 
 			de.Properties.NullText = "<Vuoto>";
-			//string DatasDateTimeFormat = "dd.MM.yyyy HH:mm:ss";
+			if (attribute != null)
+			{
 
-			//de.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-			//de.Properties.DisplayFormat.FormatString = DatasDateTimeFormat;
+				if (attribute.DateTimeView)
+				{
+					string sDateTimeFormat = "dd.MM.yyyy HH:mm:ss";
+					SetDateFormat(de, sDateTimeFormat);
+				}
 
-			//de.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-			//de.Properties.EditFormat.FormatString = DatasDateTimeFormat;
-			//de.Properties.EditMask = DatasDateTimeFormat;
+				if (attribute.TimeView)
+				{
+					string sDateTimeFormat = "HH:mm:ss";
+					SetDateFormat(de, sDateTimeFormat);
+				}
+
+				if (attribute.DateView)
+				{
+					string sDateTimeFormat = "dd.MM.yyyy";
+					SetDateFormat(de, sDateTimeFormat);
+				}
+			}
+
+		}
+
+		private static void SetDateFormat(DateEdit de, string DatasDateTimeFormat)
+		{
+			de.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+			de.Properties.DisplayFormat.FormatString = DatasDateTimeFormat;
+
+			de.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+			de.Properties.EditFormat.FormatString = DatasDateTimeFormat;
+			de.Properties.EditMask = DatasDateTimeFormat;
 		}
 
 		public static void FixDateNull(object entity)

@@ -2,6 +2,6 @@
 {
 	public class BaseItemID
 	{
-		public string ID { get; set; }
+		public int ID { get; set; }
 	}
 }

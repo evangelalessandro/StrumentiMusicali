@@ -357,7 +357,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 
 		private class GiacenzaArt
 		{
-			public string ArticoloId { get; set; }
+			public int ArticoloId { get; set; }
 			public int Giacenza { get; set; }
 		}
 	}

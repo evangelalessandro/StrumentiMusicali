@@ -7,11 +7,7 @@ namespace StrumentiMusicali.Library.Entity
 {
 	public class FotoArticolo : BaseEntity
 	{
-		[Key]
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public Guid ID { get; set; }
-
-		public string ArticoloID { get; set; }
+		public int ArticoloID { get; set; }
 
 		public virtual Articolo Articolo { get; set; }
 

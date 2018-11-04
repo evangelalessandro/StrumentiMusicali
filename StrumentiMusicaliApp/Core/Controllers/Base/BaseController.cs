@@ -19,8 +19,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 	{
 		internal readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 		internal readonly string _PathSetting = Path.Combine(Application.StartupPath, @"settings.json");
-		public const string TagCerca = "CERCA";
-
+		
 		public BaseController()
 		{
 		}
@@ -233,10 +232,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 						(button as INotifyPropertyChanged) .PropertyChanged += (a, e) =>
 						{
-							rbButton.Enabled = button.Enabled;
-							rbButton.Visible = button.Visible;
-							rbButton.Checked = button.Checked;
+							UpdateButton(button, rbButton);
 						};
+						UpdateButton(button, rbButton);
+
 						rbButton.LargeImage = button.Immagine;
 						rbPannel.Items.Add(rbButton);
 						rbButton.Click += (e, a) =>
@@ -248,6 +247,13 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			}
 
 			return ribbon1;
+		}
+
+		private static void UpdateButton(MenuRibbon.RibbonMenuButton button, RibbonButton rbButton)
+		{
+			rbButton.Enabled = button.Enabled;
+			rbButton.Visible = button.Visible;
+			rbButton.Checked = button.Checked;
 		}
 
 		private void SavSettingForm(enAmbienti ambiente, Form frm)

@@ -84,5 +84,11 @@ namespace StrumentiMusicali.App.Core.MenuRibbon
 			Tabs.Add(tab);
 			return tab;
 		}
+
+		public const string TagCerca = "CERCA";
+		public const string TagAdd = "ADD";
+		public const string TagRemove = "Remove";
+		public const string TagEdit = "Edit";
+
 	}
 }

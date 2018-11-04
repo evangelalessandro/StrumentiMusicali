@@ -34,7 +34,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 							return;
 						}
 						uof.EventLogRepository.Delete(sel);
-						if (!saveEntity.SaveEntity(operation: enSaveOperation.OpDelete))
+						if (saveEntity.SaveEntity(operation: enSaveOperation.OpDelete))
 						{
 							EventAggregator.Instance().Publish<UpdateList<EventLog>>(new UpdateList<EventLog>());
 

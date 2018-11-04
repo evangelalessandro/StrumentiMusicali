@@ -153,12 +153,18 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			var tabArticoli = _menuTab.Add(TestoAmbiente(AmbienteMenu));
 			var panelComandiArticoli = tabArticoli.Add("Comandi");
 			var ribCreArt = panelComandiArticoli.Add("Crea", Properties.Resources.Add);
+			ribCreArt.Tag = MenuTab.TagAdd;
+
 			ribEditArt = panelComandiArticoli.Add(@"Vedi\Modifica", Properties.Resources.Edit,true);
+			ribEditArt.Tag = MenuTab.TagEdit;
+
 			ribDeleteArt = panelComandiArticoli.Add("Cancella", Properties.Resources.Delete, true);
+			ribDeleteArt.Tag = MenuTab.TagRemove;
+
 			//ribDuplicaArt = panelComandiArticoli.Add("Duplica", Properties.Resources.Duplicate);
 			var panelComandiArticoliCerca = tabArticoli.Add("Cerca");
 			ribCercaArticolo = panelComandiArticoliCerca.Add("Cerca", Properties.Resources.Find);
-			ribCercaArticolo.Tag = TagCerca;
+			ribCercaArticolo.Tag = MenuTab.TagCerca;
 
 			ribCreArt.Click += (a, e) =>
 			{

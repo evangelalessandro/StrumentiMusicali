@@ -341,9 +341,6 @@
     <Compile Include="View\LogView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\LogView.Designer.cs">
-      <DependentUpon>LogView.cs</DependentUpon>
-    </Compile>
     <Compile Include="View\Settings\GenericSettingView.cs">
       <SubType>UserControl</SubType>
     </Compile>

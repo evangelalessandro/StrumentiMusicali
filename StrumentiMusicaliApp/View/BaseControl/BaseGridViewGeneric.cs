@@ -250,7 +250,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 				menu.Enabled = !(dgvRighe.DataSource == null);
 
 				menu.ApplyValidation(dgvRighe.SelectedRows.Count > 0);
-				foreach (var item in menu.ItemByTag(BaseController.TagCerca))
+				foreach (var item in menu.ItemByTag(MenuTab.TagCerca))
 				{
 					item.Checked = pnlCerca.Visible;
 				}

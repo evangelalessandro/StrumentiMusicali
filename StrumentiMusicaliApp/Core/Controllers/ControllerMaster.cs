@@ -19,8 +19,7 @@ namespace StrumentiMusicali.App.Core
 		private ControllerArticoli _controllerArticoli;
 		private ControllerImmagini _controllerImmagini;
 		private ControllerMagazzino _controllerMagazzino;
-		private ControllerFatturazione _controllerFatturazione;
-
+		 
 		public ControllerMaster()
 			: base()
 		{
@@ -28,8 +27,7 @@ namespace StrumentiMusicali.App.Core
 			_controllerArticoli = new ControllerArticoli();
 			_controllerImmagini = new ControllerImmagini();
 			_controllerMagazzino = new ControllerMagazzino();
-			_controllerFatturazione = new ControllerFatturazione();
-
+			 
 			EventAggregator.Instance().Subscribe<ApriAmbiente>(Apri);
 
 			Application.ThreadException += Application_ThreadException;
@@ -53,6 +51,16 @@ namespace StrumentiMusicali.App.Core
 						this.ShowView(view, obj.TipoEnviroment);
 					}
 
+					break;
+
+				case enAmbienti.FattureList:
+					using (var controllerFatt=new ControllerFatturazione())
+					{
+							using (var view = new FattureListView(controllerFatt, enAmbienti.FattureList, enAmbienti.Fattura))
+							{
+								ShowView(view, Settings.enAmbienti.FattureList);
+							}
+					}
 					break;
 				case enAmbienti.LogView:
 					using (var controller = new ControllerLog())
@@ -182,9 +190,7 @@ namespace StrumentiMusicali.App.Core
 
 		~ControllerMaster()
 		{
-			_controllerFatturazione.Dispose();
-			_controllerFatturazione = null;
-			_controllerArticoli.Dispose();
+			 _controllerArticoli.Dispose();
 			_controllerArticoli = null;
 			_controllerImmagini.Dispose();
 			_controllerImmagini = null;

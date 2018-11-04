@@ -21,6 +21,7 @@ namespace StrumentiMusicali.App.View
 		public ArticoliListView(ControllerArticoli controller)
 			: base(controller)
 		{
+			controller.ResetMenu();
 			onEditItemShowView += ((a, b) =>
 			{ b.Cancel = true; });
 		}

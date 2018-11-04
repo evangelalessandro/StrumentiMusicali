@@ -1,5 +1,4 @@
-﻿using PropertyChanged;
-using StrumentiMusicali.App.Core.Controllers.Base;
+﻿using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Controllers.FatturaElett;
 using StrumentiMusicali.App.Core.Controllers.Fatture;
 using StrumentiMusicali.App.Core.Controllers.Stampa;
@@ -14,31 +13,43 @@ using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-	public class ControllerFatturazione : BaseControllerGeneric<Fattura, FatturaItem>
+	public class ControllerFatturazione : BaseControllerGeneric<Fattura, FatturaItem>, IDisposable
 	{
 
 		public ControllerFatturazione() :
 			base(enAmbienti.FattureList, enAmbienti.Fattura)
 		{
-			EventAggregator.Instance().Subscribe<ImportaFattureAccess>(ImportaFatture);
-			EventAggregator.Instance().Subscribe<ApriAmbiente>(ApriAmbiente);
-			EventAggregator.Instance().Subscribe<Add<Fattura>>(AddFattura);
-			EventAggregator.Instance().Subscribe<Edit<Fattura>>(FatturaEdit);
-			EventAggregator.Instance().Subscribe<Save<Fattura>>(Save);
+			_sub1 = EventAggregator.Instance().Subscribe<ImportaFattureAccess>(ImportaFatture);
+			_sub2 = EventAggregator.Instance().Subscribe<Add<Fattura>>(AddFattura);
+			_sub3 = EventAggregator.Instance().Subscribe<Edit<Fattura>>(FatturaEdit);
+			_sub4 = EventAggregator.Instance().Subscribe<Save<Fattura>>(Save);
+			_sub5 = EventAggregator.Instance().Subscribe<Remove<Fattura>>(DelFattura);
 
-			EventAggregator.Instance().Subscribe<Remove<Fattura>>(DelFattura);
 			///comando di stampa
 			AggiungiComandi();
 		}
+		Subscription<Remove<Fattura>> _sub5;
+		Subscription<Save<Fattura>> _sub4;
+		Subscription<Edit<Fattura>> _sub3;
+		Subscription<Add<Fattura>> _sub2;
+		Subscription<ImportaFattureAccess> _sub1;
+		public new void Dispose()
+		{
+			EventAggregator.Instance().UnSbscribe(_sub1);
+			EventAggregator.Instance().UnSbscribe(_sub2);
+			EventAggregator.Instance().UnSbscribe(_sub3);
+			EventAggregator.Instance().UnSbscribe(_sub4);
+			EventAggregator.Instance().UnSbscribe(_sub5);
 
-		 
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
 		private void Save(Save<Fattura> obj)
 		{
 			using (var saveManager = new SaveEntityManager())
@@ -54,7 +65,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 				if (EditItem.ID > 0)
 				{
-					EditItem=CalcolaTotali(EditItem);
+					EditItem = CalcolaTotali(EditItem);
 					uof.FatturaRepository.Update(EditItem);
 				}
 				else
@@ -212,7 +223,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				List<FatturaRiga> righeFatt = fattItem.RigheFattura.ToList();
 				decimal importoIvaTot = 0;
 				decimal imponibileIVaTot = 0;
- 
+
 				foreach (var item in righeFatt.Where(a => a.Importo > 0 && a.IvaApplicata.Length > 0).GroupBy(a => a.IvaApplicata).OrderBy(a => a.Key))
 				{
 					var imponibileIva = item.Select(a => a.Importo).DefaultIfEmpty(0).Sum();
@@ -225,15 +236,15 @@ namespace StrumentiMusicali.App.Core.Controllers
 					importoIvaTot += importoIva;
 					imponibileIVaTot += imponibileIva;
 				}
-				fattura.TotaleIva= (importoIvaTot);
-				fattura.ImponibileIva =(imponibileIVaTot);
-				fattura.TotaleFattura=(imponibileIVaTot + importoIvaTot);
+				fattura.TotaleIva = (importoIvaTot);
+				fattura.ImponibileIva = (imponibileIVaTot);
+				fattura.TotaleFattura = (imponibileIVaTot + importoIvaTot);
 				return fattura;
 			}
 		}
 		private void ImpostaQuadroIVa()
 		{
-			
+
 		}
 		private void GeneraFatturaXml(Fattura selectedItem)
 		{
@@ -276,7 +287,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 							else if (fatt.Fattura.Pagamento.ToUpperInvariant().Contains("CONTRASSEGNO".ToUpperInvariant()))
 								header.ModalitaPagamento = enTipoPagamento.Contanti;
 							header.Data = fatt.Fattura.Data;
-							header.ImportoTotaleDocumento= fatt.Fattura.TotaleFattura;
+							header.ImportoTotaleDocumento = fatt.Fattura.TotaleFattura;
 
 							stampa.FattureList.Add(header);
 							stampa.ScriviFattura(fatt.Fattura.ID);

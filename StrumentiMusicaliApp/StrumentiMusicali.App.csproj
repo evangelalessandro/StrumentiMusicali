@@ -495,7 +495,9 @@
     <Folder Include="Core\Events\Base\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="References\System.Windows.Forms.Ribbon.dll" />
+    <Content Include="References\System.Windows.Forms.Ribbon.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\Apri_Fatturazione.png" />
     <None Include="Resources\Fatture_48.png" />
     <None Include="Resources\warning_64.png" />

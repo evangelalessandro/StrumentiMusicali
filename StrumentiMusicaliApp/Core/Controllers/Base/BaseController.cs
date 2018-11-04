@@ -64,26 +64,26 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 				SavSettingForm(ambiente, frm);
 
-				if (ribbon1!=null)
-				{
-					foreach (var itemTab in ribbon1.Tabs.ToList())
-					{
-						foreach (var itemPnl in itemTab.Panels.ToList())
-						{
-							foreach (var itemButt in itemPnl.Items.ToList())
-							{
-								itemPnl.Items.Remove(itemButt);
-								itemButt.Dispose();
-							}
-							itemTab.Panels.Remove(itemPnl);
-							itemPnl.Dispose();
-						}
-						ribbon1.Tabs.Remove(itemTab);
-						itemTab.Dispose();
-					}
-					ribbon1.Dispose();
+				//if (ribbon1!=null)
+				//{
+				//	foreach (var itemTab in ribbon1.Tabs.ToList())
+				//	{
+				//		foreach (var itemPnl in itemTab.Panels.ToList())
+				//		{
+				//			foreach (var itemButt in itemPnl.Items.ToList())
+				//			{
+				//				itemPnl.Items.Remove(itemButt);
+				//				itemButt.Dispose();
+				//			}
+				//			itemTab.Panels.Remove(itemPnl);
+				//			itemPnl.Dispose();
+				//		}
+				//		ribbon1.Tabs.Remove(itemTab);
+				//		itemTab.Dispose();
+				//	}
+				//	ribbon1.Dispose();
 
-				}
+				//}
 			}
 		}
 
@@ -251,7 +251,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			ribbon1.OrbDropDown.Size = new System.Drawing.Size(527, 447);
 			ribbon1.OrbDropDown.TabIndex = 0;
 			ribbon1.OrbDropDown.Visible = false;
-			ribbon1.OrbStyle = System.Windows.Forms.RibbonOrbStyle.Office_2010;
+			ribbon1.OrbStyle = System.Windows.Forms.RibbonOrbStyle.Office_2007;
 			//
 			//
 			//

@@ -132,6 +132,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		}
 		private MenuTab _menuTab = null;
 
+		public void ResetMenu()
+		{
+			_menuTab = null;
+		}
+
 		public MenuTab GetMenu()
 		{
 			if (_menuTab == null)

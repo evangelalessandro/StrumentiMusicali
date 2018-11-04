@@ -154,12 +154,13 @@ namespace StrumentiMusicali.App.View.BaseControl
 			if (disposing && (components != null))
 			{
 				// free managed resources
-				EventAggregator.Instance().UnSbscribe(_selectSub);
-				EventAggregator.Instance().UnSbscribe(viewRicerca);
-				EventAggregator.Instance().UnSbscribe(_subEdit);
-
+				
 				components.Dispose();
 			}
+			EventAggregator.Instance().UnSbscribe(_selectSub);
+			EventAggregator.Instance().UnSbscribe(viewRicerca);
+			EventAggregator.Instance().UnSbscribe(_subEdit);
+
 			base.Dispose(disposing);
 		}
 

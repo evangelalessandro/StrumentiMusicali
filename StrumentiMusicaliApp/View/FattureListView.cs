@@ -21,6 +21,7 @@ namespace StrumentiMusicali.App.View
 		public	FattureListView(ControllerFatturazione controller, enAmbienti ambienteLista,enAmbienti ambienteDettaglio)
 			:base(controller)
 		{
+			controller.ResetMenu();
 			this.onEditItemShowView += FattureListView_onEditItemShowView;
 		}
 

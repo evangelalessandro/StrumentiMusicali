@@ -4,6 +4,7 @@ using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.BaseControl;
+using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
@@ -15,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace StrumentiMusicali.App.View
 {
-	public partial class ScaricoMagazzino : BaseDataControl, IMenu
+	public partial class ScaricoMagazzino : BaseDataControl, IMenu, ICloseSave
 	{
 		private ControllerMagazzino _controllerMagazzino;
 
@@ -72,7 +73,10 @@ namespace StrumentiMusicali.App.View
 		private void AggiungiComandi()
 		{
 			var tabArticoli = _menuTab.Add("Principale");
+
 			var panelComandiArticoli = tabArticoli.Add("Comandi");
+			UtilityView.AddButtonSaveAndClose(panelComandiArticoli, this, false);
+
 			ribCarica = panelComandiArticoli.Add("Carica", Properties.Resources.Add);
 			ribCarica.Click += (a, e) =>
 			{
@@ -100,6 +104,10 @@ namespace StrumentiMusicali.App.View
 		}
 		RibbonMenuButton ribCarica;
 		RibbonMenuButton ribScarica;
+
+		public event EventHandler<EventArgs> OnSave;
+		public event EventHandler<EventArgs> OnClose;
+
 		private void RefreshData(MovimentiUpdate obj)
 		{
 			lblTitoloArticolo.ForeColor = System.Drawing.Color.Red;
@@ -184,6 +192,17 @@ namespace StrumentiMusicali.App.View
 			{
 				ExceptionManager.ManageError(ex);
 			}
+		}
+
+		public void RaiseSave()
+		{
+			 
+		}
+
+		public void RaiseClose()
+		{
+			if (OnClose == null)
+				OnClose(this, new EventArgs());
 		}
 	}
 }

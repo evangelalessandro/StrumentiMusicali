@@ -11,27 +11,25 @@ using System.Linq;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-	public class ControllerMagazzino : BaseController
+	public class ControllerMagazzino : BaseController, IDisposable
 	{
 		public MovimentoMagazzino SelectedItem { get; set; } = new MovimentoMagazzino();
-
+		Subscription<ScaricaQtaMagazzino> sub1;
+		Subscription<CaricaQtaMagazzino> sub2;
 		public ControllerMagazzino()
 			: base()
 		{
-			EventAggregator.Instance().Subscribe<ApriAmbiente>((a) =>
-		   {
-			   if (a.TipoEnviroment == enAmbienti.ScaricoMagazzino)
-			   {
-				   using (var view = new View.ScaricoMagazzino(this))
-				   {
-					   this.ShowView(view, Settings.enAmbienti.ScaricoMagazzino);
-				   }
-			   }
-		   });
-			EventAggregator.Instance().Subscribe<ScaricaQtaMagazzino>(ScaricaMagazzino);
-			EventAggregator.Instance().Subscribe<CaricaQtaMagazzino>(CaricaMagazzino);
-		}
 
+			sub1 =	EventAggregator.Instance().Subscribe<ScaricaQtaMagazzino>(ScaricaMagazzino);
+			sub2  =EventAggregator.Instance().Subscribe<CaricaQtaMagazzino>(CaricaMagazzino);
+		}
+		public new void Dispose()
+		{
+			base.Dispose();
+			EventAggregator.Instance().UnSbscribe(sub1);
+			EventAggregator.Instance().UnSbscribe(sub2);
+
+		}
 		internal System.Collections.Generic.List<DepositoItem> ListDepositi()
 		{
 			using (var uof = new UnitOfWork())

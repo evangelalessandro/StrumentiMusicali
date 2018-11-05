@@ -11,10 +11,12 @@ using System.Linq;
 
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using StrumentiMusicali.App.View.Interfaces;
+using StrumentiMusicali.App.View.Utility;
 
 namespace StrumentiMusicali.App.View.BaseControl
 {
-	public class SettingBaseView : BaseDataControl, IMenu
+	public class SettingBaseView : BaseDataControl, IMenu, ICloseSave
 	{
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
 	 
@@ -22,7 +24,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			: base()
 		{
 			InitializeComponent();
-
+			this.MinimumSize = new System.Drawing.Size(700, 0700);
 			this.Paint += SettingBaseView_Paint;
 		}
 
@@ -37,10 +39,13 @@ namespace StrumentiMusicali.App.View.BaseControl
 				System.Drawing.Color.LightBlue, System.Drawing.Drawing2D.LinearGradientMode.Horizontal);
 
 			graphics.FillRectangle(b, gradient_rectangle);
+			//this.Paint -= SettingBaseView_Paint;
 		}
 
 		public void BindProp(object objToBind, string prefixText)
 		{
+			this.SuspendLayout();
+			flowLayoutPanel1.SuspendLayout();
 			foreach (var item in Utility.UtilityView.GetProperties(objToBind).OrderBy(a=>
 			{
 				var sel = (CustomUIViewAttribute)a.GetCustomAttributes(typeof(CustomUIViewAttribute), true).FirstOrDefault();
@@ -112,6 +117,9 @@ namespace StrumentiMusicali.App.View.BaseControl
 					BindObj(item, newControl, objToBind, widthAttr);
 				}
 			}
+			flowLayoutPanel1.ResumeLayout();
+			this.ResumeLayout();
+			
 		}
 
 		private void BindObj(System.Reflection.PropertyInfo item, EDBase controlBase, object objToBind, CustomUIViewAttribute attribute)
@@ -254,39 +262,31 @@ namespace StrumentiMusicali.App.View.BaseControl
 		}
 
 		private MenuTab _menuTab = null;
+
+		
 		private void AggiungiComandi()
 		{
 			var tabArticoli = _menuTab.Add("Principale");
-			var panelComandiArticoli = tabArticoli.Add("Comandi");
-			var rib1 = panelComandiArticoli.Add("Salva", Properties.Resources.Save);
-
-			rib1.Click += (a, e) =>
-			{
-				if (OnSave != null)
-					OnSave(this, new EventArgs());
-			};
-			var rib2 = panelComandiArticoli.Add("Salva e chiudi", Properties.Resources.Save_Close);
-
-			rib2.Click += (a, e) =>
-			{
-				if (OnSave != null)
-					OnSave(this, new EventArgs());
-
-				if (OnClose != null)
-					OnClose(this, new EventArgs());
-			};
-			var rib3 = panelComandiArticoli.Add("Chiudi", Properties.Resources.Close_48);
-
-			rib3.Click += (a, e) =>
-			{
-				if (OnClose != null)
-					OnClose(this, new EventArgs());
-			};
+			var pnl = tabArticoli.Add("Comandi");
+			UtilityView.AddButtonSaveAndClose(pnl,this);
 		}
 		public event EventHandler<EventArgs> OnSave;
 		public event EventHandler<EventArgs> OnClose;
 
+		public void RaiseSave()
+		{
+			if (OnSave != null)
+			{
+				OnSave(this, new EventArgs());
+			}
+		}
 
-
+		public void RaiseClose()
+		{
+			if (OnClose!=null)
+			{
+				OnClose(this, new EventArgs());
+			}
+		}
 	}
 }

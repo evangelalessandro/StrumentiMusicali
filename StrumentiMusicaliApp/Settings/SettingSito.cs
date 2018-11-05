@@ -1,4 +1,5 @@
 ﻿using StrumentiMusicali.App.Core;
+using StrumentiMusicali.Library.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,14 +29,16 @@ namespace StrumentiMusicali.App.Settings
 		public bool CheckFolderImmagini()
 		{
 			var item = CartellaLocaleImmagini;
+			var act = new Action(() => EventAggregator.Instance().Publish(new Core.Events.Generics.ApriAmbiente(enAmbienti.SettingSito)));
 			if (string.IsNullOrEmpty(item))
 			{
-				MessageManager.NotificaWarnig("Occorre impostare la cartella per le immagini in locale!");
+				MessageManager.NotificaWarnig("Occorre impostare la cartella per le immagini in locale! " + Environment.NewLine + "Clicca per settare.", act);
 				return false;
 			}
 			if (!Directory.Exists(item))
 			{
-				MessageManager.NotificaWarnig(string.Format("La cartella per le immagini in locale specificata {0} non esiste o non è raggiungibile!", item));
+				MessageManager.NotificaWarnig(string.Format("La cartella per le immagini in locale specificata {0} non esiste o non è raggiungibile!" 
+					+ Environment.NewLine + "Clicca per settare.", item), act);
 				return false;
 			}
 			return true;

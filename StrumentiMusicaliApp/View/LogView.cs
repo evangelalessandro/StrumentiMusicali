@@ -11,6 +11,8 @@ using StrumentiMusicali.Library.Entity;
 using System;
 using System.Windows.Forms;
 using System.Linq;
+using StrumentiMusicali.App.View.Interfaces;
+
 namespace StrumentiMusicali.App.View
 {
 	public partial class LogView : BaseGridViewGeneric<LogItem, ControllerLog, EventLog>, IMenu

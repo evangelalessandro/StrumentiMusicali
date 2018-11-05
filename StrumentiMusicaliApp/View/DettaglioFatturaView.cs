@@ -1,6 +1,7 @@
 ﻿using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.MenuRibbon;
+using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
@@ -17,7 +18,7 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View
 {
-	public partial class DettaglioFatturaView : UserControl, IMenu
+	public partial class DettaglioFatturaView : UserControl, IMenu,ICloseSave
 	{
 		private ControllerFatturazione _controllerFatturazione;
 
@@ -200,6 +201,27 @@ namespace StrumentiMusicali.App.View
 		private MenuTab _menuTab = null;
 		private RibbonMenuPanel ribPannelRighe = null;
 
+		public event EventHandler<EventArgs> OnSave;
+		public event EventHandler<EventArgs> OnClose;
+
+		public void RaiseSave()
+		{
+			this.Validate();
+			EventAggregator.Instance().Publish<Save<Fattura>>(
+				new Save<Fattura>());
+
+			txtID.Text = _controllerFatturazione.SelectedItem.ID.ToString();
+			UpdateButtonState();
+		}
+
+		public void RaiseClose()
+		{
+			if (OnClose != null)
+			{
+				OnClose(this, new EventArgs());
+			}
+		}
+
 		public MenuTab GetMenu()
 		{
 			if (_menuTab == null)
@@ -208,7 +230,7 @@ namespace StrumentiMusicali.App.View
 
 				var tab = _menuTab.Add("Principale");
 				var ribPannel = tab.Add("Principale");
-				var ribSave = ribPannel.Add("Save", Properties.Resources.Save);
+				UtilityView.AddButtonSaveAndClose(ribPannel, this);
 				ribPannelRighe = tab.Add("Righe");
 				ribPannelRighe.Add("Aggiungi", Properties.Resources.Add).Click += (a, b) =>
 				{
@@ -232,22 +254,14 @@ namespace StrumentiMusicali.App.View
 							new RemovePriority<FatturaRiga>());
 					};
 
-				ribSave.Click += (a, e) =>
-				{
-					this.Validate();
-					EventAggregator.Instance().Publish<Save<Fattura>>(
-						new Save<Fattura>());
 
-					txtID.Text = _controllerFatturazione.SelectedItem.ID.ToString();
-					UpdateButtonState();
-				};
-
-				var pnlStampa = tab.Add("Stampa");
-				var ribStampa = pnlStampa.Add("Avvia stampa", Properties.Resources.Print_48,true);
-				ribStampa.Click += (a, e) =>
-				{
-					_controllerFatturazione.StampaFattura(_controllerFatturazione.EditItem);
-				};
+				_controllerFatturazione.AggiungiComandiStampa(tab, true);
+				//var pnlStampa = tab.Add("Stampa");
+				//var ribStampa = pnlStampa.Add("Avvia stampa", Properties.Resources.Print_48,true);
+				//ribStampa.Click += (a, e) =>
+				//{
+				//	_controllerFatturazione.StampaFattura(_controllerFatturazione.EditItem);
+				//};
 
 				var pnl2 = tab.Add("Totali");
 				var rib01 = pnl2.Add("Aggiorna totali", Properties.Resources.Totali_Aggiorna_48,true);

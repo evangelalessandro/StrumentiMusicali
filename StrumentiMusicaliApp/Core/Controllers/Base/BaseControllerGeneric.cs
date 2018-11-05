@@ -4,6 +4,7 @@ using StrumentiMusicali.App.Core.Item.Base;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
+using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
@@ -14,7 +15,7 @@ using System.ComponentModel;
 namespace StrumentiMusicali.App.Core.Controllers.Base
 {
 	[AddINotifyPropertyChangedInterface]
-	public abstract class BaseControllerGeneric<TEntity, TBaseItem> : BaseController, IMenu, IDisposable//, INotifyPropertyChanged
+	public abstract class BaseControllerGeneric<TEntity, TBaseItem> : BaseController, IMenu, IDisposable,ICloseSave //, INotifyPropertyChanged
 		where TEntity : BaseEntity, new()
 		where TBaseItem : BaseItem<TEntity>, new()
 	{
@@ -44,17 +45,12 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		public abstract void RefreshList(UpdateList<TEntity> obj);
 
 
-		public TEntity EditItem {
-			get => _editItem;
-			set { _editItem = value;
-				
-			}
+		public TEntity EditItem { get; set; } = new TEntity();
 
-		} 
+	  
 		private Subscription<UpdateList<TEntity>> _updateList;
 		private Subscription<ItemSelected<TBaseItem, TEntity>> _selectItemSub;
-
-		//		public event PropertyChangedEventHandler PropertyChanged;
+		 
 
 		public void Init()
 		{
@@ -132,10 +128,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		}
 		private MenuTab _menuTab = null;
 
-		public void ResetMenu()
-		{
-			_menuTab = null;
-		}
+	 
 
 		public MenuTab GetMenu()
 		{
@@ -148,14 +141,15 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			}
 			return _menuTab;
 		}
-		private RibbonMenuButton ribCercaArticolo;
+		private RibbonMenuButton ribCerca;
 
-		private RibbonMenuButton ribDeleteArt;
+		private RibbonMenuButton ribDelete;
+		 
 
-		//private RibbonMenuButton ribDuplicaArt;
+		private RibbonMenuButton ribEdit;
 
-		private RibbonMenuButton ribEditArt;
-		private TEntity _editItem = new TEntity();
+		public event EventHandler<EventArgs> OnSave;
+		public event EventHandler<EventArgs> OnClose;
 
 		public enAmbienti AmbienteMenu { get; set; }
 
@@ -163,38 +157,43 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		{
 
 			var tabArticoli = _menuTab.Add(TestoAmbiente(AmbienteMenu));
-			var panelComandiArticoli = tabArticoli.Add("Comandi");
-			var ribCreArt = panelComandiArticoli.Add("Crea", Properties.Resources.Add);
-			ribCreArt.Tag = MenuTab.TagAdd;
+			var panelComandi = tabArticoli.Add("Comandi");
+			UtilityView.AddButtonSaveAndClose(panelComandi, this, false);
 
-			ribEditArt = panelComandiArticoli.Add(@"Vedi\Modifica", Properties.Resources.Edit, true);
-			ribEditArt.Tag = MenuTab.TagEdit;
+			var ribCrea = panelComandi.Add("Crea", Properties.Resources.Add);
+			ribCrea.Tag = MenuTab.TagAdd;
 
-			ribDeleteArt = panelComandiArticoli.Add("Cancella", Properties.Resources.Delete, true);
-			ribDeleteArt.Tag = MenuTab.TagRemove;
+			ribEdit = panelComandi.Add(@"Vedi\Modifica", Properties.Resources.Edit, true);
+			ribEdit.Tag = MenuTab.TagEdit;
 
-			//ribDuplicaArt = panelComandiArticoli.Add("Duplica", Properties.Resources.Duplicate);
+			ribDelete = panelComandi.Add("Cancella", Properties.Resources.Delete, true);
+			ribDelete.Tag = MenuTab.TagRemove;
+			 
 			var panelComandiArticoliCerca = tabArticoli.Add("Cerca");
-			ribCercaArticolo = panelComandiArticoliCerca.Add("Cerca", Properties.Resources.Find);
-			ribCercaArticolo.Tag = MenuTab.TagCerca;
+			ribCerca = panelComandiArticoliCerca.Add("Cerca", Properties.Resources.Find);
+			ribCerca.Tag = MenuTab.TagCerca;
 
-			ribCreArt.Click += (a, e) =>
+			ribCrea.Click += (a, e) =>
 			{
 				EventAggregator.Instance().Publish(new Add<TEntity>());
 			};
-			ribDeleteArt.Click += (a, e) =>
+			ribDelete.Click += (a, e) =>
 			{
 				EventAggregator.Instance().Publish(new Remove<TEntity>());
 			};
-			ribEditArt.Click += (a, e) =>
+			ribEdit.Click += (a, e) =>
 			{
 				EventAggregator.Instance().Publish(new Edit<TEntity>());
 			};
-			ribCercaArticolo.Click += (a, e) =>
+			ribCerca.Click += (a, e) =>
 			{
 				EventAggregator.Instance().Publish(new ViewRicerca<TEntity>());
 			};
 		}
 
+		public void RaiseSave() => OnSave(this, new EventArgs());
+
+
+		public void RaiseClose() => OnClose(this, new EventArgs());
 	}
 }

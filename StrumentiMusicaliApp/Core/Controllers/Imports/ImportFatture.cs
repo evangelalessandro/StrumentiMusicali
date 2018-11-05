@@ -454,7 +454,19 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 						cliente.BancaCab = int.Parse(datoR);
 					datoR = a["CAP"].ToString();
 					if (datoR != "")
+					{
+						try
+						{
+							if (datoR != "0")
+								datoR = int.Parse(datoR).ToString("00000");
+						}
+						catch 
+						{
+						}
+						
 						cliente.Indirizzo.Cap = datoR;
+					}
+						
 
 					listaClienti.Add(
 						 cliente

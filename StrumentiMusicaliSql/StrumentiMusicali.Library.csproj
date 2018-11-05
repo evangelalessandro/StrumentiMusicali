@@ -69,6 +69,7 @@
     <Compile Include="Entity\Articolo.cs" />
     <Compile Include="Entity\Base\BaseEntity.cs" />
     <Compile Include="Entity\Base\RigaDoc.cs" />
+    <Compile Include="Entity\FattureGenerateInvio.cs" />
     <Compile Include="Entity\Fatture\Cliente.cs" />
     <Compile Include="Entity\Deposito.cs" />
     <Compile Include="Entity\Categorie.cs" />

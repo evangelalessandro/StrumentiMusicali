@@ -1,15 +1,9 @@
 ﻿using StrumentiMusicali.App.Core.Controllers;
-using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Item;
-using StrumentiMusicali.App.Core.MenuRibbon;
-using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View.BaseControl;
-using StrumentiMusicali.App.View.Settings;
-using StrumentiMusicali.App.View.Utility;
-using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.Library.Entity;
 using System;
-using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View
@@ -34,8 +28,8 @@ namespace StrumentiMusicali.App.View
 
 		public override void FormatGrid()
 		{
-
-			dgvRighe.Columns["Entity"].Visible = false;
+			if (dgvRighe.Columns.Count>0)
+				dgvRighe.Columns["Entity"].Visible = false;
 			//dgvRighe.Columns["ID"].Visible = false;
 			dgvRighe.AutoResizeColumns();
 			//	dgvRighe.Columns["CodiceArt"].DisplayIndex = 0;

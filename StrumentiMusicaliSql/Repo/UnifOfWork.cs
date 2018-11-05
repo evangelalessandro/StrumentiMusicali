@@ -24,6 +24,19 @@ namespace StrumentiMusicali.Library.Repo
 			}
 		}
 
+		private Repository<FattureGenerateInvio> _FattureGenerateInvioRepository;
+
+		public IRepository<FattureGenerateInvio> FattureGenerateInvioRepository {
+			get {
+				if (_FattureGenerateInvioRepository == null)
+				{
+					_FattureGenerateInvioRepository = new Repository<FattureGenerateInvio>(dbContext);
+				}
+				return _FattureGenerateInvioRepository;
+			}
+		}
+		
+
 		private Repository<Deposito> _DepositoRepository;
 
 		public IRepository<Deposito> DepositoRepository {

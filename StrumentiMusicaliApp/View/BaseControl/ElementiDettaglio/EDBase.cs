@@ -22,6 +22,7 @@ namespace StrumentiMusicali.App.View.BaseControl.ElementiDettaglio
 			System.Drawing.Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(gradient_rectangle, System.Drawing.Color.AliceBlue,
 				System.Drawing.Color.LightBlue, System.Drawing.Drawing2D.LinearGradientMode.Vertical);
 			graphics.FillRectangle(b, gradient_rectangle);
+			//this.Paint -= SettingBaseView_Paint;
 		}
 
 		private void EDBase_Load(object sender, System.EventArgs e)

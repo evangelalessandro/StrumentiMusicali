@@ -8,6 +8,7 @@ using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
+using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
@@ -34,11 +35,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 			///comando di stampa
 			AggiungiComandi();
 		}
-		Subscription<Remove<Fattura>> _sub5;
-		Subscription<Save<Fattura>> _sub4;
-		Subscription<Edit<Fattura>> _sub3;
-		Subscription<Add<Fattura>> _sub2;
-		Subscription<ImportaFattureAccess> _sub1;
+
+		private Subscription<Remove<Fattura>> _sub5;
+		private Subscription<Save<Fattura>> _sub4;
+		private Subscription<Edit<Fattura>> _sub3;
+		private Subscription<Add<Fattura>> _sub2;
+		private Subscription<ImportaFattureAccess> _sub1;
 		public new void Dispose()
 		{
 			EventAggregator.Instance().UnSbscribe(_sub1);
@@ -140,16 +142,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 			ShowDettaglio();
 		}
 
-		private void ApriAmbiente(ApriAmbiente obj)
-		{
-			if (obj.TipoEnviroment == enAmbienti.FattureList)
-			{
-				using (var view = new FattureListView(this, enAmbienti.FattureList, enAmbienti.Fattura))
-				{
-					ShowView(view, Settings.enAmbienti.FattureList);
-				}
-			}
-		}
 
 		private void ImportaFatture(ImportaFattureAccess obj)
 		{
@@ -284,8 +276,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 								header.ModalitaPagamento = enTipoPagamento.Bonifico;
 							else if (fatt.Fattura.Pagamento.ToUpperInvariant().Contains("Contrassegno".ToUpperInvariant()))
 								header.ModalitaPagamento = enTipoPagamento.Contrassegno;
-							else if (fatt.Fattura.Pagamento.ToUpperInvariant().Contains("CONTRASSEGNO".ToUpperInvariant()))
+							else if (fatt.Fattura.Pagamento.ToUpperInvariant().Contains("Rimessa".ToUpperInvariant()))
 								header.ModalitaPagamento = enTipoPagamento.Contanti;
+							else
+							{
+								throw new MessageException("Tipo pagamento non gestito");
+							}
 							header.Data = fatt.Fattura.Data;
 							header.ImportoTotaleDocumento = fatt.Fattura.TotaleFattura;
 
@@ -315,20 +311,85 @@ namespace StrumentiMusicali.App.Core.Controllers
 		}
 		private void AggiungiComandi()
 		{
-			var pnlStampa = GetMenu().Tabs[0].Add("Stampa");
+
+			AggiungiComandiStampa(GetMenu().Tabs[0], false);
+		}
+
+		public void AggiungiComandiStampa(MenuRibbon.RibbonMenuTab tab, bool editItem)
+		{
+			var pnlStampa = tab.Add("Stampa");
+
 			var ribStampa = pnlStampa.Add("Avvia stampa", Properties.Resources.Print_48, true);
 			ribStampa.Click += (a, e) =>
 			{
-				StampaFattura((Fattura)SelectedItem);
+				if (editItem)
+					StampaFattura(EditItem);
+				else
+					StampaFattura(SelectedItem);
+
 			};
 
 			var ribStampaXml = pnlStampa.Add("Genera fattura xml", Properties.Resources.Fattura_xml_48, true);
 			ribStampaXml.Click += (a, e) =>
 			{
-				GeneraFatturaXml((Fattura)SelectedItem);
+
+				if (editItem)
+					GeneraFatturaXml(EditItem);
+				else
+					GeneraFatturaXml(SelectedItem);
+			};
+
+			var pnlCliente = tab.Add("Anagrafica cliente");
+			var ribCust = pnlCliente.Add("Visualizza cliente", Properties.Resources.Customer_48, true);
+			ribCust.Click += (x, e) =>
+			{
+				using (var controllerCl = new ControllerClienti())
+				{
+					using (var uof = new UnitOfWork())
+					{
+
+						var idFatt = 0;
+						if (editItem)
+							idFatt = (EditItem).ID;
+						else
+							idFatt = (SelectedItem).ID;
+
+						var cliente = uof.FatturaRepository.Find(a => a.ID == idFatt).Select(a => a.Cliente).First();
+						///impostato per la save.
+						controllerCl.EditItem = cliente;
+
+						//var frm = ViewFactory.GetView(enAmbienti.Cliente);
+						//if (frm == null)
+						{
+							var view = new GenericSettingView(cliente);
+							view.OnSave += (d, b) =>
+							{
+								view.Validate();
+								EventAggregator.Instance().Publish<Save<Cliente>>
+								(new Save<Cliente>());
+							};
+							ShowView(view, enAmbienti.Cliente,null,false);
+							ViewFactory.AddView(enAmbienti.Cliente,view);
+						}
+						//else
+						//{
+
+						//	frm.OnSave += (d, b) =>
+						//	{
+						//		frm.Validate();
+						//		EventAggregator.Instance().Publish<Save<Cliente>>
+						//		(new Save<Cliente>());
+						//	};
+						//	frm.Rebind(cliente);
+						//	ShowView(frm, enAmbienti.Cliente, null, false);
+						//	ViewFactory.AddView(enAmbienti.Cliente, frm);
+						//}
+
+					}
+				}
+
 			};
 		}
-
 
 		public override void RefreshList(UpdateList<Fattura> obj)
 		{

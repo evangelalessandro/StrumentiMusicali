@@ -9,6 +9,7 @@ using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
+using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
@@ -61,18 +62,18 @@ namespace StrumentiMusicali.App
 		{
 			var tabImportExport = _menuTab.Add(@"Impostazioni");
 			var panel1 = tabImportExport.Add("Principale");
-			var rib1 = panel1.Add("Dati fattura mittente", Properties.Resources.Settings);
+			var rib1 = panel1.Add("Mittente fattura", Properties.Resources.Settings);
 			rib1.Click += (s, e) =>
 			{
 				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.SettingFatture));
 			};
-			var rib2 = panel1.Add("Dati Sito & Upload", Properties.Resources.Settings);
+			var rib2 = panel1.Add("Sito & Upload", Properties.Resources.Settings);
 			rib2.Click += (s, e) =>
 			{
 				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.SettingSito));
 			};
 
-			var rib3 = panel1.Add("Intestazione stampa fattura", Properties.Resources.Settings);
+			var rib3 = panel1.Add("Intest. fattura per stampa", Properties.Resources.Settings);
 			rib3.Click += (s, e) =>
 			{
 				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.SettingStampa));

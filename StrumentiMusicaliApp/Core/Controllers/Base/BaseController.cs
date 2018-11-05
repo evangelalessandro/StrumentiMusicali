@@ -3,12 +3,10 @@ using Newtonsoft.Json;
 using NLog;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
-using StrumentiMusicali.App.View;
-using StrumentiMusicali.App.View.Settings;
+using StrumentiMusicali.App.View.Interfaces;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -19,77 +17,113 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 	{
 		internal readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 		internal readonly string _PathSetting = Path.Combine(Application.StartupPath, @"settings.json");
-		
+
 		public BaseController()
 		{
 		}
 
-		public void ShowView(UserControl view, Settings.enAmbienti ambiente)
+		public void ShowView(UserControl view, Settings.enAmbienti ambiente, BaseController controller = null, bool disposeForm = true)
 		{
 			Ribbon ribbon1 = null;
-			using (var frm = new Form())
+
+			try
 			{
-				ImpostaIconaETesto(ambiente, frm);
-
-				if (view.MinimumSize.Height > 0)
+				using (var frm = new Form())
 				{
-					frm.MinimumSize = new System.Drawing.Size(view.MinimumSize.Width, view.MinimumSize.Height + 190);
+					Action action = new Action(() => {
+						ReadSettingForm(ambiente, frm); });
+
+						if (action != null)
+						{
+							action.Invoke();
+							action = null;
+						}
+					//frm.Activated += (a, b) =>
+					//{
+
+					//};
+
+					ImpostaIconaETesto(ambiente, frm);
+
+					if (view.MinimumSize.Height > 0)
+					{
+						frm.MinimumSize = new System.Drawing.Size(view.MinimumSize.Width, view.MinimumSize.Height + 190);
+					}
+
+					view.Dock = DockStyle.Fill;
+					frm.Controls.Add(view);
+					if (view is IMenu)
+					{
+						ribbon1 = LoadMenu(view);
+						InitRibbon(ribbon1);
+
+						frm.Controls.Add(ribbon1);
+					}
+					if (ambiente == enAmbienti.Main)
+					{
+						AddStatusBarProgress(frm);
+						ProgressManager.Instance().RaiseProChange();
+					}
+					if (controller != null && controller is ICloseSave)
+					{
+						(controller as ICloseSave).OnClose += (
+							b, c) =>
+						{ frm.Close(); };
+					}
+					else if (view is ICloseSave)
+					{
+						(view as ICloseSave).OnClose += (
+							b, c) =>
+						{ frm.Close(); };
+					}
+
+
+
+					
+					frm.ShowDialog();
+
+					SavSettingForm(ambiente, frm);
+
+					//if (ribbon1!=null)
+					//{
+					//	foreach (var itemTab in ribbon1.Tabs.ToList())
+					//	{
+					//		foreach (var itemPnl in itemTab.Panels.ToList())
+					//		{
+					//			foreach (var itemButt in itemPnl.Items.ToList())
+					//			{
+					//				itemPnl.Items.Remove(itemButt);
+					//				itemButt.Dispose();
+					//			}
+					//			itemTab.Panels.Remove(itemPnl);
+					//			itemPnl.Dispose();
+					//		}
+					//		ribbon1.Tabs.Remove(itemTab);
+					//		itemTab.Dispose();
+					//	}
+					//	ribbon1.Dispose();
+
+					//}
+					if (!disposeForm && frm != null)
+					{
+						frm.Controls.Remove(view);
+
+
+					}
 				}
-
-				view.Dock = DockStyle.Fill;
-				frm.Controls.Add(view);
-				if (view is IMenu)
-				{
-					ribbon1 = LoadMenu(view);
-					InitRibbon(ribbon1);
-
-					frm.Controls.Add(ribbon1);
-				}
-				if (ambiente==enAmbienti.Main)
-				{ 
-					AddStatusBarProgress(frm);
-					ProgressManager.Instance().RaiseProChange();
-				}
-				if (view is GenericSettingView)
-				{
-					(view as GenericSettingView).OnClose += (
-						b, c) => { frm.Close(); };
-				}
-				
-				frm.Load += (a, b) =>
-				{
-					ReadSettingForm(ambiente, frm);
-				};
-				frm.ShowDialog();
-
-				SavSettingForm(ambiente, frm);
-
-				//if (ribbon1!=null)
-				//{
-				//	foreach (var itemTab in ribbon1.Tabs.ToList())
-				//	{
-				//		foreach (var itemPnl in itemTab.Panels.ToList())
-				//		{
-				//			foreach (var itemButt in itemPnl.Items.ToList())
-				//			{
-				//				itemPnl.Items.Remove(itemButt);
-				//				itemButt.Dispose();
-				//			}
-				//			itemTab.Panels.Remove(itemPnl);
-				//			itemPnl.Dispose();
-				//		}
-				//		ribbon1.Tabs.Remove(itemTab);
-				//		itemTab.Dispose();
-				//	}
-				//	ribbon1.Dispose();
-
-				//}
 			}
+			finally
+			{
+
+
+
+			}
+
 		}
 
 		private void AddStatusBarProgress(Form form)
 		{
-			 // StatusBar
+			// StatusBar
 			// 
 			ToolStripStatusLabel StatusBar = new System.Windows.Forms.ToolStripStatusLabel();
 			StatusBar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -107,7 +141,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			ProgressBar.ForeColor = System.Drawing.Color.Yellow;
 			ProgressBar.Name = "ProgressBar";
 			ProgressBar.Size = new System.Drawing.Size(400, 19);
-		
+
 			// 
 			// StatusStrip
 			// 
@@ -139,44 +173,44 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			switch (ambiente)
 			{
 				case enAmbienti.ClientiList:
-					return"Clienti";
-					
+					return "Clienti";
+
 				case enAmbienti.Cliente:
-					return"Cliente";
-					
+					return "Cliente";
+
 				case enAmbienti.Main:
-					return"Principale";
-					
+					return "Principale";
+
 				case enAmbienti.Fattura:
-					return"Fattura";
-					
+					return "Fattura";
+
 				case enAmbienti.FattureList:
-					return"Fatture";
-					
+					return "Fatture";
+
 				case enAmbienti.Articolo:
-					return"Articolo";
-					
+					return "Articolo";
+
 				case enAmbienti.ArticoliList:
-					return"Articoli";
-					
+					return "Articoli";
+
 				case enAmbienti.Magazzino:
-					return"Magazzino";
-					
+					return "Magazzino";
+
 				case enAmbienti.SettingFatture:
 					return "Impostazioni fatture";
-					
+
 				case enAmbienti.SettingSito:
 					return "Impostazioni sito";
-					
+
 				case enAmbienti.ScaricoMagazzino:
 					return "Scarico Magazzino";
-					
+
 				case enAmbienti.LogView:
-				 	return "Visualizzatore dei log";
-					
+					return "Visualizzatore dei log";
+
 				default:
 					return "NIENTE DI IMPOSTATO";
-					
+
 			}
 		}
 		private void ImpostaIconaETesto(enAmbienti ambiente, Form frm)
@@ -257,7 +291,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			//
 			ribbon1.QuickAccessToolbar.Visible = false;
 			ribbon1.RibbonTabFont = new System.Drawing.Font("Trebuchet MS", 9F);
-			ribbon1.Size = new System.Drawing.Size(851, 167);
+			ribbon1.Size = new System.Drawing.Size(851, 180);
 			ribbon1.TabIndex = 0;
 
 			ribbon1.TabsMargin = new System.Windows.Forms.Padding(6, 26, 20, 0);
@@ -271,11 +305,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			var menu = ((IMenu)view).GetMenu();
 			Ribbon ribbon1 = new Ribbon();
 
-			(menu as INotifyPropertyChanged) .PropertyChanged += (a, e) =>
-			{
-				ribbon1.Enabled = menu.Enabled;
-				ribbon1.Visible = menu.Visible;
-			};
+			(menu as INotifyPropertyChanged).PropertyChanged += (a, e) =>
+		   {
+			   ribbon1.Enabled = menu.Enabled;
+			   ribbon1.Visible = menu.Visible;
+		   };
 
 			foreach (var tab in menu.Tabs)
 			{
@@ -300,13 +334,13 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 					{
 						var rbButton = new RibbonButton(button.Testo);
 
-						(button as INotifyPropertyChanged) .PropertyChanged += (a, e) =>
-						{
-							UpdateButton(button, rbButton);
-						};
+						(button as INotifyPropertyChanged).PropertyChanged += (a, e) =>
+					   {
+						   UpdateButton(button, rbButton);
+					   };
 						UpdateButton(button, rbButton);
 
-						rbButton.LargeImage = button.Immagine;
+						rbButton.LargeImage = button.Immagine.Clone() as Bitmap; 
 						rbPannel.Items.Add(rbButton);
 						rbButton.Click += (e, a) =>
 						{
@@ -344,12 +378,13 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			try
 			{
 				var datiInit = this.ReadSetting(ambiente);
-
+				frm.SuspendLayout();
 				frm.StartPosition = datiInit.StartPosition;
 				frm.WindowState = datiInit.FormMainWindowState;
 				frm.Size = datiInit.SizeFormMain;
 				frm.Left = datiInit.Left;
 				frm.Top = datiInit.Top;
+				frm.ResumeLayout();
 			}
 			catch (Exception ex)
 			{

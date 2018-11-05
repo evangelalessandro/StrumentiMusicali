@@ -145,13 +145,13 @@ namespace StrumentiMusicali.App.Core.Controllers
 			using (var saveManager = new SaveEntityManager())
 			{
 				var uof = saveManager.UnitOfWork;
-				if ((((Cliente)SelectedItem).ID > 0))
+				if ((((Cliente)EditItem).ID > 0))
 				{
-					uof.ClientiRepository.Update((Cliente)SelectedItem);
+					uof.ClientiRepository.Update(EditItem);
 				}
 				else
 				{
-					uof.ClientiRepository.Add((Cliente)SelectedItem);
+					uof.ClientiRepository.Add(EditItem);
 				}
 
 				if (saveManager.SaveEntity(enSaveOperation.OpSave))

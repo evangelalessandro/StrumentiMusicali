@@ -7,6 +7,7 @@ using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
+using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
@@ -23,7 +24,7 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Forms
 {
-	public partial class DettaglioArticoloView : UserControl, IMenu
+	public partial class DettaglioArticoloView : UserControl, IMenu,ICloseSave
 	{
 		protected DragDropEffects effect;
 		protected Thread getImageThread;
@@ -566,6 +567,7 @@ namespace StrumentiMusicali.App.Forms
 		private MenuTab _menuTab = null;
 		private RibbonMenuPanel _ribPannelImmagini;
 		private RibbonMenuButton _ribRemove;
+ 
 
 		public MenuTab GetMenu()
 		{
@@ -575,6 +577,9 @@ namespace StrumentiMusicali.App.Forms
 
 				var tab = _menuTab.Add("Principale");
 
+				var ribPnlSalva = tab.Add("Azioni");
+
+				UtilityView.AddButtonSaveAndClose(ribPnlSalva, this);
 				_ribPannelImmagini = tab.Add("Immagini");
 
 				var ribAdd = _ribPannelImmagini.Add("Aggiungi",
@@ -594,19 +599,30 @@ namespace StrumentiMusicali.App.Forms
 					EventAggregator.Instance().Publish<ImageRemove>(new ImageRemove(_fotoArticoloSelected));
 				};
 
-				var ribPnlSalva = tab.Add("Azioni");
-
-				var ribSave = ribPnlSalva.Add("Salva", Properties.Resources.Save);
-				ribSave.Click += (a, e) =>
-				{
-					this.txtID.Focus();
-					this.Validate();
-					EventAggregator.Instance().Publish<Save<Articolo>>(
-						new Save<Articolo>());
-					UpdateButtonState();
-				};
+			
+				
 			}
 			return _menuTab;
+		}
+
+		public event EventHandler<EventArgs> OnSave;
+		public event EventHandler<EventArgs> OnClose;
+
+		public void RaiseSave()
+		{
+			this.txtID.Focus();
+			this.Validate();
+			EventAggregator.Instance().Publish<Save<Articolo>>(
+				new Save<Articolo>());
+			UpdateButtonState();
+		}
+
+		public void RaiseClose()
+		{
+			if (OnClose != null)
+			{
+				OnClose(this, new EventArgs());
+			}
 		}
 	}
 }

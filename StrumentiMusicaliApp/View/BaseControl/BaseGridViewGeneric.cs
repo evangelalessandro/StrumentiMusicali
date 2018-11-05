@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View.BaseControl
 {
-	public abstract partial class BaseGridViewGeneric<TBaseItem, TController, TEntity> : UserControl, IDisposable
+	public abstract partial class BaseGridViewGeneric<TBaseItem, TController, TEntity> : UserControl, IDisposable, Interfaces.ICloseSave
 		where TEntity : BaseEntity, new()
 		where TBaseItem : BaseItem<TEntity>,new()
 		where TController : BaseControllerGeneric<TEntity, TBaseItem>
@@ -55,7 +55,8 @@ namespace StrumentiMusicali.App.View.BaseControl
 			);
 			_subEdit = EventAggregator.Instance().Subscribe<Edit<TEntity>>((a) =>
 			{
-				EditItem();
+				
+				EditItemView();
 			});
 			viewRicerca = EventAggregator.Instance().Subscribe<ViewRicerca<TEntity>>((a) =>
 			{
@@ -215,8 +216,12 @@ namespace StrumentiMusicali.App.View.BaseControl
 		/// se si risponde con cancel a Si allora non mostra la view generica
 		/// </summary>
 		public event EventHandler<CancelEventArgs> onEditItemShowView;
-		private async void EditItem()
+		public event EventHandler<EventArgs> OnSave;
+		public event EventHandler<EventArgs> OnClose;
+
+		private async void EditItemView()
 		{
+			Controller.EditItem = Controller.SelectedItem;
 			bool skipView = false;
 			var itemSelected = UtilityView.GetCurrentItemSelected<TBaseItem>(dgvRighe);
 			if (onEditItemShowView != null)
@@ -303,10 +308,17 @@ namespace StrumentiMusicali.App.View.BaseControl
 				else if (hti.Type == DataGridViewHitTestType.RowHeader || hti.Type == DataGridViewHitTestType.Cell)
 				{
 					var rowIndex = hti.RowIndex;
+					
 					//You handled a double click on row header
 					EventAggregator.Instance().Publish<Edit<TEntity>>(new Edit<TEntity>());
 				}
 			}
 		}
+
+		public void RaiseSave() => OnSave(this, new EventArgs());
+
+
+		public void RaiseClose() => OnClose(this, new EventArgs());
+		
 	}
 }

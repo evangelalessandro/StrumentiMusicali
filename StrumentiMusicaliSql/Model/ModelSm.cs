@@ -32,7 +32,8 @@ namespace StrumentiMusicali.Library.Model
 			modelBuilder.Entity<DDTRiga>().ToTable("DDTRighe");
 
 			modelBuilder.Entity<Cliente>().ToTable("Clienti");
-			 
+			modelBuilder.Entity<FattureGenerateInvio>().ToTable("FattureGenerate");
+
 			modelBuilder.Entity<Articolo>().Property(e => e.Prezzo).HasPrecision(19, 2);
 			modelBuilder.Entity<Articolo>().Property(e => e.PrezzoBarrato).HasPrecision(19, 2);
 		}
@@ -46,6 +47,7 @@ namespace StrumentiMusicali.Library.Model
 
 		public virtual DbSet<DDt> DDT { get; set; }
 		public virtual DbSet<DDTRiga> DDTRighe { get; set; }
+		public virtual DbSet<FattureGenerateInvio> FattureGenerate { get; set; }
 
 		public virtual DbSet<Cliente> Clienti { get; set; }
 

@@ -223,7 +223,7 @@
     <Compile Include="Core\Controllers\ControllerRigheFatture.cs" />
     <Compile Include="Core\Controllers\Exports\ExportArticoliCsv.cs" />
     <Compile Include="Core\Controllers\FatturaElett\DatiMittente.cs" />
-    <Compile Include="Core\Controllers\FatturaElett\Elettronica.cs" />
+    <Compile Include="Core\Controllers\FatturaElett\FattElettronica.cs" />
     <Compile Include="Core\Controllers\FatturaElett\FatturaHeader.cs" />
     <Compile Include="Core\Controllers\Imports\ImportFatture.cs" />
     <Compile Include="Core\Controllers\Imports\ImportMagazziniExcel.cs" />
@@ -273,6 +273,7 @@
     <Compile Include="Core\Manager\ProgressManager.cs" />
     <Compile Include="Core\MenuRibbon\RibbonButton.cs" />
     <Compile Include="CustomComponents\DateTimePickerBinding.cs" />
+    <Compile Include="View\ViewFactory.cs" />
     <Content Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -305,6 +306,7 @@
     <Compile Include="View\FattureListView.Designer.cs">
       <DependentUpon>FattureListView.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\Interfaces\ICloseSave.cs" />
     <Compile Include="View\MainView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -361,7 +363,7 @@
     <Compile Include="View\Test.Designer.cs">
       <DependentUpon>Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Utility\IMenu.cs" />
+    <Compile Include="View\Interfaces\IMenu.cs" />
     <Compile Include="View\ArticoliListView.cs">
       <SubType>UserControl</SubType>
     </Compile>

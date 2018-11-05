@@ -4,8 +4,8 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 {
 	public class DatiMittente : Cliente
 	{
-		public string ProgressivoInvio { get; set; }
-		public bool VersoPA { get; set; }
+		//public string ProgressivoInvio { get; set; }
+		
 		
 		public bool SoggettoARitenuta { get; set; }
 		public bool IscrittoRegistroImprese { get; set; }

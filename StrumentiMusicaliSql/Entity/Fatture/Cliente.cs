@@ -48,6 +48,8 @@ namespace StrumentiMusicali.Library.Entity
 		public virtual PecConfig PecConfig { get; set; } = new PecConfig();
 		[CustomUIViewAttribute(Ordine = 21)]
 		public virtual Indirizzo Indirizzo { get; set; } = new Indirizzo();
+
+		public bool FatturaVersoPA { get; set; }
 	}
 	public class PecConfig
 	{

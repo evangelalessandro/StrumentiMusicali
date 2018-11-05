@@ -5,6 +5,7 @@ using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View.BaseControl;
+using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.Library.Entity;
 
 namespace StrumentiMusicali.App.View
@@ -21,7 +22,7 @@ namespace StrumentiMusicali.App.View
 		public ArticoliListView(ControllerArticoli controller)
 			: base(controller)
 		{
-			controller.ResetMenu();
+			 
 			onEditItemShowView += ((a, b) =>
 			{ b.Cancel = true; });
 		}

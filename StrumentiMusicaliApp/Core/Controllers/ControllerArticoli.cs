@@ -21,29 +21,51 @@ namespace StrumentiMusicali.App.Core.Controllers
 	public class ControllerArticoli : BaseControllerGeneric<Articolo,
 		ArticoloItem>, IDisposable
 	{
+		Subscription<Add<Articolo>> sub1;
+		Subscription<Edit<Articolo>> sub2;
+		Subscription<Remove<Articolo>> sub3;
+		Subscription<ArticoloDuplicate> sub4;
+		Subscription<ImageAdd> sub5;
+		Subscription<ImportArticoliCSVMercatino> sub6;
+		Subscription<InvioArticoliCSV> sub7;
+		Subscription<Save<Articolo>> sub8;
+
+		ControllerImmagini _controllerImmagini = new ControllerImmagini(); 
 		//private List<Subscription<object>> subList = new List<Subscription<object>>();
 		public ControllerArticoli()
 			: base(enAmbienti.ArticoliList, enAmbienti.Articolo)
 		{
-			
-		    EventAggregator.Instance().Subscribe<Add<Articolo>>(AggiungiArticolo);
-			EventAggregator.Instance().Subscribe<Edit<Articolo>>(EditArt);
+			sub1 = EventAggregator.Instance().Subscribe<Add<Articolo>>(AggiungiArticolo);
+			sub2 = EventAggregator.Instance().Subscribe<Edit<Articolo>>(EditArt);
 
 
-			EventAggregator.Instance().Subscribe<Remove<Articolo>>(DeleteArticolo);
-			EventAggregator.Instance().Subscribe<ArticoloDuplicate>(DuplicaArticolo);
-
-			EventAggregator.Instance().Subscribe<ImageAdd>(AggiungiImmagine);
-			EventAggregator.Instance().Subscribe<ImportArticoliCSVMercatino>(ImportaCsvArticoli);
-			EventAggregator.Instance().Subscribe<InvioArticoliCSV>(InvioArticoli);
-			EventAggregator.Instance().Subscribe<Save<Articolo>>(SaveArticolo);
-
+			sub3 = EventAggregator.Instance().Subscribe<Remove<Articolo>>(DeleteArticolo);
+			sub4 = EventAggregator.Instance().Subscribe<ArticoloDuplicate>(DuplicaArticolo);
+			sub5 = EventAggregator.Instance().Subscribe<ImageAdd>(AggiungiImmagine);
+			sub6 = EventAggregator.Instance().Subscribe<ImportArticoliCSVMercatino>(ImportaCsvArticoli);
+			sub7 = EventAggregator.Instance().Subscribe<InvioArticoliCSV>(InvioArticoli);
+			sub8 = EventAggregator.Instance().Subscribe<Save<Articolo>>(SaveArticolo);
+			 
 
 			AggiungiComandi();
 		}
 		public new void Dispose()
+			
 		{
-			 
+			base.Dispose();
+			EventAggregator.Instance().UnSbscribe(sub1);
+			EventAggregator.Instance().UnSbscribe(sub2);
+			EventAggregator.Instance().UnSbscribe(sub3);
+			EventAggregator.Instance().UnSbscribe(sub4);
+			EventAggregator.Instance().UnSbscribe(sub5);
+			EventAggregator.Instance().UnSbscribe(sub6);
+			EventAggregator.Instance().UnSbscribe(sub7);
+			EventAggregator.Instance().UnSbscribe(sub8);
+
+
+			_controllerImmagini.Dispose();
+			_controllerImmagini = null;
+
 		}
 
 		private void AggiungiComandi()
@@ -67,14 +89,14 @@ namespace StrumentiMusicali.App.Core.Controllers
 		~ControllerArticoli()
 		{
 			var dato = this.ReadSetting(Settings.enAmbienti.ArticoliList);
-			if (SelectedItem != null )
+			if (SelectedItem != null)
 			{
 				dato.LastItemSelected = SelectedItem.ID;
 				this.SaveSetting(Settings.enAmbienti.ArticoliList, dato);
 			}
 		}
 
-		  
+
 
 		private void EditArt(Edit<Articolo> obj)
 		{
@@ -112,7 +134,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				{
 					var uof = saveEntity.UnitOfWork;
 					var itemCurrent = (SelectedItem);
-					var art=
+					var art =
 					(new StrumentiMusicali.Library.Entity.Articolo()
 					{
 						Categoria = itemCurrent.Categoria,
@@ -136,7 +158,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 						SelectedItem = art;
 						EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>());
 
-						 
+
 					}
 				}
 			}
@@ -248,7 +270,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				PrezzoBarrato = prezzoBarrato,
 				BoxProposte = int.Parse(dat[9]) == 1 ? true : false
 			});
-			 
+
 			uof.ArticoliRepository.Add(artNew);
 			var foto = dat[7];
 			if (foto.Length > 0)
@@ -318,7 +340,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				using (var save = new SaveEntityManager())
 				{
 					var uof = save.UnitOfWork;
-					if (EditItem.ID <=0
+					if (EditItem.ID <= 0
 						|| uof.ArticoliRepository.Find(a => a.ID == EditItem.ID).Count() == 0)
 					{
 						uof.ArticoliRepository.Add(EditItem);

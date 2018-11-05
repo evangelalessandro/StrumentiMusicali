@@ -1,7 +1,8 @@
 ﻿using DevExpress.XtraEditors;
 using StrumentiMusicali.App.Core.Item.Base;
+using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.CustomComponents;
-using StrumentiMusicali.App.View.BaseControl.ElementiDettaglio;
+using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.Library.Core;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,35 @@ namespace StrumentiMusicali.App.View.Utility
 			}
 			return default(T);
 		}
+		public static void AddButtonSaveAndClose(RibbonMenuPanel pnl, ICloseSave control, bool addSave = true)
+		{
+			var rib3 = pnl.Add("Chiudi", Properties.Resources.Close_48);
 
+			rib3.Click += (a, e) =>
+			{
+				control.RaiseClose();
+			};
+			if (addSave)
+			{
+				var rib2 = pnl.Add("Salva e chiudi", Properties.Resources.Save_Close);
+
+				rib2.Click += (a, e) =>
+				{
+					control.RaiseSave();
+
+					control.RaiseClose();
+				};
+
+				var rib1 = pnl.Add("Salva", Properties.Resources.Save);
+
+				rib1.Click += (a, e) =>
+				{
+					control.RaiseSave();
+				};
+				
+			}
+			
+		}
 		public static async Task SelezionaRiga(this DataGridView dataGrid, int idItem)
 		{
 			for (int i = 0; i < dataGrid.RowCount; i++)
@@ -53,7 +82,7 @@ namespace StrumentiMusicali.App.View.Utility
 			}
 		}
 
-		public static void SetDataBind(Control parentControl, CustomUIViewAttribute attribute,object businessObject)
+		public static void SetDataBind(Control parentControl, CustomUIViewAttribute attribute, object businessObject)
 		{
 			FixDateNull(businessObject);
 			parentControl.InvokeIfRequired((b) =>
@@ -71,7 +100,7 @@ namespace StrumentiMusicali.App.View.Utility
 						if (cnt is TextBox)
 						{
 							cnt.DataBindings.Add("Text", businessObject, item.Name);
-							if (attribute!=null && attribute.MultiLine>0)
+							if (attribute != null && attribute.MultiLine > 0)
 							{
 								(cnt as TextBox).Multiline = true;
 							}

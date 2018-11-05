@@ -16,18 +16,14 @@ namespace StrumentiMusicali.App.Core
 {
 	public class ControllerMaster : BaseController
 	{
-		private ControllerArticoli _controllerArticoli;
-		private ControllerImmagini _controllerImmagini;
-		private ControllerMagazzino _controllerMagazzino;
 		 
+
 		public ControllerMaster()
 			: base()
 		{
 			ConfigureNLog();
-			_controllerArticoli = new ControllerArticoli();
-			_controllerImmagini = new ControllerImmagini();
-			_controllerMagazzino = new ControllerMagazzino();
 			 
+
 			EventAggregator.Instance().Subscribe<ApriAmbiente>(Apri);
 
 			Application.ThreadException += Application_ThreadException;
@@ -44,22 +40,26 @@ namespace StrumentiMusicali.App.Core
 		{
 			switch (obj.TipoEnviroment)
 			{
+
 				case enAmbienti.ArticoliList:
 
-					using (var view = new ArticoliListView(_controllerArticoli))
+					using (var controller = new ControllerArticoli())
 					{
-						this.ShowView(view, obj.TipoEnviroment);
-					}
 
+						using (var view = new ArticoliListView(controller))
+						{
+							this.ShowView(view, obj.TipoEnviroment);
+						}
+					}
 					break;
 
 				case enAmbienti.FattureList:
-					using (var controllerFatt=new ControllerFatturazione())
+					using (var controller = new ControllerFatturazione())
 					{
-							using (var view = new FattureListView(controllerFatt, enAmbienti.FattureList, enAmbienti.Fattura))
-							{
-								ShowView(view, Settings.enAmbienti.FattureList);
-							}
+						using (var view = new FattureListView(controller, enAmbienti.FattureList, enAmbienti.Fattura))
+						{
+							ShowView(view, Settings.enAmbienti.FattureList,controller);
+						}
 					}
 					break;
 				case enAmbienti.LogView:
@@ -67,7 +67,7 @@ namespace StrumentiMusicali.App.Core
 					{
 						using (var view = new LogView(controller))
 						{
-							this.ShowView(view, obj.TipoEnviroment);
+							this.ShowView(view, obj.TipoEnviroment,controller);
 						}
 					}
 					break;
@@ -76,7 +76,7 @@ namespace StrumentiMusicali.App.Core
 					{
 						using (var view = new ClientiListView(controller))
 						{
-							this.ShowView(view, obj.TipoEnviroment);
+							this.ShowView(view, obj.TipoEnviroment, controller);
 						}
 					}
 					break;
@@ -90,6 +90,31 @@ namespace StrumentiMusicali.App.Core
 					break;
 				case enAmbienti.SettingStampa:
 					ApriSettingStampaFattura();
+					break;
+				case enAmbienti.Main:
+					break;
+				case enAmbienti.Fattura:
+					break;
+				case enAmbienti.Articolo:
+					break;
+				case enAmbienti.Magazzino:
+					break;
+				case enAmbienti.ScaricoMagazzino:
+					using (var controller = new ControllerMagazzino())
+					{
+						using (var view = new View.ScaricoMagazzino(controller))
+						{
+							this.ShowView(view, Settings.enAmbienti.ScaricoMagazzino, controller);
+						}
+					}
+					break;
+				case enAmbienti.LogViewList:
+					break;
+				case enAmbienti.Cliente:
+					break;
+				case enAmbienti.FattureRigheList:
+					break;
+				case enAmbienti.FattureRigheDett:
 					break;
 				default:
 					break;
@@ -107,7 +132,7 @@ namespace StrumentiMusicali.App.Core
 			{
 				setItem.UfficioRegistroImp = new Controllers.FatturaElett.DatiMittente.UfficioRegistro();
 			}
-			if (setItem.Indirizzo== null)
+			if (setItem.Indirizzo == null)
 			{
 				setItem.Indirizzo = new Library.Entity.Indirizzo();
 			}
@@ -190,12 +215,7 @@ namespace StrumentiMusicali.App.Core
 
 		~ControllerMaster()
 		{
-			 _controllerArticoli.Dispose();
-			_controllerArticoli = null;
-			_controllerImmagini.Dispose();
-			_controllerImmagini = null;
-			_controllerMagazzino.Dispose();
-			_controllerMagazzino = null;
+		 
 		}
 
 		public static void LogMethod(string level, string message, string exception, string stacktrace, string classLine)

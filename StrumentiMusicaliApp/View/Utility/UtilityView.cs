@@ -7,6 +7,7 @@ using StrumentiMusicali.Library.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -23,6 +24,13 @@ namespace StrumentiMusicali.App.View.Utility
 				return (T)dataGrid.SelectedRows[0].DataBoundItem;
 			}
 			return default(T);
+		}
+		public static Icon GetIco(Bitmap bitmap)
+		{
+			Bitmap bm = new Bitmap(bitmap);
+
+			// Convert to an icon and use for the form's icon.
+			return Icon.FromHandle(bm.GetHicon());
 		}
 		public static void AddButtonSaveAndClose(RibbonMenuPanel pnl, ICloseSave control, bool addSave = true)
 		{

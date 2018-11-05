@@ -13,11 +13,11 @@ namespace StrumentiMusicali.Library.Entity
 
 		public int FatturaID { get; set; }
 
-		public int ProgressivoInvio { get; set; }
+		public string ProgressivoInvio { get; set; }
 
 		public string NomeFile { get; set; }
 
-		public string FileInviato { get; set; }
+		public bool FileInviato { get; set; }
 
 	}
 }

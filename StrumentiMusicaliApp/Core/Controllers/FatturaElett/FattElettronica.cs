@@ -7,6 +7,7 @@ using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -22,40 +23,59 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 		public List<FatturaHeader> FattureList { get; set; } = new List<FatturaHeader>();
 
 		public void ScriviFattura(int idFattura)
-		{ 
+		{
 			var fattura = FatturaElettronica.Fattura.CreateInstance(DatiDestinatario.FatturaVersoPA ? Instance.PubblicaAmministrazione : Instance.Privati);
 
-			DatiTrasmissione(fattura);
-			DatiMittenteFattura(fattura);
-			DatiCommittenteFattura(fattura);
-			IscrizioneRegistroImpresa(fattura);
+			try
+			{
 
-			
-			CheckValidate(new CessionarioCommittenteValidator().Validate(fattura.Header.CessionarioCommittente));
-			
-			CheckValidate(new DatiTrasmissioneValidator().Validate(fattura.Header.DatiTrasmissione));
 
-			CheckValidate(new DatiAnagraficiCedentePrestatoreValidator().Validate(fattura.Header.CedentePrestatore.DatiAnagrafici));
-			
 
+				DatiTrasmissione(fattura);
+				DatiMittenteFattura(fattura);
+				DatiCommittenteFattura(fattura);
+				IscrizioneRegistroImpresa(fattura);
+
+
+				CheckValidate(new CessionarioCommittenteValidator().Validate(fattura.Header.CessionarioCommittente));
+
+				CheckValidate(new DatiTrasmissioneValidator().Validate(fattura.Header.DatiTrasmissione));
+
+				CheckValidate(new DatiAnagraficiCedentePrestatoreValidator().Validate(fattura.Header.CedentePrestatore.DatiAnagrafici));
+
+			}
+			catch (MessageException ex)
+			{
+				MessageManager.NotificaWarnig(ex.Messages);
+				return;
+			}
 
 			foreach (var item in FattureList)
 			{
 				var body = new FatturaElettronica.FatturaElettronicaBody.Body();
 				fattura.Body.Add(body);
-				ImpostaDatiSingolaFattura(body, item);
+				try
+				{
+
+					ImpostaDatiSingolaFattura(body, item);
+					var validator = new FatturaValidator();
+					CheckValidate(validator.Validate(fattura));
+				}
+				catch (MessageException ex)
+				{
+					MessageManager.NotificaWarnig(ex.Messages.Replace("Header.CedentePrestatore", " [Mittente Fattura] "));
+					return;
+				}
 
 
-				var validator = new FatturaValidator();
-				CheckValidate(validator.Validate(fattura));
-				WriteFattura(fattura, item);
+				WriteFattura(fattura, item, idFattura);
 
 			}
 
 
 		}
 
-		private static void WriteFattura(FatturaElettronica.Fattura fattura, FatturaHeader item)
+		private static void WriteFattura(FatturaElettronica.Fattura fattura, FatturaHeader item, int idFattura)
 		{
 			var dir = Path.Combine(Application.StartupPath, "FattureXml");
 			if (!Directory.Exists(dir))
@@ -72,6 +92,19 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 			{
 				fattura.WriteXml(w);
 			}
+			using (var uof = new UnitOfWork())
+			{
+				uof.FattureGenerateInvioRepository.Add(new FattureGenerateInvio()
+				{
+					NomeFile = nomeFile,
+					ProgressivoInvio = fattura.Header.DatiTrasmissione.ProgressivoInvio,
+					FatturaID = idFattura,
+					FileInviato =false
+				});
+				uof.Commit();
+
+				Process.Start("notepad.exe", file);
+			}
 		}
 
 		private void ImpostaDatiSingolaFattura(Body body, FatturaHeader itemFattura)
@@ -79,6 +112,8 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 			body.DatiGenerali.DatiGeneraliDocumento.TipoDocumento = itemFattura.TipoDocumento.ToString();
 			body.DatiGenerali.DatiGeneraliDocumento.Divisa = "EUR";
 			body.DatiGenerali.DatiGeneraliDocumento.Numero = itemFattura.Numero;
+			body.DatiGenerali.DatiGeneraliDocumento.Data = itemFattura.Data;
+
 			if (DatiMittente.SoggettoARitenuta)
 			{
 				if (DatiMittente.PersonaGiuridica)
@@ -175,7 +210,7 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 				rel.IdFiscaleIVA.IdPaese = "IT";
 				rel.IdFiscaleIVA.IdCodice = DatiDestinatario.PIVA;
 			}
-			 
+
 			/* CodiceFiscale=  il campo, se valorizzato, deve contenere il
 			codice fiscale del cedente/prestatore che sarà composto di 11 caratteri
 			numerici, se trattasi di persona giuridica, oppure di 16 caratteri
@@ -205,6 +240,10 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 			fattura.Header.CedentePrestatore.DatiAnagrafici.IdFiscaleIVA.IdPaese = "IT";
 			fattura.Header.CedentePrestatore.DatiAnagrafici.IdFiscaleIVA.IdCodice = DatiMittente.PIVA;
 
+			if (string.IsNullOrEmpty(DatiMittente.PIVA))
+			{
+				throw new MessageException("Occorre impostare la PIVA del mittente!");
+			}
 			/* CodiceFiscale=  il campo, se valorizzato, deve contenere il
 			codice fiscale del cedente/prestatore che sarà composto di 11 caratteri
 			numerici, se trattasi di persona giuridica, oppure di 16 caratteri
@@ -213,19 +252,32 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 
 			fattura.Header.CedentePrestatore.DatiAnagrafici.CodiceFiscale = DatiMittente.PersonaGiuridica ? DatiMittente.PIVA : DatiMittente.CodiceFiscale;
 			if (DatiMittente.PersonaGiuridica)
+			{
 				fattura.Header.CedentePrestatore.DatiAnagrafici.Anagrafica.Denominazione = DatiMittente.RagioneSociale;
+				if (string.IsNullOrEmpty(DatiMittente.RagioneSociale))
+				{
+					throw new MessageException("Occorre impostare la Ragione Sociale del mittente!");
+				}
+			}
 			else
 			{
 				fattura.Header.CedentePrestatore.DatiAnagrafici.Anagrafica.Nome = DatiMittente.Nome;
 				fattura.Header.CedentePrestatore.DatiAnagrafici.Anagrafica.Cognome = DatiMittente.Cognome;
+
+
+				if (string.IsNullOrEmpty(DatiMittente.Nome) || string.IsNullOrEmpty(DatiMittente.Cognome))
+				{
+					throw new MessageException("Occorre impostare nome e cognome del mittente!");
+				}
 			}
+
 			fattura.Header.CedentePrestatore.DatiAnagrafici.RegimeFiscale = DatiMittente.RegimeFiscale;
 			fattura.Header.CedentePrestatore.Sede.Indirizzo = DatiMittente.Indirizzo.IndirizzoConCivico;
 			fattura.Header.CedentePrestatore.Sede.CAP = DatiMittente.Indirizzo.Cap;
 			fattura.Header.CedentePrestatore.Sede.Comune = DatiMittente.Indirizzo.Comune;
 			fattura.Header.CedentePrestatore.Sede.Provincia = DatiMittente.Indirizzo.ProvinciaSigla;
 			fattura.Header.CedentePrestatore.Sede.Nazione = "IT";
-		
+
 		}
 
 		private static void CheckValidate(FluentValidation.Results.ValidationResult result)
@@ -256,10 +308,16 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 		}
 
 		private void DatiTrasmissione(FatturaElettronica.Fattura fattura)
-		{ 
+		{
 			fattura.Header.DatiTrasmissione.IdTrasmittente.IdPaese = "IT";
 			fattura.Header.DatiTrasmissione.IdTrasmittente.IdCodice = DatiMittente.CodiceFiscale;
-			fattura.Header.DatiTrasmissione.ProgressivoInvio = CalcolaProgressivo(); 
+			if (string.IsNullOrEmpty(fattura.Header.DatiTrasmissione.IdTrasmittente.IdCodice))
+			{
+				throw new MessageException("Impostare il codice fiscale del mittente. Sistemare i dati mittente fattura");
+			}
+
+
+			fattura.Header.DatiTrasmissione.ProgressivoInvio = CalcolaProgressivo();
 			/*assume valore fisso pari a “FPA12”, se la fattura è
 				destinata ad una pubblica amministrazione, oppure “FPR12”, se la fattura è
 				destinata ad un soggetto privato.
@@ -291,6 +349,11 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 					!string.IsNullOrEmpty(DatiDestinatario.PecConfig.CodicePec))
 				{
 					fattura.Header.DatiTrasmissione.CodiceDestinatario = DatiDestinatario.PecConfig.CodicePec;
+
+					if (string.IsNullOrEmpty(DatiDestinatario.PecConfig.CodicePec))
+					{
+						throw new MessageException("Al cliente è impostata ricezione con codice PEC, ma non è impostato. Sistemare il cliente");
+					}
 				}
 				else
 				{
@@ -306,7 +369,14 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 			if (!DatiDestinatario.FatturaVersoPA && !DatiDestinatario.PecConfig.RicezioneConCodicePec)
 			{
 				fattura.Header.DatiTrasmissione.PECDestinatario = DatiDestinatario.PecConfig.EmailPec;
+
+				if (string.IsNullOrEmpty(DatiDestinatario.PecConfig.EmailPec))
+				{
+					throw new MessageException("Al cliente non è impostata la Email-PEC. Sistemare il cliente");
+				}
 			}
+
+
 
 
 
@@ -314,9 +384,9 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
 
 		private string CalcolaProgressivo()
 		{
-			using (var uof=new UnitOfWork())
+			using (var uof = new UnitOfWork())
 			{
-				var progress= uof.FattureGenerateInvioRepository.Find(a => true).Select(a => a.ID).DefaultIfEmpty(0).Max()+1;
+				var progress = uof.FattureGenerateInvioRepository.Find(a => true).Select(a => a.ID).DefaultIfEmpty(0).Max() + 1;
 
 				return progress.ToString("00000");
 

@@ -283,7 +283,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 								throw new MessageException("Tipo pagamento non gestito");
 							}
 							header.Data = fatt.Fattura.Data;
-							header.ImportoTotaleDocumento = fatt.Fattura.TotaleFattura;
+							
+							header.ImportoTotaleDocumento = CalcolaTotali(fatt.Fattura).TotaleFattura;
 
 							stampa.FattureList.Add(header);
 							stampa.ScriviFattura(fatt.Fattura.ID);

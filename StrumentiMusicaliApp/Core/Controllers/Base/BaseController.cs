@@ -4,6 +4,7 @@ using NLog;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View.Interfaces;
+using StrumentiMusicali.App.View.Utility;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -218,40 +219,40 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			switch (ambiente)
 			{
 				case enAmbienti.ClientiList:
-					frm.Icon = GetIco(Properties.Resources.Customer_48);
+					frm.Icon = UtilityView.GetIco(Properties.Resources.Customer_48);
 					break;
 				case enAmbienti.Cliente:
-					frm.Icon = GetIco(Properties.Resources.Customer_48);
+					frm.Icon = UtilityView.GetIco(Properties.Resources.Customer_48);
 					break;
 				case enAmbienti.Main:
-					frm.Icon = GetIco(Properties.Resources.StrumentoMusicale);
+					frm.Icon = UtilityView.GetIco(Properties.Resources.StrumentoMusicale);
 					break;
 				case enAmbienti.Fattura:
-					frm.Icon = GetIco(Properties.Resources.Invoice);
+					frm.Icon = UtilityView.GetIco(Properties.Resources.Invoice);
 					break;
 				case enAmbienti.FattureList:
-					frm.Icon = GetIco(Properties.Resources.Invoice);
+					frm.Icon = UtilityView.GetIco(Properties.Resources.Invoice);
 					break;
 				case enAmbienti.Articolo:
-					frm.Icon = GetIco(Properties.Resources.StrumentoMusicale);
+					frm.Icon = UtilityView.GetIco(Properties.Resources.StrumentoMusicale);
 					break;
 				case enAmbienti.ArticoliList:
-					frm.Icon = GetIco(Properties.Resources.StrumentoMusicale);
+					frm.Icon = UtilityView.GetIco(Properties.Resources.StrumentoMusicale);
 					break;
 				case enAmbienti.Magazzino:
-					frm.Icon = GetIco(Properties.Resources.UnloadWareHouse);
+					frm.Icon = UtilityView.GetIco(Properties.Resources.UnloadWareHouse);
 					break;
 				case enAmbienti.SettingFatture:
-					frm.Icon = GetIco(Properties.Resources.Settings);
+					frm.Icon = UtilityView.GetIco(Properties.Resources.Settings);
 					break;
 				case enAmbienti.SettingSito:
-					frm.Icon = GetIco(Properties.Resources.Settings);
+					frm.Icon = UtilityView.GetIco(Properties.Resources.Settings);
 					break;
 				case enAmbienti.ScaricoMagazzino:
-					frm.Icon = GetIco(Properties.Resources.UnloadWareHouse);
+					frm.Icon = UtilityView.GetIco(Properties.Resources.UnloadWareHouse);
 					break;
 				case enAmbienti.LogView:
-					frm.Icon = GetIco(Properties.Resources.LogView_48);
+					frm.Icon = UtilityView.GetIco(Properties.Resources.LogView_48);
 					break;
 				default:
 					break;
@@ -259,13 +260,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			frm.Text = TestoAmbiente(ambiente);
 		}
 
-		private Icon GetIco(Bitmap bitmap)
-		{
-			Bitmap bm = new Bitmap(bitmap);
-
-			// Convert to an icon and use for the form's icon.
-			return Icon.FromHandle(bm.GetHicon());
-		}
+		
 		private void InitRibbon(Ribbon ribbon1)
 		{
 			//

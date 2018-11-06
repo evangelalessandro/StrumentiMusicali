@@ -2,7 +2,7 @@
 
 namespace StrumentiMusicali.App.View.Interfaces
 {
-	internal interface IMenu
+	public interface IMenu
 	{
 		MenuTab GetMenu();
 	}

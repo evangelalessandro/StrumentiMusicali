@@ -9,11 +9,11 @@ namespace StrumentiMusicali.App.Core.Events.Generics
 {
 	class ApriAmbiente
 	{
-		public ApriAmbiente(enAmbienti tipoEnviroment)
+		public ApriAmbiente(enAmbiente tipoEnviroment)
 		{
 			TipoEnviroment = tipoEnviroment;
 		}
-		public enAmbienti TipoEnviroment { get; private set; }
+		public enAmbiente TipoEnviroment { get; private set; }
 	}
 	 
 }

@@ -1,10 +1,13 @@
 ﻿using Autofac;
 using Newtonsoft.Json;
 using NLog;
+using StrumentiMusicali.App.Core.Events.Tab;
 using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
+using StrumentiMusicali.Library.Core;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -22,8 +25,151 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		public BaseController()
 		{
 		}
+		public bool ModalitàAForm { get; set; }
 
-		public void ShowView(UserControl view, Settings.enAmbienti ambiente, BaseController controller = null, bool disposeForm = true)
+		public void ShowView(UserControl view, Settings.enAmbiente ambiente, BaseController controller = null, bool disposeForm = true)
+		{
+			if (ModalitàAForm || ambiente == enAmbiente.Main)
+			{
+				AggiungiInForm(view, ambiente, controller, disposeForm);
+			}
+			else
+			{
+				AggiungiTab(view, ambiente, controller, disposeForm);
+
+			}
+		}
+
+		private void AggiungiTab(UserControl view, enAmbiente ambiente, BaseController controller, bool disposeForm)
+		{
+
+			bool closed = false;
+			MenuTab menu = null;
+			if (controller != null && controller is IMenu)
+			{
+				menu = (controller as IMenu).GetMenu();
+			}
+			else if (view is IMenu)
+			{
+				menu = (view as IMenu).GetMenu();
+			}
+			if (menu != null)
+			{
+				menu.Tabs[0].Testo = TestoAmbiente(ambiente);
+
+				LoadMenu(menu, ribbonMaster);
+			}
+			ICloseSave closeSave = null;
+			if (controller != null && controller is ICloseSave)
+			{
+				closeSave = (controller as ICloseSave);
+			}
+			else if (view is ICloseSave)
+			{
+				closeSave = (view as ICloseSave);
+			}
+
+			var arg = new GetNewTab(TestoAmbiente(ambiente), ambiente, closeSave);
+			EventAggregator.Instance().Publish(arg);
+
+			var newTab = arg.Tab;
+
+			TabControl tabControl = ((TabControl)newTab.Parent);
+
+			((TabControl)newTab.Parent).ControlRemoved += (b, c) =>
+			{
+				if (c.Control == newTab)
+				{
+					if (closeSave != null)
+						closeSave.RaiseClose();
+				}
+			};
+			Action actionSelectedIndex = new Action(() =>
+			{
+				var visible = (tabControl.SelectedTab == newTab);
+
+				foreach (var item in menu.Tabs)
+				{
+					item.Visible = visible;
+					if (visible)
+					{
+						item.PerformSelect();
+					}
+
+				}
+			});
+			tabControl.SelectedIndexChanged += (b, c) =>
+			  {
+
+				  if (actionSelectedIndex != null)
+				  {
+					  actionSelectedIndex.Invoke();
+				  }
+
+			  };
+			view.Dock = DockStyle.Fill;
+			newTab.Controls.Add(view);
+
+			if (closeSave != null)
+			{
+				(closeSave as ICloseSave).OnClose += (
+					b, c) =>
+				{
+					EventAggregator.Instance().Publish(new RemoveNewTab(newTab));
+					closed = true;
+					if (!disposeForm)
+					{
+						newTab.Controls.Remove(view);
+					}
+				};
+			}
+			if (menu != null)
+			{
+				//seleziono la tab
+				menu.Tabs[0].PerformSelect();
+			}
+			while (closed == false)
+			{
+				Application.DoEvents();
+			}
+			RemoveMenu(menu, ribbonMaster);
+			actionSelectedIndex = null;
+
+			//ribbonMaster.ActiveTab = ribbonMaster.PreviousTab;
+		}
+
+		private void RemoveMenu(MenuTab menu, Ribbon ribbon)
+		{
+
+
+			foreach (var tab in menu.Tabs)
+			{
+				var rbTab = ribbon.Tabs.Where(a => a.Tag.ToString() == tab.GetHashCode().ToString()).First();
+
+
+				foreach (var pannello in tab.Pannelli)
+				{
+					var rbPannel = rbTab.Panels.Where(a => a.Tag.ToString() == pannello.GetHashCode().ToString()).First();
+
+					foreach (var button in pannello.Pulsanti)
+					{
+						var rbButton = rbPannel.Items.Where(a => a.Tag.ToString() == button.GetHashCode().ToString()).First();
+						rbPannel.Items.Remove(rbButton);
+
+					}
+					rbTab.Panels.Remove(rbPannel);
+
+				}
+				ribbon.Tabs.Remove(rbTab);
+			}
+
+		}
+
+		/// <summary>
+		/// ribbon della form main
+		/// </summary>
+		private static Ribbon ribbonMaster = null;
+		private void AggiungiInForm(UserControl view, enAmbiente ambiente, BaseController controller, bool disposeForm)
 		{
 			Ribbon ribbon1 = null;
 
@@ -55,21 +201,24 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 					view.Dock = DockStyle.Fill;
 					frm.Controls.Add(view);
+					MenuTab menu = null;
 					if (controller != null && controller is IMenu)
 					{
-						ribbon1 = LoadMenu(controller as IMenu);
-						InitRibbon(ribbon1);
-
-						frm.Controls.Add(ribbon1);
+						menu = (controller as IMenu).GetMenu();
 					}
 					else if (view is IMenu)
 					{
-						ribbon1 = LoadMenu(view as IMenu);
+						menu = (view as IMenu).GetMenu();
+					}
+					if (menu != null)
+					{
+						ribbon1 = LoadMenu(menu);
 						InitRibbon(ribbon1);
 
 						frm.Controls.Add(ribbon1);
 					}
-					if (ambiente == enAmbienti.Main)
+
+					if (ambiente == enAmbiente.Main)
 					{
 						AddStatusBarProgress(frm);
 						ProgressManager.Instance().RaiseProChange();
@@ -88,7 +237,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 					}
 
 
-
+					if (ambiente == enAmbiente.Main)
+					{
+						ribbonMaster = ribbon1;
+					}
 
 					frm.ShowDialog();
 
@@ -128,7 +280,6 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 
 			}
-
 		}
 
 		private void AddStatusBarProgress(Form form)
@@ -178,56 +329,56 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			form.Controls.Add(StatusStrip);
 		}
 
-		public string TestoAmbiente(enAmbienti ambiente)
+		public string TestoAmbiente(enAmbiente ambiente)
 		{
 			switch (ambiente)
 			{
-				case enAmbienti.ClientiList:
+				case enAmbiente.ClientiList:
 					return "Clienti";
 
-				case enAmbienti.Cliente:
+				case enAmbiente.Cliente:
 					return "Cliente";
 
-				case enAmbienti.Main:
+				case enAmbiente.Main:
 					return "Principale";
 
-				case enAmbienti.Fattura:
+				case enAmbiente.Fattura:
 					return "Fattura";
 
-				case enAmbienti.FattureList:
+				case enAmbiente.FattureList:
 					return "Fatture";
 
-				case enAmbienti.Articolo:
+				case enAmbiente.Articolo:
 					return "Articolo";
 
-				case enAmbienti.ArticoliList:
+				case enAmbiente.ArticoliList:
 					return "Articoli";
 
-				case enAmbienti.Magazzino:
+				case enAmbiente.Magazzino:
 					return "Magazzino";
 
-				case enAmbienti.SettingFatture:
+				case enAmbiente.SettingFatture:
 					return "Impostazioni fatture";
 
-				case enAmbienti.SettingSito:
+				case enAmbiente.SettingSito:
 					return "Impostazioni sito";
 
-				case enAmbienti.ScaricoMagazzino:
+				case enAmbiente.ScaricoMagazzino:
 					return "Scarico Magazzino";
 
-				case enAmbienti.LogView:
+				case enAmbiente.LogView:
 					return "Visualizzatore dei log";
-				case enAmbienti.SettingStampa:
+				case enAmbiente.SettingStampa:
 					return "Settaggi di stampa fattura";
-				case enAmbienti.LogViewList:
+				case enAmbiente.LogViewList:
 					return "Visualizzatore dei log";
-				case enAmbienti.FattureRigheList:
+				case enAmbiente.FattureRigheList:
 					break;
-				case enAmbienti.FattureRigheDett:
+				case enAmbiente.FattureRigheDett:
 					return "Dettaglio riga";
-				case enAmbienti.Deposito:
+				case enAmbiente.Deposito:
 					return "Deposito";
-				case enAmbienti.DepositoList:
+				case enAmbiente.DepositoList:
 					return "Depositi";
 				default:
 					return "NIENTE DI IMPOSTATO";
@@ -236,62 +387,62 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			return "NIENTE DI IMPOSTATO";
 
 		}
-		private void ImpostaIconaETesto(enAmbienti ambiente, Form frm)
+		private void ImpostaIconaETesto(enAmbiente ambiente, Form frm)
 		{
 			switch (ambiente)
 			{
-				case enAmbienti.ClientiList:
+				case enAmbiente.ClientiList:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.Customer_48);
 					break;
-				case enAmbienti.Cliente:
+				case enAmbiente.Cliente:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.Customer_48);
 					break;
-				case enAmbienti.Main:
+				case enAmbiente.Main:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.StrumentoMusicale);
 					break;
-				case enAmbienti.Fattura:
+				case enAmbiente.Fattura:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.Invoice);
 					break;
-				case enAmbienti.FattureList:
+				case enAmbiente.FattureList:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.Invoice);
 					break;
-				case enAmbienti.Articolo:
+				case enAmbiente.Articolo:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.StrumentoMusicale);
 					break;
-				case enAmbienti.ArticoliList:
+				case enAmbiente.ArticoliList:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.StrumentoMusicale);
 					break;
-				case enAmbienti.Magazzino:
+				case enAmbiente.Magazzino:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.UnloadWareHouse);
 					break;
-				case enAmbienti.SettingFatture:
+				case enAmbiente.SettingFatture:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.Settings);
 					break;
-				case enAmbienti.SettingSito:
+				case enAmbiente.SettingSito:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.Settings);
 					break;
-				case enAmbienti.ScaricoMagazzino:
+				case enAmbiente.ScaricoMagazzino:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.UnloadWareHouse);
 					break;
-				case enAmbienti.LogView:
+				case enAmbiente.LogView:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.LogView_48);
 					break;
-				case enAmbienti.SettingStampa:
+				case enAmbiente.SettingStampa:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.Settings);
 					break;
-				case enAmbienti.LogViewList:
+				case enAmbiente.LogViewList:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.LogView_48);
 					break;
-				case enAmbienti.FattureRigheList:
+				case enAmbiente.FattureRigheList:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.Invoice);
 					break;
-				case enAmbienti.FattureRigheDett:
+				case enAmbiente.FattureRigheDett:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.Invoice);
 					break;
-				case enAmbienti.Deposito:
+				case enAmbiente.Deposito:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.Depositi);
 					break;
-				case enAmbienti.DepositoList:
+				case enAmbiente.DepositoList:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.Depositi);
 					break;
 				default:
@@ -335,10 +486,14 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			ribbon1.Dock = DockStyle.Top;
 		}
 
-		private static Ribbon LoadMenu(IMenu view)
+		private static Ribbon LoadMenu(MenuTab menu, Ribbon ribbon = null)
 		{
-			var menu = ((IMenu)view).GetMenu();
-			Ribbon ribbon1 = new Ribbon();
+			Ribbon ribbon1 = ribbon;
+
+			if (ribbon1 == null)
+			{
+				ribbon1 = new Ribbon();
+			}
 
 			(menu as INotifyPropertyChanged).PropertyChanged += (a, e) =>
 		   {
@@ -349,7 +504,13 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			foreach (var tab in menu.Tabs)
 			{
 				var rbTab = (new RibbonTab(tab.Testo));
+				rbTab.Tag = tab.GetHashCode();
 				ribbon1.Tabs.Add(rbTab);
+				tab.OnSelected += (b, c) =>
+				{
+					ribbon1.ActiveTab = rbTab;
+				};
+
 				(tab as INotifyPropertyChanged).PropertyChanged += (a, e) =>
 				{
 					rbTab.Enabled = tab.Enabled;
@@ -359,6 +520,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 				foreach (var pannello in tab.Pannelli)
 				{
 					var rbPannel = new RibbonPanel(pannello.Testo);
+					rbPannel.Tag = pannello.GetHashCode();
 					rbTab.Panels.Add(rbPannel);
 					(pannello as INotifyPropertyChanged).PropertyChanged += (a, e) =>
 					{
@@ -369,6 +531,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 					{
 						var rbButton = new RibbonButton(button.Testo);
 
+						rbButton.Tag = button.GetHashCode();
 						(button as INotifyPropertyChanged).PropertyChanged += (a, e) =>
 					   {
 						   UpdateButton(button, rbButton);
@@ -395,7 +558,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			rbButton.Checked = button.Checked;
 		}
 
-		private void SavSettingForm(enAmbienti ambiente, Form frm)
+		private void SavSettingForm(enAmbiente ambiente, Form frm)
 		{
 			var dato = this.ReadSetting(ambiente);
 
@@ -408,7 +571,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			this.SaveSetting(ambiente, dato);
 		}
 
-		private void ReadSettingForm(enAmbienti ambiente, Form frm)
+		private void ReadSettingForm(enAmbiente ambiente, Form frm)
 		{
 			try
 			{
@@ -442,27 +605,27 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			return setting;
 		}
 
-		public FormRicerca ReadSetting(enAmbienti ambiente)
+		public FormRicerca ReadSetting(enAmbiente ambiente)
 		{
 			var setting = ReadSetting();
 			if (setting.Form == null)
 			{
-				setting.Form = new System.Collections.Generic.List<Tuple<enAmbienti, FormRicerca>>();
+				setting.Form = new System.Collections.Generic.List<Tuple<enAmbiente, FormRicerca>>();
 			}
 			var elem = setting.Form.Where(a => a.Item1 == ambiente).FirstOrDefault();
 			if (elem == null)
 			{
-				setting.Form.Add(new Tuple<enAmbienti, FormRicerca>(ambiente, new FormRicerca()));
+				setting.Form.Add(new Tuple<enAmbiente, FormRicerca>(ambiente, new FormRicerca()));
 				SaveSetting(setting);
 			}
 			return setting.Form.Where(a => a.Item1 == ambiente).First().Item2;
 		}
 
-		public void SaveSetting(enAmbienti ambiente, FormRicerca formRicerca)
+		public void SaveSetting(enAmbiente ambiente, FormRicerca formRicerca)
 		{
 			var setting = ReadSetting();
 			setting.Form.RemoveAll(a => a.Item1 == ambiente);
-			setting.Form.Add(new Tuple<enAmbienti, FormRicerca>(ambiente, formRicerca));
+			setting.Form.Add(new Tuple<enAmbiente, FormRicerca>(ambiente, formRicerca));
 			SaveSetting(setting);
 		}
 

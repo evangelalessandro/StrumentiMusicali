@@ -26,7 +26,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		private Subscription<Save<FatturaRiga>> _subSave;
 
 		public ControllerRigheFatture(ControllerFatturazione controllerFatturazione)
-			: base(enAmbienti.FattureRigheList, enAmbienti.FattureRigheDett)
+			: base(enAmbiente.FattureRigheList, enAmbiente.FattureRigheDett)
 		{
 			_controllerFatturazione = controllerFatturazione;
 

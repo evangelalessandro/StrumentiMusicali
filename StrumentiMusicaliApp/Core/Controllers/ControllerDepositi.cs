@@ -27,7 +27,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		 
 		public ControllerDepositi()
-			:base(enAmbienti.DepositoList,enAmbienti.Deposito)
+			:base(enAmbiente.DepositoList,enAmbiente.Deposito)
 		{
 			 
 			SelectedItem = new Deposito();

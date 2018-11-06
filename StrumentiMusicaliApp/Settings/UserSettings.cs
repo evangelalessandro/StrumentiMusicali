@@ -8,7 +8,7 @@ namespace StrumentiMusicali.App.Settings
 {
 	public class UserSettings
 	{
-		public List<Tuple<enAmbienti, FormRicerca>> Form { get; set; }
+		public List<Tuple<enAmbiente, FormRicerca>> Form { get; set; }
 		public DatiMittente datiMittente { get; set; } = new DatiMittente();
 		public SettingSito settingSito { get; set; } = new SettingSito();
 		public DatiIntestazioneStampaFattura DatiIntestazione { get; set; } = new DatiIntestazioneStampaFattura();
@@ -25,7 +25,7 @@ namespace StrumentiMusicali.App.Settings
 		public int Left { get; set; }
 	}
 
-	public enum enAmbienti
+	public enum enAmbiente
 	{
 		Main,
 		Fattura,

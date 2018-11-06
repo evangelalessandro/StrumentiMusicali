@@ -30,7 +30,7 @@ namespace StrumentiMusicali.App.Settings
 				{
 					var act = new Action(() => {
 						EventAggregator.Instance().Publish(
-						new ApriAmbiente(enAmbienti.SettingStampa));
+						new ApriAmbiente(enAmbiente.SettingStampa));
 											});
 					MessageManager.NotificaWarnig("Non sono state compilate tutte le informazioni sul negozio da stampare sulla fattura. Clicca per compilare.",act);
 					

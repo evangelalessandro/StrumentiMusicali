@@ -24,7 +24,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 	{
 
 		public ControllerFatturazione() :
-			base(enAmbienti.FattureList, enAmbienti.Fattura)
+			base(enAmbiente.FattureList, enAmbiente.Fattura)
 		{
 			_sub2 = EventAggregator.Instance().Subscribe<Add<Fattura>>(AddFattura);
 			_sub3 = EventAggregator.Instance().Subscribe<Edit<Fattura>>(FatturaEdit);
@@ -131,7 +131,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			using (var view = new DettaglioFatturaView(this))
 			{
-				ShowView(view, Settings.enAmbienti.Fattura);
+				ShowView(view, Settings.enAmbiente.Fattura);
 			}
 		}
 
@@ -368,8 +368,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 								EventAggregator.Instance().Publish<Save<Cliente>>
 								(new Save<Cliente>());
 							};
-							ShowView(view, enAmbienti.Cliente,null,false);
-							ViewFactory.AddView(enAmbienti.Cliente,view);
+							ShowView(view, enAmbiente.Cliente,null,false);
+							ViewFactory.AddView(enAmbiente.Cliente,view);
 						}
 						//else
 						//{

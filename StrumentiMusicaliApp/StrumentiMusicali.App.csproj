@@ -253,6 +253,8 @@
     <Compile Include="Core\Events\Magazzino\MovimentoMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\CaricaQtaMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\ScaricaQtaMagazzino.cs" />
+    <Compile Include="Core\Events\Tab\RemoveNewTab.cs" />
+    <Compile Include="Core\Events\Tab\GetNewTab.cs" />
     <Compile Include="Core\Item\ArticoloItem.cs" />
     <Compile Include="Core\Item\Base\BaseItemID.cs" />
     <Compile Include="Core\Item\DepositoItem.cs" />
@@ -277,6 +279,12 @@
     <Compile Include="Core\Manager\ProgressManager.cs" />
     <Compile Include="Core\MenuRibbon\RibbonButton.cs" />
     <Compile Include="CustomComponents\DateTimePickerBinding.cs" />
+    <Compile Include="CustomComponents\TabCustom.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomComponents\TabCustom.Designer.cs">
+      <DependentUpon>TabCustom.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\Articoli\ScontaArticoliView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -402,6 +410,8 @@
     <Compile Include="View\Utility\MySortableBindingList.cs" />
     <Compile Include="View\Utility\UtilityView.cs" />
     <Compile Include="View\Utility\OrdinaTab.cs" />
+    <None Include="Resources\Close.png" />
+    <None Include="Resources\Add2.png" />
     <None Include="Resources\View_all_48.png" />
     <None Include="Resources\View_all_64.png" />
     <None Include="Resources\Check_OK_48.png" />
@@ -422,6 +432,9 @@
     <None Include="Resources\LogView_48.png" />
     <None Include="Resources\Down.png" />
     <None Include="Resources\Up.png" />
+    <EmbeddedResource Include="CustomComponents\TabCustom.resx">
+      <DependentUpon>TabCustom.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="View\Articoli\DettaglioArticoloView.resx">
       <DependentUpon>DettaglioArticoloView.cs</DependentUpon>

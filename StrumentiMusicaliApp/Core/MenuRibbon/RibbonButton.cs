@@ -60,6 +60,14 @@ namespace StrumentiMusicali.App.Core.MenuRibbon
 			Pannelli.Add(ribPannel);
 			return ribPannel;
 		}
+		 
+		public event EventHandler OnSelected;
+	 
+		public void PerformSelect()
+		{
+			if (OnSelected != null)
+				OnSelected(this, new EventArgs());
+		}
 	}
 
 	public class MenuTab : BaseRibbonItem

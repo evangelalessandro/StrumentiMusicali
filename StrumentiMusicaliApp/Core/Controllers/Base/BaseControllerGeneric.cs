@@ -17,7 +17,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		where TEntity : BaseEntity, new()
 		where TBaseItem : BaseItem<TEntity>, new()
 	{
-		public BaseControllerGeneric(enAmbienti ambiente, enAmbienti ambienteDettaglio)
+		public BaseControllerGeneric(enAmbiente ambiente, enAmbiente ambienteDettaglio)
 		{
 			AmbienteDettaglio = ambienteDettaglio;
 
@@ -36,8 +36,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			Dispose(false);
 		}
 
-		public enAmbienti Ambiente { get; private set; }
-		public enAmbienti AmbienteDettaglio { get; private set; }
+		public enAmbiente Ambiente { get; private set; }
+		public enAmbiente AmbienteDettaglio { get; private set; }
 
 		public string TestoRicerca { get; set; } = "";
 		public abstract void RefreshList(UpdateList<TEntity> obj);
@@ -150,7 +150,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		public event EventHandler<EventArgs> OnSave;
 		public event EventHandler<EventArgs> OnClose;
 
-		public enAmbienti AmbienteMenu { get; set; }
+		public enAmbiente AmbienteMenu { get; set; }
 
 		private void AggiungiComandi()
 		{

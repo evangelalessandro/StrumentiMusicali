@@ -43,7 +43,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			Application.SetCompatibleTextRenderingDefault(false);
 			using (var mainView = new MainView(this))
 			{
-				this.ShowView(mainView, Settings.enAmbienti.Main);
+				this.ShowView(mainView, Settings.enAmbiente.Main);
 			}
 		}
 
@@ -76,7 +76,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			switch (obj.TipoEnviroment)
 			{
 
-				case enAmbienti.ArticoliList:
+				case enAmbiente.ArticoliList:
 
 					using (var controller = new ControllerArticoli())
 					{
@@ -88,16 +88,16 @@ namespace StrumentiMusicali.App.Core.Controllers
 					}
 					break;
 
-				case enAmbienti.FattureList:
+				case enAmbiente.FattureList:
 					using (var controller = new ControllerFatturazione())
 					{
-						using (var view = new FattureListView(controller, enAmbienti.FattureList, enAmbienti.Fattura))
+						using (var view = new FattureListView(controller, enAmbiente.FattureList, enAmbiente.Fattura))
 						{
-							ShowView(view, Settings.enAmbienti.FattureList,controller);
+							ShowView(view, Settings.enAmbiente.FattureList,controller);
 						}
 					}
 					break;
-				case enAmbienti.LogView:
+				case enAmbiente.LogView:
 					using (var controllerLog = new ControllerLog())
 					{
 						using (var view = new LogView(controllerLog))
@@ -106,7 +106,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 						}
 					}
 					break;
-				case enAmbienti.ClientiList:
+				case enAmbiente.ClientiList:
 					using (var controller = new ControllerClienti())
 					{
 						using (var view = new ClientiListView(controller))
@@ -115,7 +115,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 						}
 					}
 					break;
-				case enAmbienti.DepositoList:
+				case enAmbiente.DepositoList:
 					using (var controller = new ControllerDepositi())
 					{
 						using (var view = new DepositiListView(controller))
@@ -124,41 +124,41 @@ namespace StrumentiMusicali.App.Core.Controllers
 						}
 					}
 					break;
-				case enAmbienti.SettingFatture:
+				case enAmbiente.SettingFatture:
 
 					ApriSettingMittenteFattura();
 					break;
-				case enAmbienti.SettingSito:
+				case enAmbiente.SettingSito:
 
 					ApriSettingSito();
 					break;
-				case enAmbienti.SettingStampa:
+				case enAmbiente.SettingStampa:
 					ApriSettingStampaFattura();
 					break;
-				case enAmbienti.Main:
+				case enAmbiente.Main:
 					break;
-				case enAmbienti.Fattura:
+				case enAmbiente.Fattura:
 					break;
-				case enAmbienti.Articolo:
+				case enAmbiente.Articolo:
 					break;
-				case enAmbienti.Magazzino:
+				case enAmbiente.Magazzino:
 					break;
-				case enAmbienti.ScaricoMagazzino:
+				case enAmbiente.ScaricoMagazzino:
 					using (var controller = new ControllerMagazzino())
 					{
 						using (var view = new View.ScaricoMagazzinoView(controller))
 						{
-							this.ShowView(view, Settings.enAmbienti.ScaricoMagazzino, controller);
+							this.ShowView(view, Settings.enAmbiente.ScaricoMagazzino, controller);
 						}
 					}
 					break;
-				case enAmbienti.LogViewList:
+				case enAmbiente.LogViewList:
 					break;
-				case enAmbienti.Cliente:
+				case enAmbiente.Cliente:
 					break;
-				case enAmbienti.FattureRigheList:
+				case enAmbiente.FattureRigheList:
 					break;
-				case enAmbienti.FattureRigheDett:
+				case enAmbiente.FattureRigheDett:
 					break;
 				default:
 					break;
@@ -200,7 +200,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 								Core.Controllers.enSaveOperation.OpSave));
 					}
 				};
-				this.ShowView(view, enAmbienti.SettingFatture);
+				this.ShowView(view, enAmbiente.SettingFatture);
 			}
 		}
 		private void ApriSettingStampaFattura()
@@ -226,7 +226,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 								Core.Controllers.enSaveOperation.OpSave));
 					}
 				};
-				this.ShowView(view, Settings.enAmbienti.SettingStampa);
+				this.ShowView(view, Settings.enAmbiente.SettingStampa);
 			}
 		}
 
@@ -253,7 +253,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 								Core.Controllers.enSaveOperation.OpSave));
 					}
 				};
-				this.ShowView(view, Settings.enAmbienti.SettingSito);
+				this.ShowView(view, Settings.enAmbiente.SettingSito);
 			}
 		}
 

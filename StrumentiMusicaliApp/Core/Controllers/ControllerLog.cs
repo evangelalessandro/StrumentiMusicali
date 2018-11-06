@@ -20,7 +20,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 	{
 		Subscription<Remove<EventLog>> sub1;
 		public ControllerLog()
-			:base(enAmbienti.LogViewList,enAmbienti.LogView)
+			:base(enAmbiente.LogViewList,enAmbiente.LogView)
 		{
 			sub1 =	EventAggregator.Instance().Subscribe<Remove<EventLog>>(
 				(b)=> {

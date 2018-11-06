@@ -27,7 +27,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		 
 		public ControllerClienti()
-			:base(enAmbienti.ClientiList,enAmbienti.Cliente)
+			:base(enAmbiente.ClientiList,enAmbiente.Cliente)
 		{
 			 
 			SelectedItem = new Cliente();

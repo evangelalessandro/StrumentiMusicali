@@ -29,7 +29,7 @@ namespace StrumentiMusicali.App.Settings
 		public bool CheckFolderImmagini()
 		{
 			var item = CartellaLocaleImmagini;
-			var act = new Action(() => EventAggregator.Instance().Publish(new Core.Events.Generics.ApriAmbiente(enAmbienti.SettingSito)));
+			var act = new Action(() => EventAggregator.Instance().Publish(new Core.Events.Generics.ApriAmbiente(enAmbiente.SettingSito)));
 			if (string.IsNullOrEmpty(item))
 			{
 				MessageManager.NotificaWarnig("Occorre impostare la cartella per le immagini in locale! " + Environment.NewLine + "Clicca per settare.", act);

@@ -19,7 +19,7 @@ namespace StrumentiMusicali.App.View
 		{
 			return Controller.GetMenu();
 		}
-		public	FattureListView(ControllerFatturazione controller, enAmbienti ambienteLista,enAmbienti ambienteDettaglio)
+		public	FattureListView(ControllerFatturazione controller, enAmbiente ambienteLista,enAmbiente ambienteDettaglio)
 			:base(controller)
 		{
 			

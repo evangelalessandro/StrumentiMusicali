@@ -31,7 +31,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		private ControllerImmagini _controllerImmagini = new ControllerImmagini();
 		//private List<Subscription<object>> subList = new List<Subscription<object>>();
 		public ControllerArticoli()
-			: base(enAmbienti.ArticoliList, enAmbienti.Articolo)
+			: base(enAmbiente.ArticoliList, enAmbiente.Articolo)
 		{
 			sub1 = EventAggregator.Instance().Subscribe<Add<Articolo>>(AggiungiArticolo);
 			sub2 = EventAggregator.Instance().Subscribe<Edit<Articolo>>(EditArt);
@@ -109,7 +109,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			using (var view=new View.Articoli.ScontaArticoliView())
 			{
-				ShowView(view, enAmbienti.Articolo);
+				ShowView(view, enAmbiente.Articolo);
 			}
 		}
 
@@ -123,11 +123,11 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		~ControllerArticoli()
 		{
-			var dato = this.ReadSetting(Settings.enAmbienti.ArticoliList);
+			var dato = this.ReadSetting(Settings.enAmbiente.ArticoliList);
 			if (SelectedItem != null)
 			{
 				dato.LastItemSelected = SelectedItem.ID;
-				this.SaveSetting(Settings.enAmbienti.ArticoliList, dato);
+				this.SaveSetting(Settings.enAmbiente.ArticoliList, dato);
 			}
 		}
 
@@ -143,7 +143,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			EditItem = SelectedItem;
 			using (var view = new DettaglioArticoloView(this, item))
 			{
-				ShowView(view, Settings.enAmbienti.Articolo);
+				ShowView(view, Settings.enAmbiente.Articolo);
 			}
 		}
 		private void AggiungiArticolo(object articoloAdd)
@@ -157,7 +157,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			EditItem = new Articolo();
 			using (var view = new DettaglioArticoloView(this, item))
 			{
-				ShowView(view, Settings.enAmbienti.Articolo);
+				ShowView(view, Settings.enAmbiente.Articolo);
 			}
 		}
 

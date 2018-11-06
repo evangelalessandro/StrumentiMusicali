@@ -1,23 +1,15 @@
 ﻿using NLog;
-using StrumentiMusicali.App.Core;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Generics;
-using StrumentiMusicali.App.Core.Events.Magazzino;
-using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.App.Core.Events.Tab;
 using StrumentiMusicali.App.Core.MenuRibbon;
+using StrumentiMusicali.App.CustomComponents;
 using StrumentiMusicali.App.Settings;
-using StrumentiMusicali.App.View;
 using StrumentiMusicali.App.View.Interfaces;
-using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
-using StrumentiMusicali.Library.Repo;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App
@@ -29,17 +21,35 @@ namespace StrumentiMusicali.App
 		private BaseController _baseController;
 
 		private MenuTab _menuTab = null;
-
-		 
+		private TabCustom tab;
 		public MainView(BaseController baseController)
 		{
 			_baseController = baseController;
 			InitializeComponent();
-		 
+
 			_logger.Debug("Form main init");
+
+			tab = new TabCustom() { Dock = DockStyle.Fill, AllowAdd = false };
+			this.Controls.Add(tab);
+
+
+			EventAggregator.Instance().Subscribe<GetNewTab>(TakeNewTab);
+			EventAggregator.Instance().Subscribe<RemoveNewTab>(RemoveTab);
+
+
 		}
 
-		 
+		private void RemoveTab(RemoveNewTab obj)
+		{
+			tab.RemoveTab(obj.Tab);
+		}
+
+		private void TakeNewTab(GetNewTab obj)
+		{
+			obj.Tab = tab.AddTab(obj.Text, obj.Ambiente.ToString());
+
+		}
+
 		public MenuTab GetMenu()
 		{
 			if (_menuTab == null)
@@ -47,7 +57,7 @@ namespace StrumentiMusicali.App
 				_menuTab = new MenuTab();
 
 				AggiungiPrincipale();
-				
+
 				AggiungiImpostazioni();
 
 				AggiungiTabLog();
@@ -65,25 +75,25 @@ namespace StrumentiMusicali.App
 			var rib1 = panel1.Add("Mittente fattura", Properties.Resources.Settings);
 			rib1.Click += (s, e) =>
 			{
-				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.SettingFatture));
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingFatture));
 			};
 			var rib2 = panel1.Add("Sito & Upload", Properties.Resources.Settings);
 			rib2.Click += (s, e) =>
 			{
-				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.SettingSito));
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingSito));
 			};
 
 			var rib3 = panel1.Add("Intest. fattura per stampa", Properties.Resources.Settings);
 			rib3.Click += (s, e) =>
 			{
-				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.SettingStampa));
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingStampa));
 			};
 
 
 			var rib4 = panel1.Add("Depositi", Properties.Resources.Settings);
 			rib4.Click += (s, e) =>
 			{
-				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.DepositoList));
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.DepositoList));
 			};
 
 		}
@@ -94,12 +104,12 @@ namespace StrumentiMusicali.App
 			var ribSetting = panel1.Add("Visualizza log", Properties.Resources.LogView_48);
 			ribSetting.Click += (s, e) =>
 			{
-				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.LogView));
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.LogView));
 			};
-			 
+
 		}
 
-		 
+
 		private void AggiungiComandiImportExport()
 		{
 			var tabImportExport = _menuTab.Add(@"Import\Export");
@@ -130,26 +140,26 @@ namespace StrumentiMusicali.App
 			var ribFatt = panel1.Add("Fatturazione", Properties.Resources.Invoice);
 			ribFatt.Click += (s, e) =>
 			{
-				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.FattureList));
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.FattureList));
 			};
 			var rib2 = panel1.Add("Clienti", Properties.Resources.Customer_48);
 			rib2.Click += (s, e) =>
 			{
-				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.ClientiList));
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ClientiList));
 			};
 			var ribMagaz = panel1.Add("Magazzino", Properties.Resources.UnloadWareHouse);
 			ribMagaz.Click += (s, e) =>
 			{
-				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.ScaricoMagazzino));
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ScaricoMagazzino));
 			};
 
 			var ribArticoli = panel1.Add("Articoli", Properties.Resources.StrumentoMusicale);
 			ribArticoli.Click += (s, e) =>
 			{
-				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.ArticoliList));
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ArticoliList));
 			};
 		}
-		  
-	     
+
+
 	}
 }

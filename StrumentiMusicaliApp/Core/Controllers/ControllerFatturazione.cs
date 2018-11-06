@@ -406,7 +406,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 						|| a.PIVA.Contains(datoRicerca)
 						|| a.Codice.Contains(datoRicerca)
 
-					).Select(a => new FatturaItem
+					).Take(ViewAllItem ? 100000 : 100).OrderBy(a => a.RagioneSociale).Select(a => new FatturaItem
 					{
 						ID = a.ID,
 						Data = a.Data,
@@ -414,7 +414,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 						PIVA = a.PIVA,
 						Codice = a.Codice,
 						RagioneSociale = a.RagioneSociale
-					}).OrderByDescending(a => a.ID).Take(100).ToList();
+					}).ToList();
 				}
 
 				DataSource = new View.Utility.MySortableBindingList<FatturaItem>(list);

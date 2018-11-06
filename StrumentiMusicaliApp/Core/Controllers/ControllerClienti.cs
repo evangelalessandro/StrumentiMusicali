@@ -108,12 +108,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 						a.Indirizzo.IndirizzoConCivico.Contains(TestoRicerca)
 						||
 						TestoRicerca=="" 
-					).ToList().Select(a => new ClientiItem(a)
+					).OrderBy(a => a.RagioneSociale).Take(ViewAllItem ? 100000 : 300).ToList().Select(a => new ClientiItem(a)
 					{
 						ID = a.ID, 
 						Entity = a,
 						 
-					}).OrderBy(a => a.RagioneSociale).ToList();
+					}).ToList();
 				}
 
 				DataSource = new View.Utility.MySortableBindingList<ClientiItem>(list);

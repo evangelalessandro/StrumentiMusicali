@@ -14,7 +14,7 @@ using StrumentiMusicali.Library.Repo;
 using System;
 using System.Windows.Forms;
 
-namespace StrumentiMusicali.App.Core
+namespace StrumentiMusicali.App.Core.Controllers
 {
 	public class ControllerMaster : BaseController
 	{
@@ -24,21 +24,27 @@ namespace StrumentiMusicali.App.Core
 			: base()
 		{
 			ConfigureNLog();
-			 
+
 
 			EventAggregator.Instance().Subscribe<ApriAmbiente>(Apri);
 			EventAggregator.Instance().Subscribe<ImportArticoliCSVMercatino>(ImportaCsvArticoli);
 			EventAggregator.Instance().Subscribe<ImportaFattureAccess>(ImportaFatture);
 			EventAggregator.Instance().Subscribe<InvioArticoliCSV>(InvioArCSV);
-			
+
 			Application.ThreadException += Application_ThreadException;
+			
+
+		}
+
+		public void ShowMainView()
+		{
+			
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			using (var mainView = new MainView(this))
 			{
 				this.ShowView(mainView, Settings.enAmbienti.Main);
 			}
-
 		}
 
 		private void InvioArCSV(InvioArticoliCSV obj)

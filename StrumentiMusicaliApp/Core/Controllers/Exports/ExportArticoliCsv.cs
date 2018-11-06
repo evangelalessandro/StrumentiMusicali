@@ -39,6 +39,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 
 		public void InvioArticoli()
 		{
+			_logger.Info("Inizio controlli per invio CSV");
 			using (var controller = new ControllerImmagini())
 			{
  
@@ -73,6 +74,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 				{
 					using (var uof = new UnitOfWork())
 					{
+						_logger.Info("Inizio procedura invio CSV");
+
 						List<FotoArticolo> fotoList = uof.FotoArticoloRepository.Find(a => true).ToList();
 						List<GiacenzaArt> magazzinoGiac = uof.MagazzinoRepository.Find(a => true).GroupBy(a => a.ArticoloID)
 							.Select(a => new GiacenzaArt { ArticoloId = a.Key, Giacenza = a.Sum(b => b.Qta) }).ToList();
@@ -98,11 +101,13 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 						uof.Commit();
 					}
 				}
+				_logger.Info(@"Invio CSV\Foto Terminato Correttamente");
 
 				MessageManager.NotificaInfo("Terminato Invio Articoli");
 			}
 			catch (Exception ex)
 			{
+				_logger.Error(ex);
 				ExceptionManager.ManageError(ex);
 			}
 		}
@@ -243,6 +248,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 			var fileEcommerceContent = ExportFile(listArticoli, magazzinoGiac, fotoList);
 			string fileEcommerce = SaveFileCsv(fileEcommerceContent, _settingSito.SoloNomeFileEcommerce);
 			MessageManager.NotificaInfo("Creato file E-Commerce");
+			_logger.Info("Creato file E-Commerce con '{0}' articoli ", listArticoli.Count.ToString());
 			return fileEcommerce;
 		}
 
@@ -267,6 +273,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 			var fileMercatinoContent = ExportFile(listArticoli, magazzinoGiac, fotoList);
 			var fileMercatino = SaveFileCsv(fileMercatinoContent, _settingSito.SoloNomeFileMercatino);
 			MessageManager.NotificaInfo("Creato file Mercatino");
+			_logger.Info("Creato file Mercatino con '{0}' articoli ",listArticoli.Count.ToString());
 			return fileMercatino;
 		}
 
@@ -316,10 +323,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 		private void UploadNewFoto()
 		{
 			//webClient.Credentials = new NetworkCredential(ArgList["-user"], ArgList["-pwd"]);
-
-			_webClient.Credentials = new NetworkCredential("dlpuser@dlptest.com", "e73jzTRTNqCN9PYAAjjn");
-			bool UploadCompleted;
+			_logger.Info("Inizio upload di {0} foto", _fotoToUpload);
 			
+			_webClient.Credentials = new NetworkCredential("dlpuser@dlptest.com", "e73jzTRTNqCN9PYAAjjn");
+			 
 			var baseLocalFolder = _settingSito.CartellaLocaleImmagini;
 			var folderFtpImmagini = _settingSito.UrlCompletaImmagini;
 			//loop through files in folder and upload
@@ -327,20 +334,21 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 			{
 				var fileToUpload = Path.Combine(baseLocalFolder, file.UrlFoto);
 
-				UploadCompleted = UploadEndRetray(fileToUpload, folderFtpImmagini);
+				 UploadEndRetray(fileToUpload, folderFtpImmagini);
 			}
+			_logger.Info("Terminato upload di {0} foto", _fotoToUpload);
 		}
 
-		private bool UploadEndRetray(string fileToUpload, string destFtpFolder)
+		private void UploadEndRetray(string fileToUpload, string destFtpFolder)
 		{
 			int wait = 100;
 
-			bool UploadCompleted;
+			bool uploadCompleted;
 			var retry = 0;
 			do
 			{
-				UploadCompleted = ftpUpFile(fileToUpload, destFtpFolder);
-				if (!UploadCompleted)
+				uploadCompleted = ftpUpFile(fileToUpload, destFtpFolder);
+				if (!uploadCompleted)
 				{
 					retry++;
 					Thread.Sleep(wait);
@@ -348,11 +356,13 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 
 					if (retry == 5)
 					{
+						_logger.Error("Upload Error del file " + fileToUpload);
 						throw new MessageException("Non si riesce a fare upload del file " + fileToUpload);
 					}
 				}
-			} while (!UploadCompleted);
-			return UploadCompleted;
+
+			} while (!uploadCompleted);
+			 
 		}
 
 		private class GiacenzaArt

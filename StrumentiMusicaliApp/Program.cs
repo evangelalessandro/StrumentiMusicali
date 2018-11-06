@@ -1,4 +1,7 @@
 ﻿using StrumentiMusicali.App.Core;
+using StrumentiMusicali.App.Core.Controllers;
+using StrumentiMusicali.App.Core.Events.Articoli;
+using StrumentiMusicali.Library.Core;
 using System;
 
 namespace StrumentiMusicali.App
@@ -9,10 +12,24 @@ namespace StrumentiMusicali.App
 		/// Punto di ingresso principale dell'applicazione.
 		/// </summary>
 		[STAThread]
-		private static void Main()
+		private static void Main(string[] args)
 		{
-			using (var controller = new ControllerMaster())
+			if (args == null || args.Length==0 || string.IsNullOrEmpty( args[0]))
 			{
+				using (var controller = new ControllerMaster())
+				{
+					controller.ShowMainView();
+				}
+			}
+			else
+			{
+				if (args[0]=="INVIO")
+				{
+					using (var controller=new ControllerMaster())
+					{
+						EventAggregator.Instance().Publish<InvioArticoliCSV>(new InvioArticoliCSV());
+					}
+				}
 			}
 		}
 	}

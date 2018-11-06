@@ -96,7 +96,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 					list = uof.DepositoRepository.Find(a => 
 					a.NomeDeposito.Contains(TestoRicerca) ||
 						TestoRicerca=="" 
-					).ToList().Select(a => new DepositoItem(a)
+					).Take(ViewAllItem ? 100000 : 300).ToList().Select(a => new DepositoItem(a)
 					{
 						 
 						 

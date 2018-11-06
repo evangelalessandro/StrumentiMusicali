@@ -77,12 +77,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 						|| a.StackTrace.Contains(datoRicerca)
 						|| a.InnerException.Contains(datoRicerca)
 
-					).ToList().Select(a => new LogItem(a)
+					).OrderByDescending(a => a.DataCreazione).Take(ViewAllItem ? 100000 : 300).ToList().Select(a => new LogItem(a)
 					{
 						
 						Entity = a,
 
-					}).OrderByDescending(a => a.DataCreazione).Take(500).ToList();
+					}).ToList();
 				}
 
 				DataSource= new View.Utility.MySortableBindingList<LogItem> (list);

@@ -3,19 +3,17 @@ using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Item.Base;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Settings;
-using StrumentiMusicali.App.View;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Base;
 using System;
-using System.ComponentModel;
 
 namespace StrumentiMusicali.App.Core.Controllers.Base
 {
 	[AddINotifyPropertyChangedInterface]
-	public abstract class BaseControllerGeneric<TEntity, TBaseItem> : BaseController, IMenu, IDisposable,ICloseSave //, INotifyPropertyChanged
+	public abstract class BaseControllerGeneric<TEntity, TBaseItem> : BaseController, IMenu, IDisposable, ICloseSave //, INotifyPropertyChanged
 		where TEntity : BaseEntity, new()
 		where TBaseItem : BaseItem<TEntity>, new()
 	{
@@ -47,14 +45,14 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 		public TEntity EditItem { get; set; } = new TEntity();
 
-	  
+
 		private Subscription<UpdateList<TEntity>> _updateList;
 		private Subscription<ItemSelected<TBaseItem, TEntity>> _selectItemSub;
-		 
+
 
 		public void Init()
 		{
-			_updateList = EventAggregator.Instance().Subscribe<UpdateList<TEntity>>(RefreshList);
+			//_updateList = EventAggregator.Instance().Subscribe<UpdateList<TEntity>>(RefreshList);
 
 			_selectItemSub = EventAggregator.Instance().Subscribe<ItemSelected<TBaseItem, TEntity>>(
 				(a) =>
@@ -109,7 +107,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		public TEntity SelectedItem { get; set; }
 		public void ShowEditView()
 		{
-			using (var view = new GenericSettingView(this.SelectedItem))
+
+			using (var view = new GenericSettingView(EditItem))
 			{
 				view.OnSave += (a, b) =>
 				{
@@ -128,7 +127,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		}
 		private MenuTab _menuTab = null;
 
-	 
+
 
 		public MenuTab GetMenu()
 		{
@@ -141,12 +140,12 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			}
 			return _menuTab;
 		}
-		private RibbonMenuButton ribCerca;
+		//private RibbonMenuButton ribCerca;
 
-		private RibbonMenuButton ribDelete;
-		 
+		//private RibbonMenuButton ribDelete;
 
-		private RibbonMenuButton ribEdit;
+
+		//private RibbonMenuButton ribEdit;
 
 		public event EventHandler<EventArgs> OnSave;
 		public event EventHandler<EventArgs> OnClose;
@@ -156,21 +155,21 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		private void AggiungiComandi()
 		{
 
-			var tabArticoli = _menuTab.Add(TestoAmbiente(AmbienteMenu));
-			var panelComandi = tabArticoli.Add("Comandi");
+			var tab1 = _menuTab.Add(TestoAmbiente(AmbienteMenu));
+			var panelComandi = tab1.Add("Comandi");
 			UtilityView.AddButtonSaveAndClose(panelComandi, this, false);
 
 			var ribCrea = panelComandi.Add("Crea", Properties.Resources.Add);
 			ribCrea.Tag = MenuTab.TagAdd;
 
-			ribEdit = panelComandi.Add(@"Vedi\Modifica", Properties.Resources.Edit, true);
+			var ribEdit = panelComandi.Add(@"Vedi\Modifica", Properties.Resources.Edit, true);
 			ribEdit.Tag = MenuTab.TagEdit;
 
-			ribDelete = panelComandi.Add("Cancella", Properties.Resources.Delete, true);
+			var ribDelete = panelComandi.Add("Cancella", Properties.Resources.Delete, true);
 			ribDelete.Tag = MenuTab.TagRemove;
-			 
-			var panelComandiArticoliCerca = tabArticoli.Add("Cerca");
-			ribCerca = panelComandiArticoliCerca.Add("Cerca", Properties.Resources.Find);
+
+			var panel2 = tab1.Add("Cerca");
+			var ribCerca = panel2.Add("Cerca", Properties.Resources.Find);
 			ribCerca.Tag = MenuTab.TagCerca;
 
 			ribCrea.Click += (a, e) =>
@@ -178,22 +177,47 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 				EventAggregator.Instance().Publish(new Add<TEntity>());
 			};
 			ribDelete.Click += (a, e) =>
-			{
-				EventAggregator.Instance().Publish(new Remove<TEntity>());
-			};
+		  {
+			  EventAggregator.Instance().Publish(new Remove<TEntity>());
+		  };
 			ribEdit.Click += (a, e) =>
-			{
-				EventAggregator.Instance().Publish(new Edit<TEntity>());
-			};
+		  {
+			  EventAggregator.Instance().Publish(new Edit<TEntity>());
+		  };
 			ribCerca.Click += (a, e) =>
 			{
 				EventAggregator.Instance().Publish(new ViewRicerca<TEntity>());
 			};
+
+			var panel3 = tab1.Add("Visualizza");
+			var rib1 = panel3.Add("Visualizza tutti", Properties.Resources.View_all_48);
+			rib1.Click += (b, c) =>
+			  {
+				  rib1.Checked = !rib1.Checked;
+				  if (rib1.Checked)
+				  {
+					  ViewAllItem = true;
+				  }
+				  else
+				  {
+					  ViewAllItem = false;
+				  }
+				  EventAggregator.Instance().Publish(new UpdateList<TEntity>());
+			  };
+
+		}
+		public bool ViewAllItem { get; set; }
+
+		public void RaiseSave()
+		{
+			if (OnSave != null)
+				OnSave(this, new EventArgs());
 		}
 
-		public void RaiseSave() => OnSave(this, new EventArgs());
-
-
-		public void RaiseClose() => OnClose(this, new EventArgs());
+		public void RaiseClose()
+		{
+			if (OnClose != null)
+				OnClose(this, new EventArgs());
+		}
 	}
 }

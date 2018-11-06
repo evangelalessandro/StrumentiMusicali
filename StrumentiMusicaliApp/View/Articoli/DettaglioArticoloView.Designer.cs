@@ -30,17 +30,13 @@ namespace StrumentiMusicali.App.Forms
 			this.cboCategoria = new System.Windows.Forms.ComboBox();
 			this.label9 = new System.Windows.Forms.Label();
 			this.cboCondizione = new System.Windows.Forms.ComboBox();
-			this.panel2 = new System.Windows.Forms.Panel();
-			this.txtTitolo = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
-			this.txtFiltroCategoria = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
-			this.txtMarca = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
+			this.pnl1 = new System.Windows.Forms.Panel();
 			this.label6 = new System.Windows.Forms.Label();
 			this.cboReparto = new System.Windows.Forms.ComboBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.pnlTesto = new System.Windows.Forms.Panel();
-			this.txtTesto = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
-			this.panel1 = new System.Windows.Forms.Panel();
+			this.pnl3 = new System.Windows.Forms.Panel();
 			this.label5 = new System.Windows.Forms.Label();
 			this.chkCaricainMercatino = new System.Windows.Forms.CheckBox();
 			this.chkCaricainEcommerce = new System.Windows.Forms.CheckBox();
@@ -60,12 +56,16 @@ namespace StrumentiMusicali.App.Forms
 			this.diminuisciPrioritàToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aumentaPrioritàToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.rimuoviImmagineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.txtTesto = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
 			this.txtCodiceABarre = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
-			this.panel2.SuspendLayout();
+			this.txtTitolo = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
+			this.txtFiltroCategoria = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
+			this.txtMarca = new StrumentiMusicali.App.CustomComponents.AutoCompleteTextBox();
+			this.pnl1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.pnlTesto.SuspendLayout();
-			this.panel1.SuspendLayout();
+			this.pnl3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzoBarrato)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzo)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtGiacenza)).BeginInit();
@@ -153,7 +153,7 @@ namespace StrumentiMusicali.App.Forms
 			this.cboCategoria.Name = "cboCategoria";
 			this.cboCategoria.Size = new System.Drawing.Size(436, 24);
 			this.cboCategoria.TabIndex = 4;
-			this.cboCategoria.Tag = "Categoria";
+			this.cboCategoria.Tag = "CategoriaID";
 			// 
 			// label9
 			// 
@@ -175,54 +175,27 @@ namespace StrumentiMusicali.App.Forms
 			this.cboCondizione.TabIndex = 5;
 			this.cboCondizione.Tag = "Condizione";
 			// 
-			// panel2
+			// pnl1
 			// 
-			this.panel2.Controls.Add(this.txtTitolo);
-			this.panel2.Controls.Add(this.txtFiltroCategoria);
-			this.panel2.Controls.Add(this.txtMarca);
-			this.panel2.Controls.Add(this.label6);
-			this.panel2.Controls.Add(this.cboReparto);
-			this.panel2.Controls.Add(this.cboCondizione);
-			this.panel2.Controls.Add(this.lblID);
-			this.panel2.Controls.Add(this.txtID);
-			this.panel2.Controls.Add(this.label9);
-			this.panel2.Controls.Add(this.lblCategoria);
-			this.panel2.Controls.Add(this.lblCondizione);
-			this.panel2.Controls.Add(this.cboCategoria);
-			this.panel2.Controls.Add(this.lblMarca);
-			this.panel2.Controls.Add(this.label1);
-			this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel2.Location = new System.Drawing.Point(3, 3);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(909, 146);
-			this.panel2.TabIndex = 31;
-			// 
-			// txtTitolo
-			// 
-			this.txtTitolo.Location = new System.Drawing.Point(60, 110);
-			this.txtTitolo.Name = "txtTitolo";
-			this.txtTitolo.Size = new System.Drawing.Size(821, 22);
-			this.txtTitolo.TabIndex = 33;
-			this.txtTitolo.Tag = "Titolo";
-			this.txtTitolo.Values = null;
-			// 
-			// txtFiltroCategoria
-			// 
-			this.txtFiltroCategoria.Location = new System.Drawing.Point(118, 76);
-			this.txtFiltroCategoria.Name = "txtFiltroCategoria";
-			this.txtFiltroCategoria.Size = new System.Drawing.Size(239, 22);
-			this.txtFiltroCategoria.TabIndex = 32;
-			this.txtFiltroCategoria.Tag = "";
-			this.txtFiltroCategoria.Values = null;
-			// 
-			// txtMarca
-			// 
-			this.txtMarca.Location = new System.Drawing.Point(445, 7);
-			this.txtMarca.Name = "txtMarca";
-			this.txtMarca.Size = new System.Drawing.Size(436, 22);
-			this.txtMarca.TabIndex = 31;
-			this.txtMarca.Tag = "Marca";
-			this.txtMarca.Values = null;
+			this.pnl1.Controls.Add(this.txtTitolo);
+			this.pnl1.Controls.Add(this.txtFiltroCategoria);
+			this.pnl1.Controls.Add(this.txtMarca);
+			this.pnl1.Controls.Add(this.label6);
+			this.pnl1.Controls.Add(this.cboReparto);
+			this.pnl1.Controls.Add(this.cboCondizione);
+			this.pnl1.Controls.Add(this.lblID);
+			this.pnl1.Controls.Add(this.txtID);
+			this.pnl1.Controls.Add(this.label9);
+			this.pnl1.Controls.Add(this.lblCategoria);
+			this.pnl1.Controls.Add(this.lblCondizione);
+			this.pnl1.Controls.Add(this.cboCategoria);
+			this.pnl1.Controls.Add(this.lblMarca);
+			this.pnl1.Controls.Add(this.label1);
+			this.pnl1.Dock = System.Windows.Forms.DockStyle.Top;
+			this.pnl1.Location = new System.Drawing.Point(3, 3);
+			this.pnl1.Name = "pnl1";
+			this.pnl1.Size = new System.Drawing.Size(909, 146);
+			this.pnl1.TabIndex = 31;
 			// 
 			// label6
 			// 
@@ -252,19 +225,19 @@ namespace StrumentiMusicali.App.Forms
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(923, 556);
+			this.tabControl1.Size = new System.Drawing.Size(923, 400);
 			this.tabControl1.TabIndex = 29;
 			this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
 			// 
 			// tabPage1
 			// 
 			this.tabPage1.Controls.Add(this.pnlTesto);
-			this.tabPage1.Controls.Add(this.panel1);
-			this.tabPage1.Controls.Add(this.panel2);
+			this.tabPage1.Controls.Add(this.pnl3);
+			this.tabPage1.Controls.Add(this.pnl1);
 			this.tabPage1.Location = new System.Drawing.Point(4, 25);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(915, 527);
+			this.tabPage1.Size = new System.Drawing.Size(915, 371);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Dati Articolo";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -278,40 +251,29 @@ namespace StrumentiMusicali.App.Forms
 			this.pnlTesto.Location = new System.Drawing.Point(3, 149);
 			this.pnlTesto.Name = "pnlTesto";
 			this.pnlTesto.Padding = new System.Windows.Forms.Padding(5);
-			this.pnlTesto.Size = new System.Drawing.Size(909, 238);
+			this.pnlTesto.Size = new System.Drawing.Size(909, 82);
 			this.pnlTesto.TabIndex = 33;
 			// 
-			// txtTesto
+			// pnl3
 			// 
-			this.txtTesto.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtTesto.Location = new System.Drawing.Point(68, 5);
-			this.txtTesto.Multiline = true;
-			this.txtTesto.Name = "txtTesto";
-			this.txtTesto.Size = new System.Drawing.Size(836, 228);
-			this.txtTesto.TabIndex = 34;
-			this.txtTesto.Tag = "Testo";
-			this.txtTesto.Values = null;
-			// 
-			// panel1
-			// 
-			this.panel1.Controls.Add(this.txtCodiceABarre);
-			this.panel1.Controls.Add(this.label5);
-			this.panel1.Controls.Add(this.chkCaricainMercatino);
-			this.panel1.Controls.Add(this.chkCaricainEcommerce);
-			this.panel1.Controls.Add(this.txtPrezzoBarrato);
-			this.panel1.Controls.Add(this.txtPrezzo);
-			this.panel1.Controls.Add(this.label3);
-			this.panel1.Controls.Add(this.label4);
-			this.panel1.Controls.Add(this.chkPrezzoARichiesta);
-			this.panel1.Controls.Add(this.label8);
-			this.panel1.Controls.Add(this.txtGiacenza);
-			this.panel1.Controls.Add(this.chkBoxProposte);
-			this.panel1.Controls.Add(this.chkUsaAnnuncioTurbo);
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panel1.Location = new System.Drawing.Point(3, 387);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(909, 137);
-			this.panel1.TabIndex = 32;
+			this.pnl3.Controls.Add(this.txtCodiceABarre);
+			this.pnl3.Controls.Add(this.label5);
+			this.pnl3.Controls.Add(this.chkCaricainMercatino);
+			this.pnl3.Controls.Add(this.chkCaricainEcommerce);
+			this.pnl3.Controls.Add(this.txtPrezzoBarrato);
+			this.pnl3.Controls.Add(this.txtPrezzo);
+			this.pnl3.Controls.Add(this.label3);
+			this.pnl3.Controls.Add(this.label4);
+			this.pnl3.Controls.Add(this.chkPrezzoARichiesta);
+			this.pnl3.Controls.Add(this.label8);
+			this.pnl3.Controls.Add(this.txtGiacenza);
+			this.pnl3.Controls.Add(this.chkBoxProposte);
+			this.pnl3.Controls.Add(this.chkUsaAnnuncioTurbo);
+			this.pnl3.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.pnl3.Location = new System.Drawing.Point(3, 231);
+			this.pnl3.Name = "pnl3";
+			this.pnl3.Size = new System.Drawing.Size(909, 137);
+			this.pnl3.TabIndex = 32;
 			// 
 			// label5
 			// 
@@ -473,7 +435,7 @@ namespace StrumentiMusicali.App.Forms
 			this.tabPage2.Location = new System.Drawing.Point(4, 25);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(1097, 693);
+			this.tabPage2.Size = new System.Drawing.Size(915, 371);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Immagini";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -483,7 +445,7 @@ namespace StrumentiMusicali.App.Forms
 			this.PanelImage.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.PanelImage.Location = new System.Drawing.Point(3, 3);
 			this.PanelImage.Name = "PanelImage";
-			this.PanelImage.Size = new System.Drawing.Size(1091, 687);
+			this.PanelImage.Size = new System.Drawing.Size(909, 368);
 			this.PanelImage.TabIndex = 1;
 			// 
 			// contextMenuStrip1
@@ -521,6 +483,17 @@ namespace StrumentiMusicali.App.Forms
 			this.rimuoviImmagineToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
 			this.rimuoviImmagineToolStripMenuItem.Text = "Rimuovi Immagine";
 			// 
+			// txtTesto
+			// 
+			this.txtTesto.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.txtTesto.Location = new System.Drawing.Point(68, 5);
+			this.txtTesto.Multiline = true;
+			this.txtTesto.Name = "txtTesto";
+			this.txtTesto.Size = new System.Drawing.Size(836, 72);
+			this.txtTesto.TabIndex = 34;
+			this.txtTesto.Tag = "Testo";
+			this.txtTesto.Values = null;
+			// 
 			// txtCodiceABarre
 			// 
 			this.txtCodiceABarre.Location = new System.Drawing.Point(420, 95);
@@ -530,6 +503,33 @@ namespace StrumentiMusicali.App.Forms
 			this.txtCodiceABarre.Tag = "CodiceAbarre";
 			this.txtCodiceABarre.Values = null;
 			// 
+			// txtTitolo
+			// 
+			this.txtTitolo.Location = new System.Drawing.Point(60, 110);
+			this.txtTitolo.Name = "txtTitolo";
+			this.txtTitolo.Size = new System.Drawing.Size(821, 22);
+			this.txtTitolo.TabIndex = 33;
+			this.txtTitolo.Tag = "Titolo";
+			this.txtTitolo.Values = null;
+			// 
+			// txtFiltroCategoria
+			// 
+			this.txtFiltroCategoria.Location = new System.Drawing.Point(118, 76);
+			this.txtFiltroCategoria.Name = "txtFiltroCategoria";
+			this.txtFiltroCategoria.Size = new System.Drawing.Size(239, 22);
+			this.txtFiltroCategoria.TabIndex = 32;
+			this.txtFiltroCategoria.Tag = "";
+			this.txtFiltroCategoria.Values = null;
+			// 
+			// txtMarca
+			// 
+			this.txtMarca.Location = new System.Drawing.Point(445, 7);
+			this.txtMarca.Name = "txtMarca";
+			this.txtMarca.Size = new System.Drawing.Size(436, 22);
+			this.txtMarca.TabIndex = 31;
+			this.txtMarca.Tag = "Marca";
+			this.txtMarca.Values = null;
+			// 
 			// DettaglioArticoloView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -538,18 +538,18 @@ namespace StrumentiMusicali.App.Forms
 			this.DoubleBuffered = true;
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Margin = new System.Windows.Forms.Padding(4);
-			this.MinimumSize = new System.Drawing.Size(923, 556);
+			this.MinimumSize = new System.Drawing.Size(923, 400);
 			this.Name = "DettaglioArticoloView";
-			this.Size = new System.Drawing.Size(923, 556);
+			this.Size = new System.Drawing.Size(923, 400);
 			this.Load += new System.EventHandler(this.frmArticolo_Load);
-			this.panel2.ResumeLayout(false);
-			this.panel2.PerformLayout();
+			this.pnl1.ResumeLayout(false);
+			this.pnl1.PerformLayout();
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
 			this.pnlTesto.ResumeLayout(false);
 			this.pnlTesto.PerformLayout();
-			this.panel1.ResumeLayout(false);
-			this.panel1.PerformLayout();
+			this.pnl3.ResumeLayout(false);
+			this.pnl3.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzoBarrato)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrezzo)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtGiacenza)).EndInit();
@@ -573,10 +573,10 @@ namespace StrumentiMusicali.App.Forms
 		private System.Windows.Forms.ComboBox cboCategoria;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.ComboBox cboCondizione;
-		private System.Windows.Forms.Panel panel2;
+		private System.Windows.Forms.Panel pnl1;
 		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage tabPage1;
-		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Panel pnl3;
 		private System.Windows.Forms.NumericUpDown txtPrezzoBarrato;
 		private System.Windows.Forms.NumericUpDown txtPrezzo;
 		private System.Windows.Forms.Label label3;

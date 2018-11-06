@@ -3,26 +3,83 @@ using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
-using StrumentiMusicali.App.Settings;
+using StrumentiMusicali.App.Core.MenuRibbon;
+using StrumentiMusicali.App.View.Interfaces;
+using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Linq;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-	public class ControllerMagazzino : BaseController, IDisposable
+	public class ControllerMagazzino : BaseController, IDisposable, ICloseSave, IMenu
 	{
 		public MovimentoMagazzino SelectedItem { get; set; } = new MovimentoMagazzino();
-		Subscription<ScaricaQtaMagazzino> sub1;
-		Subscription<CaricaQtaMagazzino> sub2;
+
+		public const string TAG_SCARICA = "SCARICA";
+		public const string TAG_CARICA = "CARICA";
+		private Subscription<ScaricaQtaMagazzino> sub1;
+		private Subscription<CaricaQtaMagazzino> sub2;
 		public ControllerMagazzino()
 			: base()
 		{
 
-			sub1 =	EventAggregator.Instance().Subscribe<ScaricaQtaMagazzino>(ScaricaMagazzino);
-			sub2  =EventAggregator.Instance().Subscribe<CaricaQtaMagazzino>(CaricaMagazzino);
+			sub1 = EventAggregator.Instance().Subscribe<ScaricaQtaMagazzino>(ScaricaMagazzino);
+			sub2 = EventAggregator.Instance().Subscribe<CaricaQtaMagazzino>(CaricaMagazzino);
 		}
+		private MenuTab _menuTab = null;
+		public MenuTab GetMenu()
+		{
+			if (_menuTab == null)
+			{
+				_menuTab = new MenuTab();
+
+				AggiungiComandi();
+			}
+			return _menuTab;
+		}
+		private void AggiungiComandi()
+		{
+			var tabArticoli = _menuTab.Add("Principale");
+
+			var panelComandiArticoli = tabArticoli.Add("Comandi");
+			UtilityView.AddButtonSaveAndClose(panelComandiArticoli, this, false);
+
+			var ribCarica = panelComandiArticoli.Add("Carica", Properties.Resources.Add);
+			ribCarica.Tag = TAG_CARICA;
+			ribCarica.Click += (a, e) =>
+			{
+				EventAggregator.Instance().Publish<ValidateViewEvent<Magazzino>>(null);
+
+				EventAggregator.Instance().Publish<CaricaQtaMagazzino>(new CaricaQtaMagazzino()
+				{
+					Qta = SelectedItem.Qta,
+					Deposito = SelectedItem.Deposito,
+					ArticoloID = SelectedItem.ArticoloID
+				});
+			};
+
+			var ribScarica = panelComandiArticoli.Add("Carica", Properties.Resources.Remove);
+			ribScarica.Tag = TAG_SCARICA;
+			ribScarica.Click += (a, e) =>
+			{
+				EventAggregator.Instance().Publish<ValidateViewEvent<Magazzino>>(null);
+				EventAggregator.Instance().Publish<ScaricaQtaMagazzino>(new ScaricaQtaMagazzino()
+				{
+					Qta = SelectedItem.Qta,
+					Deposito = SelectedItem.Deposito,
+					ArticoloID = SelectedItem.ArticoloID
+				});
+			};
+
+		}
+
+		 
+		public event EventHandler<EventArgs> OnSave;
+		public event EventHandler<EventArgs> OnClose;
+
 		public new void Dispose()
 		{
 			base.Dispose();
@@ -30,7 +87,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			EventAggregator.Instance().UnSbscribe(sub2);
 
 		}
-		internal System.Collections.Generic.List<DepositoItem> ListDepositi()
+		internal System.Collections.Generic.List<DepositoScaricoItem> ListDepositi()
 		{
 			using (var uof = new UnitOfWork())
 			{
@@ -48,7 +105,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				/*mette i depositi vuoti per quell'articolo*/
 				var listDepositi = uof.DepositoRepository.Find(a => 1 == 1).ToList()
 					.Distinct().Select(
-					a => new DepositoItem()
+					a => new DepositoScaricoItem()
 					{
 						ID = a.ID,
 						NomeDeposito = a.NomeDeposito,
@@ -121,6 +178,16 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			NuovoMovimento(new MovimentoMagazzino()
 			{ ArticoloID = obj.ArticoloID, Deposito = obj.Deposito, Qta = -obj.Qta });
+		}
+
+		public void RaiseSave()
+		{
+
+		}
+
+		public void RaiseClose()
+		{
+			OnClose?.Invoke(this, new EventArgs());
 		}
 	}
 }

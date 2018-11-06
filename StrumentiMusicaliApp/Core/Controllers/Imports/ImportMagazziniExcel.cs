@@ -79,10 +79,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 				{
 					var magItem = new Magazzino();
 					var articolo = new Articolo();
-					var categoriaSel = listCategorie.Where(a => a.Categoria.ToUpper() == item.Categoria.ToUpper()).FirstOrDefault();
+					var categoriaSel = listCategorie.Where(a => a.Nome.ToUpper() == item.Categoria.ToUpper()).FirstOrDefault();
 
 					articolo.Marca = item.Marca;
-					articolo.Categoria = categoriaSel.ID;
+					articolo.CategoriaID = categoriaSel.ID;
 					articolo.Prezzo = int.Parse(item.PrezzoVendita);
 					articolo.Testo = (item.DescrBreve);
 					articolo.Titolo = item.Marca + " " + item.Modello + " " + item.DescrBreve + " " + item.Colore;

@@ -79,6 +79,13 @@ namespace StrumentiMusicali.App
 				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.SettingStampa));
 			};
 
+
+			var rib4 = panel1.Add("Depositi", Properties.Resources.Settings);
+			rib4.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbienti.DepositoList));
+			};
+
 		}
 		private void AggiungiTabLog()
 		{

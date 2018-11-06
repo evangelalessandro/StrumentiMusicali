@@ -215,6 +215,7 @@
     <Compile Include="Core\Controllers\Base\BaseControllerGeneric.cs" />
     <Compile Include="Core\Controllers\Base\BaseController.cs" />
     <Compile Include="Core\Controllers\ControllerArticoli.cs" />
+    <Compile Include="Core\Controllers\ControllerDepositi.cs" />
     <Compile Include="Core\Controllers\ControllerFatturazione.cs" />
     <Compile Include="Core\Controllers\ControllerImmagini.cs" />
     <Compile Include="Core\Controllers\ControllerLog.cs" />
@@ -229,11 +230,13 @@
     <Compile Include="Core\Controllers\Imports\ImportMagazziniExcel.cs" />
     <Compile Include="Core\Controllers\SaveEntityManager.cs" />
     <Compile Include="Core\Controllers\Stampa\Fattura.cs" />
+    <Compile Include="Core\Events\Articoli\ArticoloSconta.cs" />
     <Compile Include="Core\Events\Articoli\InvioArticoliCSV.cs" />
     <Compile Include="Core\Events\Generics\Add.cs" />
     <Compile Include="Core\Events\Generics\ApriAmbiente.cs" />
     <Compile Include="Core\Events\Generics\BaseGeneric.cs" />
     <Compile Include="Core\Events\Generics\RebindItemUpdated.cs" />
+    <Compile Include="Core\Events\Generics\ValidateViewEvent.cs" />
     <Compile Include="Core\Events\Generics\ViewRicerca.cs" />
     <Compile Include="Core\Events\Generics\RemovePriority.cs" />
     <Compile Include="Core\Events\Generics\AddPriority.cs" />
@@ -252,13 +255,14 @@
     <Compile Include="Core\Events\Magazzino\ScaricaQtaMagazzino.cs" />
     <Compile Include="Core\Item\ArticoloItem.cs" />
     <Compile Include="Core\Item\Base\BaseItemID.cs" />
+    <Compile Include="Core\Item\DepositoItem.cs" />
+    <Compile Include="Core\Item\DepositoScaricoItem.cs" />
     <Compile Include="Core\Item\FatturaRigaItem.cs" />
     <Compile Include="Core\Item\FatturaItem.cs" />
     <Compile Include="Core\Item\Base\BaseItem.cs" />
     <Compile Include="Core\Item\Base\CurrentItem.cs" />
     <Compile Include="Core\Item\CategoriaItem.cs" />
     <Compile Include="Core\Controllers\ControllerMaster.cs" />
-    <Compile Include="Core\Item\DepositoItem.cs" />
     <Compile Include="Core\Item\ClientiItem.cs" />
     <Compile Include="Core\Item\LogItem.cs" />
     <Compile Include="Core\Item\MovimentoItem.cs" />
@@ -273,6 +277,15 @@
     <Compile Include="Core\Manager\ProgressManager.cs" />
     <Compile Include="Core\MenuRibbon\RibbonButton.cs" />
     <Compile Include="CustomComponents\DateTimePickerBinding.cs" />
+    <Compile Include="View\Articoli\ScontaArticoliView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Articoli\ScontaArticoliView.Designer.cs">
+      <DependentUpon>ScontaArticoliView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DepositiListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="View\ViewFactory.cs" />
     <Content Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
@@ -288,10 +301,10 @@
     <Compile Include="View\ClientiListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\DettaglioArticoloView.cs">
+    <Compile Include="View\Articoli\DettaglioArticoloView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\DettaglioArticoloView.Designer.cs">
+    <Compile Include="View\Articoli\DettaglioArticoloView.Designer.cs">
       <DependentUpon>DettaglioArticoloView.cs</DependentUpon>
     </Compile>
     <Compile Include="View\DettaglioFatturaView.cs">
@@ -364,7 +377,7 @@
       <DependentUpon>Test.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Interfaces\IMenu.cs" />
-    <Compile Include="View\ArticoliListView.cs">
+    <Compile Include="View\Articoli\ArticoliListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="CustomComponents\AutoCompleteText.cs">
@@ -389,6 +402,12 @@
     <Compile Include="View\Utility\MySortableBindingList.cs" />
     <Compile Include="View\Utility\UtilityView.cs" />
     <Compile Include="View\Utility\OrdinaTab.cs" />
+    <None Include="Resources\View_all_48.png" />
+    <None Include="Resources\View_all_64.png" />
+    <None Include="Resources\Check_OK_48.png" />
+    <None Include="Resources\Sconta_Articoli.png" />
+    <None Include="Resources\Utenti.png" />
+    <None Include="Resources\Depositi.png" />
     <None Include="Resources\Totali_Aggiorna_48.png" />
     <None Include="Resources\Fattura_xml_48.png" />
     <None Include="Resources\Close_48.png" />
@@ -404,8 +423,11 @@
     <None Include="Resources\Down.png" />
     <None Include="Resources\Up.png" />
     <EmbeddedResource Include="Properties\licenses.licx" />
-    <EmbeddedResource Include="View\DettaglioArticoloView.resx">
+    <EmbeddedResource Include="View\Articoli\DettaglioArticoloView.resx">
       <DependentUpon>DettaglioArticoloView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Articoli\ScontaArticoliView.resx">
+      <DependentUpon>ScontaArticoliView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\DettaglioFatturaView.resx">
       <DependentUpon>DettaglioFatturaView.cs</DependentUpon>
@@ -437,7 +459,7 @@
     <EmbeddedResource Include="View\BaseControl\BaseGridViewGeneric.resx">
       <DependentUpon>BaseGridViewGeneric.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\ArticoliListView.resx">
+    <EmbeddedResource Include="View\Articoli\ArticoliListView.resx">
       <DependentUpon>ArticoliListView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\BaseControl\BaseDataControl.resx">

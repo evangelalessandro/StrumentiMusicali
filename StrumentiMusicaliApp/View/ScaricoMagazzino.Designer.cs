@@ -1,6 +1,6 @@
 ﻿namespace StrumentiMusicali.App.View
 {
-	partial class ScaricoMagazzino
+	partial class ScaricoMagazzinoView
 	{
 		/// <summary> 
 		/// Variabile di progettazione necessaria.

@@ -1,4 +1,5 @@
-﻿using StrumentiMusicali.Library.Entity.Base;
+﻿using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Entity.Base;
 using System.ComponentModel.DataAnnotations;
 
 namespace StrumentiMusicali.Library.Entity
@@ -19,7 +20,10 @@ namespace StrumentiMusicali.Library.Entity
 		public bool CaricainMercatino { get; set; } = true;
 
 		[Required]
-		public int Categoria { get; set; }
+		public int CategoriaID { get; set; }
+
+		[CustomHideUIAttribute]
+		public virtual Categoria Categoria { get; set; }
 
 		[MaxLength(100)]
 		public string CodiceAbarre { get; set; }

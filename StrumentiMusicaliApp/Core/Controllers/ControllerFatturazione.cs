@@ -26,7 +26,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 		public ControllerFatturazione() :
 			base(enAmbienti.FattureList, enAmbienti.Fattura)
 		{
-			_sub1 = EventAggregator.Instance().Subscribe<ImportaFattureAccess>(ImportaFatture);
 			_sub2 = EventAggregator.Instance().Subscribe<Add<Fattura>>(AddFattura);
 			_sub3 = EventAggregator.Instance().Subscribe<Edit<Fattura>>(FatturaEdit);
 			_sub4 = EventAggregator.Instance().Subscribe<Save<Fattura>>(Save);
@@ -143,7 +142,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		}
 
 
-		private void ImportaFatture(ImportaFattureAccess obj)
+		public void ImportaFatture(ImportaFattureAccess obj)
 		{
 			try
 			{

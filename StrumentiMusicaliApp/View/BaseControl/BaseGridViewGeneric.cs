@@ -20,8 +20,9 @@ namespace StrumentiMusicali.App.View.BaseControl
 		where TBaseItem : BaseItem<TEntity>,new()
 		where TController : BaseControllerGeneric<TEntity, TBaseItem>
 	{
-		private System.Windows.Forms.Panel pnlArticoli;
-		private System.Windows.Forms.Panel pnlCerca;
+		private System.Windows.Forms.Panel pnlGridView;
+		protected System.Windows.Forms.FlowLayoutPanel pnlCerca;
+
 		private System.Windows.Forms.Splitter splitter1;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox txtCerca;
@@ -55,7 +56,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			);
 			_subEdit = EventAggregator.Instance().Subscribe<Edit<TEntity>>((a) =>
 			{
-				
+				Controller.EditItem = Controller.SelectedItem;
 				EditItemView();
 			});
 			viewRicerca = EventAggregator.Instance().Subscribe<ViewRicerca<TEntity>>((a) =>
@@ -65,7 +66,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 				splitter1.Visible = !visibleCerca;
 				if (!visibleCerca)
 				{
-					pnlArticoli.Dock = DockStyle.Fill;
+					pnlGridView.Dock = DockStyle.Fill;
 				}
 				else
 				{
@@ -80,8 +81,8 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 		private void Init()
 		{
-			this.pnlArticoli = new System.Windows.Forms.Panel();
-			this.pnlCerca = new System.Windows.Forms.Panel();
+			this.pnlGridView = new System.Windows.Forms.Panel();
+			this.pnlCerca = new System.Windows.Forms.FlowLayoutPanel();
 			this.label1 = new System.Windows.Forms.Label();
 			this.txtCerca = new System.Windows.Forms.TextBox();
 			this.splitter1 = new System.Windows.Forms.Splitter();
@@ -96,6 +97,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			this.pnlCerca.Name = "pnlCerca";
 			this.pnlCerca.Size = new System.Drawing.Size(851, 71);
 			this.pnlCerca.TabIndex = 3;
+			this.pnlCerca.FlowDirection = FlowDirection.LeftToRight | FlowDirection.TopDown;
 			// 
 			// label1
 			// 
@@ -108,11 +110,11 @@ namespace StrumentiMusicali.App.View.BaseControl
 			// 
 			// txtCerca
 			// 
-			this.txtCerca.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
+			//this.txtCerca.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+			//| System.Windows.Forms.AnchorStyles.Right)));
 			this.txtCerca.Location = new System.Drawing.Point(76, 23);
 			this.txtCerca.Name = "txtCerca";
-			this.txtCerca.Size = new System.Drawing.Size(763, 22);
+			this.txtCerca.Size = new System.Drawing.Size(400, 22);
 			this.txtCerca.TabIndex = 0;
 			// 
 			// splitter1
@@ -134,18 +136,24 @@ namespace StrumentiMusicali.App.View.BaseControl
 			if (e.KeyCode == Keys.Return)
 			{
 				Controller.TestoRicerca = txtCerca.Text;
-				Controller.RefreshList(null);
-
-				dgvRighe.DataSource = Controller.DataSource;
-
-				dgvRighe.Refresh();
-
-				FormatGrid();
-
-				UpdateButtonState();
+				RicercaRefresh();
 
 			}
 		}
+
+		public void RicercaRefresh()
+		{
+			Controller.RefreshList(null);
+
+			dgvRighe.DataSource = Controller.DataSource;
+
+			dgvRighe.Refresh();
+
+			FormatGrid();
+
+			UpdateButtonState();
+		}
+
 		/// <summary>
 		/// Pulire le risorse in uso.
 		/// </summary>
@@ -221,7 +229,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 		private async void EditItemView()
 		{
-			Controller.EditItem = Controller.SelectedItem;
+			
 			bool skipView = false;
 			var itemSelected = UtilityView.GetCurrentItemSelected<TBaseItem>(dgvRighe);
 			if (onEditItemShowView != null)
@@ -265,7 +273,8 @@ namespace StrumentiMusicali.App.View.BaseControl
 		}
 		private void RefreshList(UpdateList<TEntity> obj)
 		{
-			 
+			Controller.RefreshList(obj);
+
 			ForceUpdateGridAsync();
 
 			FormatGrid();

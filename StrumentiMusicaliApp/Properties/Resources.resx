@@ -226,4 +226,22 @@
   <data name="Totali_Aggiorna_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Totali_Aggiorna_48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Depositi" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Depositi.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sconta_Articoli" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sconta_Articoli.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Utenti" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Utenti.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Check_OK_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Check_OK_48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="View_all_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\View_all_48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="View_all_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\View_all_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

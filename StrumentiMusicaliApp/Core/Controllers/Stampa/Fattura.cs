@@ -29,7 +29,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
 			{
 				var fattura = uof.FatturaRepository.Find(a => a.ID == fatturaSel.ID).
 					Select(a => new { a.Cliente, fat = a }).First().fat;
-				var righeFatt = uof.FattureRigheRepository.Find(a => a.FatturaID == fatturaSel.ID).ToList();
+				var righeFatt = uof.FattureRigheRepository.Find(a => a.FatturaID == fatturaSel.ID).OrderBy(a=>a.OrdineVisualizzazione).ToList();
 
 				ImpostaCampiTestata(fattura);
 

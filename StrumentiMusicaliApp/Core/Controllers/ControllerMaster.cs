@@ -2,6 +2,8 @@
 using NLog.Targets;
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Controllers.Base;
+using StrumentiMusicali.App.Core.Events.Articoli;
+using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
@@ -25,7 +27,10 @@ namespace StrumentiMusicali.App.Core
 			 
 
 			EventAggregator.Instance().Subscribe<ApriAmbiente>(Apri);
-
+			EventAggregator.Instance().Subscribe<ImportArticoliCSVMercatino>(ImportaCsvArticoli);
+			EventAggregator.Instance().Subscribe<ImportaFattureAccess>(ImportaFatture);
+			EventAggregator.Instance().Subscribe<InvioArticoliCSV>(InvioArCSV);
+			
 			Application.ThreadException += Application_ThreadException;
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
@@ -34,6 +39,30 @@ namespace StrumentiMusicali.App.Core
 				this.ShowView(mainView, Settings.enAmbienti.Main);
 			}
 
+		}
+
+		private void InvioArCSV(InvioArticoliCSV obj)
+		{
+			using (var controllerArt = new ControllerArticoli())
+			{
+				controllerArt.InvioArticoli(obj);
+			}
+		}
+
+		private void ImportaFatture(ImportaFattureAccess obj)
+		{
+			using (var controller=new ControllerFatturazione())
+			{
+				controller.ImportaFatture(obj);
+			}
+		}
+
+		private void ImportaCsvArticoli(ImportArticoliCSVMercatino obj)
+		{
+			using (var controllerArt=new ControllerArticoli())
+			{
+				controllerArt.ImportaCsvArticoli(null);
+			}
 		}
 
 		private void Apri(ApriAmbiente obj)
@@ -48,7 +77,7 @@ namespace StrumentiMusicali.App.Core
 
 						using (var view = new ArticoliListView(controller))
 						{
-							this.ShowView(view, obj.TipoEnviroment);
+							this.ShowView(view, obj.TipoEnviroment,controller);
 						}
 					}
 					break;
@@ -63,11 +92,11 @@ namespace StrumentiMusicali.App.Core
 					}
 					break;
 				case enAmbienti.LogView:
-					using (var controller = new ControllerLog())
+					using (var controllerLog = new ControllerLog())
 					{
-						using (var view = new LogView(controller))
+						using (var view = new LogView(controllerLog))
 						{
-							this.ShowView(view, obj.TipoEnviroment,controller);
+							this.ShowView(view, obj.TipoEnviroment, controllerLog);
 						}
 					}
 					break;
@@ -75,6 +104,15 @@ namespace StrumentiMusicali.App.Core
 					using (var controller = new ControllerClienti())
 					{
 						using (var view = new ClientiListView(controller))
+						{
+							this.ShowView(view, obj.TipoEnviroment, controller);
+						}
+					}
+					break;
+				case enAmbienti.DepositoList:
+					using (var controller = new ControllerDepositi())
+					{
+						using (var view = new DepositiListView(controller))
 						{
 							this.ShowView(view, obj.TipoEnviroment, controller);
 						}
@@ -102,7 +140,7 @@ namespace StrumentiMusicali.App.Core
 				case enAmbienti.ScaricoMagazzino:
 					using (var controller = new ControllerMagazzino())
 					{
-						using (var view = new View.ScaricoMagazzino(controller))
+						using (var view = new View.ScaricoMagazzinoView(controller))
 						{
 							this.ShowView(view, Settings.enAmbienti.ScaricoMagazzino, controller);
 						}

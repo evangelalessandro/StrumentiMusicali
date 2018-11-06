@@ -39,7 +39,7 @@ namespace StrumentiMusicali.Library.Entity
 		[CustomUIViewAttribute(Width = 80, Ordine = 15)]
 		public int BancaCab { get; set; }
 
-		[CustomUIViewAttribute(Width = 400,MultiLine =5,Ordine =30)]
+		[CustomUIViewAttribute(Width = 400,MultiLine =5,Ordine =40)]
 		public string Note { get; set; }
 
 		[CustomHideUI()]

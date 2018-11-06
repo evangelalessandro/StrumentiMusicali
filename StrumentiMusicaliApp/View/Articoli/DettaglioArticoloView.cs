@@ -1,12 +1,10 @@
 ﻿using StrumentiMusicali.App.Core;
 using StrumentiMusicali.App.Core.Controllers;
-using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Events.Image;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Settings;
-using StrumentiMusicali.App.View;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
@@ -24,7 +22,7 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Forms
 {
-	public partial class DettaglioArticoloView : UserControl, IMenu,ICloseSave
+	public partial class DettaglioArticoloView : UserControl, IMenu, ICloseSave
 	{
 		protected DragDropEffects effect;
 		protected Thread getImageThread;
@@ -49,10 +47,10 @@ namespace StrumentiMusicali.App.Forms
 			if (DesignMode)
 				return;
 			_settingSito = settingSito;
-		 	EventAggregator.Instance().Subscribe<ImageListUpdate>(RefreshImageList);
+			EventAggregator.Instance().Subscribe<ImageListUpdate>(RefreshImageList);
 
 			PanelImage.AllowDrop = true;
-
+			
 			PanelImage.DragEnter += new DragEventHandler(PanelImage_DragEnter);
 			PanelImage.DragDrop += new DragEventHandler(PanelImage_DragDrop);
 			PanelImage.DragLeave += PanelImage_DragLeave;
@@ -74,8 +72,9 @@ namespace StrumentiMusicali.App.Forms
 			PanelImage.Controls.Add(pb);
 			this.Resize += FrmArticolo_ResizeEnd;
 		}
-		ControllerArticoli _articoloController;
-		 
+
+		private ControllerArticoli _articoloController;
+
 
 		public delegate void AssignImageDlgt();
 
@@ -213,7 +212,7 @@ namespace StrumentiMusicali.App.Forms
 					_categoriList = uof.CategorieRepository.Find(a => true).Select(a => new CategoriaItem
 					{
 						ID = a.ID,
-						Descrizione = a.Categoria + " {" + a.Reparto + "}",
+						Descrizione = a.Nome + " {" + a.Reparto + "}",
 						Reparto = a.Reparto
 					}).ToList();
 				}
@@ -236,14 +235,14 @@ namespace StrumentiMusicali.App.Forms
 						 new DrawItemEventHandler(PageTab_DrawItem);
 			this.tabControl1.Selecting +=
 				new TabControlCancelEventHandler(PageTab_Selecting);
-			 
+
 
 			FillCombo();
 			UpdateButtonState();
 
 			chkPrezzoARichiesta.CheckedChanged += ChkPrezzoARichiesta_CheckedChanged;
 
-			UtilityView.SetDataBind(this,null, _articoloController.EditItem);
+			UtilityView.SetDataBind(this, null, _articoloController.EditItem);
 			using (var uof = new UnitOfWork())
 			{
 				var giacenza = uof.MagazzinoRepository.Find(a => a.ArticoloID == _articoloController.EditItem.ID)
@@ -258,8 +257,13 @@ namespace StrumentiMusicali.App.Forms
 				cboReparto.Text = item.Reparto;
 				cboCategoria.SelectedItem = item;
 			}
+			using (var ord = new OrdinaTab())
+			{
+				ord.OrderTab(pnl1);
+				ord.OrderTab(pnlTesto);
+				ord.OrderTab(pnl3);
+			}
 		}
-
 		private void FrmArticolo_ResizeEnd(object sender, EventArgs e)
 		{
 			ResizeImage();
@@ -393,7 +397,7 @@ namespace StrumentiMusicali.App.Forms
 						var itemPhoto = System.IO.Directory.GetFiles(
 							_settingSito.CartellaLocaleImmagini,
 							item.UrlFoto).FirstOrDefault();
-						
+
 						PictureBox pb = new PictureBox();
 						pb.SizeMode = PictureBoxSizeMode.Zoom;
 						if (itemPhoto == null)
@@ -530,7 +534,7 @@ namespace StrumentiMusicali.App.Forms
 
 		private void UpdateButtonState()
 		{
-			tabPage2.Enabled = _articoloController.EditItem != null 
+			tabPage2.Enabled = _articoloController.EditItem != null
 				&& _articoloController.EditItem.ID != 0;
 			if (_ribPannelImmagini != null)
 			{
@@ -567,7 +571,7 @@ namespace StrumentiMusicali.App.Forms
 		private MenuTab _menuTab = null;
 		private RibbonMenuPanel _ribPannelImmagini;
 		private RibbonMenuButton _ribRemove;
- 
+
 
 		public MenuTab GetMenu()
 		{
@@ -599,8 +603,8 @@ namespace StrumentiMusicali.App.Forms
 					EventAggregator.Instance().Publish<ImageRemove>(new ImageRemove(_fotoArticoloSelected));
 				};
 
-			
-				
+
+
 			}
 			return _menuTab;
 		}

@@ -43,5 +43,7 @@ namespace StrumentiMusicali.App.Settings
 		Cliente,
 		FattureRigheList,
 		FattureRigheDett,
+		Deposito,
+		DepositoList,
 	}
 }

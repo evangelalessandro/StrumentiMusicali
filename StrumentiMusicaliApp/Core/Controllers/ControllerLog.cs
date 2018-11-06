@@ -18,10 +18,11 @@ namespace StrumentiMusicali.App.Core.Controllers
 	//[AddINotifyPropertyChangedInterface]
 	public class ControllerLog : BaseControllerGeneric<EventLog, LogItem>
 	{
+		Subscription<Remove<EventLog>> sub1;
 		public ControllerLog()
 			:base(enAmbienti.LogViewList,enAmbienti.LogView)
 		{
-			EventAggregator.Instance().Subscribe<Remove<EventLog>>(
+			sub1 =	EventAggregator.Instance().Subscribe<Remove<EventLog>>(
 				(b)=> {
 					using (var saveEntity=new SaveEntityManager())
 					{
@@ -44,6 +45,22 @@ namespace StrumentiMusicali.App.Core.Controllers
 				}
 			);
 
+		}
+		protected override void Dispose(bool disposing)
+		{
+		 
+			if (disposing)
+			{
+				EventAggregator.Instance().UnSbscribe(sub1);
+
+				//
+			}
+
+			// Free any unmanaged objects here.
+			//
+
+			// Call base class implementation.
+			base.Dispose(disposing);
 		}
 		public override void RefreshList(UpdateList<EventLog> obj)
 		{

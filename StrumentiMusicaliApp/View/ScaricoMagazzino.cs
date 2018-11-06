@@ -1,4 +1,5 @@
 ﻿using StrumentiMusicali.App.Core.Controllers;
+using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
@@ -7,6 +8,7 @@ using StrumentiMusicali.App.View.BaseControl;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
@@ -16,11 +18,11 @@ using System.Threading.Tasks;
 
 namespace StrumentiMusicali.App.View
 {
-	public partial class ScaricoMagazzino : BaseDataControl, IMenu, ICloseSave
+	public partial class ScaricoMagazzinoView : BaseDataControl
 	{
 		private ControllerMagazzino _controllerMagazzino;
 
-		public ScaricoMagazzino(ControllerMagazzino controllerMagazzino)
+		public ScaricoMagazzinoView(ControllerMagazzino controllerMagazzino)
 			: base()
 		{
 			_controllerMagazzino = controllerMagazzino;
@@ -56,58 +58,15 @@ namespace StrumentiMusicali.App.View
 			this.Load += ScaricoMagazzino_Load;
 
 			EventAggregator.Instance().Subscribe<MovimentiUpdate>(RefreshData);
+			EventAggregator.Instance().Subscribe<ValidateViewEvent<Magazzino>>(
+				(a) => { this.Validate(); }
+				);
 		}
 
-		public MenuTab GetMenu()
-		{
-			if (_menuTab == null)
-			{
-				_menuTab = new MenuTab();
+		
 
-				AggiungiComandi();
-			}
-			return _menuTab;
-		}
-
-		private MenuTab _menuTab = null;
-		private void AggiungiComandi()
-		{
-			var tabArticoli = _menuTab.Add("Principale");
-
-			var panelComandiArticoli = tabArticoli.Add("Comandi");
-			UtilityView.AddButtonSaveAndClose(panelComandiArticoli, this, false);
-
-			ribCarica = panelComandiArticoli.Add("Carica", Properties.Resources.Add);
-			ribCarica.Click += (a, e) =>
-			{
-				this.Validate();
-				EventAggregator.Instance().Publish<CaricaQtaMagazzino>(new CaricaQtaMagazzino()
-				{
-					Qta = _controllerMagazzino.SelectedItem.Qta,
-					Deposito = _controllerMagazzino.SelectedItem.Deposito,
-					ArticoloID = _controllerMagazzino.SelectedItem.ArticoloID
-				});
-			};
-
-			ribScarica = panelComandiArticoli.Add("Carica", Properties.Resources.Remove);
-			ribScarica.Click += (a, e) =>
-			{
-				this.Validate();
-				EventAggregator.Instance().Publish<ScaricaQtaMagazzino>(new ScaricaQtaMagazzino()
-				{
-					Qta = _controllerMagazzino.SelectedItem.Qta,
-					Deposito = _controllerMagazzino.SelectedItem.Deposito,
-					ArticoloID = _controllerMagazzino.SelectedItem.ArticoloID
-				});
-			};
-
-		}
-		RibbonMenuButton ribCarica;
-		RibbonMenuButton ribScarica;
-
-		public event EventHandler<EventArgs> OnSave;
-		public event EventHandler<EventArgs> OnClose;
-
+		
+		 
 		private void RefreshData(MovimentiUpdate obj)
 		{
 			lblTitoloArticolo.ForeColor = System.Drawing.Color.Red;
@@ -184,8 +143,16 @@ namespace StrumentiMusicali.App.View
 			{
 				var enableB = _controllerMagazzino.SelectedItem.ArticoloID != 0
 					&& _controllerMagazzino.SelectedItem.Qta > 0 && _controllerMagazzino.SelectedItem.Deposito > 0;
-				ribCarica.Enabled = enableB;
-				ribScarica.Enabled = enableB;
+
+				foreach (var item in _controllerMagazzino.GetMenu().ItemByTag(ControllerMagazzino.TAG_CARICA))
+				{
+					item.Enabled = enableB;
+				}
+				foreach (var item in _controllerMagazzino.GetMenu().ItemByTag(ControllerMagazzino.TAG_SCARICA))
+				{
+					item.Enabled = enableB;
+				}
+ 
 				this.Validate();
 			}
 			catch (Exception ex)
@@ -193,16 +160,6 @@ namespace StrumentiMusicali.App.View
 				ExceptionManager.ManageError(ex);
 			}
 		}
-
-		public void RaiseSave()
-		{
-			 
-		}
-
-		public void RaiseClose()
-		{
-			if (OnClose == null)
-				OnClose(this, new EventArgs());
-		}
+		 
 	}
 }

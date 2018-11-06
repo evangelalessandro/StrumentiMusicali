@@ -12,13 +12,13 @@ namespace StrumentiMusicali.Library.Repo
 		private ModelSm dbContext = new ModelSm();
 
 		//Private members corresponding to each concrete repository
-		private Repository<Categorie> _CategorieRepository;
+		private Repository<Categoria> _CategorieRepository;
 
-		public IRepository<Categorie> CategorieRepository {
+		public IRepository<Categoria> CategorieRepository {
 			get {
 				if (_CategorieRepository == null)
 				{
-					_CategorieRepository = new Repository<Categorie>(dbContext);
+					_CategorieRepository = new Repository<Categoria>(dbContext);
 				}
 				return _CategorieRepository;
 			}

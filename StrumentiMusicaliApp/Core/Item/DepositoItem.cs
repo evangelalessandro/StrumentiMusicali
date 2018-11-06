@@ -1,15 +1,25 @@
-﻿namespace StrumentiMusicali.App.Core.Item
-{
-	internal class DepositoItem
-	{
-		public string Descrizione => this.ToString();
-		public int ID { get; set; }
-		public int Qta { get; set; } = 0;
-		public string NomeDeposito { get; set; }
+﻿using StrumentiMusicali.App.Core.Item.Base;
+using StrumentiMusicali.Library.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-		public override string ToString()
+namespace StrumentiMusicali.App.Core.Item
+{
+	public class DepositoItem : BaseItem<Deposito>
+	{
+		public DepositoItem()
 		{
-			return NomeDeposito + " Qta:" + Qta.ToString();
+
 		}
+		public DepositoItem(Deposito deposito)
+		{
+			NomeDeposito = deposito.NomeDeposito;
+			Entity = deposito;
+			ID = deposito.ID;
+		}
+		public string NomeDeposito { get; set; }
 	}
 }

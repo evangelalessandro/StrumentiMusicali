@@ -16,58 +16,59 @@ using System.Linq;
 namespace StrumentiMusicali.App.Core.Controllers
 {
 	//[AddINotifyPropertyChangedInterface]
-	public class ControllerClienti : BaseControllerGeneric<Cliente, ClientiItem>, 
+	public class ControllerDepositi : BaseControllerGeneric<Deposito, DepositoItem>, 
 		IDisposable//, INotifyPropertyChanged
 	{ 
-		private Subscription<Add<Cliente>> _selectSub;
+		private Subscription<Add<Deposito>> _selectSub;
 
-		private Subscription<Remove<Cliente>> _subRemove;
+		private Subscription<Remove<Deposito>> _subRemove;
 
-		private Subscription<Save<Cliente>> _subSave;
+		private Subscription<Save<Deposito>> _subSave;
 
 		 
-		public ControllerClienti()
-			:base(enAmbienti.ClientiList,enAmbienti.Cliente)
+		public ControllerDepositi()
+			:base(enAmbienti.DepositoList,enAmbienti.Deposito)
 		{
 			 
-			SelectedItem = new Cliente();
+			SelectedItem = new Deposito();
 
 		 
-			_selectSub = EventAggregator.Instance().Subscribe<Add<Cliente>>((a) =>
+			_selectSub = EventAggregator.Instance().Subscribe<Add<Deposito>>((a) =>
 			{
-				EditItem = new Cliente() { RagioneSociale="Nuovo cliente"};
+				EditItem = new Deposito() { NomeDeposito="Nuovo Deposito"};
 				ShowEditView();
 			});
-			_subRemove = EventAggregator.Instance().Subscribe<Remove<Cliente>>((a) =>
+			_subRemove = EventAggregator.Instance().Subscribe<Remove<Deposito>>((a) =>
 			{
-				if (!MessageManager.QuestionMessage("Sei sicuro di volere eliminare la riga selezionata?"))
+				if (!MessageManager.QuestionMessage("Sei sicuro di volere eliminare il deposito selezionato?"))
 					return;
 				using (var saveManager = new SaveEntityManager())
 				{
 					var uof = saveManager.UnitOfWork;
-					var curItem = (Cliente)SelectedItem;
+					var curItem = SelectedItem;
 					if (curItem.ID > 0)
 					{
-						var item = uof.ClientiRepository.Find(b => b.ID == curItem.ID).First();
-						uof.ClientiRepository.Delete(item);
+						var item = uof.DepositoRepository.Find(b => b.ID == curItem.ID).First();
+						uof.DepositoRepository.Delete(item);
 
 						if (saveManager.SaveEntity(enSaveOperation.OpDelete))
 						{
-							EventAggregator.Instance().Publish<UpdateList<Cliente>>(new UpdateList<Cliente>());
+							EventAggregator.Instance().Publish<UpdateList<Deposito>>(new UpdateList<Deposito>());
 						}
 					}
 				}
 			});
-			_subSave = EventAggregator.Instance().Subscribe<Save<Cliente>>((a) =>
+			_subSave = EventAggregator.Instance().Subscribe<Save<Deposito>>((a) =>
 		   {
 			   Save(null);
 		   });
 		}
+		 
 
 		// NOTE: Leave out the finalizer altogether if this class doesn't
 		// own unmanaged resources, but leave the other methods
 		// exactly as they are.
-		~ControllerClienti()
+		~ControllerDepositi()
 		{
 			// Finalizer calls Dispose(false)
 			Dispose(false);
@@ -80,7 +81,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			GC.SuppressFinalize(this);
 		}
 
-		public override void RefreshList(UpdateList<Cliente> obj)
+		public override void RefreshList(UpdateList<Deposito> obj)
 		{
 			try
 			{
@@ -88,35 +89,21 @@ namespace StrumentiMusicali.App.Core.Controllers
 				{
 					TestoRicerca = "";
 				}
-				var list = new List<ClientiItem>();
+				var list = new List<DepositoItem>();
 
 				using (var uof = new UnitOfWork())
 				{
-					list = uof.ClientiRepository.Find(a => 
-					a.RagioneSociale.Contains(TestoRicerca)
-						||
-					a.PIVA.Contains(TestoRicerca)
-						||
-						a.Telefono.Contains(TestoRicerca)
-						||
-						a.Indirizzo.Citta.Contains(TestoRicerca)
-						||
-						a.Indirizzo.Comune.Contains(TestoRicerca)
-						||
-						a.Cellulare.Contains(TestoRicerca)
-						||
-						a.Indirizzo.IndirizzoConCivico.Contains(TestoRicerca)
-						||
+					list = uof.DepositoRepository.Find(a => 
+					a.NomeDeposito.Contains(TestoRicerca) ||
 						TestoRicerca=="" 
-					).ToList().Select(a => new ClientiItem(a)
+					).ToList().Select(a => new DepositoItem(a)
 					{
-						ID = a.ID, 
-						Entity = a,
 						 
-					}).OrderBy(a => a.RagioneSociale).ToList();
+						 
+					}).OrderBy(a => a.NomeDeposito).ToList();
 				}
 
-				DataSource = new View.Utility.MySortableBindingList<ClientiItem>(list);
+				DataSource = new View.Utility.MySortableBindingList<DepositoItem>(list);
 			}
 			catch (Exception ex)
 			{
@@ -140,18 +127,18 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		 
 
-		private void Save(Save<Cliente> obj)
+		private void Save(Save<Deposito> obj)
 		{
 			using (var saveManager = new SaveEntityManager())
 			{
 				var uof = saveManager.UnitOfWork;
 				if (((EditItem).ID > 0))
 				{
-					uof.ClientiRepository.Update(EditItem);
+					uof.DepositoRepository.Update(EditItem);
 				}
 				else
 				{
-					uof.ClientiRepository.Add(EditItem);
+					uof.DepositoRepository.Add(EditItem);
 				}
 
 				if (saveManager.SaveEntity(enSaveOperation.OpSave))

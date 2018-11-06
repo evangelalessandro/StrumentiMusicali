@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers
@@ -21,16 +20,15 @@ namespace StrumentiMusicali.App.Core.Controllers
 	public class ControllerArticoli : BaseControllerGeneric<Articolo,
 		ArticoloItem>, IDisposable
 	{
-		Subscription<Add<Articolo>> sub1;
-		Subscription<Edit<Articolo>> sub2;
-		Subscription<Remove<Articolo>> sub3;
-		Subscription<ArticoloDuplicate> sub4;
-		Subscription<ImageAdd> sub5;
-		Subscription<ImportArticoliCSVMercatino> sub6;
-		Subscription<InvioArticoliCSV> sub7;
-		Subscription<Save<Articolo>> sub8;
+		private Subscription<Add<Articolo>> sub1;
+		private Subscription<Edit<Articolo>> sub2;
+		private Subscription<Remove<Articolo>> sub3;
+		private Subscription<ArticoloDuplicate> sub4;
+		private Subscription<ImageAdd> sub5;
+		private Subscription<Save<Articolo>> sub8;
+		private Subscription<ArticoloSconta> sub6;
 
-		ControllerImmagini _controllerImmagini = new ControllerImmagini(); 
+		private ControllerImmagini _controllerImmagini = new ControllerImmagini();
 		//private List<Subscription<object>> subList = new List<Subscription<object>>();
 		public ControllerArticoli()
 			: base(enAmbienti.ArticoliList, enAmbienti.Articolo)
@@ -42,15 +40,36 @@ namespace StrumentiMusicali.App.Core.Controllers
 			sub3 = EventAggregator.Instance().Subscribe<Remove<Articolo>>(DeleteArticolo);
 			sub4 = EventAggregator.Instance().Subscribe<ArticoloDuplicate>(DuplicaArticolo);
 			sub5 = EventAggregator.Instance().Subscribe<ImageAdd>(AggiungiImmagine);
-			sub6 = EventAggregator.Instance().Subscribe<ImportArticoliCSVMercatino>(ImportaCsvArticoli);
-			sub7 = EventAggregator.Instance().Subscribe<InvioArticoliCSV>(InvioArticoli);
 			sub8 = EventAggregator.Instance().Subscribe<Save<Articolo>>(SaveArticolo);
-			 
+			sub6 = EventAggregator.Instance().Subscribe<ArticoloSconta>(Sconta);
 
-			AggiungiComandi();
+			AggiungiComandiMenu();
 		}
+
+		private void Sconta(ArticoloSconta obj)
+		{
+			if (!MessageManager.QuestionMessage("Sei sicuro di volere applicare questo sconto\aumento su tutti gli articoli visualizzati nella lista?"))
+				return;
+			_logger.Info("Applicato sconto su marca {0} e filtro ricerca {1} di {2} %.  ", FiltroMarca, this.TestoRicerca, obj.Percentuale);
+			using (var saveEnt=new SaveEntityManager())
+			{
+				var list = DataSource.Select(a => a.ID).ToList();
+				foreach (var item in saveEnt.UnitOfWork.ArticoliRepository.Find(a => list.Contains(a.ID)).ToList())
+				{
+					item.Prezzo += item.Prezzo * obj.Percentuale / (decimal)100;
+					_logger.Info("Applicato sconto su articolo codice {0}, nuovo prezzo ", item.ID, item.Prezzo.ToString("C2"));
+					saveEnt.UnitOfWork.ArticoliRepository.Update(item);
+				}
+				if (saveEnt.SaveEntity("Variazione applicata con successo"))
+				{
+					EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>());
+				}
+				
+			}
+		}
+
 		public new void Dispose()
-			
+
 		{
 			base.Dispose();
 			EventAggregator.Instance().UnSbscribe(sub1);
@@ -59,7 +78,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 			EventAggregator.Instance().UnSbscribe(sub4);
 			EventAggregator.Instance().UnSbscribe(sub5);
 			EventAggregator.Instance().UnSbscribe(sub6);
-			EventAggregator.Instance().UnSbscribe(sub7);
 			EventAggregator.Instance().UnSbscribe(sub8);
 
 
@@ -68,17 +86,34 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		}
 
-		private void AggiungiComandi()
+		private void AggiungiComandiMenu()
 		{
-			var pnl = GetMenu().Tabs[0].Pannelli.Last();
+			var pnl = GetMenu().Tabs[0].Pannelli.First();
 			var rib1 = pnl.Add("Duplica", Properties.Resources.Duplicate, true);
 			rib1.Click += (a, e) =>
 			{
 				EventAggregator.Instance().Publish<ArticoloDuplicate>(new ArticoloDuplicate());
 
 			};
+			var pnl2 = GetMenu().Tabs[0].Add("Prezzi");
+			var rib2 = pnl2.Add("Varia prezzi", Properties.Resources.Sconta_Articoli);
+			rib2.Click += (a, e) =>
+			{
+				ScontaArticoliShowView();
+
+			};
+
 		}
-		private void InvioArticoli(InvioArticoliCSV obj)
+
+		private void ScontaArticoliShowView()
+		{
+			using (var view=new View.Articoli.ScontaArticoliView())
+			{
+				ShowView(view, enAmbienti.Articolo);
+			}
+		}
+
+		public void InvioArticoli(InvioArticoliCSV obj)
 		{
 			using (var export = new Exports.ExportArticoliCsv())
 			{
@@ -167,8 +202,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 				ExceptionManager.ManageError(ex);
 			}
 		}
-
-		private void ImportaCsvArticoli(ImportArticoliCSVMercatino obj)
+		public string FiltroMarca { get; set; } = "";
+		public void ImportaCsvArticoli(ImportArticoliCSVMercatino obj)
 		{
 			try
 			{
@@ -260,7 +295,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 			var artNew = (new StrumentiMusicali.Library.Entity.Articolo()
 			{
-				Categoria = int.Parse(dat[1]),
+				CategoriaID = int.Parse(dat[1]),
 				Condizione = cond,
 				Marca = dat[3],
 				Titolo = dat[4],
@@ -352,7 +387,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 					if (
 					save.SaveEntity(enSaveOperation.OpSave))
 					{
-
+						EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>());
 					}
 				}
 			}
@@ -400,15 +435,15 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 				using (var uof = new UnitOfWork())
 				{
-					list = uof.ArticoliRepository.Find(a => datoRicerca == "" || a.Titolo.Contains(datoRicerca)
-						|| a.Testo.Contains(datoRicerca)
-					).Select(a => new ArticoloItem
+					list = uof.ArticoliRepository.Find(a => (datoRicerca == ""
+						|| a.Titolo.Contains(datoRicerca)
+						|| a.Testo.Contains(datoRicerca))
+
+						&& (a.Marca.Contains(FiltroMarca) && FiltroMarca.Length > 0
+						|| FiltroMarca == "")
+					).OrderByDescending(a => a.ID).Take(ViewAllItem ? 100000 : 300).Select(a => new { a.Categoria, Articolo = a }).ToList().Select(a => a.Articolo).Select(a => new ArticoloItem(a)
 					{
-						ID = a.ID,
-						Titolo = a.Titolo,
-						Entity = a,
-						DataCreazione = a.DataCreazione,
-						DataModifica = a.DataUltimaModifica,
+
 						//Pinned = a.Pinned
 					}).ToList();
 				}
@@ -417,9 +452,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 			catch (Exception ex)
 			{
-				new Task(new Action(() =>
-				{ ExceptionManager.ManageError(ex); })).Wait();
-
+				ExceptionManager.ManageError(ex);
 			}
 		}
 	}

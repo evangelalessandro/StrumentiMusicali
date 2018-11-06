@@ -22,7 +22,7 @@ namespace StrumentiMusicali.Library.Model
 			modelBuilder.Entity<Deposito>().ToTable("Depositi");
 			modelBuilder.Entity<Magazzino>().ToTable("Magazzino");
 			modelBuilder.Entity<Articolo>().ToTable("Articoli");
-			modelBuilder.Entity<Categorie>().ToTable("Categorie");
+			modelBuilder.Entity<Categoria>().ToTable("Categorie");
 			modelBuilder.Entity<FotoArticolo>().ToTable("FotoArticoli");
 
 			modelBuilder.Entity<Fattura>().ToTable("Fatture");
@@ -51,7 +51,7 @@ namespace StrumentiMusicali.Library.Model
 
 		public virtual DbSet<Cliente> Clienti { get; set; }
 
-		public virtual DbSet<Categorie> Categorie { get; set; }
+		public virtual DbSet<Categoria> Categorie { get; set; }
 		public virtual DbSet<EventLog> LogEventi { get; set; }
 		public virtual DbSet<FotoArticolo> FotoArticoli { get; set; }
 

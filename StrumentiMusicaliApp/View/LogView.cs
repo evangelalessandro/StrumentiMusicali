@@ -19,17 +19,17 @@ namespace StrumentiMusicali.App.View
 	{
 		private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
-		private ControllerLog _baseController;
-
+		 
  
 
 		public LogView(ControllerLog baseController)
 			: base(baseController)
 		{
-			_baseController = baseController;
-
+		 
 			 
 			_logger.Debug(this.Name + " init");
+
+			onEditItemShowView += (a, b) => { b.Cancel = true; };
 		 
 		}
 

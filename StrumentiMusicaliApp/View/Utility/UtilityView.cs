@@ -42,14 +42,14 @@ namespace StrumentiMusicali.App.View.Utility
 			};
 			if (addSave)
 			{
-				var rib2 = pnl.Add("Salva e chiudi", Properties.Resources.Save_Close);
+				//var rib2 = pnl.Add("Salva e chiudi", Properties.Resources.Save_Close);
 
-				rib2.Click += (a, e) =>
-				{
-					control.RaiseSave();
+				//rib2.Click += (a, e) =>
+				//{
+				//	control.RaiseSave();
 
-					control.RaiseClose();
-				};
+				//	control.RaiseClose();
+				//};
 
 				var rib1 = pnl.Add("Salva", Properties.Resources.Save);
 
@@ -63,12 +63,23 @@ namespace StrumentiMusicali.App.View.Utility
 		}
 		public static async Task SelezionaRiga(this DataGridView dataGrid, int idItem)
 		{
+			var colVisible = -1;
+			for (int i = 0; i < dataGrid.ColumnCount; i++)
+			{
+				if (dataGrid.Columns[i].Visible)
+				{
+					colVisible = i;
+					break;
+				}
+			}
+			if (colVisible == -1)
+				return;
 			for (int i = 0; i < dataGrid.RowCount; i++)
 			{
 				if (((BaseItemID)(dataGrid.Rows[i].DataBoundItem)).ID == idItem)
 				{
 					dataGrid.Rows[i].Selected = true;
-					dataGrid.CurrentCell = dataGrid.Rows[i].Cells[1];
+					dataGrid.CurrentCell = dataGrid.Rows[i].Cells[colVisible];
 					break;
 				}
 			}

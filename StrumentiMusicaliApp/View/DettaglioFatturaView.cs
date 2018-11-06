@@ -131,7 +131,7 @@ namespace StrumentiMusicali.App.View
 
 			txtRagioneSociale.TextChanged += TxtRagioneSociale_TextChanged;
 
-			using (var ord = new Utility.OrdinaTab())
+			using (var ord = new OrdinaTab())
 			{
 				ord.OrderTab(pnl1Alto);
 				ord.OrderTab(pnl2Testo);

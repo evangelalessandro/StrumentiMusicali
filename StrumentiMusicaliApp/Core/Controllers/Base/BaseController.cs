@@ -31,14 +31,16 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			{
 				using (var frm = new Form())
 				{
-					Action action = new Action(() => {
-						ReadSettingForm(ambiente, frm); });
+					Action action = new Action(() =>
+					{
+						ReadSettingForm(ambiente, frm);
+					});
 
-						if (action != null)
-						{
-							action.Invoke();
-							action = null;
-						}
+					if (action != null)
+					{
+						action.Invoke();
+						action = null;
+					}
 					//frm.Activated += (a, b) =>
 					//{
 
@@ -53,9 +55,16 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 					view.Dock = DockStyle.Fill;
 					frm.Controls.Add(view);
-					if (view is IMenu)
+					if (controller != null && controller is IMenu)
 					{
-						ribbon1 = LoadMenu(view);
+						ribbon1 = LoadMenu(controller as IMenu);
+						InitRibbon(ribbon1);
+
+						frm.Controls.Add(ribbon1);
+					}
+					else if (view is IMenu)
+					{
+						ribbon1 = LoadMenu(view as IMenu);
 						InitRibbon(ribbon1);
 
 						frm.Controls.Add(ribbon1);
@@ -80,7 +89,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 
 
-					
+
 					frm.ShowDialog();
 
 					SavSettingForm(ambiente, frm);
@@ -208,11 +217,24 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 				case enAmbienti.LogView:
 					return "Visualizzatore dei log";
-
+				case enAmbienti.SettingStampa:
+					return "Settaggi di stampa fattura";
+				case enAmbienti.LogViewList:
+					return "Visualizzatore dei log";
+				case enAmbienti.FattureRigheList:
+					break;
+				case enAmbienti.FattureRigheDett:
+					return "Dettaglio riga";
+				case enAmbienti.Deposito:
+					return "Deposito";
+				case enAmbienti.DepositoList:
+					return "Depositi";
 				default:
 					return "NIENTE DI IMPOSTATO";
 
 			}
+			return "NIENTE DI IMPOSTATO";
+
 		}
 		private void ImpostaIconaETesto(enAmbienti ambiente, Form frm)
 		{
@@ -254,13 +276,31 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 				case enAmbienti.LogView:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.LogView_48);
 					break;
+				case enAmbienti.SettingStampa:
+					frm.Icon = UtilityView.GetIco(Properties.Resources.Settings);
+					break;
+				case enAmbienti.LogViewList:
+					frm.Icon = UtilityView.GetIco(Properties.Resources.LogView_48);
+					break;
+				case enAmbienti.FattureRigheList:
+					frm.Icon = UtilityView.GetIco(Properties.Resources.Invoice);
+					break;
+				case enAmbienti.FattureRigheDett:
+					frm.Icon = UtilityView.GetIco(Properties.Resources.Invoice);
+					break;
+				case enAmbienti.Deposito:
+					frm.Icon = UtilityView.GetIco(Properties.Resources.Depositi);
+					break;
+				case enAmbienti.DepositoList:
+					frm.Icon = UtilityView.GetIco(Properties.Resources.Depositi);
+					break;
 				default:
 					break;
 			}
 			frm.Text = TestoAmbiente(ambiente);
 		}
 
-		
+
 		private void InitRibbon(Ribbon ribbon1)
 		{
 			//
@@ -295,7 +335,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			ribbon1.Dock = DockStyle.Top;
 		}
 
-		private static Ribbon LoadMenu(UserControl view)
+		private static Ribbon LoadMenu(IMenu view)
 		{
 			var menu = ((IMenu)view).GetMenu();
 			Ribbon ribbon1 = new Ribbon();
@@ -335,7 +375,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 					   };
 						UpdateButton(button, rbButton);
 
-						rbButton.LargeImage = button.Immagine.Clone() as Bitmap; 
+						rbButton.LargeImage = button.Immagine.Clone() as Bitmap;
 						rbPannel.Items.Add(rbButton);
 						rbButton.Click += (e, a) =>
 						{

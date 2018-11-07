@@ -8,15 +8,17 @@ namespace StrumentiMusicali.Library.Entity
 		public Fattura()
 			: base()
 		{
-			TipoDocumento = 2;
+			TipoDocumento = EnTipoDocumento.NonSpecificato;
 			Pagamento = "";
 		}
-		[Required]
+ 
 		public string Pagamento { get; set; }
 		public decimal ImponibileIva { get; set; }
 		public decimal TotaleIva { get; set; }
 		public decimal TotaleFattura { get; set; }
-		 
+		[Range(1,3,
+		ErrorMessage = "Occorre specificare il tipo documento")]
+		public EnTipoDocumento TipoDocumento { get; set; }
 
 		public virtual ICollection<FatturaRiga> RigheFattura { get; set; }
 	}

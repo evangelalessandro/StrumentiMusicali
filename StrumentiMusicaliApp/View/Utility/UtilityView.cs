@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -24,6 +25,17 @@ namespace StrumentiMusicali.App.View.Utility
 				return (T)dataGrid.SelectedRows[0].DataBoundItem;
 			}
 			return default(T);
+		}
+		public static string GetTextSplitted(string name)
+		{
+			var titolo = string.Join(" ", Regex.Split(name, @"(?<!^)(?=[A-Z])"));
+
+			if (name.CompareTo(name.ToUpperInvariant()) == 0)
+			{
+				return name;
+			}
+
+			return titolo;
 		}
 		public static Icon GetIco(Bitmap bitmap)
 		{

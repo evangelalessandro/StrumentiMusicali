@@ -193,9 +193,25 @@ namespace StrumentiMusicali.App.View.BaseControl
 		private void Control_Load(object sender, EventArgs e)
 		{
 			EventAggregator.Instance().Subscribe<UpdateList<TEntity>>(RefreshList);
-
+			FormatNameColumn();
 			FormatGrid();
 			UpdateButtonState();
+		}
+
+		private void FormatNameColumn()
+		{
+			if (dgvRighe.Columns["ID"]!=null)
+			{
+				dgvRighe.Columns["ID"].DisplayIndex = 0;
+			}
+			if (dgvRighe.Columns["Entity"] != null)
+			{
+				dgvRighe.Columns["Entity"].Visible= false;
+			}
+			for (int i = 0; i < dgvRighe.ColumnCount; i++)
+			{
+				dgvRighe.Columns[i].HeaderText = UtilityView.GetTextSplitted(dgvRighe.Columns[i].HeaderText);
+			}
 		}
 
 		public abstract  void FormatGrid();

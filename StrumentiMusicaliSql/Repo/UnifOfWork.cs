@@ -85,17 +85,17 @@ namespace StrumentiMusicali.Library.Repo
 			}
 		}
 
-		private Repository<DDt> _DDTRepository;
+		//private Repository<DDt> _DDTRepository;
 
-		public IRepository<DDt> DDTRepository {
-			get {
-				if (_DDTRepository == null)
-				{
-					_DDTRepository = new Repository<DDt>(dbContext);
-				}
-				return _DDTRepository;
-			}
-		}
+		//public IRepository<DDt> DDTRepository {
+		//	get {
+		//		if (_DDTRepository == null)
+		//		{
+		//			_DDTRepository = new Repository<DDt>(dbContext);
+		//		}
+		//		return _DDTRepository;
+		//	}
+		//}
 
 		private Repository<Cliente> _ClientiRepository;
 
@@ -121,17 +121,17 @@ namespace StrumentiMusicali.Library.Repo
 			}
 		}
 
-		private Repository<DDTRiga> _DDTRigheRepository;
+		//private Repository<DDTRiga> _DDTRigheRepository;
 
-		public IRepository<DDTRiga> DDTRigheRepository {
-			get {
-				if (_DDTRigheRepository == null)
-				{
-					_DDTRigheRepository = new Repository<DDTRiga>(dbContext);
-				}
-				return _DDTRigheRepository;
-			}
-		}
+		//public IRepository<DDTRiga> DDTRigheRepository {
+		//	get {
+		//		if (_DDTRigheRepository == null)
+		//		{
+		//			_DDTRigheRepository = new Repository<DDTRiga>(dbContext);
+		//		}
+		//		return _DDTRigheRepository;
+		//	}
+		//}
 
 		private Repository<FotoArticolo> _FotoArticoloRepository;
 

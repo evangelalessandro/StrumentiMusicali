@@ -9,7 +9,6 @@ namespace StrumentiMusicali.Library.Entity
 	{ 
 		[Required]
 		[StringLength(10)]
-		[Index(IsUnique = true)]
 		public string Codice { get; set; }
 
 		[Required]
@@ -22,7 +21,7 @@ namespace StrumentiMusicali.Library.Entity
 		public int ClienteID { get; set; }
 		
 		public virtual Cliente Cliente { get; set; }
-		public int TipoDocumento { get; set; }
+		
 		public string TrasportoACura { get; set; }
 		public string CausaleTrasporto { get; set; }
 		public string Porto { get; set; }

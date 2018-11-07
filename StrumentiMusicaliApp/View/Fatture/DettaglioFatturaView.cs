@@ -2,7 +2,6 @@
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.Interfaces;
-using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
@@ -18,30 +17,29 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View
 {
-	public partial class DettaglioFatturaView : UserControl, IMenu,ICloseSave
+	public partial class DettaglioFatturaView : UserControl, IMenu, ICloseSave
 	{
 		private ControllerFatturazione _controllerFatturazione;
 
 		private ControllerRigheFatture _controllerRighe;
-		Subscription<RebindItemUpdated<Fattura>> _bindSub;
+		private Subscription<RebindItemUpdated<Fattura>> _bindSub;
 		public DettaglioFatturaView(ControllerFatturazione controllerFatturazione)
 			: base()
 		{
 			_controllerFatturazione = controllerFatturazione;
-			if (_controllerFatturazione is INotifyPropertyChanged)
-			{
-				(_controllerFatturazione as INotifyPropertyChanged).PropertyChanged += (a, b) =>
-				{
-					var prop = b.PropertyName;
-					//if (prop=="SelectedItem")
-					//	UtilityView.SetDataBind(this, _controllerFatturazione.SelectedItem);
 
-				};
-			}
 			InitializeComponent();
+			
+			UpdateViewByTipoDocumento();
+			_bindSub = EventAggregator.Instance().Subscribe<RebindItemUpdated<Fattura>>((a) => { RebindEditItem(); });
+		}
+		
+		private void UpdateViewByTipoDocumento()
+		{
+			pnl3Basso.Visible = (_controllerFatturazione.EditItem.TipoDocumento != EnTipoDocumento.DDT);
+			lblPagamento.Visible = (_controllerFatturazione.EditItem.TipoDocumento != EnTipoDocumento.DDT);
+			cboPagamento.Visible = (_controllerFatturazione.EditItem.TipoDocumento != EnTipoDocumento.DDT);
 
-
-			_bindSub =	EventAggregator.Instance().Subscribe<RebindItemUpdated<Fattura>>((a)=> { RebindEditItem(); });
 		}
 
 		/// <summary>
@@ -71,24 +69,12 @@ namespace StrumentiMusicali.App.View
 
 		private void FillCombo()
 		{
+			FillPagamenti();
+
+			FillTipoDocumenti();
+
 			using (var uof = new UnitOfWork())
 			{
-				var listPagamenti = new List<Tuple<string, string>>();
-				listPagamenti.Add(new Tuple<string, string>("", "Seleziona pagamento"));
-				listPagamenti.Add(new Tuple<string, string>("Bonifico Bancario", "Bonifico Bancario"));
-				listPagamenti.Add(new Tuple<string, string>("Rimessa Diretta", "Rimessa Diretta"));
-				listPagamenti.Add(new Tuple<string, string>("CONTRASSEGNO CONTANTI", "CONTRASSEGNO CONTANTI"));
-
-				cboPagamento.DataSource = listPagamenti.Select(a =>
-						new
-						{
-							ID = a.Item1,
-							Descrizione = a.Item2
-						}
-						).ToList();
-				cboPagamento.DisplayMember = "Descrizione";
-				cboPagamento.ValueMember = "ID";
-
 				txtAspettoBeni.Values = uof.FatturaRepository.Find(a => true).Select(a => a.AspettoEsterno).Distinct().ToList().ToArray();
 				txtCausaleTrasporto.Values = uof.FatturaRepository.Find(a => true).Select(a => a.CausaleTrasporto).Distinct().ToList().ToArray();
 				txtPorto.Values = uof.FatturaRepository.Find(a => true).Select(a => a.Porto).Distinct().ToList().ToArray();
@@ -97,12 +83,56 @@ namespace StrumentiMusicali.App.View
 				txtNote1.Values = uof.FatturaRepository.Find(a => true).Select(a => a.Note1).Distinct().ToList().ToArray();
 				txtNote2.Values = uof.FatturaRepository.Find(a => true).Select(a => a.Note2).Distinct().ToList().ToArray();
 
-				cboClienteID.Properties.DataSource = uof.ClientiRepository.Find(a => true).Select(a => new { a.ID, a.RagioneSociale, a.PIVA }).Distinct().ToList().ToArray();
-				cboClienteID.Properties.ValueMember = "ID";
-				cboClienteID.Properties.DisplayMember = "RagioneSociale";
-				cboClienteID.Properties.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.AutoFilter;
-				cboClienteID.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+				FillCliente(uof);
 			}
+		}
+
+		private void FillCliente(UnitOfWork uof)
+		{
+			cboClienteID.Properties.DataSource = uof.ClientiRepository.Find(a => true).Select(a => new { a.ID, RagioneSociale = a.RagioneSociale + " " + a.PIVA }).Distinct().ToList().ToArray();
+			cboClienteID.Properties.ValueMember = "ID";
+			cboClienteID.Properties.DisplayMember = "RagioneSociale";
+			cboClienteID.Properties.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.AutoFilter;
+			cboClienteID.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+			cboClienteID.Properties.BestFit();
+		}
+
+		private void FillTipoDocumenti()
+		{
+			var listItem = new List<EnTipoDocumento>();
+			listItem.Add((EnTipoDocumento.NonSpecificato));
+			listItem.Add(EnTipoDocumento.DDT);
+			listItem.Add(EnTipoDocumento.Fattura);
+			listItem.Add(EnTipoDocumento.NotaDiCredito);
+
+			cboTipoDocumento.DataSource = listItem.Select(a =>
+					new
+					{
+						ID = a,
+						Descrizione = UtilityView.GetTextSplitted( a.ToString())
+					}
+					).ToList();
+			cboTipoDocumento.DisplayMember = "Descrizione";
+			cboTipoDocumento.ValueMember = "ID";
+		}
+
+		private void FillPagamenti()
+		{
+			var listPagamenti = new List<Tuple<string, string>>();
+			listPagamenti.Add(new Tuple<string, string>("", "Seleziona pagamento"));
+			listPagamenti.Add(new Tuple<string, string>("Bonifico Bancario", "Bonifico Bancario"));
+			listPagamenti.Add(new Tuple<string, string>("Rimessa Diretta", "Rimessa Diretta"));
+			listPagamenti.Add(new Tuple<string, string>("CONTRASSEGNO CONTANTI", "CONTRASSEGNO CONTANTI"));
+
+			cboPagamento.DataSource = listPagamenti.Select(a =>
+					new
+					{
+						ID = a.Item1,
+						Descrizione = a.Item2
+					}
+					).ToList();
+			cboPagamento.DisplayMember = "Descrizione";
+			cboPagamento.ValueMember = "ID";
 		}
 
 		private void TxtRagioneSociale_TextChanged(object sender, EventArgs e)
@@ -125,11 +155,44 @@ namespace StrumentiMusicali.App.View
 
 			UpdateButtonState();
 
-			UtilityView.SetDataBind(this,null, _controllerFatturazione.EditItem);
+			UtilityView.SetDataBind(this, null, _controllerFatturazione.EditItem);
 
 			cboClienteID.EditValueChanged += CboClienteID_EditValueChanged;
 
 			txtRagioneSociale.TextChanged += TxtRagioneSociale_TextChanged;
+
+			////calcolo del codice fattura
+			if (_controllerFatturazione.EditItem.ID == 0)
+			{
+				cboTipoDocumento.SelectedValueChanged += (b, c) =>
+				{
+					try
+					{
+						_controllerFatturazione.EditItem.TipoDocumento = (EnTipoDocumento)cboTipoDocumento.SelectedValue;
+					}
+					catch (Exception)
+					{
+
+
+					}
+
+					this.Validate();
+					this.UpdateViewByTipoDocumento();
+					//_controllerFatturazione.EditItem.TipoDocumento=
+					if (txtCodice.Text == "")
+					{
+						var codice = _controllerFatturazione.CalcolaCodice();
+						_controllerFatturazione.EditItem.Codice = codice;
+
+						txtCodice.Text = codice;
+
+					}
+				};
+			}
+			else
+			{
+				cboTipoDocumento.Enabled = false;
+			}
 
 			using (var ord = new OrdinaTab())
 			{
@@ -161,11 +224,11 @@ namespace StrumentiMusicali.App.View
 			{
 				_controllerRighe = new ControllerRigheFatture(_controllerFatturazione);
 				var controlFattRigheList = new FattureRigheListView(_controllerRighe);
-				 
+
 				controlFattRigheList.Height = 200;
 				controlFattRigheList.Dock = DockStyle.Fill;
 				tabPage2.Controls.Add(controlFattRigheList);
-				  
+
 			});
 		}
 
@@ -196,6 +259,7 @@ namespace StrumentiMusicali.App.View
 					_controllerFatturazione.SelectedItem.ID > 0;
 				GetMenu().ApplyValidation(_controllerFatturazione.EditItem.ID > 0);
 			}
+			this.UpdateViewByTipoDocumento();
 		}
 
 		private MenuTab _menuTab = null;
@@ -210,7 +274,8 @@ namespace StrumentiMusicali.App.View
 			EventAggregator.Instance().Publish<Save<Fattura>>(
 				new Save<Fattura>());
 
-			txtID.Text = _controllerFatturazione.SelectedItem.ID.ToString();
+			txtID.Text = _controllerFatturazione.EditItem.ID.ToString();
+
 			UpdateButtonState();
 		}
 
@@ -264,7 +329,7 @@ namespace StrumentiMusicali.App.View
 				//};
 
 				var pnl2 = tab.Add("Totali");
-				var rib01 = pnl2.Add("Aggiorna totali", Properties.Resources.Totali_Aggiorna_48,true);
+				var rib01 = pnl2.Add("Aggiorna totali", Properties.Resources.Totali_Aggiorna_48, true);
 				rib01.Click += (a, e) =>
 				{
 					RebindEditItem();

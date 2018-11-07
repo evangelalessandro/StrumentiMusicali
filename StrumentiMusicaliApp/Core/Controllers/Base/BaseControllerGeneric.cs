@@ -130,7 +130,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 
 
-		public MenuTab GetMenu()
+		public virtual MenuTab GetMenu()
 		{
 			if (_menuTab == null)
 			{

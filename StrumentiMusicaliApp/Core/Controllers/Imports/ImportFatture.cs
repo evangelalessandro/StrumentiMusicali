@@ -26,108 +26,28 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 					try
 					{
 
-
+						ProgressManager.Instance().Visible = true;
 						using (var uof = new UnitOfWork())
 						{
-							ProgressManager.Instance().Visible = true;
-							ProgressManager.Instance().Value = 0;
-
-							var clientiList = ImportClienti(connection);
-							ProgressManager.Instance().Max = clientiList.Count();
-							ProgressManager.Instance().Messaggio = ("Inizio clienti");
-
-							foreach (var item in clientiList)
-							{
-								uof.ClientiRepository.Add(item);
-								ProgressManager.Instance().Value++;
-
-							}
-							uof.Commit();
-
-							ProgressManager.Instance().Messaggio = ("clienti finiti");
-							var fattureList = ImportTestateFatture(connection, clientiList);
-
-							ProgressManager.Instance().Messaggio = "Inizio fatture";
-							ProgressManager.Instance().Max = fattureList.Count();
-							ProgressManager.Instance().Value = 0;
-
-							foreach (var item in fattureList)
-							{
-								uof.FatturaRepository.Add(item);
-								ProgressManager.Instance().Value++;
-							}
-							ProgressManager.Instance().Messaggio = "Fatture finite";
-							uof.Commit();
-							ProgressManager.Instance().Value = 0;
-							ProgressManager.Instance().Max = fattureList.Count();
-							ProgressManager.Instance().Messaggio = "Aggiorna totali fatture";
-
-							foreach (var item in fattureList)
-							{
-								uof.FatturaRepository.Update(
-								ControllerFatturazione.CalcolaTotali(item)
-								);
-								ProgressManager.Instance().Value++;
-								
-							}
-							uof.Commit();
-							ProgressManager.Instance().Messaggio = "Fine agg. totali fatture";
 
 							ProgressManager.Instance().Value = 0;
+							var clientiList = ImportClienti(connection, uof);
+							var fattureList = ImportFattureTestate(connection, uof, clientiList);
+							 
+							ImportFattureRighe(connection, uof, fattureList);
 
+							AggiornaTotaliFatture(uof, fattureList);
 
-							var righeFatturaList = ImportRigheFatture(connection, fattureList);
-							OrdinaRighe(righeFatturaList);
+							var ddtList = ImportaDdtTestate(connection, uof, clientiList);
 
-							ProgressManager.Instance().Max = righeFatturaList.Count();
-							ProgressManager.Instance().Messaggio = "Inizio Fatture righe";
-
-							foreach (var item in righeFatturaList)
-							{
-								uof.FattureRigheRepository.Add(item);
-								ProgressManager.Instance().Value++;
-							}
-
-							ProgressManager.Instance().Messaggio = "Fatture righe finite";
-							uof.Commit();
-
-							var ddtList = ImportDDT(connection, clientiList);
-							ProgressManager.Instance().Value = 0;
-
-							ProgressManager.Instance().Max = ddtList.Count;
-							ProgressManager.Instance().Messaggio = "Inizio DDT";
-
-							foreach (var item in ddtList)
-							{
-								uof.DDTRepository.Add(item);
-								ProgressManager.Instance().Value++;
-							}
-							ProgressManager.Instance().Messaggio = "Ddt finiti";
-
-							uof.Commit();
-
-
-							var ddtrigheList = ImportRigheDDT(connection, ddtList);
-							ProgressManager.Instance().Messaggio = "Inizio Ddt righe";
-
-							OrdinaRighe(ddtrigheList);
-							ProgressManager.Instance().Value = 0;
-							ProgressManager.Instance().Max = ddtrigheList.Count;
-							foreach (var item in ddtrigheList)
-							{
-								uof.DDTRigheRepository.Add(item);
-								ProgressManager.Instance().Value++;
-							}
-							ProgressManager.Instance().Messaggio = "Ddt righe finiti";
-
-							uof.Commit();
+							ImportDDTRighe(connection, uof, ddtList);
 
 							MessageManager.NotificaInfo("Importazione completata correttamente!");
 						}
 					}
 					finally
 					{
-						ProgressManager.Instance().Messaggio="";
+						ProgressManager.Instance().Messaggio = "";
 						ProgressManager.Instance().Visible = false;
 					}
 				}
@@ -138,19 +58,127 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 			}
 		}
 
-		private static void OrdinaRighe(List<DDTRiga> righeFatturaList)
+		private void ImportDDTRighe(OleDbConnection connection, UnitOfWork uof, List<Fattura> ddtList)
 		{
-			var list = righeFatturaList.Select(a => new { a, a.DDTID }).GroupBy(a => a.DDTID).ToList();
-			foreach (var itemGr in list)
+			var ddtrigheList = ImportRigheDDT(connection, ddtList);
+			ProgressManager.Instance().Messaggio = "Inizio Ddt righe";
+
+			OrdinaRighe(ddtrigheList);
+			ProgressManager.Instance().Value = 0;
+			ProgressManager.Instance().Max = ddtrigheList.Count;
+			foreach (var item in ddtrigheList)
 			{
-				int ordine = 0;
-				foreach (var item in itemGr.OrderBy(a => a.a.OrdineVisualizzazione).ToList())
+				uof.FattureRigheRepository.Add(item);
+				ProgressManager.Instance().Value++;
+			}
+			ProgressManager.Instance().Messaggio = "Ddt righe finiti";
+
+			uof.Commit();
+		}
+
+		private List<Fattura> ImportaDdtTestate(OleDbConnection connection, UnitOfWork uof, List<Cliente> clientiList)
+		{
+			ProgressManager.Instance().Value = 0;
+			var ddtList = ImportDDT(connection, clientiList);
+			ProgressManager.Instance().Value = 0;
+
+			ProgressManager.Instance().Max = ddtList.Count;
+			ProgressManager.Instance().Messaggio = "DDT";
+
+			foreach (var item in ddtList)
+			{
+				uof.FatturaRepository.Add(item);
+				ProgressManager.Instance().Value++;
+			}
+			ProgressManager.Instance().Messaggio = "Ddt finiti";
+
+			uof.Commit();
+			return ddtList;
+		}
+
+		private static void AggiornaTotaliFatture(UnitOfWork uof, List<Fattura> fattureList)
+		{
+			ProgressManager.Instance().Messaggio = "Aggiorna totali fatture";
+			ProgressManager.Instance().Value = 0;
+			ProgressManager.Instance().Max= fattureList.Count();
+
+			foreach (var item in fattureList)
+			{
+				try
 				{
-					item.a.OrdineVisualizzazione = ordine;
-					ordine++;
+
+
+					uof.FatturaRepository.Update(
+					ControllerFatturazione.CalcolaTotali(item)
+					);
+					ProgressManager.Instance().Value++;
+				}
+				catch (Exception ex)
+				{
+
+					throw ex;
 				}
 			}
+			uof.Commit();
+			ProgressManager.Instance().Messaggio = "Fine agg. totali fatture";
 		}
+
+		private void ImportFattureRighe(OleDbConnection connection, UnitOfWork uof, List<Fattura> fattureList)
+		{
+			var righeFatturaList = ImportRigheFatture(connection, fattureList);
+			OrdinaRighe(righeFatturaList);
+
+			ProgressManager.Instance().Value = 0;
+			ProgressManager.Instance().Max = righeFatturaList.Count();
+			ProgressManager.Instance().Messaggio = "Fatture righe";
+
+			foreach (var item in righeFatturaList)
+			{
+				uof.FattureRigheRepository.Add(item);
+				ProgressManager.Instance().Value++;
+			}
+
+			ProgressManager.Instance().Messaggio = "Fatture righe finite";
+			uof.Commit();
+		}
+
+		private List<Fattura> ImportFattureTestate(OleDbConnection connection, UnitOfWork uof, List<Cliente> clientiList)
+		{
+			var fattureList = ImportTestateFatture(connection, clientiList);
+
+			ProgressManager.Instance().Messaggio = "Inizio fatture";
+			ProgressManager.Instance().Value = 0;
+			ProgressManager.Instance().Max = fattureList.Count();
+
+
+			foreach (var item in fattureList)
+			{
+				uof.FatturaRepository.Add(item);
+				ProgressManager.Instance().Value++;
+			}
+			ProgressManager.Instance().Messaggio = "Fatture finite";
+			uof.Commit();
+			return fattureList;
+		}
+
+		private List<Cliente> ImportClienti(OleDbConnection connection, UnitOfWork uof)
+		{
+			var clientiList = ImportClienti(connection);
+			ProgressManager.Instance().Max = clientiList.Count();
+			ProgressManager.Instance().Messaggio = ("Inizio clienti");
+
+			foreach (var item in clientiList)
+			{
+				uof.ClientiRepository.Add(item);
+				ProgressManager.Instance().Value++;
+
+			}
+			uof.Commit();
+
+			ProgressManager.Instance().Messaggio = ("clienti finiti");
+			return clientiList;
+		}
+
 
 		private static void OrdinaRighe(List<FatturaRiga> righeFatturaList)
 		{
@@ -166,15 +194,15 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 			}
 		}
 
-		private List<DDTRiga> ImportRigheDDT(OleDbConnection conection, List<DDt> ddtList)
+		private List<FatturaRiga> ImportRigheDDT(OleDbConnection conection, List<Fattura> ddtList)
 		{
 			var query = "Select * From [prodotti DDT]";
-			var listaDDTRighe = new List<DDTRiga>();
+			var listaDDTRighe = new List<FatturaRiga>();
 			foreach (var a in GetDati(conection, query).AsEnumerable())
 			{
 				try
 				{
-					var riga = new DDTRiga
+					var riga = new FatturaRiga
 					{
 						CodiceArticoloOld = (a["Cod_Art"].ToString()),
 
@@ -191,7 +219,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 					{
 						continue;
 					}
-					riga.DDTID = fattura.ID;
+					riga.FatturaID = fattura.ID;
 					listaDDTRighe.Add(riga);
 				}
 				catch (Exception ex)
@@ -251,16 +279,17 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 			return listaFattureRighe;
 		}
 
-		private List<DDt> ImportDDT(OleDbConnection conection, List<Cliente> listaClienti)
+		private List<Fattura> ImportDDT(OleDbConnection conection, List<Cliente> listaClienti)
 		{
 			var query = "Select * From DDT";
-			var ddtList = new List<DDt>();
+			var ddtList = new List<Fattura>();
 			foreach (var a in GetDati(conection, query).AsEnumerable())
 			{
 				try
 				{
-					var fattura = new DDt()
+					var fattura = new Fattura()
 					{
+
 						Codice = (a["# documento"].ToString()),
 						AspettoEsterno = (a["Aspetto esteriore beni"].ToString()),
 						CausaleTrasporto = (a["Casuale Trasporto"].ToString()),
@@ -272,7 +301,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 						TrasportoACura = (a["Trasporto a cura"].ToString()),
 						Vettore = (a["Vettore"].ToString()),
 					};
-
+					fattura.TipoDocumento = EnTipoDocumento.DDT;
 					var dato = a["Data Trasporto"].ToString();
 					if (dato.Length > 0)
 					{
@@ -328,7 +357,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 
 		private List<Fattura> ImportTestateFatture(OleDbConnection conection, List<Cliente> listaClienti)
 		{
-			var query = "Select * From fatture";
+			var query = "Select * From fatture where [# documento] like '%18' or  [# documento] like '%17'";
 			var fattureList = new List<Fattura>();
 			foreach (var a in GetDati(conection, query).AsEnumerable())
 			{
@@ -348,6 +377,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 						TrasportoACura = (a["Trasporto a cura"].ToString()),
 						Vettore = (a["Vettore"].ToString()),
 					};
+					fattura.TipoDocumento = EnTipoDocumento.Fattura;
+					if (fattura.Codice.StartsWith("N"))
+					{
+						fattura.TipoDocumento = EnTipoDocumento.NotaDiCredito;
+					}
 					if (string.IsNullOrEmpty(fattura.Pagamento))
 					{
 						fattura.Pagamento = "Rimessa Diretta";
@@ -460,13 +494,13 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 							if (datoR != "0")
 								datoR = int.Parse(datoR).ToString("00000");
 						}
-						catch 
+						catch
 						{
 						}
-						
+
 						cliente.Indirizzo.Cap = datoR;
 					}
-						
+
 
 					listaClienti.Add(
 						 cliente

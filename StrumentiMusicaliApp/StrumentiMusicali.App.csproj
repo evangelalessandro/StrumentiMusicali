@@ -285,7 +285,7 @@
     <Compile Include="CustomComponents\TabCustom.Designer.cs">
       <DependentUpon>TabCustom.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Attributes\CustomUIViewAttribute.cs" />
+    <Compile Include="View\Attributes\UIAmbienteAttribute.cs" />
     <Compile Include="View\Enums\enAmbiente.cs" />
     <Compile Include="View\Articoli\ScontaArticoliView.cs">
       <SubType>UserControl</SubType>
@@ -320,16 +320,16 @@
     <Compile Include="View\Articoli\DettaglioArticoloView.Designer.cs">
       <DependentUpon>DettaglioArticoloView.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\DettaglioFatturaView.cs">
+    <Compile Include="View\Fatture\DettaglioFatturaView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\DettaglioFatturaView.Designer.cs">
+    <Compile Include="View\Fatture\DettaglioFatturaView.Designer.cs">
       <DependentUpon>DettaglioFatturaView.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\FattureListView.cs">
+    <Compile Include="View\Fatture\FattureListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\FattureListView.Designer.cs">
+    <Compile Include="View\Fatture\FattureListView.Designer.cs">
       <DependentUpon>FattureListView.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Interfaces\ICloseSave.cs" />
@@ -377,7 +377,7 @@
       <DependentUpon>BaseGridViewGeneric.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\Events\Generics\ItemSelected.cs" />
-    <Compile Include="View\FattureRighe\FattureRigheListView.cs">
+    <Compile Include="View\Fatture\FattureRigheListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\Test.cs">
@@ -444,10 +444,10 @@
     <EmbeddedResource Include="View\Articoli\ScontaArticoliView.resx">
       <DependentUpon>ScontaArticoliView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\DettaglioFatturaView.resx">
+    <EmbeddedResource Include="View\Fatture\DettaglioFatturaView.resx">
       <DependentUpon>DettaglioFatturaView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\FattureListView.resx">
+    <EmbeddedResource Include="View\Fatture\FattureListView.resx">
       <DependentUpon>FattureListView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\MainView.resx">

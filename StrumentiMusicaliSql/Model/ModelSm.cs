@@ -1,6 +1,10 @@
 using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Repo;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Data.Entity.Validation;
 
 namespace StrumentiMusicali.Library.Model
 {
@@ -13,7 +17,51 @@ namespace StrumentiMusicali.Library.Model
 			this.Configuration.ProxyCreationEnabled = false;
 			Database.SetInitializer<ModelSm>(new MigrateDatabaseToLatestVersion<ModelSm, Migrations.Configuration>());
 		}
+		protected  override DbEntityValidationResult ValidateEntity(
+			System.Data.Entity.Infrastructure.DbEntityEntry entityEntry, IDictionary<object, object> items)
+		{
+			var result = new DbEntityValidationResult(entityEntry, new List<DbValidationError>());
+			if (entityEntry.Entity is Fattura && (entityEntry.State == EntityState.Added || entityEntry.State == EntityState.Modified))
+			{ 
+				CheckFattura(entityEntry.Entity as Fattura, result);
+			}
 
+			if (result.ValidationErrors.Count > 0)
+			{
+				return result;
+			}
+			else
+			{
+				return base.ValidateEntity(entityEntry, items);
+			}
+		}
+		private void CheckFattura(Fattura fattura, DbEntityValidationResult result)
+		{
+			using (var uof = new UnitOfWork())
+			{
+				var count = uof.FatturaRepository.Find(a => a.ID != fattura.ID && a.Codice == fattura.Codice
+				&& a.TipoDocumento == EnTipoDocumento.Fattura).Count();
+
+				if (count > 0)
+				{
+					result.ValidationErrors.Add(
+							new System.Data.Entity.Validation.DbValidationError("Codice",
+							"Deve essere univoco il codice. Questo codice è già usato " + fattura.Codice));
+				}
+				if (fattura.TipoDocumento == EnTipoDocumento.Fattura && string.IsNullOrEmpty(fattura.Pagamento))
+				{
+					result.ValidationErrors.Add(
+							new System.Data.Entity.Validation.DbValidationError("Pagamento",
+							"Occorre specificare il tipo pagamento"));
+				}
+				if (fattura.ClienteID==0)
+				{
+					result.ValidationErrors.Add(
+							new System.Data.Entity.Validation.DbValidationError("ClienteID",
+							"Occorre specificare il cliente"));
+				}
+			}
+		}
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
@@ -28,8 +76,8 @@ namespace StrumentiMusicali.Library.Model
 			modelBuilder.Entity<Fattura>().ToTable("Fatture");
 			modelBuilder.Entity<FatturaRiga>().ToTable("FattureRighe");
 
-			modelBuilder.Entity<DDt>().ToTable("DDT");
-			modelBuilder.Entity<DDTRiga>().ToTable("DDTRighe");
+			//modelBuilder.Entity<DDt>().ToTable("DDT");
+			//modelBuilder.Entity<DDTRiga>().ToTable("DDTRighe");
 
 			modelBuilder.Entity<Cliente>().ToTable("Clienti");
 			modelBuilder.Entity<FattureGenerateInvio>().ToTable("FattureGenerate");
@@ -45,8 +93,8 @@ namespace StrumentiMusicali.Library.Model
 		public virtual DbSet<Fattura> Fatture { get; set; }
 		public virtual DbSet<FatturaRiga> FattureRighe { get; set; }
 
-		public virtual DbSet<DDt> DDT { get; set; }
-		public virtual DbSet<DDTRiga> DDTRighe { get; set; }
+		//public virtual DbSet<DDt> DDT { get; set; }
+		//public virtual DbSet<DDTRiga> DDTRighe { get; set; }
 		public virtual DbSet<FattureGenerateInvio> FattureGenerate { get; set; }
 
 		public virtual DbSet<Cliente> Clienti { get; set; }

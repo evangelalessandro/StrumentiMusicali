@@ -75,11 +75,10 @@
     <Compile Include="Entity\Categorie.cs" />
     <Compile Include="Entity\EventLog.cs" />
     <Compile Include="Entity\Base\DocumentoFiscaleBase.cs" />
-    <Compile Include="Entity\Fatture\DDT.cs" />
+    <Compile Include="Entity\Fatture\EnTipoDocumento.cs" />
     <Compile Include="Entity\Fatture\Fattura.cs" />
     <Compile Include="Entity\FotoArticolo.cs" />
     <Compile Include="Entity\Magazzino.cs" />
-    <Compile Include="Entity\Fatture\DDTRiga.cs" />
     <Compile Include="Entity\Fatture\FatturaRiga.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />

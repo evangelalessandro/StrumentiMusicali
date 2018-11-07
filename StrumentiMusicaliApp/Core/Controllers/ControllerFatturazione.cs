@@ -56,12 +56,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			using (var saveManager = new SaveEntityManager())
 			{
-				if (string.IsNullOrEmpty(EditItem.Pagamento))
-				{
-					MessageManager.NotificaWarnig("Occorre impostare il pagamento");
-					return;
-				}
-
 				var uof = saveManager.UnitOfWork;
 				EditItem.Data = EditItem.Data.Date;
 
@@ -87,7 +81,54 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 
 		}
+		public string CalcolaCodice()
+		{
 
+			var fattura = EditItem;
+			var prefix = "";
+			switch (fattura.TipoDocumento)
+			{
+				case EnTipoDocumento.NonSpecificato:
+					return "";
+				case EnTipoDocumento.Fattura:
+					prefix = "F";
+					break;
+				case EnTipoDocumento.NotaDiCredito:
+					prefix = "NC";
+					break;
+				case EnTipoDocumento.DDT:
+					prefix = "D";
+					break;
+				default:
+					break;
+			}
+
+			using (UnitOfWork uof = new UnitOfWork())
+			{
+				var codice = uof.FatturaRepository.Find(a => a.TipoDocumento == fattura.TipoDocumento)
+					.Where(a => a.Data.Year == fattura.Data.Year).ToList()
+					.OrderByDescending(a => a.Data).Select(a => a.Codice).DefaultIfEmpty("").FirstOrDefault();
+				var valore = 1;
+				if (codice != "")
+				{
+					codice = codice.Replace("F", "").Replace("NC", "").Replace("D", "");
+					if (codice.Contains("/"))
+					{
+						codice = codice.Split('/')[0];
+
+						if (!int.TryParse(codice, out valore))
+						{
+							return "";
+						}
+						valore++;
+					}
+				}
+
+
+
+				return prefix + valore.ToString("000") + "/" + fattura.Data.ToString("yy");
+			}
+		}
 		private void DelFattura(Remove<Fattura> obj)
 		{
 			try
@@ -138,7 +179,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void AddFattura(Add<Fattura> obj)
 		{
-			EditItem = new Fattura();
+			EditItem = new Fattura() { TipoDocumento = EnTipoDocumento.Fattura };
+			EditItem.Codice = CalcolaCodice();
+			EditItem.Data = DateTime.Now.Date;
 			ShowDettaglio();
 		}
 
@@ -407,14 +450,15 @@ namespace StrumentiMusicali.App.Core.Controllers
 						|| a.PIVA.Contains(datoRicerca)
 						|| a.Codice.Contains(datoRicerca)
 
-					).Take(ViewAllItem ? 100000 : 100).OrderBy(a => a.RagioneSociale).Select(a => new FatturaItem
+					).OrderByDescending(a => a.Data).Take(ViewAllItem ? 100000 : 100).ToList().Select(a => new FatturaItem
 					{
 						ID = a.ID,
 						Data = a.Data,
 						Entity = a,
 						PIVA = a.PIVA,
 						Codice = a.Codice,
-						RagioneSociale = a.RagioneSociale
+						RagioneSociale = a.RagioneSociale,
+						TipoDocumento =Enum.GetName(typeof( EnTipoDocumento), a.TipoDocumento)
 					}).ToList();
 				}
 
@@ -422,8 +466,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 			catch (Exception ex)
 			{
-				new Task(new Action(() =>
-				{ ExceptionManager.ManageError(ex); })).Wait();
+				 ExceptionManager.ManageError(ex);  
 
 			}
 		}

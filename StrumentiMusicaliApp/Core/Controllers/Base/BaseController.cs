@@ -28,7 +28,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		public BaseController()
 		{
 		}
-		public bool ModalitàAForm { get; set; } = false;
+		public const bool ModalitàAForm = false;
 		public static T GetAttribute<T>(Enum enumValue) where T : Attribute
 		{
 			var member = enumValue.GetType().GetMember(enumValue.ToString()).FirstOrDefault();

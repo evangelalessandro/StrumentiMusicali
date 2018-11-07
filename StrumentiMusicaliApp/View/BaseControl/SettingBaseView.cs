@@ -57,51 +57,46 @@ namespace StrumentiMusicali.App.View.BaseControl
 			}
 			))
 			{
-				var hideAttr=item.CustomAttributes.Where(a => a.AttributeType == typeof(CustomHideUIAttribute)).FirstOrDefault();
-				if (hideAttr!=null)
+				var hideAttr = item.CustomAttributes.Where(a => a.AttributeType == typeof(CustomHideUIAttribute)).FirstOrDefault();
+				if (hideAttr != null)
 					continue;
-				 
-				var widthAttr = (CustomUIViewAttribute)item.GetCustomAttributes(typeof(CustomUIViewAttribute),true).FirstOrDefault();
-					
 
-				var titolo = string.Join(" ", Regex.Split(item.Name, @"(?<!^)(?=[A-Z])"));
-				if (item.Name.CompareTo(item.Name.ToUpperInvariant()) == 0)
-				{
-					titolo = item.Name;
-				}
+				var widthAttr = (CustomUIViewAttribute)item.GetCustomAttributes(typeof(CustomUIViewAttribute), true).FirstOrDefault();
+
+				string titolo = UtilityView.GetTextSplitted(item.Name);
 				titolo = prefixText + titolo;
 				EDBase newControl = null;
 				if (item.PropertyType.FullName.Contains("String"))
 				{
-					newControl  = AggiungiTesto(titolo);
+					newControl = AggiungiTesto(titolo);
 					newControl.Width = 250;
 
-					
+
 				}
 				else if (item.PropertyType.FullName.Contains("Boolean"))
 				{
 					newControl = AggiungiCheck(titolo);
-					 
+
 				}
 				else if (item.PropertyType.FullName.Contains("Decimal"))
 				{
-					newControl= AggiungiNumericoDecimal(titolo);
-					 
+					newControl = AggiungiNumericoDecimal(titolo);
+
 				}
 				else if (item.PropertyType.FullName.Contains("Int32"))
 				{
-					newControl= AggiungiNumerico(titolo);
-					
+					newControl = AggiungiNumerico(titolo);
+
 				}
 				else if (item.PropertyType.FullName.Contains("DateTime"))
 				{
-					newControl= AggiungiDateTime(titolo, widthAttr);
-					
+					newControl = AggiungiDateTime(titolo, widthAttr);
+
 				}
 				else
 				{
 
-					if (item!=null && (!item.PropertyType.Name.StartsWith("System.")
+					if (item != null && (!item.PropertyType.Name.StartsWith("System.")
 						))
 					{
 
@@ -112,7 +107,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 					}
 				}
-				if (newControl!=null)
+				if (newControl != null)
 				{
 					BindObj(item, newControl, objToBind, widthAttr);
 				}
@@ -121,6 +116,8 @@ namespace StrumentiMusicali.App.View.BaseControl
 			this.ResumeLayout();
 			
 		}
+
+		
 
 		private void BindObj(System.Reflection.PropertyInfo item, EDBase controlBase, object objToBind, CustomUIViewAttribute attribute)
 		{

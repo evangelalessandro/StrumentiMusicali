@@ -6,6 +6,7 @@ using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View.Enums;
+using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
@@ -18,7 +19,7 @@ using System.Threading.Tasks;
 namespace StrumentiMusicali.App.Core.Controllers
 {
 	//[AddINotifyPropertyChangedInterface]
-	public class ControllerLog : BaseControllerGeneric<EventLog, LogItem>
+	public class ControllerLog : BaseControllerGeneric<EventLog, LogItem>, IMenu
 	{
 		Subscription<Remove<EventLog>> sub1;
 		public ControllerLog()
@@ -48,10 +49,11 @@ namespace StrumentiMusicali.App.Core.Controllers
 			);
 
 		}
-		public new void GetMenu()
+		public override MenuTab GetMenu()
 		{
 			base.GetMenu().ItemByTag(MenuTab.TagAdd).ForEach(a => a.Visible = false);
 			base.GetMenu().ItemByTag(MenuTab.TagEdit).ForEach(a => a.Visible = false);
+			return base.GetMenu();
 		}
 
 		protected override void Dispose(bool disposing)

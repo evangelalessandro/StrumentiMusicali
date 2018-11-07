@@ -5,6 +5,7 @@ using StrumentiMusicali.App.Core.Events.Image;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Forms;
 using StrumentiMusicali.App.Settings;
+using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
@@ -48,8 +49,16 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void Sconta(ArticoloSconta obj)
 		{
-			if (!MessageManager.QuestionMessage("Sei sicuro di volere applicare questo sconto\aumento su tutti gli articoli visualizzati nella lista?"))
+			
+			if (!MessageManager.QuestionMessage( string.Format( @"Sei sicuro di volere applicare questo sconto\aumento 
+					su tutti gli articoli {0} visualizzati nella lista?", DataSource.Count())))
 				return;
+			if (DataSource.Count()>100)
+			{
+				if (!MessageManager.QuestionMessage(string.Format(@"Sei sicuro di volere applicare questo sconto\aumento 
+					su tutti gli articoli {0} visualizzati nella lista?", DataSource.Count())))
+					return;
+			}
 			_logger.Info("Applicato sconto su marca {0} e filtro ricerca {1} di {2} %.  ", FiltroMarca, this.TestoRicerca, obj.Percentuale);
 			using (var saveEnt=new SaveEntityManager())
 			{
@@ -109,7 +118,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			using (var view=new View.Articoli.ScontaArticoliView())
 			{
-				ShowView(view, enAmbiente.Articolo);
+				ShowView(view, enAmbiente.ArticoloSconto);
 			}
 		}
 
@@ -123,11 +132,11 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		~ControllerArticoli()
 		{
-			var dato = this.ReadSetting(Settings.enAmbiente.ArticoliList);
+			var dato = this.ReadSetting(enAmbiente.ArticoliList);
 			if (SelectedItem != null)
 			{
 				dato.LastItemSelected = SelectedItem.ID;
-				this.SaveSetting(Settings.enAmbiente.ArticoliList, dato);
+				this.SaveSetting(enAmbiente.ArticoliList, dato);
 			}
 		}
 
@@ -143,7 +152,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			EditItem = SelectedItem;
 			using (var view = new DettaglioArticoloView(this, item))
 			{
-				ShowView(view, Settings.enAmbiente.Articolo);
+				ShowView(view, enAmbiente.Articolo);
 			}
 		}
 		private void AggiungiArticolo(object articoloAdd)
@@ -157,7 +166,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			EditItem = new Articolo();
 			using (var view = new DettaglioArticoloView(this, item))
 			{
-				ShowView(view, Settings.enAmbiente.Articolo);
+				ShowView(view, enAmbiente.Articolo);
 			}
 		}
 

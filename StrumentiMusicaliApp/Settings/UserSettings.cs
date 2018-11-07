@@ -1,4 +1,5 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.FatturaElett;
+using StrumentiMusicali.App.View.Enums;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,7 +9,7 @@ namespace StrumentiMusicali.App.Settings
 {
 	public class UserSettings
 	{
-		public List<Tuple<enAmbiente, FormRicerca>> Form { get; set; }
+		public List<( enAmbiente ambiente, FormRicerca form)> Form { get; set; }
 		public DatiMittente datiMittente { get; set; } = new DatiMittente();
 		public SettingSito settingSito { get; set; } = new SettingSito();
 		public DatiIntestazioneStampaFattura DatiIntestazione { get; set; } = new DatiIntestazioneStampaFattura();
@@ -25,25 +26,5 @@ namespace StrumentiMusicali.App.Settings
 		public int Left { get; set; }
 	}
 
-	public enum enAmbiente
-	{
-		Main,
-		Fattura,
-		FattureList,
-		Articolo,
-		ArticoliList,
-		Magazzino,
-		SettingFatture,
-		SettingSito,
-		SettingStampa,
-		ScaricoMagazzino,
-		LogView,
-		LogViewList,
-		ClientiList,
-		Cliente,
-		FattureRigheList,
-		FattureRigheDett,
-		Deposito,
-		DepositoList,
-	}
+
 }

@@ -1,5 +1,6 @@
 ﻿using StrumentiMusicali.App.Core;
 using StrumentiMusicali.App.Core.Events.Generics;
+using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using System;

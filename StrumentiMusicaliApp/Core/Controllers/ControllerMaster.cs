@@ -8,6 +8,7 @@ using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
+using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
@@ -43,7 +44,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			Application.SetCompatibleTextRenderingDefault(false);
 			using (var mainView = new MainView(this))
 			{
-				this.ShowView(mainView, Settings.enAmbiente.Main);
+				this.ShowView(mainView, enAmbiente.Main);
 			}
 		}
 
@@ -93,14 +94,14 @@ namespace StrumentiMusicali.App.Core.Controllers
 					{
 						using (var view = new FattureListView(controller, enAmbiente.FattureList, enAmbiente.Fattura))
 						{
-							ShowView(view, Settings.enAmbiente.FattureList,controller);
+							ShowView(view, enAmbiente.FattureList,controller);
 						}
 					}
 					break;
-				case enAmbiente.LogView:
+				case enAmbiente.LogViewList:
 					using (var controllerLog = new ControllerLog())
 					{
-						using (var view = new LogView(controllerLog))
+						using (var view = new LogViewList(controllerLog))
 						{
 							this.ShowView(view, obj.TipoEnviroment, controllerLog);
 						}
@@ -148,12 +149,11 @@ namespace StrumentiMusicali.App.Core.Controllers
 					{
 						using (var view = new View.ScaricoMagazzinoView(controller))
 						{
-							this.ShowView(view, Settings.enAmbiente.ScaricoMagazzino, controller);
+							this.ShowView(view, enAmbiente.ScaricoMagazzino, controller);
 						}
 					}
 					break;
-				case enAmbiente.LogViewList:
-					break;
+				 
 				case enAmbiente.Cliente:
 					break;
 				case enAmbiente.FattureRigheList:
@@ -226,7 +226,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 								Core.Controllers.enSaveOperation.OpSave));
 					}
 				};
-				this.ShowView(view, Settings.enAmbiente.SettingStampa);
+				this.ShowView(view, enAmbiente.SettingStampa);
 			}
 		}
 
@@ -253,7 +253,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 								Core.Controllers.enSaveOperation.OpSave));
 					}
 				};
-				this.ShowView(view, Settings.enAmbiente.SettingSito);
+				this.ShowView(view, enAmbiente.SettingSito);
 			}
 		}
 

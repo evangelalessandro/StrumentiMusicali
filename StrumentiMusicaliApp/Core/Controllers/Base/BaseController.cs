@@ -5,10 +5,13 @@ using StrumentiMusicali.App.Core.Events.Tab;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Settings;
+using StrumentiMusicali.App.View.Attributes;
+using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -25,11 +28,17 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		public BaseController()
 		{
 		}
-		public bool ModalitàAForm { get; set; }
-
-		public void ShowView(UserControl view, Settings.enAmbiente ambiente, BaseController controller = null, bool disposeForm = true)
+		public bool ModalitàAForm { get; set; } = false;
+		public static T GetAttribute<T>(Enum enumValue) where T : Attribute
 		{
-			if (ModalitàAForm || ambiente == enAmbiente.Main)
+			var member = enumValue.GetType().GetMember(enumValue.ToString()).FirstOrDefault();
+			return (T)member?.GetCustomAttributes(typeof(T), false).FirstOrDefault();
+		}
+		public void ShowView(UserControl view, enAmbiente ambiente, BaseController controller = null, bool disposeForm = true)
+		{
+			var attr = GetAttribute<UIAmbienteAttribute>(ambiente);
+
+			if (ModalitàAForm || (attr!=null && attr.OnlyViewInForm))
 			{
 				AggiungiInForm(view, ambiente, controller, disposeForm);
 			}
@@ -39,10 +48,19 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 			}
 		}
-
+		
+		public static List<( enAmbiente Ambiente, TabPage Pagina, MenuTab MenuPagina)> AmbientiAttivi { get; set; } = new List<(enAmbiente Ambiente, TabPage Pagina, MenuTab MenuPagina)>();
 		private void AggiungiTab(UserControl view, enAmbiente ambiente, BaseController controller, bool disposeForm)
 		{
+			var attr = GetAttribute<UIAmbienteAttribute>(ambiente);
 
+			var currentAlreadyPresentItem = AmbientiAttivi.Where(a => a.Ambiente == ambiente).DefaultIfEmpty((enAmbiente.NonSpecificato, null,null)).FirstOrDefault();
+			if (currentAlreadyPresentItem.Ambiente==ambiente && attr!=null && attr.Exclusive)
+			{ 
+				((TabControl)currentAlreadyPresentItem.Pagina.Parent).SelectedTab= currentAlreadyPresentItem.Pagina;
+				currentAlreadyPresentItem.MenuPagina.Tabs[0].PerformSelect();
+				return;
+			}
 			bool closed = false;
 			MenuTab menu = null;
 			if (controller != null && controller is IMenu)
@@ -57,7 +75,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			{
 				menu.Tabs[0].Testo = TestoAmbiente(ambiente);
 
-				LoadMenu(menu, ribbonMaster);
+				LoadMenu(menu, _ribbonMaster);
 			}
 			ICloseSave closeSave = null;
 			if (controller != null && controller is ICloseSave)
@@ -98,6 +116,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 				}
 			});
+			AmbientiAttivi.Add((ambiente, newTab, menu));
+
 			tabControl.SelectedIndexChanged += (b, c) =>
 			  {
 
@@ -132,7 +152,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			{
 				Application.DoEvents();
 			}
-			RemoveMenu(menu, ribbonMaster);
+			AmbientiAttivi.RemoveAll(a=>a.Ambiente== ambiente);
+
+			RemoveMenu(menu, _ribbonMaster);
 			actionSelectedIndex = null;
 
 			//ribbonMaster.ActiveTab = ribbonMaster.PreviousTab;
@@ -168,7 +190,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		/// <summary>
 		/// ribbon della form main
 		/// </summary>
-		private static Ribbon ribbonMaster = null;
+		private static Ribbon _ribbonMaster = null;
+		private static Form _MainForm;
+		private static List<Form> _PreviusForm=new List<Form>();
 		private void AggiungiInForm(UserControl view, enAmbiente ambiente, BaseController controller, bool disposeForm)
 		{
 			Ribbon ribbon1 = null;
@@ -236,13 +260,24 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 						{ frm.Close(); };
 					}
 
-
+					frm.IsMdiContainer = true;
 					if (ambiente == enAmbiente.Main)
 					{
-						ribbonMaster = ribbon1;
+						_ribbonMaster = ribbon1;
+						_MainForm = frm;
+						_PreviusForm.Add(frm);
+						frm.ShowDialog();
+						
 					}
-
-					frm.ShowDialog();
+					else
+					{
+						var last=_PreviusForm.Last();
+						_PreviusForm.Add(frm);
+						
+						frm.ShowDialog(last);
+						_PreviusForm.Remove(frm);
+					}
+					
 
 					SavSettingForm(ambiente, frm);
 
@@ -366,12 +401,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 				case enAmbiente.ScaricoMagazzino:
 					return "Scarico Magazzino";
 
-				case enAmbiente.LogView:
+				case enAmbiente.LogViewList:
 					return "Visualizzatore dei log";
 				case enAmbiente.SettingStampa:
 					return "Settaggi di stampa fattura";
-				case enAmbiente.LogViewList:
-					return "Visualizzatore dei log";
+
 				case enAmbiente.FattureRigheList:
 					break;
 				case enAmbiente.FattureRigheDett:
@@ -380,6 +414,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 					return "Deposito";
 				case enAmbiente.DepositoList:
 					return "Depositi";
+				case enAmbiente.ArticoloSconto:
+					return "Sconta articoli";
+				case enAmbiente.NonSpecificato:
+					break;
 				default:
 					return "NIENTE DI IMPOSTATO";
 
@@ -424,14 +462,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 				case enAmbiente.ScaricoMagazzino:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.UnloadWareHouse);
 					break;
-				case enAmbiente.LogView:
+				case enAmbiente.LogViewList:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.LogView_48);
 					break;
 				case enAmbiente.SettingStampa:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.Settings);
-					break;
-				case enAmbiente.LogViewList:
-					frm.Icon = UtilityView.GetIco(Properties.Resources.LogView_48);
 					break;
 				case enAmbiente.FattureRigheList:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.Invoice);
@@ -610,12 +645,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			var setting = ReadSetting();
 			if (setting.Form == null)
 			{
-				setting.Form = new System.Collections.Generic.List<Tuple<enAmbiente, FormRicerca>>();
+				setting.Form = new List<(enAmbiente ambiente, FormRicerca form)>();
 			}
-			var elem = setting.Form.Where(a => a.Item1 == ambiente).FirstOrDefault();
-			if (elem == null)
-			{
-				setting.Form.Add(new Tuple<enAmbiente, FormRicerca>(ambiente, new FormRicerca()));
+			if (setting.Form.Where(a => a.ambiente == ambiente).Count()==0)
+			{ 
+				setting.Form.Add((ambiente, new FormRicerca()));
 				SaveSetting(setting);
 			}
 			return setting.Form.Where(a => a.Item1 == ambiente).First().Item2;
@@ -625,7 +659,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		{
 			var setting = ReadSetting();
 			setting.Form.RemoveAll(a => a.Item1 == ambiente);
-			setting.Form.Add(new Tuple<enAmbiente, FormRicerca>(ambiente, formRicerca));
+			setting.Form.Add((ambiente, formRicerca));
 			SaveSetting(setting);
 		}
 

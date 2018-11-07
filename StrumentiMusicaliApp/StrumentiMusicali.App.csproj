@@ -285,6 +285,8 @@
     <Compile Include="CustomComponents\TabCustom.Designer.cs">
       <DependentUpon>TabCustom.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\Attributes\CustomUIViewAttribute.cs" />
+    <Compile Include="View\Enums\enAmbiente.cs" />
     <Compile Include="View\Articoli\ScontaArticoliView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -292,6 +294,9 @@
       <DependentUpon>ScontaArticoliView.cs</DependentUpon>
     </Compile>
     <Compile Include="View\DepositiListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\LogViewList.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\ViewFactory.cs" />
@@ -359,9 +364,6 @@
       <DependentUpon>EDTesto.cs</DependentUpon>
     </Compile>
     <Compile Include="View\BaseControl\SettingBaseView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="View\LogView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\Settings\GenericSettingView.cs">
@@ -462,9 +464,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\BaseControl\SettingBaseView.resx">
       <DependentUpon>SettingBaseView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\LogView.resx">
-      <DependentUpon>LogView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Settings\GenericSettingView.resx">
       <DependentUpon>GenericSettingView.cs</DependentUpon>

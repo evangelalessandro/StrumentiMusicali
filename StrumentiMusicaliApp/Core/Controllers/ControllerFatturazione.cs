@@ -8,6 +8,7 @@ using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
+using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
@@ -131,7 +132,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			using (var view = new DettaglioFatturaView(this))
 			{
-				ShowView(view, Settings.enAmbiente.Fattura);
+				ShowView(view, enAmbiente.Fattura);
 			}
 		}
 

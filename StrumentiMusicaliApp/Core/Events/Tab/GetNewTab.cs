@@ -1,4 +1,5 @@
 ﻿using StrumentiMusicali.App.Settings;
+using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Interfaces;
 using System;
 using System.Collections.Generic;

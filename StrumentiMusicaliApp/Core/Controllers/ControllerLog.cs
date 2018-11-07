@@ -3,7 +3,9 @@ using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Settings;
+using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
@@ -20,7 +22,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 	{
 		Subscription<Remove<EventLog>> sub1;
 		public ControllerLog()
-			:base(enAmbiente.LogViewList,enAmbiente.LogView)
+			:base(enAmbiente.LogViewList,enAmbiente.LogViewList)
 		{
 			sub1 =	EventAggregator.Instance().Subscribe<Remove<EventLog>>(
 				(b)=> {
@@ -46,6 +48,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 			);
 
 		}
+		public new void GetMenu()
+		{
+			base.GetMenu().ItemByTag(MenuTab.TagAdd).ForEach(a => a.Visible = false);
+			base.GetMenu().ItemByTag(MenuTab.TagEdit).ForEach(a => a.Visible = false);
+		}
+
 		protected override void Dispose(bool disposing)
 		{
 		 

@@ -7,6 +7,7 @@ using StrumentiMusicali.App.Core.Events.Tab;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.CustomComponents;
 using StrumentiMusicali.App.Settings;
+using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.Library.Core;
 using System;
@@ -104,7 +105,7 @@ namespace StrumentiMusicali.App
 			var ribSetting = panel1.Add("Visualizza log", Properties.Resources.LogView_48);
 			ribSetting.Click += (s, e) =>
 			{
-				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.LogView));
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.LogViewList));
 			};
 
 		}

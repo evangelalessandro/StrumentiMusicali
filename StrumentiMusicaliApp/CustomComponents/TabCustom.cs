@@ -26,6 +26,8 @@ namespace StrumentiMusicali.App.CustomComponents
 			this.tabControl1.Selecting += tabControl1_Selecting;
 			this.tabControl1.HandleCreated += tabControl1_HandleCreated;
 
+			this.tabControl1.TabPages.Clear();
+
 		}
 		public TabPage AddTab(string text,string key)
 		{
@@ -70,7 +72,7 @@ namespace StrumentiMusicali.App.CustomComponents
 				{
 					var tabRect = this.tabControl1.GetTabRect(i);
 					tabRect.Inflate(-2, -2);
-					var closeImage = Properties.Resources.Close_16;
+					var closeImage = Properties.Resources.Close_48;
 					var imageRect = new Rectangle(
 						(tabRect.Right - closeImage.Width),
 						tabRect.Top + (tabRect.Height - closeImage.Height) / 2,
@@ -119,7 +121,8 @@ namespace StrumentiMusicali.App.CustomComponents
 
 			if (!AllowAdd)
 			{
-				tabControl1.TabPages.RemoveAt(tabControl1.TabCount - 1);
+				tabControl1.TabPages.Clear();
+				//tabControl1.TabPages.RemoveAt(tabControl1.TabCount - 1);
 			}
 			else
 			{

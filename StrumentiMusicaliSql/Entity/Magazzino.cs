@@ -19,5 +19,7 @@ namespace StrumentiMusicali.Library.Entity
 
 		[Required]
 		public int Qta { get; set; }
+
+		public decimal PrezzoAcquisto { get; set; }
 	}
 }

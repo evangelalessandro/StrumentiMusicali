@@ -40,10 +40,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 		private Subscription<Save<Fattura>> _sub4;
 		private Subscription<Edit<Fattura>> _sub3;
 		private Subscription<Add<Fattura>> _sub2;
-		private Subscription<ImportaFattureAccess> _sub1;
+		 
 		public new void Dispose()
-		{
-			EventAggregator.Instance().UnSbscribe(_sub1);
+		{ 
 			EventAggregator.Instance().UnSbscribe(_sub2);
 			EventAggregator.Instance().UnSbscribe(_sub3);
 			EventAggregator.Instance().UnSbscribe(_sub4);

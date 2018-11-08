@@ -45,14 +45,33 @@ namespace StrumentiMusicali.Library.Entity
 
 		public decimal PrezzoBarrato { get; set; } = 0;
 
-		[MaxLength(2000), Required]
+		[MaxLength(2000)]
 		public string Testo { get; set; }
 
 		[MaxLength(100), Required]
 		public string Titolo { get; set; }
 
-		public string UrlSchedaProdotto { get; set; }
-		public string UrlSchedaProdottoTurbo { get; set; }
 		public bool UsaAnnuncioTurbo { get; set; }
+
+		[MaxLength(100)]
+		public string Note1 { get; set; }
+		[MaxLength(100)]
+		public string Note2 { get; set; }
+		[MaxLength(100)]
+		public string Note3 { get; set; }
+		[MaxLength(100)]
+		public string Rivenditore { get; set; }
+
+		public virtual Libro Libro { get; set; } = new Libro();
+		public string TagImport { get; set; }
+	}
+	public class Libro
+	{
+		public string Autore { get; set; }
+		public string Edizione { get; set; }
+		public string Edizione2 { get; set; }
+		public string Genere { get; set; }
+		public string Ordine { get; set; }
+		public string Settore { get; set; }
 	}
 }

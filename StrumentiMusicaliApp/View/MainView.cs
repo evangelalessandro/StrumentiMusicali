@@ -116,22 +116,29 @@ namespace StrumentiMusicali.App
 			var tabImportExport = _menuTab.Add(@"Import\Export");
 			var pnlExport = tabImportExport.Add("Export");
 			var ribInvio = pnlExport.Add("Invio Articoli", Properties.Resources.Upload);
+			ribInvio.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new InvioArticoliCSV());
+			};
 
 			var pnlImport = tabImportExport.Add("Import");
 			var ribImportCsv = pnlImport.Add("Import csv mercatino", Properties.Resources.ImportCsv);
+			ribImportCsv.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new ImportArticoliCSVMercatino());
+			};
+
 			var ribImportFatture = pnlImport.Add("Fatture Access", Properties.Resources.ImportInvoice);
 			ribImportFatture.Click += (s, e) =>
 			{
 				EventAggregator.Instance().Publish(new ImportaFattureAccess());
 			};
-			ribImportCsv.Click += (s, e) =>
+			var rib3 = pnlImport.Add("Import Mulino Excel", Properties.Resources.ImportCsv);
+			rib3.Click += (s, e) =>
 			{
-				EventAggregator.Instance().Publish(new ImportArticoliCSVMercatino());
+				EventAggregator.Instance().Publish(new ImportArticoliMulino());
 			};
-			ribInvio.Click += (s, e) =>
-			{
-				EventAggregator.Instance().Publish(new InvioArticoliCSV());
-			};
+
 		}
 
 		private void AggiungiPrincipale()

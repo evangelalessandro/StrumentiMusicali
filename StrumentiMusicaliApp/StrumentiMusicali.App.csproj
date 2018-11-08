@@ -227,10 +227,12 @@
     <Compile Include="Core\Controllers\FatturaElett\FattElettronica.cs" />
     <Compile Include="Core\Controllers\FatturaElett\FatturaHeader.cs" />
     <Compile Include="Core\Controllers\Imports\ImportFatture.cs" />
+    <Compile Include="Core\Controllers\Imports\ImportCavalloPazzoExcel.cs" />
     <Compile Include="Core\Controllers\Imports\ImportMagazziniExcel.cs" />
     <Compile Include="Core\Controllers\SaveEntityManager.cs" />
     <Compile Include="Core\Controllers\Stampa\Fattura.cs" />
     <Compile Include="Core\Events\Articoli\ArticoloSconta.cs" />
+    <Compile Include="Core\Events\Articoli\ImportArticoliMulino.cs" />
     <Compile Include="Core\Events\Articoli\InvioArticoliCSV.cs" />
     <Compile Include="Core\Events\Generics\Add.cs" />
     <Compile Include="Core\Events\Generics\ApriAmbiente.cs" />

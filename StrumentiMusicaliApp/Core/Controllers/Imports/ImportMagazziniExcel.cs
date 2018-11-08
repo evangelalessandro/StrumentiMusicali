@@ -86,12 +86,13 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 					articolo.Prezzo = int.Parse(item.PrezzoVendita);
 					articolo.Testo = (item.DescrBreve);
 					articolo.Titolo = item.Marca + " " + item.Modello + " " + item.DescrBreve + " " + item.Colore;
-
+					articolo.TagImport = "ExcelMagazzini";
 					magItem.Articolo = articolo;
 
 					//uof.ArticoliRepository.Find(a=>a.)
 					uof.MagazzinoRepository.Add(magItem);
 				}
+				uof.Commit();
 			}
 			Console.WriteLine();
 		}

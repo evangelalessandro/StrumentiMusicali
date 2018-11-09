@@ -243,7 +243,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 
 		private string FileEcommerce(UnitOfWork uof, List<FotoArticolo> fotoList, List<GiacenzaArt> magazzinoGiac)
 		{
-			List<Articolo> listArticoli = uof.ArticoliRepository.Find(a => a.CaricainEcommerce && a.Categoria.Codice >= 0)
+			List<Articolo> listArticoli = uof.ArticoliRepository.Find(a => a.CaricainECommerce && a.Categoria.Codice >= 0)
 				.Select(a=>new { articolo = a, Categoria = a.Categoria }).ToList().Select(a=>a.articolo).ToList();
 
 			var fileEcommerceContent = ExportFile(listArticoli, magazzinoGiac, fotoList);
@@ -269,8 +269,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 		/// <returns>ritorna il nome del file generato</returns>
 		private string FileMercatino(UnitOfWork uof, List<FotoArticolo> fotoList, List<GiacenzaArt> magazzinoGiac)
 		{
-			List<Articolo> listArticoli = uof.ArticoliRepository.Find(a => a.CaricainMercatino
-														&& a.CaricainEcommerce && a.Categoria.Codice>=0)
+			List<Articolo> listArticoli = uof.ArticoliRepository.Find(a => a.CaricaInMercatino
+														&& a.CaricainECommerce && a.Categoria.Codice>=0)
 				.Select(a => new { articolo = a, Categoria = a.Categoria }).ToList().Select(a => a.articolo).ToList();
 
 			var fileMercatinoContent = ExportFile(listArticoli, magazzinoGiac, fotoList);

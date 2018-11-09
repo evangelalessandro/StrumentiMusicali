@@ -36,9 +36,10 @@ namespace StrumentiMusicali.App.Forms
 		private static List<CategoriaItem> _categoriList = new List<CategoriaItem>();
 		private FotoArticolo _fotoArticoloSelected = null;
 		private List<PictureBox> _imageList = new List<PictureBox>();
-		private string _lastFilter = "";
+		
 		private System.Windows.Forms.PictureBox pb = new PictureBox();
 		private SettingSito _settingSito = null;
+		Subscription<ImageListUpdate> _sub1;
 		public DettaglioArticoloView(ControllerArticoli articoloController, SettingSito settingSito)
 			: base()
 		{
@@ -47,10 +48,10 @@ namespace StrumentiMusicali.App.Forms
 			if (DesignMode)
 				return;
 			_settingSito = settingSito;
-			EventAggregator.Instance().Subscribe<ImageListUpdate>(RefreshImageList);
+			_sub1 =	EventAggregator.Instance().Subscribe<ImageListUpdate>(RefreshImageList);
 
 			PanelImage.AllowDrop = true;
-			
+
 			PanelImage.DragEnter += new DragEventHandler(PanelImage_DragEnter);
 			PanelImage.DragDrop += new DragEventHandler(PanelImage_DragDrop);
 			PanelImage.DragLeave += PanelImage_DragLeave;
@@ -71,7 +72,13 @@ namespace StrumentiMusicali.App.Forms
 			pb.Controls.Add(thumbnail);
 			PanelImage.Controls.Add(pb);
 			this.Resize += FrmArticolo_ResizeEnd;
+
+			_EditView = new View.Settings.GenericSettingView(articoloController.EditItem);
+			_EditView.Dock = DockStyle.Fill;
+			tabPage1.Controls.Add(_EditView);
+			tabPage1.AutoScroll = true;
 		}
+		View.Settings.GenericSettingView _EditView;
 
 		private ControllerArticoli _articoloController;
 
@@ -95,6 +102,7 @@ namespace StrumentiMusicali.App.Forms
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
+			EventAggregator.Instance().UnSbscribe(_sub1);
 			if (nextImage != null)
 			{
 				nextImage.Dispose();
@@ -158,11 +166,7 @@ namespace StrumentiMusicali.App.Forms
 			EventAggregator.Instance().Publish<ImageOrderSet>(
 				new ImageOrderSet(enOperationOrder.AumentaPriorita, _fotoArticoloSelected));
 		}
-
-		private void ChkPrezzoARichiesta_CheckedChanged(object sender, EventArgs e)
-		{
-			UpdateViewPrezzi();
-		}
+		 
 
 		private void DiminuisciPrioritàToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -170,99 +174,21 @@ namespace StrumentiMusicali.App.Forms
 				new ImageOrderSet(enOperationOrder.DiminuisciPriorita, _fotoArticoloSelected));
 		}
 
-		private void FillCombo()
-		{
-			UpdateListCategory();
-
-			cboCategoria.DataSource = _categoriList;
-			cboCategoria.DisplayMember = "Descrizione";
-			cboCategoria.ValueMember = "ID";
-
-			var listReparti = _categoriList.Select(a => new
-			{
-				ID = a.Reparto,
-				Descrizione = a.Reparto
-			}).Distinct().ToList();
-			cboReparto.DataSource = listReparti;
-			cboReparto.DisplayMember = "Descrizione";
-			cboReparto.ValueMember = "ID";
-			cboReparto.SelectedIndexChanged += CboReparto_SelectedIndexChanged;
-
-			using (var uof = new UnitOfWork())
-			{
-				txtMarca.Values = uof.ArticoliRepository.Find(a => true).Select(a => a.Marca).Distinct().ToList().ToArray();
-			}
-
-			cboCondizione.DataSource = Enum.GetNames(typeof(enCondizioneArticolo))
-				.Select(a => new
-				{
-					ID = (enCondizioneArticolo)Enum.Parse(typeof(enCondizioneArticolo), a),
-					Descrizione = a
-				}).ToList();
-			cboCondizione.DisplayMember = "Descrizione";
-			cboCondizione.ValueMember = "ID";
-		}
-
-		private static void UpdateListCategory()
-		{
-			using (var uof = new UnitOfWork())
-			{
-				if (_categoriList.Count() == 0)
-				{
-					_categoriList = uof.CategorieRepository.Find(a => true).Select(a => new CategoriaItem
-					{
-						ID = a.ID,
-						Descrizione = a.Nome + " {" + a.Reparto + "}",
-						Reparto = a.Reparto
-					}).ToList();
-				}
-			}
-		}
-
-		private void CboReparto_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			cboCategoria.DataSource = _categoriList.FindAll(a => a.Reparto == cboReparto.Text).ToList();
-			cboCategoria.Refresh();
-		}
-
 		private void frmArticolo_Load(object sender, EventArgs e)
 		{
 			if (DesignMode)
 				return;
-			txtFiltroCategoria.TextChanged += txtFiltroCategoria_TextChanged;
 
 			this.tabControl1.DrawItem +=
 						 new DrawItemEventHandler(PageTab_DrawItem);
 			this.tabControl1.Selecting +=
 				new TabControlCancelEventHandler(PageTab_Selecting);
 
-
-			FillCombo();
 			UpdateButtonState();
 
-			chkPrezzoARichiesta.CheckedChanged += ChkPrezzoARichiesta_CheckedChanged;
 
 			UtilityView.SetDataBind(this, null, _articoloController.EditItem);
-			using (var uof = new UnitOfWork())
-			{
-				var giacenza = uof.MagazzinoRepository.Find(a => a.ArticoloID == _articoloController.EditItem.ID)
-					.Select(a => a.Qta).DefaultIfEmpty(0).Sum(a => a);
-
-				txtGiacenza.Value = giacenza;
-			}
-			if (cboCategoria.SelectedItem != null)
-			{
-				//seleziono reparto
-				var item = ((CategoriaItem)cboCategoria.SelectedItem);
-				cboReparto.Text = item.Reparto;
-				cboCategoria.SelectedItem = item;
-			}
-			using (var ord = new OrdinaTab())
-			{
-				ord.OrderTab(pnl1);
-				ord.OrderTab(pnlTesto);
-				ord.OrderTab(pnl3);
-			}
+			
 		}
 		private void FrmArticolo_ResizeEnd(object sender, EventArgs e)
 		{
@@ -460,36 +386,7 @@ namespace StrumentiMusicali.App.Forms
 			UpdateButtonState();
 		}
 
-		private void txtFiltroCategoria_TextChanged(object sender, EventArgs e)
-		{
-			var text = txtFiltroCategoria.Text;
-			if (_lastFilter == text)
-			{ return; }
-
-			if (text == string.Empty || text == null)
-			{
-				cboCategoria.DataSource = _categoriList; // cmbItems is a List of ComboBoxItem with some random numbers
-				cboCategoria.SelectedIndex = -1;
-				cboCategoria.MaxDropDownItems = 10;
-			}
-			else
-			{
-				string tempStr = text;
-
-				var data = (from m in _categoriList where m.Descrizione.ToLower().Contains(tempStr.ToLower()) select m).ToList();
-
-				cboCategoria.DataSource = data;
-
-				cboCategoria.DroppedDown = true;
-				//Cursor.Current = Cursors.Default;
-				cboCategoria.SelectedIndex = -1;
-				if (data.Count() < 10 && data.Count() > 0)
-					cboCategoria.MaxDropDownItems = data.Count();
-
-				_lastFilter = text;
-			}
-		}
-
+		 
 		/// <summary>
 		/// Draw a tab page based on whether it is disabled or enabled.
 		/// </summary>
@@ -539,7 +436,7 @@ namespace StrumentiMusicali.App.Forms
 			if (_ribPannelImmagini != null)
 			{
 				_ribPannelImmagini.Enabled = tabControl1.SelectedTab == tabPage2;
-
+				_ribRemove.Enabled = true;
 				_ribRemove.Enabled = _fotoArticoloSelected != null;
 			}
 			this.rimuoviImmagineToolStripMenuItem.Visible = _fotoArticoloSelected != null;
@@ -561,13 +458,7 @@ namespace StrumentiMusicali.App.Forms
 				first = false;
 			}
 		}
-
-		private void UpdateViewPrezzi()
-		{
-			txtPrezzo.Enabled = !(chkPrezzoARichiesta.Checked);
-			txtPrezzoBarrato.Enabled = !(chkPrezzoARichiesta.Checked);
-		}
-
+		 
 		private MenuTab _menuTab = null;
 		private RibbonMenuPanel _ribPannelImmagini;
 		private RibbonMenuButton _ribRemove;
@@ -614,8 +505,7 @@ namespace StrumentiMusicali.App.Forms
 
 		public void RaiseSave()
 		{
-			this.txtID.Focus();
-			this.Validate();
+		 	this.Validate();
 			EventAggregator.Instance().Publish<Save<Articolo>>(
 				new Save<Articolo>());
 			UpdateButtonState();

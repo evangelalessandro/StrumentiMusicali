@@ -73,7 +73,7 @@ namespace StrumentiMusicali.App.View
 			var movimenti = new List<MovimentoItem>();
 			using (var uof = new UnitOfWork())
 			{
-				var articolo = uof.ArticoliRepository.Find(a => a.CodiceAbarre == txtCodiceABarre.Text).FirstOrDefault();
+				var articolo = uof.ArticoliRepository.Find(a => a.CodiceABarre == txtCodiceABarre.Text).FirstOrDefault();
 				if (articolo != null)
 				{
 					lblTitoloArticolo.ForeColor = System.Drawing.Color.Green;

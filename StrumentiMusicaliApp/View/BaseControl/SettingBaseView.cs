@@ -1,31 +1,28 @@
-﻿using StrumentiMusicali.App.Core;
-using StrumentiMusicali.App.Core.Controllers.Base;
-using StrumentiMusicali.App.Core.Controllers.FatturaElett;
-using StrumentiMusicali.App.Core.Manager;
-using StrumentiMusicali.App.Core.MenuRibbon;
-using StrumentiMusicali.App.View.BaseControl;
+﻿using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.BaseControl.ElementiDettaglio;
-using StrumentiMusicali.Library.Core;
-using System;
-using System.Linq;
-
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
+using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Repo;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace StrumentiMusicali.App.View.BaseControl
 {
 	public class SettingBaseView : BaseDataControl, IMenu, ICloseSave
 	{
-		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-	 
+		public System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+
 		public SettingBaseView()
 			: base()
 		{
 			InitializeComponent();
 			this.MinimumSize = new System.Drawing.Size(700, 0700);
 			this.Paint += SettingBaseView_Paint;
+			flowLayoutPanel1.AutoScroll = true;
+			
 		}
 
 		private void SettingBaseView_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
@@ -46,10 +43,10 @@ namespace StrumentiMusicali.App.View.BaseControl
 		{
 			this.SuspendLayout();
 			flowLayoutPanel1.SuspendLayout();
-			foreach (var item in Utility.UtilityView.GetProperties(objToBind).OrderBy(a=>
+			foreach (var item in Utility.UtilityView.GetProperties(objToBind).OrderBy(a =>
 			{
 				var sel = (CustomUIViewAttribute)a.GetCustomAttributes(typeof(CustomUIViewAttribute), true).FirstOrDefault();
-				if (sel==null || sel.Ordine==0 )
+				if (sel == null || sel.Ordine == 0)
 				{
 					return 100;
 				}
@@ -66,7 +63,12 @@ namespace StrumentiMusicali.App.View.BaseControl
 				string titolo = UtilityView.GetTextSplitted(item.Name);
 				titolo = prefixText + titolo;
 				EDBase newControl = null;
-				if (item.PropertyType.FullName.Contains("String"))
+
+				if (widthAttr != null && widthAttr.Combo != TipoDatiCollegati.Nessuno)
+				{
+					newControl = AddCombo(widthAttr, titolo);
+				}
+				else if (item.PropertyType.FullName.Contains("String"))
 				{
 					newControl = AggiungiTesto(titolo);
 					newControl.Width = 250;
@@ -114,19 +116,57 @@ namespace StrumentiMusicali.App.View.BaseControl
 			}
 			flowLayoutPanel1.ResumeLayout();
 			this.ResumeLayout();
-			
+
 		}
 
-		
+		private EDBase AddCombo(CustomUIViewAttribute widthAttr, string titolo)
+		{
+			EDBase newControl;
+			using (var uof = new UnitOfWork())
+			{
+
+				var artCNT = new EDCombo();
+
+				switch (widthAttr.Combo)
+				{
+					case TipoDatiCollegati.Nessuno:
+						break;
+					case TipoDatiCollegati.Clienti:
+						break;
+					case TipoDatiCollegati.Categorie:
+						var list = uof.CategorieRepository.Find(a => true).Select(a => new { a.ID, Descrizione = a.Reparto + " - " + a.Nome + " - " + a.Codice }).ToList();
+
+						artCNT.SetList(list);
+						break;
+					case TipoDatiCollegati.Condizione:
+
+						var list2 = Enum.GetNames(typeof(enCondizioneArticolo)).Select(a => 
+						new { ID = (enCondizioneArticolo)Enum.Parse(typeof(enCondizioneArticolo), a),  Descrizione = UtilityView.GetTextSplitted( a) }
+						).OrderBy(a => a.Descrizione).ToList();
+						artCNT.SetList(list2);
+
+						break;
+					default:
+						break;
+				}
+				artCNT.Titolo = titolo;
+				flowLayoutPanel1.Controls.Add(artCNT);
+
+				newControl = artCNT;
+				newControl.Width = 200;
+			}
+
+			return newControl;
+		}
 
 		private void BindObj(System.Reflection.PropertyInfo item, EDBase controlBase, object objToBind, CustomUIViewAttribute attribute)
 		{
 			controlBase.Tag = item.Name;
-			controlBase.BindProprieta(attribute,item.Name, objToBind);
+			controlBase.BindProprieta(attribute, item.Name, objToBind);
 			controlBase.Height = 50;
-			if (attribute!=null && attribute.MultiLine>0)
+			if (attribute != null && attribute.MultiLine > 0)
 			{
-				controlBase.Height = 50* (attribute.MultiLine+1);
+				controlBase.Height = 50 * (attribute.MultiLine + 1);
 
 			}
 			if (item.Name == "DataCreazione"
@@ -135,7 +175,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			{
 				controlBase.Enabled = false;
 			}
-			if (attribute!=null)
+			if (attribute != null)
 			{
 				controlBase.Width = attribute.Width;
 			}
@@ -171,7 +211,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			qtaCNT.Titolo = titolo;
 			flowLayoutPanel1.Controls.Add(qtaCNT);
 			qtaCNT.SetMinSize = false;
-			if (titolo=="Cap")
+			if (titolo == "Cap")
 			{
 				qtaCNT.SetMinMax(0, 9999999, 0);
 
@@ -195,12 +235,12 @@ namespace StrumentiMusicali.App.View.BaseControl
 			var qtaCNT = new EDDateTime();
 			qtaCNT.Titolo = titolo;
 			flowLayoutPanel1.Controls.Add(qtaCNT);
-			
-			
+
+
 			return qtaCNT; ;
 		}
 
-		
+
 
 		// NOTE: Leave out the finalizer altogether if this class doesn't
 		// own unmanaged resources, but leave the other methods
@@ -235,6 +275,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
 			this.flowLayoutPanel1.Size = new System.Drawing.Size(1058, 490);
 			this.flowLayoutPanel1.TabIndex = 11;
+
 			//
 			// FattureRigheDetailView
 			//
@@ -260,12 +301,12 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 		private MenuTab _menuTab = null;
 
-		
+
 		private void AggiungiComandi()
 		{
 			var tabArticoli = _menuTab.Add("Principale");
 			var pnl = tabArticoli.Add("Comandi");
-			UtilityView.AddButtonSaveAndClose(pnl,this);
+			UtilityView.AddButtonSaveAndClose(pnl, this);
 		}
 		public event EventHandler<EventArgs> OnSave;
 		public event EventHandler<EventArgs> OnClose;
@@ -280,7 +321,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 		public void RaiseClose()
 		{
-			if (OnClose!=null)
+			if (OnClose != null)
 			{
 				OnClose(this, new EventArgs());
 			}

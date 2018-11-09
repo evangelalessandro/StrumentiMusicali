@@ -20,12 +20,36 @@ namespace StrumentiMusicali.App.View
 		public ArticoliListView(ControllerArticoli controller)
 			: base(controller)
 		{
-			 
+
 			onEditItemShowView += ((a, b) =>
 			{ b.Cancel = true; });
+			AggiungiFiltroMarca(controller);
+			AggiungiFiltroLibro(controller);
+		}
 
-			var control = new BaseControl.ElementiDettaglio.EDTesto();
+		private void AggiungiFiltroLibro(ControllerArticoli controller)
+		{
+			BaseControl.ElementiDettaglio.EDTesto control = new BaseControl.ElementiDettaglio.EDTesto();
+			control.Titolo = "Libri";
+			control.Width = 200;
+			pnlCerca.Controls.Add(control);
+			control.BindProprieta(null, "FiltroLibri", controller);
+			((AutoCompleteTextBox)control.ControlToBind).KeyUp += (a, b) =>
+			{
+				if (b.KeyCode == System.Windows.Forms.Keys.Return)
+				{
+					controller.FiltroLibri= ((AutoCompleteTextBox)control.ControlToBind).Text;
+
+					RicercaRefresh();
+				}
+			};
+		}
+
+		private void AggiungiFiltroMarca(ControllerArticoli controller)
+		{
+			BaseControl.ElementiDettaglio.EDTesto control = new BaseControl.ElementiDettaglio.EDTesto();
 			control.Titolo = "Marca";
+			control.Width = 200;
 			pnlCerca.Controls.Add(control);
 			control.BindProprieta(null, "FiltroMarca", controller);
 			((AutoCompleteTextBox)control.ControlToBind).KeyUp += (a, b) =>
@@ -33,13 +57,12 @@ namespace StrumentiMusicali.App.View
 				if (b.KeyCode == System.Windows.Forms.Keys.Return)
 				{
 					controller.FiltroMarca = ((AutoCompleteTextBox)control.ControlToBind).Text;
-					
+
 					RicercaRefresh();
 				}
 			};
 		}
 
-		 
 
 		public override void FormatGrid()
 		{

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace StrumentiMusicali.Library.Core
 {
@@ -22,5 +23,16 @@ namespace StrumentiMusicali.Library.Core
 		public bool TimeView { get; set; }
 
 		public bool DateTimeView { get; set; }
+
+		public TipoDatiCollegati Combo { get; set; } = TipoDatiCollegati.Nessuno;
 	}
+	public enum TipoDatiCollegati
+	{
+		Nessuno,
+		Clienti,
+		Categorie,
+		Condizione
+	}
+	 
+
 }

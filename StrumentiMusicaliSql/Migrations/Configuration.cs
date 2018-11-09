@@ -19,15 +19,9 @@ namespace StrumentiMusicali.Library.Migrations
 			//  to avoid creating duplicate seed data.
 
 			InitCategories(context);
-			InitDepositi(context);
 		}
 
-		private static void InitDepositi(Model.ModelSm context)
-		{
-			context.Depositi.AddOrUpdate(h => h.NomeDeposito,
-				new Deposito() { ID = 1, NomeDeposito = "Depo 1" },
-				new Deposito() { ID = 2, NomeDeposito = "Depo 2" });
-		}
+		 
 
 		private static void InitCategories(Model.ModelSm context)
 		{

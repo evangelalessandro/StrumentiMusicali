@@ -88,7 +88,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 				var articolo = new Articolo();
 
 				articolo.Prezzo = (item.PrezzoVendita);
-				articolo.CodiceAbarre = item.CodiceABarre;
+				articolo.CodiceABarre = item.CodiceABarre;
 
 
 				var categoriaSel = listCategorie.Where(a => a.Nome.ToUpper() == item.Categoria.ToUpper()).FirstOrDefault();
@@ -111,7 +111,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 				};
 				articolo.Note1 = item.Varie1;
 				articolo.TagImport = "MulinoLibri";
-
+				articolo.Condizione = enCondizioneArticolo.NonSpecificato;
 
 				magItem.Qta = item.Quantita;
 				magItem.Articolo = articolo;
@@ -129,7 +129,6 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 			DataTable dt = ReadDatatable(enNomeTabellaExcel.strum.ToString());
 			try
 			{
-
 
 				var list = dt.AsEnumerable().Select(a => new
 				{
@@ -160,7 +159,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 					var articolo = new Articolo();
 					articolo.Marca = item.Marca;
 					articolo.Prezzo = decimal.Parse(item.PrezzoVendita);
-					articolo.CodiceAbarre = item.CodiceABarre;
+					articolo.CodiceABarre = item.CodiceABarre;
 					var categoriaSel = listCategorie.Where(a => a.Nome.ToUpper() == item.Categoria.ToUpper()).FirstOrDefault();
 					if (categoriaSel == null)
 					{
@@ -234,7 +233,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 					articolo.Marca = item.Marca;
 
 					articolo.Prezzo = decimal.Parse(item.PrezzoVendita);
-					articolo.CodiceAbarre = item.CodiceABarre;
+					articolo.CodiceABarre = item.CodiceABarre;
 					var categoriaSel = listCategorie.Where(a => a.Nome.ToUpper() == item.Categoria.ToUpper()).FirstOrDefault();
 					if (categoriaSel == null)
 					{
@@ -248,6 +247,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 					articolo.Note1 = item.Varie1;
 					articolo.Note2 = item.Varie2;
 					articolo.Note3 = item.Varie3;
+					articolo.Condizione = enCondizioneArticolo.NonSpecificato;
 
 					articolo.TagImport = "MulinoArticoli";
 					magItem.Qta = int.Parse(item.Quantita);

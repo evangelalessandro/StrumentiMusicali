@@ -114,10 +114,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 							}
 							else
 							{
-								continue;
 								throw new MessageException(
-								string.Format(@"Non è specificata la condizione (Nuovo\usato\demo) per l'articolo {0}"
-								, articolo.Titolo));
+									string.Format(@"Non è specificata la condizione (Nuovo\usato\demo) per l'articolo {0}"
+									, articolo.Titolo));
 							}
 						}
 						var categoriaName = item.Categoria;

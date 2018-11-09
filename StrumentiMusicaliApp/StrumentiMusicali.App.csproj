@@ -290,6 +290,12 @@
       <DependentUpon>TabCustom.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Attributes\UIAmbienteAttribute.cs" />
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDCombo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDCombo.Designer.cs">
+      <DependentUpon>EDCombo.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\Enums\enAmbiente.cs" />
     <Compile Include="View\Articoli\ScontaArticoliView.cs">
       <SubType>UserControl</SubType>
@@ -447,6 +453,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\Articoli\ScontaArticoliView.resx">
       <DependentUpon>ScontaArticoliView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\BaseControl\ElementiDettaglio\EDCombo.resx">
+      <DependentUpon>EDCombo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Fatture\DettaglioFatturaView.resx">
       <DependentUpon>DettaglioFatturaView.cs</DependentUpon>

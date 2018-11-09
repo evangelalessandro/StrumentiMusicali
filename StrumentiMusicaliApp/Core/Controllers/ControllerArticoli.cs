@@ -5,6 +5,7 @@ using StrumentiMusicali.App.Core.Events.Image;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Forms;
 using StrumentiMusicali.App.Settings;
+using StrumentiMusicali.App.View.Articoli;
 using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
@@ -144,28 +145,34 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void EditArt(Edit<Articolo> obj)
 		{
-			var item = ReadSetting().settingSito;
-			if (!item.CheckFolderImmagini())
-			{
-				return;
-			}
 			EditItem = SelectedItem;
-			using (var view = new DettaglioArticoloView(this, item))
-			{
-				ShowView(view, enAmbiente.Articolo);
-			}
+			ShowViewDettaglio();
 		}
 		private void AggiungiArticolo(object articoloAdd)
 		{
 			_logger.Info("Apertura ambiente AggiungiArticolo");
+			
+			EditItem = new Articolo();
+			ShowViewDettaglio();
+		}
+
+		private void ShowViewDettaglio()
+		{
 			var item = ReadSetting().settingSito;
 			if (!item.CheckFolderImmagini())
 			{
 				return;
 			}
-			EditItem = new Articolo();
-			using (var view = new DettaglioArticoloView(this, item))
+			using (var view = new DettaglioArticoloView(this,item))
 			{
+				//view.BindProp(EditItem,"");
+				view.OnSave += (a, b) =>
+				{
+					view.Validate();
+					EventAggregator.Instance().Publish<Save<Articolo>>
+					(new Save<Articolo>());
+				};
+
 				ShowView(view, enAmbiente.Articolo);
 			}
 		}
@@ -211,6 +218,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				ExceptionManager.ManageError(ex);
 			}
 		}
+		public string FiltroLibri { get; set; } = "";
 		public string FiltroMarca { get; set; } = "";
 		public void ImportaCsvArticoli(ImportArticoliCSVMercatino obj)
 		{
@@ -391,6 +399,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 					}
 					else
 					{
+						EditItem.Categoria = null;
 						uof.ArticoliRepository.Update(EditItem);
 					}
 					if (
@@ -446,16 +455,44 @@ namespace StrumentiMusicali.App.Core.Controllers
 				{
 					list = uof.ArticoliRepository.Find(a => (datoRicerca == ""
 						|| a.Titolo.Contains(datoRicerca)
-						|| a.Testo.Contains(datoRicerca))
+						|| a.Testo.Contains(datoRicerca)
+						|| a.TagImport.Contains(datoRicerca)
+						|| a.Categoria.Nome.Contains(datoRicerca)
+						|| a.Categoria.Reparto.Contains(datoRicerca)
+						|| a.Categoria.CategoriaCondivisaCon.Contains(datoRicerca)
+						)
+
+						&& ((
+						a.Libro.Autore.Contains(FiltroLibri) 
+						|| a.Libro.Edizione.Contains(FiltroLibri)
+						|| a.Libro.Edizione2.Contains(FiltroLibri)
+						|| a.Libro.Genere.Contains(FiltroLibri)
+						|| a.Libro.Ordine.Contains(FiltroLibri)
+						|| a.Libro.Settore.Contains(FiltroLibri)
+						&& FiltroLibri.Length > 0)
+						|| FiltroLibri == "")
 
 						&& (a.Marca.Contains(FiltroMarca) && FiltroMarca.Length > 0
 						|| FiltroMarca == "")
-					).OrderByDescending(a => a.ID).Take(ViewAllItem ? 100000 : 300).Select(a => new { a.Categoria, Articolo = a }).ToList().Select(a => a.Articolo).Select(a => new ArticoloItem(a)
+					).OrderByDescending(a => a.ID).Take(ViewAllItem ? 100000 : 300)
+					.Select(a => new { a.Categoria, Articolo = a }).ToList().Select(a => a.Articolo).Select(a => new ArticoloItem(a)
 					{
 
 						//Pinned = a.Pinned
 					}).ToList();
+
+					//var giacenza = uof.MagazzinoRepository.Find(a => list.Select(b => b.ID).Contains(a.ArticoloID ))
+					//   .Select(a => new { a.ArticoloID, a.Qta }).GroupBy(a=>a.ArticoloID)
+					//   .Select(a=>new { Sum = a.Sum(b => b.Qta), ArticoloID= a.Key });
+
+					//foreach (var item in list)
+					//{
+
+					//}
 				}
+
+
+
 
 				DataSource = new View.Utility.MySortableBindingList<ArticoloItem>(list);
 			}

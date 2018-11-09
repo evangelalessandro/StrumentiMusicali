@@ -71,6 +71,9 @@ namespace StrumentiMusicali.Library.Model
 			modelBuilder.Entity<Magazzino>().ToTable("Magazzino");
 			modelBuilder.Entity<Articolo>().ToTable("Articoli");
 			modelBuilder.Entity<Categoria>().ToTable("Categorie");
+
+			//modelBuilder.Entity<Categoria>().HasKey(a=> new { a.Codice,a.CategoriaCondivisaCon,a.Nome,a.Reparto});
+
 			modelBuilder.Entity<FotoArticolo>().ToTable("FotoArticoli");
 
 			modelBuilder.Entity<Fattura>().ToTable("Fatture");

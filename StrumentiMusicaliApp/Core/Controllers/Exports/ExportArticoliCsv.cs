@@ -168,7 +168,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 
 			sb.Append(art.ID + Separatore);
 
-			sb.Append(art.Categoria + Separatore);
+			sb.Append(art.Categoria.Codice + Separatore);
 			switch (art.Condizione)
 			{
 				case enCondizioneArticolo.Nuovo:
@@ -243,7 +243,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 
 		private string FileEcommerce(UnitOfWork uof, List<FotoArticolo> fotoList, List<GiacenzaArt> magazzinoGiac)
 		{
-			List<Articolo> listArticoli = uof.ArticoliRepository.Find(a => a.CaricainEcommerce).ToList();
+			List<Articolo> listArticoli = uof.ArticoliRepository.Find(a => a.CaricainEcommerce && a.Categoria.Codice >= 0)
+				.Select(a=>new { articolo = a, Categoria = a.Categoria }).ToList().Select(a=>a.articolo).ToList();
 
 			var fileEcommerceContent = ExportFile(listArticoli, magazzinoGiac, fotoList);
 			string fileEcommerce = SaveFileCsv(fileEcommerceContent, _settingSito.SoloNomeFileEcommerce);
@@ -269,7 +270,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 		private string FileMercatino(UnitOfWork uof, List<FotoArticolo> fotoList, List<GiacenzaArt> magazzinoGiac)
 		{
 			List<Articolo> listArticoli = uof.ArticoliRepository.Find(a => a.CaricainMercatino
-														&& a.CaricainEcommerce).ToList();
+														&& a.CaricainEcommerce && a.Categoria.Codice>=0)
+				.Select(a => new { articolo = a, Categoria = a.Categoria }).ToList().Select(a => a.articolo).ToList();
+
 			var fileMercatinoContent = ExportFile(listArticoli, magazzinoGiac, fotoList);
 			var fileMercatino = SaveFileCsv(fileMercatinoContent, _settingSito.SoloNomeFileMercatino);
 			MessageManager.NotificaInfo("Creato file Mercatino");

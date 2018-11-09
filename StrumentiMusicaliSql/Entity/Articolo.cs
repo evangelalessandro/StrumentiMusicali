@@ -63,7 +63,10 @@ namespace StrumentiMusicali.Library.Entity
 		public string Rivenditore { get; set; }
 
 		public virtual Libro Libro { get; set; } = new Libro();
+		[MaxLength(50)]
 		public string TagImport { get; set; }
+		[MaxLength(50)]
+		public string Colore { get; set; }
 	}
 	public class Libro
 	{

@@ -11,27 +11,18 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers.Imports
 {
-	public class ImportCavalloPazzoExcel : IDisposable
+	public class ImportCavalloPazzoExcel : BaseImportExcel, IDisposable
 	{
-		public void Import()
+		public ImportCavalloPazzoExcel()
+			:base()
 		{
-			using (OpenFileDialog res = new OpenFileDialog())
-			{
-				res.Title = "Seleziona file excel Mulino pazzo da importare";
-				//Filter
-				res.Filter = "File excel|*.xls;*.xlsx|Tutti i file|*.*";
-
-				res.Multiselect = false;
-				//When the user select the file
-				if (res.ShowDialog() == DialogResult.OK)
-				{
-					Import(res.FileName);
-				}
-			}
+			
 		}
-		private string NomeFile { get; set; }
-		private void Import(string fileName)
+		
+		protected override void Import()
 		{
+			
+			
 			using (var uof = new UnitOfWork())
 			{
 				try
@@ -39,11 +30,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 					ProgressManager.Instance().Visible = true;
 
 
-					NomeFile = fileName;
-
+					 
 					var listCategorie = uof.CategorieRepository.Find(a => true).ToList();
 					var deposito = uof.DepositoRepository.Find(a => a.NomeDeposito == "Negozio").ToList().DefaultIfEmpty(
-
 						new Deposito() { NomeDeposito = "Negozio" }).FirstOrDefault();
 
 					ImportArticoli(uof, deposito, listCategorie);
@@ -68,7 +57,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 		}
 		private void ImportLibri(UnitOfWork uof, Deposito deposito, System.Collections.Generic.List<Categoria> listCategorie)
 		{
-			DataTable dt = ReadDatatable(enNomeTabellaExcel.LIBRI);
+			DataTable dt = ReadDatatable(enNomeTabellaExcel.LIBRI.ToString());
 
 			var list = dt.AsEnumerable().Select(a => new
 			{
@@ -137,7 +126,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 
 		private void ImportStrumenti(UnitOfWork uof, Deposito deposito, System.Collections.Generic.List<Categoria> listCategorie)
 		{
-			DataTable dt = ReadDatatable(enNomeTabellaExcel.strum);
+			DataTable dt = ReadDatatable(enNomeTabellaExcel.strum.ToString());
 			try
 			{
 
@@ -206,46 +195,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 			LIBRI,
 			strum
 		}
-		private DataTable ReadDatatable(enNomeTabellaExcel tabellaExcel)
-		{
-			var dt = new DataTable();
-
-			var query = string.Format("SELECT * FROM [{0}$]", tabellaExcel.ToString());
-			using (OleDbConnection cn = new OleDbConnection { ConnectionString = ConnectionString(NomeFile, "No") })
-			{
-				using (OleDbCommand cmd = new OleDbCommand { CommandText = query, Connection = cn })
-				{
-					cn.Open();
-
-					OleDbDataReader dr = cmd.ExecuteReader();
-					dt.Load(dr);
-				}
-			}
-			if (dt.Rows.Count > 1)
-			{
-				if (dt.Rows[0][0].ToString().ToUpper() == "Codice".ToUpper())
-				{
-					dt.Rows[0].Delete();
-				}
-			}
-			//if (dt.Rows.Count > 1)
-			//{
-			//	if (dt.Rows[0][2].ToString() == ""
-			//		&& dt.Rows[0][3].ToString() == ""
-			//		&& dt.Rows[0][4].ToString() == ""
-			//		)
-			//	{
-			//		// remove header
-			//		dt.Rows[0].Delete();
-			//		dt.Rows[1].Delete();
-			//	}
-			//}
-			dt.AcceptChanges();
-			return dt;
-		}
+		
 		private void ImportArticoli(UnitOfWork uof, Deposito deposito, System.Collections.Generic.List<Categoria> listCategorie)
 		{
-			DataTable dt = ReadDatatable(enNomeTabellaExcel.artic);
+			DataTable dt = ReadDatatable(enNomeTabellaExcel.artic.ToString());
 			try
 			{
 
@@ -315,66 +268,6 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 
 		}
 
-		private DataTable ReadArticoliDatatable(string fileName)
-		{
-			var dt = new DataTable();
-
-			var query = "SELECT * FROM [artic$]";
-			using (OleDbConnection cn = new OleDbConnection { ConnectionString = ConnectionString(fileName, "No") })
-			{
-				using (OleDbCommand cmd = new OleDbCommand { CommandText = query, Connection = cn })
-				{
-					cn.Open();
-
-					OleDbDataReader dr = cmd.ExecuteReader();
-					dt.Load(dr);
-				}
-			}
-			if (dt.Rows.Count > 1)
-			{
-				if (dt.Rows[0][0].ToString() == "Codice")
-				{
-					dt.Rows[0].Delete();
-				}
-			}
-			if (dt.Rows.Count > 1)
-			{
-				if (dt.Rows[0][2].ToString() == ""
-					&& dt.Rows[0][3].ToString() == ""
-					&& dt.Rows[0][4].ToString() == ""
-					)
-				{
-					// remove header
-					dt.Rows[0].Delete();
-					dt.Rows[1].Delete();
-				}
-			}
-			dt.AcceptChanges();
-			return dt;
-		}
-
-		private string ConnectionString(string FileName, string Header)
-		{
-			OleDbConnectionStringBuilder Builder = new OleDbConnectionStringBuilder();
-			if (Path.GetExtension(FileName).ToUpper() == ".XLS")
-			{
-				Builder.Provider = "Microsoft.Jet.OLEDB.4.0";
-				Builder.Add("Extended Properties", string.Format("Excel 8.0;IMEX=1;HDR={0};", Header));
-			}
-			else
-			{
-				Builder.Provider = "Microsoft.ACE.OLEDB.12.0";
-				Builder.Add("Extended Properties", string.Format("Excel 12.0;IMEX=1;HDR={0};", Header));
-			}
-
-			Builder.DataSource = FileName;
-
-			return Builder.ConnectionString;
-		}
-
-		public void Dispose()
-		{
-
-		}
+		
 	}
 }

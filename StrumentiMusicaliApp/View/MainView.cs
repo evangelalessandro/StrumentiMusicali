@@ -138,7 +138,11 @@ namespace StrumentiMusicali.App
 			{
 				EventAggregator.Instance().Publish(new ImportArticoliMulino());
 			};
-
+			var rib4 = pnlImport.Add("Import Magazzini excel", Properties.Resources.ImportCsv);
+			rib4.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new ImportMagExcel());
+			};
 		}
 
 		private void AggiungiPrincipale()

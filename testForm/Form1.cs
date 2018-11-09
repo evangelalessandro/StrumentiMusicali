@@ -13,8 +13,7 @@ namespace testForm
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			var prova = new ImportMagazziniExcel();
-			prova.SelectFile();
+			
 		}
 	}
 }

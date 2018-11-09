@@ -31,18 +31,26 @@ namespace StrumentiMusicali.App.Core.Controllers
 			EventAggregator.Instance().Subscribe<ImportArticoliCSVMercatino>(ImportaCsvArticoli);
 			EventAggregator.Instance().Subscribe<ImportaFattureAccess>(ImportaFatture);
 			EventAggregator.Instance().Subscribe<ImportArticoliMulino>(ImportArticoliMulinoExcel);
+			EventAggregator.Instance().Subscribe<ImportMagExcel>(ImportMagExcel);
+
 			EventAggregator.Instance().Subscribe<InvioArticoliCSV>(InvioArCSV);
 
 			Application.ThreadException += Application_ThreadException;
 			
 
 		}
-
+		private void ImportMagExcel(ImportMagExcel obj)
+		{
+			using (var import = new Controllers.Imports.ImportMagazziniExcel())
+			{
+				import.ImportFile();
+			}
+		}
 		private void ImportArticoliMulinoExcel(ImportArticoliMulino obj)
 		{
 			using (var import=new Controllers.Imports.ImportCavalloPazzoExcel())
 			{
-				import.Import();
+				import.ImportFile();
 			}
 		}
 

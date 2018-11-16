@@ -223,6 +223,7 @@
     <Compile Include="Core\Controllers\ControllerClienti.cs" />
     <Compile Include="Core\Controllers\ControllerRigheFatture.cs" />
     <Compile Include="Core\Controllers\Exports\ExportArticoliCsv.cs" />
+    <Compile Include="Core\Controllers\Exports\ExportMagazzino.cs" />
     <Compile Include="Core\Controllers\FatturaElett\DatiMittente.cs" />
     <Compile Include="Core\Controllers\FatturaElett\FattElettronica.cs" />
     <Compile Include="Core\Controllers\FatturaElett\FatturaHeader.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="Core\Events\Image\ImageListUpdate.cs" />
     <Compile Include="Core\Events\Image\ImageOrderSet.cs" />
     <Compile Include="Core\Events\Interfaces\ArticoloCurrent.cs" />
+    <Compile Include="Core\Events\Magazzino\ExportMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\MovimentiUpdate.cs" />
     <Compile Include="Core\Events\Magazzino\MovimentoMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\CaricaQtaMagazzino.cs" />

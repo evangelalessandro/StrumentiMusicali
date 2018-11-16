@@ -1,5 +1,6 @@
 ﻿using NLog;
 using StrumentiMusicali.App.Core.Controllers.Base;
+using StrumentiMusicali.App.Core.Controllers.Exports;
 using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Generics;
@@ -119,6 +120,11 @@ namespace StrumentiMusicali.App
 			ribInvio.Click += (s, e) =>
 			{
 				EventAggregator.Instance().Publish(new InvioArticoliCSV());
+			};
+			var ribExport1 = pnlExport.Add("Export Stato Magazzino",Properties.Resources.Add);
+			ribExport1.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new ExportMagazzino());
 			};
 
 			var pnlImport = tabImportExport.Add("Import");

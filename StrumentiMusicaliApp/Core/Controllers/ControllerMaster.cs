@@ -2,6 +2,7 @@
 using NLog.Targets;
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Controllers.Base;
+using StrumentiMusicali.App.Core.Controllers.Exports;
 using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Generics;
@@ -34,11 +35,23 @@ namespace StrumentiMusicali.App.Core.Controllers
 			EventAggregator.Instance().Subscribe<ImportMagExcel>(ImportMagExcel);
 
 			EventAggregator.Instance().Subscribe<InvioArticoliCSV>(InvioArCSV);
+			EventAggregator.Instance().Subscribe<ExportMagazzino>(ExportMag);
+
+			
 
 			Application.ThreadException += Application_ThreadException;
 			
 
 		}
+
+		private void ExportMag(ExportMagazzino obj)
+		{
+			using (var export = new Controllers.Exports.ExportMagazzino())
+			{
+				export.Stampa();
+			}
+		}
+
 		private void ImportMagExcel(ImportMagExcel obj)
 		{
 			using (var import = new Controllers.Imports.ImportMagazziniExcel())

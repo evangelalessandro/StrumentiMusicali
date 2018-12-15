@@ -50,6 +50,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>StrumentoMusicale.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.8.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.8.1\lib\net45\Autofac.dll</HintPath>
@@ -424,6 +427,8 @@
     <Compile Include="View\Utility\MySortableBindingList.cs" />
     <Compile Include="View\Utility\UtilityView.cs" />
     <Compile Include="View\Utility\OrdinaTab.cs" />
+    <Content Include="Resources\StrumentoMusicale.ico" />
+    <Content Include="StrumentoMusicale.ico" />
     <None Include="Resources\Close.png" />
     <None Include="Resources\Add2.png" />
     <None Include="Resources\View_all_48.png" />

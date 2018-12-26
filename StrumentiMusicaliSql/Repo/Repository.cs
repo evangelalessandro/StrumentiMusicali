@@ -1,9 +1,11 @@
-﻿using StrumentiMusicali.Library.Entity;
+﻿using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Base;
 using StrumentiMusicali.Library.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -97,7 +99,18 @@ namespace StrumentiMusicali.Library.Repo
 
 		public virtual void Delete(T entity)
 		{
+			if(entity is Utente)
+			{
+				var list = Model.ModelSm.CheckUtenti(entity as Utente, EntityState.Deleted);
+				 
+				if (list.Count>0)
+				{
+					throw new MessageException(list.First().ErrorMessage);
+					 
+				}
+			}
 			dbSet.Remove(entity);
+			
 		}
 
 		//IDisposable implementation

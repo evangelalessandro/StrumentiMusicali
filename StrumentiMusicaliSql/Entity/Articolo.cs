@@ -1,6 +1,7 @@
 ﻿using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Base;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StrumentiMusicali.Library.Entity
 {
@@ -87,6 +88,10 @@ namespace StrumentiMusicali.Library.Entity
 		[CustomUIViewAttribute(Ordine = 45)]
 		[MaxLength(50)]
 		public string Colore { get; set; }
+
+		[NotMapped]
+		[CustomHideUIAttribute]
+		public bool? ShowLibro { get; set; } = null;
 	}
 	public class Libro
 	{

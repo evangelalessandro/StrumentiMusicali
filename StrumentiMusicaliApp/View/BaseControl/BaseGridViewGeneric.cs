@@ -295,6 +295,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 			FormatGrid();
 
+			UpdateButtonState();
 
 			//this.InvokeIfRequired((b) =>
 			//{

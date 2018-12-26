@@ -73,6 +73,12 @@ namespace StrumentiMusicali.App.Forms
 			PanelImage.Controls.Add(pb);
 			this.Resize += FrmArticolo_ResizeEnd;
 
+			if (!articoloController.EditItem.ShowLibro.HasValue)
+			{
+				articoloController.EditItem.ShowLibro = (!string.IsNullOrEmpty( articoloController.EditItem.Libro.Autore)
+					|| !string.IsNullOrEmpty(articoloController.EditItem.Libro.Edizione)
+					|| !string.IsNullOrEmpty(articoloController.EditItem.Libro.Settore));
+			}
 			_EditView = new View.Settings.GenericSettingView(articoloController.EditItem);
 			_EditView.Dock = DockStyle.Fill;
 			tabPage1.Controls.Add(_EditView);

@@ -7,11 +7,9 @@ using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Events.Tab;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.CustomComponents;
-using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.Library.Core;
-using System;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App
@@ -34,11 +32,11 @@ namespace StrumentiMusicali.App
 			tab = new TabCustom() { Dock = DockStyle.Fill, AllowAdd = false };
 			this.Controls.Add(tab);
 
-
+			
 			EventAggregator.Instance().Subscribe<GetNewTab>(TakeNewTab);
 			EventAggregator.Instance().Subscribe<RemoveNewTab>(RemoveTab);
 
-
+			
 		}
 
 		private void RemoveTab(RemoveNewTab obj)
@@ -121,7 +119,7 @@ namespace StrumentiMusicali.App
 			{
 				EventAggregator.Instance().Publish(new InvioArticoliCSV());
 			};
-			var ribExport1 = pnlExport.Add("Export Stato Magazzino",Properties.Resources.Add);
+			var ribExport1 = pnlExport.Add("Export Stato Magazzino", Properties.Resources.Add);
 			ribExport1.Click += (s, e) =>
 			{
 				EventAggregator.Instance().Publish(new ExportMagazzino());
@@ -155,27 +153,42 @@ namespace StrumentiMusicali.App
 		{
 			var tabImportExport = _menuTab.Add(@"Principale");
 			var panel1 = tabImportExport.Add("Ambienti");
-			var ribFatt = panel1.Add("Fatturazione", Properties.Resources.Invoice);
-			ribFatt.Click += (s, e) =>
+			if (LoginData.utenteLogin.Fatturazione)
 			{
-				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.FattureList));
-			};
-			var rib2 = panel1.Add("Clienti", Properties.Resources.Customer_48);
-			rib2.Click += (s, e) =>
+				var ribFatt = panel1.Add("Fatturazione", Properties.Resources.Invoice);
+				ribFatt.Click += (s, e) =>
+				{
+					EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.FattureList));
+				};
+				var rib2 = panel1.Add("Clienti", Properties.Resources.Customer_48);
+				rib2.Click += (s, e) =>
+				{
+					EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ClientiList));
+				};
+			}
+			if (LoginData.utenteLogin.Magazzino)
 			{
-				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ClientiList));
-			};
-			var ribMagaz = panel1.Add("Magazzino", Properties.Resources.UnloadWareHouse);
-			ribMagaz.Click += (s, e) =>
-			{
-				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ScaricoMagazzino));
-			};
-
+				var ribMagaz = panel1.Add("Magazzino", Properties.Resources.UnloadWareHouse);
+				ribMagaz.Click += (s, e) =>
+				{
+					EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ScaricoMagazzino));
+				};
+			}
 			var ribArticoli = panel1.Add("Articoli", Properties.Resources.StrumentoMusicale);
 			ribArticoli.Click += (s, e) =>
 			{
 				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ArticoliList));
 			};
+			if (LoginData.utenteLogin.AdminUtenti)
+			{
+
+				var panel2 = tabImportExport.Add("Utenti");
+				var ribUtenti = panel2.Add("Login", Properties.Resources.Utenti);
+				ribUtenti.Click += (s, e) =>
+				{
+					EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.UtentiList));
+				};
+			}
 		}
 
 

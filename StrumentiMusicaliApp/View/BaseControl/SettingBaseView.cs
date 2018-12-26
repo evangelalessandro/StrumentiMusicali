@@ -22,7 +22,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			this.MinimumSize = new System.Drawing.Size(700, 0700);
 			this.Paint += SettingBaseView_Paint;
 			flowLayoutPanel1.AutoScroll = true;
-			
+
 		}
 
 		private void SettingBaseView_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
@@ -43,21 +43,35 @@ namespace StrumentiMusicali.App.View.BaseControl
 		{
 			this.SuspendLayout();
 			flowLayoutPanel1.SuspendLayout();
-			foreach (var item in Utility.UtilityView.GetProperties(objToBind).OrderBy(a =>
-			{
-				var sel = (CustomUIViewAttribute)a.GetCustomAttributes(typeof(CustomUIViewAttribute), true).FirstOrDefault();
-				if (sel == null || sel.Ordine == 0)
-				{
-					return 100;
-				}
-				return sel.Ordine;
-			}
-			))
+			var listProp = Utility.UtilityView.GetProperties(objToBind).OrderBy(a =>
+			 {
+				 var sel = (CustomUIViewAttribute)a.GetCustomAttributes(typeof(CustomUIViewAttribute), true).FirstOrDefault();
+				 if (sel == null || sel.Ordine == 0)
+				 {
+					 return 100;
+				 }
+				 return sel.Ordine;
+			 });
+			foreach (var item in listProp)
 			{
 				var hideAttr = item.CustomAttributes.Where(a => a.AttributeType == typeof(CustomHideUIAttribute)).FirstOrDefault();
 				if (hideAttr != null)
 					continue;
 
+				var customHide = listProp.FirstOrDefault(a => a.Name == "Show" + item.Name);
+				if (customHide != null)
+				{
+					var toShow = customHide.GetValue(objToBind);
+					bool toShowVal = false;
+					if (Boolean.TryParse(toShow.ToString(), out toShowVal))
+					{
+						if (!toShowVal)
+						{
+							/*nascondo l'elemento*/
+							continue;
+						}
+					}
+				}
 				var widthAttr = (CustomUIViewAttribute)item.GetCustomAttributes(typeof(CustomUIViewAttribute), true).FirstOrDefault();
 
 				string titolo = UtilityView.GetTextSplitted(item.Name);
@@ -140,8 +154,8 @@ namespace StrumentiMusicali.App.View.BaseControl
 						break;
 					case TipoDatiCollegati.Condizione:
 
-						var list2 = Enum.GetNames(typeof(enCondizioneArticolo)).Select(a => 
-						new { ID = (enCondizioneArticolo)Enum.Parse(typeof(enCondizioneArticolo), a),  Descrizione = UtilityView.GetTextSplitted( a) }
+						var list2 = Enum.GetNames(typeof(enCondizioneArticolo)).Select(a =>
+						new { ID = (enCondizioneArticolo)Enum.Parse(typeof(enCondizioneArticolo), a), Descrizione = UtilityView.GetTextSplitted(a) }
 						).OrderBy(a => a.Descrizione).ToList();
 						artCNT.SetList(list2);
 

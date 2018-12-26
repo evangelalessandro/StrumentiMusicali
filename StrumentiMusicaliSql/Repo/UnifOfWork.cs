@@ -35,7 +35,20 @@ namespace StrumentiMusicali.Library.Repo
 				return _FattureGenerateInvioRepository;
 			}
 		}
-		
+
+
+		private Repository<Utente> _Utenti;
+
+		public IRepository<Utente> UtentiRepository {
+			get {
+				if (_Utenti == null)
+				{
+					_Utenti = new Repository<Utente>(dbContext);
+				}
+				return _Utenti;
+			}
+		}
+
 
 		private Repository<Deposito> _DepositoRepository;
 

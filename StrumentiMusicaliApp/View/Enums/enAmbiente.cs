@@ -41,7 +41,14 @@ namespace StrumentiMusicali.App.View.Enums
 		[UIAmbienteAttribute(false)]
 		DepositoList=18,
 
-		NonSpecificato=100,
+		[UIAmbienteAttribute(true)]
+		Utente = 20,
+		[UIAmbienteAttribute(false)]
+		UtentiList = 21,
+
+
+
+		NonSpecificato = 100,
 	}
 
 

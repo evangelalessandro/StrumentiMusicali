@@ -130,6 +130,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			view.Dock = DockStyle.Fill;
 			newTab.Controls.Add(view);
 
+			//view.BackColor = Color.Transparent;
+			//view.ForeColor= Color.White;
+
 			if (closeSave != null)
 			{
 				(closeSave as ICloseSave).OnClose += (
@@ -375,7 +378,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 					return "Cliente";
 
 				case enAmbiente.Main:
-					return "Principale";
+					return "Gestione magazzino e fatturazione";
 
 				case enAmbiente.Fattura:
 					return "Fattura";
@@ -416,6 +419,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 					return "Depositi";
 				case enAmbiente.ArticoloSconto:
 					return "Sconta articoli";
+				case enAmbiente.UtentiList:
+					return "Utenti";
+				case enAmbiente.Utente:
+					return "Utente";
+
 				case enAmbiente.NonSpecificato:
 					break;
 				default:
@@ -431,6 +439,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			{
 				case enAmbiente.ClientiList:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.Customer_48);
+					break;
+				case enAmbiente.UtentiList:
+				case enAmbiente.Utente:
+					frm.Icon = UtilityView.GetIco(Properties.Resources.Utenti);
 					break;
 				case enAmbiente.Cliente:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.Customer_48);

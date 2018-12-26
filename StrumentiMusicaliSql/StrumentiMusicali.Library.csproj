@@ -65,6 +65,7 @@
     <Compile Include="Core\CustomUIViewAttribute.cs" />
     <Compile Include="Core\CustomHideUIAttribute.cs" />
     <Compile Include="Core\EventAggregator.cs" />
+    <Compile Include="Core\LoginData.cs" />
     <Compile Include="Core\MessageException.cs" />
     <Compile Include="Entity\Articolo.cs" />
     <Compile Include="Entity\Base\BaseEntity.cs" />
@@ -80,6 +81,11 @@
     <Compile Include="Entity\FotoArticolo.cs" />
     <Compile Include="Entity\Magazzino.cs" />
     <Compile Include="Entity\Fatture\FatturaRiga.cs" />
+    <Compile Include="Entity\Utente.cs" />
+    <Compile Include="Migrations\201812261605085_Init.cs" />
+    <Compile Include="Migrations\201812261605085_Init.Designer.cs">
+      <DependentUpon>201812261605085_Init.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,6 +102,11 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Note\TextFile1.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201812261605085_Init.resx">
+      <DependentUpon>201812261605085_Init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.3.2.9\build\Fody.targets" Condition="Exists('..\packages\Fody.3.2.9\build\Fody.targets')" />

@@ -69,9 +69,16 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		public void ShowMainView()
 		{
-			
+
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
+
+			using (var login = new View.Login.LoginForm())
+			{
+				var ret = login.ShowDialog();
+				if (ret != DialogResult.OK)
+					return;
+			}
 			using (var mainView = new MainView(this))
 			{
 				this.ShowView(mainView, enAmbiente.Main);
@@ -115,6 +122,17 @@ namespace StrumentiMusicali.App.Core.Controllers
 						using (var view = new ArticoliListView(controller))
 						{
 							this.ShowView(view, obj.TipoEnviroment,controller);
+						}
+					}
+					break;
+				case enAmbiente.UtentiList:
+
+					using (var controller = new ControllerUtenti())
+					{
+
+						using (var view = new UtentiListView(controller))
+						{
+							this.ShowView(view, obj.TipoEnviroment, controller);
 						}
 					}
 					break;

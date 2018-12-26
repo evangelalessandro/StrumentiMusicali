@@ -218,6 +218,7 @@
     <Compile Include="Core\Controllers\Base\BaseControllerGeneric.cs" />
     <Compile Include="Core\Controllers\Base\BaseController.cs" />
     <Compile Include="Core\Controllers\ControllerArticoli.cs" />
+    <Compile Include="Core\Controllers\ControllerUtenti.cs" />
     <Compile Include="Core\Controllers\ControllerDepositi.cs" />
     <Compile Include="Core\Controllers\ControllerFatturazione.cs" />
     <Compile Include="Core\Controllers\ControllerImmagini.cs" />
@@ -266,6 +267,7 @@
     <Compile Include="Core\Events\Tab\GetNewTab.cs" />
     <Compile Include="Core\Item\ArticoloItem.cs" />
     <Compile Include="Core\Item\Base\BaseItemID.cs" />
+    <Compile Include="Core\Item\UtentiItem.cs" />
     <Compile Include="Core\Item\DepositoItem.cs" />
     <Compile Include="Core\Item\DepositoScaricoItem.cs" />
     <Compile Include="Core\Item\FatturaRigaItem.cs" />
@@ -300,6 +302,15 @@
     </Compile>
     <Compile Include="View\BaseControl\ElementiDettaglio\EDCombo.Designer.cs">
       <DependentUpon>EDCombo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Login\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Login\LoginForm.designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\UtentiListView.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\Enums\enAmbiente.cs" />
     <Compile Include="View\Articoli\ScontaArticoliView.cs">
@@ -427,6 +438,7 @@
     <Compile Include="View\Utility\MySortableBindingList.cs" />
     <Compile Include="View\Utility\UtilityView.cs" />
     <Compile Include="View\Utility\OrdinaTab.cs" />
+    <None Include="Resources\backGroudImageLogin1.jpg" />
     <Content Include="Resources\StrumentoMusicale.ico" />
     <Content Include="StrumentoMusicale.ico" />
     <None Include="Resources\Close.png" />
@@ -469,6 +481,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\Fatture\FattureListView.resx">
       <DependentUpon>FattureListView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Login\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\MainView.resx">
       <DependentUpon>MainView.cs</DependentUpon>

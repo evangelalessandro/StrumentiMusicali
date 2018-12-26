@@ -7,6 +7,7 @@ using StrumentiMusicali.App.Forms;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View.Articoli;
 using StrumentiMusicali.App.View.Enums;
+using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
@@ -151,8 +152,17 @@ namespace StrumentiMusicali.App.Core.Controllers
 		private void AggiungiArticolo(object articoloAdd)
 		{
 			_logger.Info("Apertura ambiente AggiungiArticolo");
-			
+
 			EditItem = new Articolo();
+
+			if (MessageManager.QuestionMessage("Vuoi aggiungere un libro?"))
+			{
+				EditItem.ShowLibro = true;
+			}
+			else 
+			{
+				EditItem.ShowLibro = false;
+			}
 			ShowViewDettaglio();
 		}
 
@@ -163,6 +173,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			{
 				return;
 			}
+			
 			using (var view = new DettaglioArticoloView(this,item))
 			{
 				//view.BindProp(EditItem,"");

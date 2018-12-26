@@ -83,6 +83,16 @@ namespace StrumentiMusicali.App.Properties {
         /// <summary>
         ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap backGroudImageLogin1 {
+            get {
+                object obj = ResourceManager.GetObject("backGroudImageLogin1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Check_OK_48 {
             get {
                 object obj = ResourceManager.GetObject("Check_OK_48", resourceCulture);

@@ -303,6 +303,12 @@
     <Compile Include="View\BaseControl\ElementiDettaglio\EDCombo.Designer.cs">
       <DependentUpon>EDCombo.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\Login\CambioPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Login\CambioPassword.designer.cs">
+      <DependentUpon>CambioPassword.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\Login\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -481,6 +487,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\Fatture\FattureListView.resx">
       <DependentUpon>FattureListView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Login\CambioPassword.resx">
+      <DependentUpon>CambioPassword.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Login\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>

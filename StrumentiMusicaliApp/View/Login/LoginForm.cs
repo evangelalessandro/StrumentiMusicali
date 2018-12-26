@@ -34,6 +34,7 @@ namespace StrumentiMusicali.App.View.Login
 
 				}
 			}
+			SetControlState(false);
 		}
 
 		private async void LoginButton_Click(object sender, EventArgs e)
@@ -42,7 +43,7 @@ namespace StrumentiMusicali.App.View.Login
 			/**
              * @desc Do your login thing here, for example we sleep it here for a bit of time
              */
-			await Task.Run(() => Thread.Sleep(5 * 1000));
+			await Task.Run(() => Thread.Sleep(2 * 1000));
 			// Login success? Open up dashboard
 			using (var uof = new UnitOfWork())
 			{
@@ -75,9 +76,30 @@ namespace StrumentiMusicali.App.View.Login
 		protected void SetControlState(bool loading)
 		{
 			LoginButton.Enabled = !loading;
+			btnCambioPassword.Enabled = !loading;
 			txtUsername.Enabled = !loading;
 			txtPassword.Enabled = !loading;
+			LoginStatusStrip.Visible = loading;
 			LoginProgressBar.Style = loading ? ProgressBarStyle.Marquee : ProgressBarStyle.Blocks;
+		}
+
+		private void btnCambioPassword_Click(object sender, EventArgs e)
+		{
+			using (var uof = new UnitOfWork())
+			{
+				var utente = uof.UtentiRepository.Find(a => a.NomeUtente == txtUsername.Text).FirstOrDefault();
+				if (utente != null)
+				{
+					using (var cambioPwd = new Login.CambioPassword(utente.NomeUtente))
+					{
+						cambioPwd.ShowDialog();
+					}
+				}
+				else
+				{
+					MessageManager.NotificaWarnig("Nome utente non trovato");
+				}
+			}
 		}
 	}
 }

@@ -10,9 +10,6 @@ namespace StrumentiMusicali.App.Settings
 	public class UserSettings
 	{
 		public List<( enAmbiente ambiente, FormRicerca form)> Form { get; set; }
-		public DatiMittente datiMittente { get; set; } = new DatiMittente();
-		public SettingSito settingSito { get; set; } = new SettingSito();
-		public DatiIntestazioneStampaFattura DatiIntestazione { get; set; } = new DatiIntestazioneStampaFattura();
 	}
 
 	public class FormRicerca

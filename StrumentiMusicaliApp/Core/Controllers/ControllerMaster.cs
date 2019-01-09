@@ -1,6 +1,5 @@
 ﻿using NLog;
 using NLog.Targets;
-using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Controllers.Exports;
 using StrumentiMusicali.App.Core.Events.Articoli;
@@ -12,15 +11,17 @@ using StrumentiMusicali.App.View;
 using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
 	public class ControllerMaster : BaseController
 	{
-		 
+
 
 		public ControllerMaster()
 			: base()
@@ -37,10 +38,10 @@ namespace StrumentiMusicali.App.Core.Controllers
 			EventAggregator.Instance().Subscribe<InvioArticoliCSV>(InvioArCSV);
 			EventAggregator.Instance().Subscribe<ExportMagazzino>(ExportMag);
 
-			
+
 
 			Application.ThreadException += Application_ThreadException;
-			
+
 
 		}
 
@@ -61,7 +62,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		}
 		private void ImportArticoliMulinoExcel(ImportArticoliMulino obj)
 		{
-			using (var import=new Controllers.Imports.ImportCavalloPazzoExcel())
+			using (var import = new Controllers.Imports.ImportCavalloPazzoExcel())
 			{
 				import.ImportFile();
 			}
@@ -95,7 +96,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void ImportaFatture(ImportaFattureAccess obj)
 		{
-			using (var controller=new ControllerFatturazione())
+			using (var controller = new ControllerFatturazione())
 			{
 				controller.ImportaFatture(obj);
 			}
@@ -103,7 +104,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void ImportaCsvArticoli(ImportArticoliCSVMercatino obj)
 		{
-			using (var controllerArt=new ControllerArticoli())
+			using (var controllerArt = new ControllerArticoli())
 			{
 				controllerArt.ImportaCsvArticoli(null);
 			}
@@ -121,7 +122,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 						using (var view = new ArticoliListView(controller))
 						{
-							this.ShowView(view, obj.TipoEnviroment,controller);
+							this.ShowView(view, obj.TipoEnviroment, controller);
 						}
 					}
 					break;
@@ -142,7 +143,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 					{
 						using (var view = new FattureListView(controller, enAmbiente.FattureList, enAmbiente.Fattura))
 						{
-							ShowView(view, enAmbiente.FattureList,controller);
+							ShowView(view, enAmbiente.FattureList, controller);
 						}
 					}
 					break;
@@ -201,7 +202,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 						}
 					}
 					break;
-				 
+
 				case enAmbiente.Cliente:
 					break;
 				case enAmbiente.FattureRigheList:
@@ -215,49 +216,52 @@ namespace StrumentiMusicali.App.Core.Controllers
 		}
 		private void ApriSettingMittenteFattura()
 		{
-			var setItem = this.ReadSetting().datiMittente;
-			if (setItem == null)
+			using (UnitOfWork unitOfWork = new UnitOfWork())
 			{
-				setItem = new Controllers.FatturaElett.DatiMittente();
-			}
-			if (setItem.UfficioRegistroImp == null)
-			{
-				setItem.UfficioRegistroImp = new Controllers.FatturaElett.DatiMittente.UfficioRegistro();
-			}
-			if (setItem.Indirizzo == null)
-			{
-				setItem.Indirizzo = new Library.Entity.Indirizzo();
-			}
-			if (setItem.PecConfig == null)
-			{
-				setItem.PecConfig = new Library.Entity.PecConfig();
-			}
-			using (var view = new GenericSettingView(setItem))
-			{
-				view.OnSave += (a, b) =>
-				{
-					using (var cur = new CursorManager())
-					{
-						view.Validate();
-						var setting = this.ReadSetting();
-						setting.datiMittente = setItem;
-						this.SaveSetting(setting);
+				var setItem = unitOfWork.DatiMittenteRepository.Find(a => 1 == 1).FirstOrDefault();
 
-						MessageManager.NotificaInfo(
-							MessageManager.GetMessage(
-								Core.Controllers.enSaveOperation.OpSave));
-					}
-				};
-				this.ShowView(view, enAmbiente.SettingFatture);
+				if (setItem == null)
+				{
+					setItem = new DatiMittente();
+					setItem.ID = 1;
+					unitOfWork.DatiMittenteRepository.Add(setItem);
+					unitOfWork.Commit();
+				}
+				if (setItem.UfficioRegistroImp == null)
+				{
+					setItem.UfficioRegistroImp = new DatiMittente.UfficioRegistro();
+				}
+				if (setItem.Indirizzo == null)
+				{
+					setItem.Indirizzo = new Library.Entity.Indirizzo();
+				}
+				if (setItem.PecConfig == null)
+				{
+					setItem.PecConfig = new Library.Entity.PecConfig();
+				}
+				
+				using (var view = new GenericSettingView(setItem))
+				{
+					view.OnSave += (a, b) =>
+					{
+						using (var cur = new CursorManager())
+						{
+							view.Validate();
+							using (var save = new SaveEntityManager())
+							{
+								save.UnitOfWork.DatiMittenteRepository.Update(setItem);
+								save.SaveEntity(enSaveOperation.OpSave);
+							}
+						}
+					};
+					this.ShowView(view, enAmbiente.SettingFatture);
+				}
 			}
 		}
 		private void ApriSettingStampaFattura()
 		{
-			var setItem = this.ReadSetting().DatiIntestazione;
-			if (setItem == null)
-			{
-				setItem = new DatiIntestazioneStampaFattura();
-			}
+			var setItem = DatiIntestazioneStampaFatturaValidator.ReadSetting();
+
 			using (var view = new GenericSettingView(setItem))
 			{
 				view.OnSave += (a, b) =>
@@ -265,13 +269,13 @@ namespace StrumentiMusicali.App.Core.Controllers
 					using (var cur = new CursorManager())
 					{
 						view.Validate();
-						var setting = this.ReadSetting();
-						setting.DatiIntestazione = setItem;
-						this.SaveSetting(setting);
+						using (var uof = new SaveEntityManager())
+						{
+							uof.UnitOfWork.DatiIntestazioneStampaFatturaRepository.Update(setItem);
+							uof.SaveEntity(enSaveOperation.OpSave);
+						}
 
-						MessageManager.NotificaInfo(
-							MessageManager.GetMessage(
-								Core.Controllers.enSaveOperation.OpSave));
+
 					}
 				};
 				this.ShowView(view, enAmbiente.SettingStampa);
@@ -280,11 +284,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void ApriSettingSito()
 		{
-			SettingSito settingSito = this.ReadSetting().settingSito;
-			if (settingSito == null)
-			{
-				settingSito = new SettingSito();
-			}
+			var settingSito = SettingSitoValidator.ReadSetting();
+
 			using (var view = new GenericSettingView(settingSito))
 			{
 				view.OnSave += (a, b) =>
@@ -292,13 +293,11 @@ namespace StrumentiMusicali.App.Core.Controllers
 					using (var cur = new CursorManager())
 					{
 						view.Validate();
-						var setting = this.ReadSetting();
-						setting.settingSito = settingSito;
-						this.SaveSetting(setting);
-
-						MessageManager.NotificaInfo(
-							MessageManager.GetMessage(
-								Core.Controllers.enSaveOperation.OpSave));
+						using (var save = new SaveEntityManager())
+						{
+							save.UnitOfWork.SettingSitoRepository.Update(settingSito);
+							save.SaveEntity(enSaveOperation.OpSave);
+						}
 					}
 				};
 				this.ShowView(view, enAmbiente.SettingSito);
@@ -307,7 +306,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		~ControllerMaster()
 		{
-		 
+
 		}
 
 		public static void LogMethod(string level, string message, string exception, string stacktrace, string classLine)

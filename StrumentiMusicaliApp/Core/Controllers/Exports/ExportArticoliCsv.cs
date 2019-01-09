@@ -49,7 +49,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 			try
 			{
 				var controller = new BaseController();
-				_settingSito = controller.ReadSetting().settingSito;
+				_settingSito = SettingSitoValidator.ReadSetting();
 				if (string.IsNullOrEmpty(_settingSito.UrlCompletaImmagini))
 				{
 					MessageManager.NotificaWarnig("Occorre impostare l'url per uploadare le immagini.");
@@ -148,7 +148,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 			return sb;
 		}
 
-		private void ExportLineBase(Settings.SettingSito settingSito, List<FotoArticolo> fotoList, StringBuilder sb, Articolo art)
+		private void ExportLineBase(SettingSito settingSito, List<FotoArticolo> fotoList, StringBuilder sb, Articolo art)
 		{
 			var fotoOrdinate = fotoList.Where(b => b.Articolo.ImmaginiDaCaricare && b.ArticoloID == art.ID).OrderBy(b => b.Ordine).ToList();
 
@@ -318,7 +318,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 			}
 			return name;
 		}
-		private string GetUrlProdotto(Articolo articolo, Settings.SettingSito settingSito)
+		private string GetUrlProdotto(Articolo articolo, SettingSito settingSito)
 		{
 			return settingSito.UrlSito + "?" + articolo.ID;
 		}

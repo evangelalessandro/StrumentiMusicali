@@ -1,6 +1,8 @@
 ﻿using StrumentiMusicali.App.Core;
 using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,26 +12,18 @@ using System.Threading.Tasks;
 
 namespace StrumentiMusicali.App.Settings
 {
-	public class SettingSito
+	public static class SettingSitoValidator
 	{
-		public string UrlSito { get; set; }
-		public string UrlCompletaImmagini { get; set; }
-
-		public string CartellaLocaleImmagini { get; set; }
-
-		public string SoloNomeFileMercatino { get; set; }
-		public string SoloNomeFileEcommerce { get; set; }
-
-		public string UrlCompletoFileMercatino { get; set; }
-		public string UrlCompletoFileEcommerce { get; set; }
+		 
 
 		/// <summary>
 		/// Controllo la cartella locale per le immagini se è correttamente settata e attiva
 		/// </summary>
 		/// <returns></returns>
-		public bool CheckFolderImmagini()
+		public static bool CheckFolderImmagini()
 		{
-			var item = CartellaLocaleImmagini;
+			var settingSito = ReadSetting();
+			var item = settingSito.CartellaLocaleImmagini;
 			var act = new Action(() => EventAggregator.Instance().Publish(new Core.Events.Generics.ApriAmbiente(enAmbiente.SettingSito)));
 			if (string.IsNullOrEmpty(item))
 			{
@@ -43,6 +37,20 @@ namespace StrumentiMusicali.App.Settings
 				return false;
 			}
 			return true;
+		}
+		public static SettingSito ReadSetting()
+		{
+			using (var uof = new UnitOfWork())
+			{
+				var setting = uof.SettingSitoRepository.Find(a => 1 == 1).FirstOrDefault();
+				if (setting == null)
+				{
+					setting = new SettingSito();
+					uof.SettingSitoRepository.Add(setting);
+					uof.Commit();
+				}
+				return setting;
+			}
 		}
 	}
 }

@@ -144,6 +144,9 @@ namespace StrumentiMusicali.Library.Model
 		public virtual DbSet<Cliente> Clienti { get; set; }
 
 		public virtual DbSet<Utente> Utenti { get; set; }
+		public virtual DbSet<SettingSito> SettingSito { get; set; }
+		public virtual DbSet<DatiIntestazioneStampaFattura> DatiIntestazioneStampaFattura { get; set; }
+		public virtual DbSet<DatiMittente> DatiMittenteFattura{ get; set; }
 
 		public virtual DbSet<Categoria> Categorie { get; set; }
 		public virtual DbSet<EventLog> LogEventi { get; set; }

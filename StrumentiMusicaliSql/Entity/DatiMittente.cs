@@ -1,12 +1,10 @@
 ﻿using StrumentiMusicali.Library.Core;
-using StrumentiMusicali.Library.Entity;
 
-namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
+namespace StrumentiMusicali.Library.Entity
 {
 	public class DatiMittente : Cliente
 	{
-		//public string ProgressivoInvio { get; set; }
-
+		
 		[CustomUIViewAttribute(Ordine = 31)]
 		public bool SoggettoARitenuta { get; set; }
 		[CustomUIViewAttribute(Ordine = 32)]

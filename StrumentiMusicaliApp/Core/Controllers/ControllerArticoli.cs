@@ -5,9 +5,7 @@ using StrumentiMusicali.App.Core.Events.Image;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Forms;
 using StrumentiMusicali.App.Settings;
-using StrumentiMusicali.App.View.Articoli;
 using StrumentiMusicali.App.View.Enums;
-using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
@@ -51,18 +49,18 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void Sconta(ArticoloSconta obj)
 		{
-			
-			if (!MessageManager.QuestionMessage( string.Format( @"Sei sicuro di volere applicare questo sconto\aumento 
+
+			if (!MessageManager.QuestionMessage(string.Format(@"Sei sicuro di volere applicare questo sconto\aumento 
 					su tutti gli articoli {0} visualizzati nella lista?", DataSource.Count())))
 				return;
-			if (DataSource.Count()>100)
+			if (DataSource.Count() > 100)
 			{
 				if (!MessageManager.QuestionMessage(string.Format(@"Sei sicuro di volere applicare questo sconto\aumento 
 					su tutti gli articoli {0} visualizzati nella lista?", DataSource.Count())))
 					return;
 			}
 			_logger.Info("Applicato sconto su marca {0} e filtro ricerca {1} di {2} %.  ", FiltroMarca, this.TestoRicerca, obj.Percentuale);
-			using (var saveEnt=new SaveEntityManager())
+			using (var saveEnt = new SaveEntityManager())
 			{
 				var list = DataSource.Select(a => a.ID).ToList();
 				foreach (var item in saveEnt.UnitOfWork.ArticoliRepository.Find(a => list.Contains(a.ID)).ToList())
@@ -75,7 +73,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				{
 					EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>());
 				}
-				
+
 			}
 		}
 
@@ -118,7 +116,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void ScontaArticoliShowView()
 		{
-			using (var view=new View.Articoli.ScontaArticoliView())
+			using (var view = new View.Articoli.ScontaArticoliView())
 			{
 				ShowView(view, enAmbiente.ArticoloSconto);
 			}
@@ -159,7 +157,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			{
 				EditItem.ShowLibro = true;
 			}
-			else 
+			else
 			{
 				EditItem.ShowLibro = false;
 			}
@@ -168,13 +166,15 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void ShowViewDettaglio()
 		{
-			var item = ReadSetting().settingSito;
-			if (!item.CheckFolderImmagini())
+
+
+
+			if (!SettingSitoValidator.CheckFolderImmagini())
 			{
 				return;
 			}
-			
-			using (var view = new DettaglioArticoloView(this,item))
+
+			using (var view = new DettaglioArticoloView(this, SettingSitoValidator.ReadSetting()))
 			{
 				//view.BindProp(EditItem,"");
 				view.OnSave += (a, b) =>
@@ -186,6 +186,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 				ShowView(view, enAmbiente.Articolo);
 			}
+
 		}
 
 		private void DuplicaArticolo(ArticoloDuplicate obj)
@@ -373,7 +374,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 						if (!immaginiController.CheckFolderImmagini())
 							return;
-						var folderFoto = ReadSetting().settingSito.CartellaLocaleImmagini;
+						
+						var folderFoto = SettingSitoValidator.ReadSetting().CartellaLocaleImmagini;
 						var listFile = new List<string>();
 						foreach (var itemFoto in save.UnitOfWork.FotoArticoloRepository.Find(a => a.ArticoloID == item.ID))
 						{
@@ -474,7 +476,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 						)
 
 						&& ((
-						a.Libro.Autore.Contains(FiltroLibri) 
+						a.Libro.Autore.Contains(FiltroLibri)
 						|| a.Libro.Edizione.Contains(FiltroLibri)
 						|| a.Libro.Edizione2.Contains(FiltroLibri)
 						|| a.Libro.Genere.Contains(FiltroLibri)

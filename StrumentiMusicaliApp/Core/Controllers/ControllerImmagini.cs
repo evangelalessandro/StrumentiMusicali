@@ -1,6 +1,7 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Events.Image;
 using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
@@ -54,7 +55,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			if (!CheckFolderImmagini())
 				return;
-			var folderFoto = ReadSetting().settingSito.CartellaLocaleImmagini;
+			var folderFoto = SettingSitoValidator.ReadSetting().CartellaLocaleImmagini;
 			try
 			{
 				if (!MessageManager.QuestionMessage("Sei sicuro di voler cancellare l'immagine selezionata?"))
@@ -184,7 +185,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		/// <returns></returns>
 		public bool CheckFolderImmagini()
 		{
-			return ReadSetting().settingSito.CheckFolderImmagini(); 
+			return SettingSitoValidator.CheckFolderImmagini(); 
 		}
 		private void AddImageFiles(ImageAddFiles args)
 		{
@@ -192,7 +193,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				return;
 			try
 			{
-				var folderFoto = ReadSetting().settingSito.CartellaLocaleImmagini;
+				var folderFoto = SettingSitoValidator.ReadSetting().CartellaLocaleImmagini;
 				using (var save = new SaveEntityManager())
 				{
 					var uof = save.UnitOfWork;

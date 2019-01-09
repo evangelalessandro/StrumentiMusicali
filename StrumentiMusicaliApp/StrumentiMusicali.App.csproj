@@ -228,7 +228,6 @@
     <Compile Include="Core\Controllers\ControllerRigheFatture.cs" />
     <Compile Include="Core\Controllers\Exports\ExportArticoliCsv.cs" />
     <Compile Include="Core\Controllers\Exports\ExportMagazzino.cs" />
-    <Compile Include="Core\Controllers\FatturaElett\DatiMittente.cs" />
     <Compile Include="Core\Controllers\FatturaElett\FattElettronica.cs" />
     <Compile Include="Core\Controllers\FatturaElett\FatturaHeader.cs" />
     <Compile Include="Core\Controllers\Imports\BaseImportExcel.cs" />
@@ -335,8 +334,8 @@
     <Content Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Compile Include="Settings\DatiIntestazioneFattura.cs" />
-    <Compile Include="Settings\SettingSito.cs" />
+    <Compile Include="Settings\DatiIntestazioneStampaFatturaValidator.cs" />
+    <Compile Include="Settings\SettingSitoValidator.cs" />
     <Compile Include="View\BaseControl\ElementiDettaglio\EDDateTime.cs">
       <SubType>UserControl</SubType>
     </Compile>

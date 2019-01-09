@@ -23,6 +23,41 @@ namespace StrumentiMusicali.Library.Repo
 				return _CategorieRepository;
 			}
 		}
+		private Repository<DatiMittente> _DatiMittenteRepository;
+
+		public IRepository<DatiMittente> DatiMittenteRepository {
+			get {
+				if (_DatiMittenteRepository == null)
+				{
+					_DatiMittenteRepository = new Repository<DatiMittente>(dbContext);
+				}
+				return _DatiMittenteRepository;
+			}
+		}
+
+		private Repository<DatiIntestazioneStampaFattura> _DatiIntestazioneStampaFatturaRepository;
+
+		public IRepository<DatiIntestazioneStampaFattura> DatiIntestazioneStampaFatturaRepository {
+			get {
+				if (_DatiIntestazioneStampaFatturaRepository == null)
+				{
+					_DatiIntestazioneStampaFatturaRepository = new Repository<DatiIntestazioneStampaFattura>(dbContext);
+				}
+				return _DatiIntestazioneStampaFatturaRepository;
+			}
+		}
+
+		private Repository<SettingSito> _SettingSitoRepository;
+
+		public IRepository<SettingSito> SettingSitoRepository {
+			get {
+				if (_SettingSitoRepository == null)
+				{
+					_SettingSitoRepository = new Repository<SettingSito>(dbContext);
+				}
+				return _SettingSitoRepository;
+			}
+		}
 
 		private Repository<FattureGenerateInvio> _FattureGenerateInvioRepository;
 

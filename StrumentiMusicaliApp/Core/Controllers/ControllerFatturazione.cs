@@ -224,12 +224,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 				{
 					using (var stampaFattura = new StampaFattura())
 					{
-						var setting = ReadSetting().DatiIntestazione;
-						if (setting == null)
-						{
-							setting = new DatiIntestazioneStampaFattura();
-						}
-						if (setting.Validate())
+						var setting = DatiIntestazioneStampaFatturaValidator.ReadSetting();
+						 
+						if (DatiIntestazioneStampaFatturaValidator.Validate())
 						{
 							stampaFattura.Stampa(
 										setting,
@@ -289,11 +286,10 @@ namespace StrumentiMusicali.App.Core.Controllers
 				{
 					using (var stampa = new FattElettronica())
 					{
-						var setting = ReadSetting();
-						stampa.DatiMittente = setting.datiMittente;
-
+						
 						using (var uof = new UnitOfWork())
 						{
+							uof.DatiMittenteRepository.Find(a => 1 == 1).FirstOrDefault();
 
 							var fatt = uof.FatturaRepository.Find(a => a.ID == selectedItem.ID)
 								.Select(a => new { Fattura = a, a.Cliente, a.RigheFattura }).First();

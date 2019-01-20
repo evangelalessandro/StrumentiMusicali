@@ -3,9 +3,8 @@ using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
-using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.BaseControl;
-using StrumentiMusicali.App.View.Interfaces;
+using StrumentiMusicali.App.View.BaseControl.ElementiDettaglio;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
@@ -30,7 +29,7 @@ namespace StrumentiMusicali.App.View
 			_controllerMagazzino.SelectedItem.Qta = 1;
 			InitializeComponent();
 			lblTitoloArt.Text = "";
-		 
+
 			cboDeposito.DisplayMember = "Descrizione";
 			cboDeposito.ValueMember = "ID";
 			txtQta.ValueChanged += (a, b) =>
@@ -44,9 +43,9 @@ namespace StrumentiMusicali.App.View
 				try
 				{
 					_controllerMagazzino.SelectedItem.Deposito =
-						((DepositoItem)cboDeposito.SelectedItem).ID;
+						((DepositoScaricoItem)cboDeposito.SelectedItem).ID;
 				}
-				catch (Exception)
+				catch (Exception ex)
 				{
 				}
 
@@ -54,8 +53,11 @@ namespace StrumentiMusicali.App.View
 			};
 			txtQta.Tag = "Qta";
 			cboDeposito.Tag = "Deposito";
-			UtilityView.SetDataBind(this,null, _controllerMagazzino.SelectedItem);
+
+			
+			UtilityView.SetDataBind(this, null, _controllerMagazzino.SelectedItem);
 			this.Load += ScaricoMagazzino_Load;
+			this.Load += ScaricoMagazzino_LoadSync;
 
 			EventAggregator.Instance().Subscribe<MovimentiUpdate>(RefreshData);
 			EventAggregator.Instance().Subscribe<ValidateViewEvent<Magazzino>>(
@@ -63,18 +65,27 @@ namespace StrumentiMusicali.App.View
 				);
 		}
 
-		
+		private void ScaricoMagazzino_LoadSync(object sender, EventArgs e)
+		{
+			LoadListArticoli();
+		}
 
-		
-		 
 		private void RefreshData(MovimentiUpdate obj)
 		{
 			lblTitoloArticolo.ForeColor = System.Drawing.Color.Red;
 			var movimenti = new List<MovimentoItem>();
 			using (var uof = new UnitOfWork())
 			{
-				var articolo = uof.ArticoliRepository.Find(a => a.CodiceABarre == txtCodiceABarre.Text).FirstOrDefault();
-			    if (articolo != null)
+				var articolo = uof.ArticoliRepository.Find(a => a.CodiceABarre == txtCodiceABarre.Text && txtCodiceABarre.Text.Length > 0).FirstOrDefault();
+				if (articolo == null)
+				{
+					if (_cboArticoli.Controllo!=null && _cboArticoli.Controllo.EditValue!=null)
+					{
+					    var val = int.Parse( _cboArticoli.Controllo.EditValue.ToString());
+						articolo = uof.ArticoliRepository.Find(a => a.ID== val).FirstOrDefault();
+					}
+				}
+				if (articolo != null)
 				{
 					lblTitoloArticolo.ForeColor = System.Drawing.Color.Green;
 					var depoSel = cboDeposito.SelectedIndex;
@@ -121,11 +132,47 @@ namespace StrumentiMusicali.App.View
 
 				dgvMaster.DataSource = movimenti;
 			}
+
+
 		}
+
+		private EDCombo _cboArticoli = new EDCombo();
 
 		private async void ScaricoMagazzino_Load(object sender, EventArgs e)
 		{
-			await UpdateButton();
+		    UpdateButton();
+			RefreshData(new MovimentiUpdate());
+			
+		}
+
+		private void LoadListArticoli()
+		{
+			pnlTop.Controls.Add(_cboArticoli);
+			_cboArticoli.Top = 0;
+			_cboArticoli.Font = this.Font;
+			_cboArticoli.Left = txtCodiceABarre.Left + txtCodiceABarre.Width + 10;
+			_cboArticoli.Width = pnlTop.Width - _cboArticoli.Left - 20;
+			_cboArticoli.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Top;
+			using (var uof = new UnitOfWork())
+			{
+				var list = uof.ArticoliRepository.Find(a => true)
+					.Select(a => new
+					{
+						a.ID,
+						Descrizione = a.Titolo + " " + a.Testo + " " + a.Categoria.Nome,
+						Categoria = a.Categoria.Nome,
+						a.Categoria.Reparto
+					}
+					).ToList();
+				_cboArticoli.SetList(list);
+				_cboArticoli.Controllo.Properties.NullText = "<Nessun Articolo selezionato>";
+				_cboArticoli.Titolo = "Ricerca per articolo";
+				_cboArticoli.Controllo.EditValueChanged += Controllo_EditValueChanged;
+			}
+		}
+
+		private void Controllo_EditValueChanged(object sender, EventArgs e)
+		{
 			RefreshData(new MovimentiUpdate());
 		}
 
@@ -134,13 +181,14 @@ namespace StrumentiMusicali.App.View
 			_controllerMagazzino.SelectedItem.ArticoloID = 0;
 			lblTitoloArt.Text = "";
 			RefreshData(new MovimentiUpdate());
-			await UpdateButton();
+		    UpdateButton();
 		}
 
-		private async Task UpdateButton()
+		private void UpdateButton()
 		{
 			try
 			{
+
 				var enableB = _controllerMagazzino.SelectedItem.ArticoloID != 0
 					&& _controllerMagazzino.SelectedItem.Qta > 0 && _controllerMagazzino.SelectedItem.Deposito > 0;
 
@@ -152,14 +200,20 @@ namespace StrumentiMusicali.App.View
 				{
 					item.Enabled = enableB;
 				}
- 
 				this.Validate();
+
+
+
 			}
 			catch (Exception ex)
 			{
 				ExceptionManager.ManageError(ex);
 			}
 		}
-		 
+
+		private void txtQta_ValueChanged(object sender, EventArgs e)
+		{
+
+		}
 	}
 }

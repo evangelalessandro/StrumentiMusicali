@@ -1,4 +1,5 @@
-﻿using StrumentiMusicali.App.CustomComponents;
+﻿using DevExpress.XtraEditors;
+using StrumentiMusicali.App.CustomComponents;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View.BaseControl.ElementiDettaglio
@@ -30,7 +31,7 @@ namespace StrumentiMusicali.App.View.BaseControl.ElementiDettaglio
 			cboClienteID.Properties.BestFit();
 
 		}
-
+		public LookUpEdit Controllo { get { return cboClienteID; }}
 
 	}
 }

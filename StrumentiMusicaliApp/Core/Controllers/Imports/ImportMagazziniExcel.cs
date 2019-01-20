@@ -84,12 +84,18 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 				{
 					try
 					{
-
-
 						var magItem = new Magazzino();
 						var articolo = new Articolo();
 						articolo.Marca = item.Marca;
-						articolo.Prezzo = decimal.Parse(item.PrezzoVendita.Replace("€", "").Trim());
+						if (item.PrezzoVendita != null)
+						{
+							articolo.Prezzo = decimal.Parse(item.PrezzoVendita.Replace("€", "").Trim());
+						}
+						else
+						{
+							articolo.Prezzo = 0;
+						}
+
 						articolo.Testo = (item.DescrBreve);
 						articolo.Note1 = (item.Note);
 						articolo.Colore = (item.Colore);
@@ -121,7 +127,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 						}
 						var categoriaName = item.Categoria;
 
-						if (categoriaName.Equals( "Panca",StringComparison.InvariantCultureIgnoreCase))
+						if (categoriaName.Equals("Panca", StringComparison.InvariantCultureIgnoreCase))
 						{
 							categoriaName = "Sgabelli e Panche";
 						}
@@ -167,7 +173,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 					catch (Exception ex)
 					{
 
-						throw;
+						throw ex;
 					}
 					ProgressManager.Instance().Value++;
 				}

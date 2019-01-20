@@ -21,16 +21,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 		
 		protected override void Import()
 		{
-			
-			
 			using (var uof = new UnitOfWork())
 			{
 				try
 				{
 					ProgressManager.Instance().Visible = true;
-
-
-					 
 					var listCategorie = uof.CategorieRepository.Find(a => true).ToList();
 					var deposito = uof.DepositoRepository.Find(a => a.NomeDeposito == "Negozio").ToList().DefaultIfEmpty(
 						new Deposito() { NomeDeposito = "Negozio" }).FirstOrDefault();
@@ -73,7 +68,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 				Varie1 = a.Field<string>(8),
 				Settore = a.Field<string>(9),
 				PrezzoVendita = decimal.Parse(a.Field<string>(10)),
-				Categoria = a.Field<string>(12),
+				Categoria = "Libri - Altro",
 			}).ToList();
 
 
@@ -89,13 +84,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 
 				articolo.Prezzo = (item.PrezzoVendita);
 				articolo.CodiceABarre = item.CodiceABarre;
-
-
-				var categoriaSel = listCategorie.Where(a => a.Nome.ToUpper() == item.Categoria.ToUpper()).FirstOrDefault();
+				var categoriaSel = listCategorie.Where(a => 
+				a.Nome.ToUpper() == item.Categoria.ToUpper()).FirstOrDefault();
 				if (categoriaSel == null)
 				{
 					throw new MessageException(string.Format("Negli strumenti non è specificata una categoria corretta per l'articolo {0}", item.CodiceABarre));
-
 				}
 				articolo.CategoriaID = categoriaSel.ID;
 
@@ -142,11 +135,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 					PrezzoVendita = a.Field<string>(6),
 					Rivenditore = a.Field<string>(7),
 					Quantita = a.Field<string>(8),
-					Categoria = a.Field<string>(10),
+					Categoria = "<Non Specificato>",
 				}).ToList();
-
-
-
 
 				ProgressManager.Instance().Messaggio = "Strumenti";
 				ProgressManager.Instance().Value = 0;
@@ -158,7 +148,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 					var magItem = new Magazzino();
 					var articolo = new Articolo();
 					articolo.Marca = item.Marca;
-					articolo.Prezzo = decimal.Parse(item.PrezzoVendita);
+					decimal prezzoVend = 0;
+					if (decimal.TryParse(item.PrezzoVendita, out prezzoVend))
+						articolo.Prezzo = prezzoVend;
 					articolo.CodiceABarre = item.CodiceABarre;
 					var categoriaSel = listCategorie.Where(a => a.Nome.ToUpper() == item.Categoria.ToUpper()).FirstOrDefault();
 					if (categoriaSel == null)
@@ -176,16 +168,18 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 					magItem.Qta = int.Parse(item.Quantita);
 					magItem.Articolo = articolo;
 					magItem.Deposito = deposito;
-					magItem.PrezzoAcquisto = decimal.Parse(item.PrezzoAcq);
+					decimal prezzoAcq = 0;
+					if (decimal.TryParse(item.PrezzoAcq,out prezzoAcq))
+					magItem.PrezzoAcquisto = prezzoAcq;
 
 					uof.MagazzinoRepository.Add(magItem);
 					ProgressManager.Instance().Value++;
 				}
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
 
-				throw;
+				throw ex;
 			}
 		}
 		private enum enNomeTabellaExcel
@@ -200,8 +194,6 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 			DataTable dt = ReadDatatable(enNomeTabellaExcel.artic.ToString());
 			try
 			{
-
-
 				var list = dt.AsEnumerable().Select(a => new
 				{
 					// assuming column 0's type is Nullable<long>
@@ -215,11 +207,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 					PrezzoAcq = a.Field<string>(7),
 					Rivenditore = a.Field<string>(8),
 					Quantita = a.Field<string>(9),
-					Categoria = a.Field<string>(10),
+					Categoria = "<Non Specificato>",
 				}).ToList();
-
-
-				 
 
 				ProgressManager.Instance().Messaggio = "Articoli";
 				ProgressManager.Instance().Value = 0;
@@ -243,6 +232,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 
 					articolo.Titolo = item.Marca + " " + item.Articolo;
 
+					if (!string.IsNullOrEmpty (item.Varie1) && !item.Varie1.Contains( "?"))
+						articolo.Titolo += " " + item.Varie1;
+
 					articolo.Rivenditore = item.Rivenditore;
 					articolo.Note1 = item.Varie1;
 					articolo.Note2 = item.Varie2;
@@ -260,10 +252,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 					ProgressManager.Instance().Value++;
 				}
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
-
-				throw;
+				throw ex;
 			}
 
 		}

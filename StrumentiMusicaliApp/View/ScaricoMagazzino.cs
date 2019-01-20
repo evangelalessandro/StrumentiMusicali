@@ -74,7 +74,7 @@ namespace StrumentiMusicali.App.View
 			using (var uof = new UnitOfWork())
 			{
 				var articolo = uof.ArticoliRepository.Find(a => a.CodiceABarre == txtCodiceABarre.Text).FirstOrDefault();
-				if (articolo != null)
+			    if (articolo != null)
 				{
 					lblTitoloArticolo.ForeColor = System.Drawing.Color.Green;
 					var depoSel = cboDeposito.SelectedIndex;

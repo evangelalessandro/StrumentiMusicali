@@ -271,7 +271,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 		{
 			List<Articolo> listArticoli = uof.ArticoliRepository.Find(a => a.CaricaInMercatino
 														&& a.CaricainECommerce && a.Categoria.Codice>=0)
-				.Select(a => new { articolo = a, Categoria = a.Categoria }).ToList().Select(a => a.articolo).ToList();
+				.Select(a => new { articolo = a, Categoria = a.Categoria }).ToList()
+				.Select(a => a.articolo).ToList();
 
 			var fileMercatinoContent = ExportFile(listArticoli, magazzinoGiac, fotoList);
 			var fileMercatino = SaveFileCsv(fileMercatinoContent, _settingSito.SoloNomeFileMercatino);

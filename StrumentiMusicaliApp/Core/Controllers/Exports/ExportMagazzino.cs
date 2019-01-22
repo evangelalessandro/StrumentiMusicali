@@ -39,13 +39,27 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 				{
 					var dt = ToDataTable(item.Select(a => new
 					{
+						a.Articolo.ID,
 						Categoria = a.Articolo.Categoria.Nome,
 						a.Articolo.Categoria.Reparto,
 						a.Articolo.Titolo,
-						a.Articolo.Condizione,
+						Condizione = a.Articolo.Condizione.ToString(),
 						a.Articolo.CodiceABarre,
-						a.Articolo.Prezzo,
-						a.Quantita
+						Prezzo=a.Articolo.Prezzo.ToString("C2"),
+						a.Quantita,
+						a.Articolo.Colore,
+						a.Articolo.Marca,
+						a.Articolo.Note1,
+						a.Articolo.Note2,
+						a.Articolo.Note3,
+						a.Articolo.Rivenditore,
+						a.Articolo.Testo,
+						a.Articolo.Libro.Autore,
+						a.Articolo.Libro.Edizione,
+						a.Articolo.Libro.Edizione2,
+						a.Articolo.Libro.Genere,
+						a.Articolo.Libro.Ordine,
+						a.Articolo.Libro.Settore
 					}).ToList());
 					_excel.AddWorksheet(dt, item.Key);
 

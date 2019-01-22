@@ -260,6 +260,7 @@
     <Compile Include="Core\Events\Image\ImageListUpdate.cs" />
     <Compile Include="Core\Events\Image\ImageOrderSet.cs" />
     <Compile Include="Core\Events\Interfaces\ArticoloCurrent.cs" />
+    <Compile Include="Core\Events\Magazzino\MagazzinoSelezionaArticolo.cs" />
     <Compile Include="Core\Events\Magazzino\ExportMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\MovimentiUpdate.cs" />
     <Compile Include="Core\Events\Magazzino\MovimentoMagazzino.cs" />

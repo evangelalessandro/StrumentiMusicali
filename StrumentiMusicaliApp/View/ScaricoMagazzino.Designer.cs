@@ -38,6 +38,8 @@
 			this.lblTitoloArticolo = new System.Windows.Forms.Label();
 			this.lblTitoloArt = new System.Windows.Forms.Label();
 			this.pnlTop = new System.Windows.Forms.Panel();
+			this.label4 = new System.Windows.Forms.Label();
+			this.lblGiacenzaArticolo = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.dgvMaster)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtQta)).BeginInit();
 			this.pnlTop.SuspendLayout();
@@ -61,13 +63,13 @@
 			this.dgvMaster.AllowUserToResizeRows = false;
 			this.dgvMaster.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgvMaster.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.dgvMaster.Location = new System.Drawing.Point(0, 169);
+			this.dgvMaster.Location = new System.Drawing.Point(0, 227);
 			this.dgvMaster.MultiSelect = false;
 			this.dgvMaster.Name = "dgvMaster";
 			this.dgvMaster.ReadOnly = true;
 			this.dgvMaster.RowTemplate.Height = 24;
 			this.dgvMaster.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dgvMaster.Size = new System.Drawing.Size(1000, 500);
+			this.dgvMaster.Size = new System.Drawing.Size(1000, 442);
 			this.dgvMaster.TabIndex = 2;
 			// 
 			// txtQta
@@ -94,7 +96,7 @@
 			this.cboDeposito.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboDeposito.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.cboDeposito.FormattingEnabled = true;
-			this.cboDeposito.Location = new System.Drawing.Point(425, 92);
+			this.cboDeposito.Location = new System.Drawing.Point(425, 86);
 			this.cboDeposito.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 			this.cboDeposito.Name = "cboDeposito";
 			this.cboDeposito.Size = new System.Drawing.Size(559, 32);
@@ -105,7 +107,7 @@
 			// 
 			this.label1.AutoSize = true;
 			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label1.Location = new System.Drawing.Point(320, 92);
+			this.label1.Location = new System.Drawing.Point(320, 88);
 			this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(97, 25);
@@ -138,7 +140,7 @@
 			// 
 			this.lblTitoloArticolo.AutoSize = true;
 			this.lblTitoloArticolo.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblTitoloArticolo.Location = new System.Drawing.Point(22, 122);
+			this.lblTitoloArticolo.Location = new System.Drawing.Point(22, 141);
 			this.lblTitoloArticolo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.lblTitoloArticolo.Name = "lblTitoloArticolo";
 			this.lblTitoloArticolo.Size = new System.Drawing.Size(147, 25);
@@ -149,7 +151,7 @@
 			// 
 			this.lblTitoloArt.AutoSize = true;
 			this.lblTitoloArt.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblTitoloArt.Location = new System.Drawing.Point(177, 122);
+			this.lblTitoloArt.Location = new System.Drawing.Point(177, 141);
 			this.lblTitoloArt.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.lblTitoloArt.Name = "lblTitoloArt";
 			this.lblTitoloArt.Size = new System.Drawing.Size(147, 25);
@@ -158,6 +160,8 @@
 			// 
 			// pnlTop
 			// 
+			this.pnlTop.Controls.Add(this.lblGiacenzaArticolo);
+			this.pnlTop.Controls.Add(this.label4);
 			this.pnlTop.Controls.Add(this.label3);
 			this.pnlTop.Controls.Add(this.lblTitoloArt);
 			this.pnlTop.Controls.Add(this.txtCodiceABarre);
@@ -170,8 +174,31 @@
 			this.pnlTop.Location = new System.Drawing.Point(0, 0);
 			this.pnlTop.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 			this.pnlTop.Name = "pnlTop";
-			this.pnlTop.Size = new System.Drawing.Size(1000, 169);
+			this.pnlTop.Size = new System.Drawing.Size(1000, 227);
 			this.pnlTop.TabIndex = 11;
+			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
+			this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label4.Location = new System.Drawing.Point(22, 185);
+			this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(253, 25);
+			this.label4.TabIndex = 11;
+			this.label4.Text = "Giacenza Totale Articolo:";
+			// 
+			// lblGiacenzaArticolo
+			// 
+			this.lblGiacenzaArticolo.AutoSize = true;
+			this.lblGiacenzaArticolo.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblGiacenzaArticolo.ForeColor = System.Drawing.Color.DodgerBlue;
+			this.lblGiacenzaArticolo.Location = new System.Drawing.Point(283, 185);
+			this.lblGiacenzaArticolo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.lblGiacenzaArticolo.Name = "lblGiacenzaArticolo";
+			this.lblGiacenzaArticolo.Size = new System.Drawing.Size(39, 29);
+			this.lblGiacenzaArticolo.TabIndex = 12;
+			this.lblGiacenzaArticolo.Text = "10";
 			// 
 			// ScaricoMagazzinoView
 			// 
@@ -204,5 +231,7 @@
 		private System.Windows.Forms.Label lblTitoloArticolo;
 		private System.Windows.Forms.Label lblTitoloArt;
 		private System.Windows.Forms.Panel pnlTop;
- 	}
+		private System.Windows.Forms.Label lblGiacenzaArticolo;
+		private System.Windows.Forms.Label label4;
+	}
 }

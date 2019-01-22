@@ -13,13 +13,17 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace StrumentiMusicali.App.View
 {
 	public partial class ScaricoMagazzinoView : BaseDataControl
 	{
 		private ControllerMagazzino _controllerMagazzino;
+
+		~ScaricoMagazzinoView()
+		{
+			EventAggregator.Instance().UnSbscribe(_selectItem);
+		}
 
 		public ScaricoMagazzinoView(ControllerMagazzino controllerMagazzino)
 			: base()
@@ -54,7 +58,7 @@ namespace StrumentiMusicali.App.View
 			txtQta.Tag = "Qta";
 			cboDeposito.Tag = "Deposito";
 
-			
+
 			UtilityView.SetDataBind(this, null, _controllerMagazzino.SelectedItem);
 			this.Load += ScaricoMagazzino_Load;
 			this.Load += ScaricoMagazzino_LoadSync;
@@ -63,6 +67,16 @@ namespace StrumentiMusicali.App.View
 			EventAggregator.Instance().Subscribe<ValidateViewEvent<Magazzino>>(
 				(a) => { this.Validate(); }
 				);
+
+			_selectItem = EventAggregator.Instance().Subscribe<MagazzinoSelezionaArticolo>(SelezionaArticolo);
+
+		}
+
+		private Subscription<MagazzinoSelezionaArticolo> _selectItem;
+		private void SelezionaArticolo(MagazzinoSelezionaArticolo obj)
+		{
+			txtCodiceABarre.Text = "";
+			_cboArticoli.Controllo.EditValue = obj.Articolo.ID;
 		}
 
 		private void ScaricoMagazzino_LoadSync(object sender, EventArgs e)
@@ -73,16 +87,17 @@ namespace StrumentiMusicali.App.View
 		private void RefreshData(MovimentiUpdate obj)
 		{
 			lblTitoloArticolo.ForeColor = System.Drawing.Color.Red;
+			lblGiacenzaArticolo.Text = "-";
 			var movimenti = new List<MovimentoItem>();
 			using (var uof = new UnitOfWork())
 			{
 				var articolo = uof.ArticoliRepository.Find(a => a.CodiceABarre == txtCodiceABarre.Text && txtCodiceABarre.Text.Length > 0).FirstOrDefault();
 				if (articolo == null)
 				{
-					if (_cboArticoli.Controllo!=null && _cboArticoli.Controllo.EditValue!=null)
+					if (_cboArticoli.Controllo != null && _cboArticoli.Controllo.EditValue != null)
 					{
-					    var val = int.Parse( _cboArticoli.Controllo.EditValue.ToString());
-						articolo = uof.ArticoliRepository.Find(a => a.ID== val).FirstOrDefault();
+						var val = int.Parse(_cboArticoli.Controllo.EditValue.ToString());
+						articolo = uof.ArticoliRepository.Find(a => a.ID == val).FirstOrDefault();
 					}
 				}
 				if (articolo != null)
@@ -113,6 +128,8 @@ namespace StrumentiMusicali.App.View
 						})
 						.OrderByDescending(a => a.ID)
 						.ToList();
+
+					lblGiacenzaArticolo.Text = movimenti.Select(a => a.Qta).Sum().ToString();
 				}
 				else
 				{
@@ -140,9 +157,9 @@ namespace StrumentiMusicali.App.View
 
 		private async void ScaricoMagazzino_Load(object sender, EventArgs e)
 		{
-		    UpdateButton();
+			UpdateButton();
 			RefreshData(new MovimentiUpdate());
-			
+
 		}
 
 		private void LoadListArticoli()
@@ -181,7 +198,7 @@ namespace StrumentiMusicali.App.View
 			_controllerMagazzino.SelectedItem.ArticoloID = 0;
 			lblTitoloArt.Text = "";
 			RefreshData(new MovimentiUpdate());
-		    UpdateButton();
+			UpdateButton();
 		}
 
 		private void UpdateButton()

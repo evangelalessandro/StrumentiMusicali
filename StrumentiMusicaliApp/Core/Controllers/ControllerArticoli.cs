@@ -2,6 +2,7 @@
 using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Events.Image;
+using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Forms;
 using StrumentiMusicali.App.Settings;
@@ -112,6 +113,15 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 			};
 
+			//var pnl3 = GetMenu().Tabs[0].Add("Magazzino");
+			//var rib3 = pnl3.Add("Qta Magazzino", Properties.Resources.UnloadWareHouse);
+			//rib3.Click += (a, e) =>
+			//{
+			//	EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ScaricoMagazzino));
+			//	EventAggregator.Instance().Publish(new MagazzinoSelezionaArticolo() { Articolo=SelectedItem});
+				
+
+			//};
 		}
 
 		private void ScontaArticoliShowView()
@@ -461,21 +471,13 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			try
 			{
-				var datoRicerca = TestoRicerca;
+				var datoRicerca = TestoRicerca.Split(' ').ToList();
+
 				List<ArticoloItem> list = new List<ArticoloItem>();
 
 				using (var uof = new UnitOfWork())
 				{
-					list = uof.ArticoliRepository.Find(a => (datoRicerca == ""
-						|| a.Titolo.Contains(datoRicerca)
-						|| a.Testo.Contains(datoRicerca)
-						|| a.TagImport.Contains(datoRicerca)
-						|| a.Categoria.Nome.Contains(datoRicerca)
-						|| a.Categoria.Reparto.Contains(datoRicerca)
-						|| a.Categoria.CategoriaCondivisaCon.Contains(datoRicerca)
-						)
-
-						&& ((
+					var datList = uof.ArticoliRepository.Find(a => datoRicerca.Count == 0 ||((
 						a.Libro.Autore.Contains(FiltroLibri)
 						|| a.Libro.Edizione.Contains(FiltroLibri)
 						|| a.Libro.Edizione2.Contains(FiltroLibri)
@@ -487,21 +489,43 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 						&& (a.Marca.Contains(FiltroMarca) && FiltroMarca.Length > 0
 						|| FiltroMarca == "")
-					).OrderByDescending(a => a.ID).Take(ViewAllItem ? 100000 : 300)
+						);
+					foreach (var ricerca in datoRicerca)
+					{
+						datList = datList.Where(a =>
+
+						   a.Titolo.Contains(ricerca)
+						  || a.Testo.Contains(ricerca)
+						  || a.TagImport.Contains(ricerca)
+						  || a.Categoria.Nome.Contains(ricerca)
+						  || a.Categoria.Reparto.Contains(ricerca)
+						  || a.Categoria.CategoriaCondivisaCon.Contains(ricerca)
+						);
+
+						
+					}
+
+
+
+					list=datList.OrderByDescending(a => a.ID).Take(ViewAllItem ? 100000 : 300)
 					.Select(a => new { a.Categoria, Articolo = a }).ToList().Select(a => a.Articolo).Select(a => new ArticoloItem(a)
 					{
 
 						//Pinned = a.Pinned
 					}).ToList();
 
-					//var giacenza = uof.MagazzinoRepository.Find(a => list.Select(b => b.ID).Contains(a.ArticoloID ))
-					//   .Select(a => new { a.ArticoloID, a.Qta }).GroupBy(a=>a.ArticoloID)
-					//   .Select(a=>new { Sum = a.Sum(b => b.Qta), ArticoloID= a.Key });
+					var listArt = list.Select(b => b.ID);
+					var giacenza = uof.MagazzinoRepository.Find(a => listArt.Contains(a.ArticoloID))
+					   .Select(a => new { a.ArticoloID, a.Qta }).GroupBy(a => a.ArticoloID)
+					   .Select(a => new { Sum = a.Sum(b => b.Qta), ArticoloID = a.Key }).ToList();
 
-					//foreach (var item in list)
-					//{
 
-					//}
+					foreach (var item in list )
+					{
+						var val= giacenza.Where(a => a.ArticoloID == item.ID).Select(a => a.Sum).FirstOrDefault();
+
+						item.Quantita = val;
+					}
 				}
 
 

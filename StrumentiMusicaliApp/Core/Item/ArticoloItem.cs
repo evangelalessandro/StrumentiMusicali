@@ -36,11 +36,13 @@ namespace StrumentiMusicali.App.Core
 		public string CodiceABarre { get; set; }
 		public string TagImport { get; }
 		public string Prezzo { get; set; }
+		public int Quantita { get; set; }
 		public bool CaricaInEcommerce { get; set; } 
 		public bool CaricaInMercatino { get; set; } 
 
 		public DateTime DataCreazione { get; set; }
 		public DateTime DataModifica { get; set; }
+
 		//public bool Pinned { get; set; }
 
 		//public System.Drawing.Bitmap PinnedImage {

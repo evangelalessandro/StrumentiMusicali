@@ -61,7 +61,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				});
 			};
 
-			var ribScarica = panelComandiArticoli.Add("Carica", Properties.Resources.Remove);
+			var ribScarica = panelComandiArticoli.Add("Scarica", Properties.Resources.Remove);
 			ribScarica.Tag = TAG_SCARICA;
 			ribScarica.Click += (a, e) =>
 			{

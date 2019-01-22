@@ -140,6 +140,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
 			_excel.Range("NegozioEmail").Value = intestStampa.NegozioEmail;
 			_excel.Range("NegozioCF").Value = intestStampa.NegozioCF;
 			_excel.Range("IBAN").Value = intestStampa.IBAN;
+			_excel.Range("NegozioPEC").Value = intestStampa.NegozioEmailPEC;
 		}
 
 		private void ImpostaDettaglio(List<FatturaRiga> righeFatt, Fattura fattura)

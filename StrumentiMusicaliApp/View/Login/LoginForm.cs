@@ -35,7 +35,20 @@ namespace StrumentiMusicali.App.View.Login
 				}
 			}
 			SetControlState(false);
+			this.KeyPreview = true;
+			this.KeyDown += LoginForm_KeyDown1;
 		}
+
+		private void LoginForm_KeyDown1(object sender, KeyEventArgs e)
+		{
+
+			if (e.KeyCode == Keys.Return)
+			{
+				SendKeys.Send("{TAB}");
+			}
+		}
+
+		 
 
 		private async void LoginButton_Click(object sender, EventArgs e)
 		{

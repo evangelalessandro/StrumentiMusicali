@@ -303,7 +303,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			if (GetMenu() != null)
 			{
 				var menu = GetMenu();
-				menu.Enabled = !(dgvRighe.DataSource == null);
+				menu.Enabled = !(gridControl1.DataSource == null);
 
 				menu.ApplyValidation(dgvRighe.FocusedRowHandle >= 0);
 				foreach (var item in menu.ItemByTag(MenuTab.TagCerca))

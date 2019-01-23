@@ -14,6 +14,7 @@ using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -73,12 +74,26 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-
-			using (var login = new View.Login.LoginForm())
+			if (!Debugger.IsAttached)
 			{
-				var ret = login.ShowDialog();
-				if (ret != DialogResult.OK)
-					return;
+				using (var login = new View.Login.LoginForm())
+				{
+					var ret = login.ShowDialog();
+					if (ret != DialogResult.OK)
+						return;
+				}
+			}
+			else
+			{
+				using (var uof = new UnitOfWork())
+				{
+					var utente = uof.UtentiRepository.Find(a => a.NomeUtente == "Admin").FirstOrDefault();
+
+					if (utente != null)
+					{
+						LoginData.SetUtente(utente);
+					}
+				}
 			}
 			using (var mainView = new MainView(this))
 			{
@@ -239,7 +254,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				{
 					setItem.PecConfig = new Library.Entity.PecConfig();
 				}
-				
+
 				using (var view = new GenericSettingView(setItem))
 				{
 					view.OnSave += (a, b) =>

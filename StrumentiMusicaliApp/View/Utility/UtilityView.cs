@@ -1,4 +1,5 @@
 ﻿using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Grid;
 using StrumentiMusicali.App.Core.Item.Base;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.CustomComponents;
@@ -23,6 +24,15 @@ namespace StrumentiMusicali.App.View.Utility
 			if (dataGrid.SelectedRows.Count > 0)
 			{
 				return (T)dataGrid.SelectedRows[0].DataBoundItem;
+			}
+			return default(T);
+		}
+		public static T GetCurrentItemSelected<T>(this GridView dataGrid)
+		{
+			if (dataGrid.FocusedRowHandle>= 0)
+			{
+				var current = dataGrid.GetRow(dataGrid.FocusedRowHandle);
+				return  (T)current;
 			}
 			return default(T);
 		}
@@ -72,6 +82,29 @@ namespace StrumentiMusicali.App.View.Utility
 				
 			}
 			
+		}
+		public static async Task SelezionaRiga(this GridView dataGrid, int idItem)
+		{
+			var colVisible = -1;
+			for (int i = 0; i < dataGrid.Columns.Count; i++)
+			{
+				if (dataGrid.Columns[i].Visible)
+				{
+					colVisible = i;
+					break;
+				}
+			}
+			if (colVisible == -1)
+				return;
+			for (int i = 0; i < dataGrid.RowCount; i++)
+			{
+				if (((BaseItemID)(dataGrid.GetRow(i))).ID == idItem)
+				{
+					dataGrid.SelectRow(i);
+					dataGrid.SelectCell(i, dataGrid.Columns[colVisible]);
+					break;
+				}
+			}
 		}
 		public static async Task SelezionaRiga(this DataGridView dataGrid, int idItem)
 		{
@@ -232,6 +265,21 @@ namespace StrumentiMusicali.App.View.Utility
 				if (getAllChild) lt.AddRange(FindControlByType<T>(mainControl.Controls[i], getAllChild));
 			}
 			return lt;
+		}
+
+		internal static void InitGridDev(GridView dgvRighe)
+		{
+			dgvRighe.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.False;
+			dgvRighe.OptionsBehavior.AllowIncrementalSearch = true;
+			dgvRighe.OptionsBehavior.Editable = false;
+			dgvRighe.OptionsView.ShowAutoFilterRow = true;
+			dgvRighe.OptionsSelection.MultiSelect = false;
+			dgvRighe.OptionsView.RowAutoHeight = true;
+			dgvRighe.OptionsView.ColumnAutoWidth = true;
+			dgvRighe.OptionsView.BestFitMode = DevExpress.XtraGrid.Views.Grid.GridBestFitMode.Fast;
+			dgvRighe.OptionsView.ShowFooter = true;
+			dgvRighe.OptionsView.ShowGroupPanel = false;
+
 		}
 
 		public static IEnumerable<PropertyInfo> GetProperties(Object obj)

@@ -28,11 +28,13 @@ namespace StrumentiMusicali.App.View
 		public ScaricoMagazzinoView(ControllerMagazzino controllerMagazzino)
 			: base()
 		{
+			
 			_controllerMagazzino = controllerMagazzino;
 			_controllerMagazzino.SelectedItem = new MovimentoMagazzino();
 			_controllerMagazzino.SelectedItem.Qta = 1;
 			InitializeComponent();
 			lblTitoloArt.Text = "";
+			UtilityView.InitGridDev(dgvRighe);
 
 			cboDeposito.DisplayMember = "Descrizione";
 			cboDeposito.ValueMember = "ID";
@@ -147,9 +149,9 @@ namespace StrumentiMusicali.App.View
 						.ToList();
 				}
 
-				dgvMaster.DataSource = movimenti;
+				gridControl1.DataSource = movimenti;
 			}
-
+			dgvRighe.Columns["Data"].DisplayFormat.FormatString = "G";
 
 		}
 
@@ -227,10 +229,6 @@ namespace StrumentiMusicali.App.View
 				ExceptionManager.ManageError(ex);
 			}
 		}
-
-		private void txtQta_ValueChanged(object sender, EventArgs e)
-		{
-
-		}
+		 
 	}
 }

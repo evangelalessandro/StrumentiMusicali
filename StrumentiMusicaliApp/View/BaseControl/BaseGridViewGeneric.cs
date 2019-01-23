@@ -1,4 +1,8 @@
-﻿using StrumentiMusicali.App.Core.Controllers;
+﻿using DevExpress.XtraBars.Docking2010.Views;
+using DevExpress.XtraGrid.Views.Base.ViewInfo;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Item.Base;
@@ -10,6 +14,7 @@ using StrumentiMusicali.Library.Entity.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -34,12 +39,20 @@ namespace StrumentiMusicali.App.View.BaseControl
 			InitializeComponent();
 			Init();
 			txtCerca.Text = controllerItem.TestoRicerca;
+			
 			this.dgvRighe.DoubleClick += DgvRighe_DoubleClick;
 			Controller = controllerItem;
 			controllerItem.RefreshList(null);
-			this.dgvRighe.DataSource = controllerItem.DataSource;
+			this.gridControl1.DataSource = controllerItem.DataSource;
 			this.Load += Control_Load;
-			this.dgvRighe.SelectionChanged += DgvMaster_SelectionChanged;
+			if (File.Exists(getLayoutFile()))
+			{ 
+				dgvRighe.RestoreLayoutFromXml(getLayoutFile());
+			}
+
+			this.dgvRighe.FocusedRowChanged += DgvMaster_SelectionChanged;
+			
+			//this.dgvRighe.FocusedRowChanged += DgvMaster_SelectionChanged;
 
 			_selectSub = EventAggregator.Instance().
 				Subscribe<ItemSelected<TBaseItem, TEntity>>(
@@ -145,21 +158,28 @@ namespace StrumentiMusicali.App.View.BaseControl
 		{
 			Controller.RefreshList(null);
 
-			dgvRighe.DataSource = Controller.DataSource;
+			gridControl1.DataSource = Controller.DataSource;
 
-			dgvRighe.Refresh();
+			dgvRighe.RefreshData();
 
 			FormatGrid();
 
 			UpdateButtonState();
 		}
-
+		private string getLayoutFile()
+		{
+			var dir = Application.StartupPath+ @"\Layout\";
+			if (!System.IO.Directory.Exists(dir))
+				System.IO.Directory.CreateDirectory(dir);
+			return dir + "Layout_Grid_" + this.Name + ".xml";
+		}
 		/// <summary>
 		/// Pulire le risorse in uso.
 		/// </summary>
 		/// <param name="disposing">ha valore true se le risorse gestite devono essere eliminate, false in caso contrario.</param>
 		protected override void Dispose(bool disposing)
 		{
+			dgvRighe.SaveLayoutToXml(getLayoutFile());
 			if (disposing && (components != null))
 			{
 				// free managed resources
@@ -193,6 +213,10 @@ namespace StrumentiMusicali.App.View.BaseControl
 		private void Control_Load(object sender, EventArgs e)
 		{
 			EventAggregator.Instance().Subscribe<UpdateList<TEntity>>(RefreshList);
+
+			UtilityView.InitGridDev(dgvRighe);
+
+
 			FormatNameColumn();
 			FormatGrid();
 			UpdateButtonState();
@@ -202,15 +226,16 @@ namespace StrumentiMusicali.App.View.BaseControl
 		{
 			if (dgvRighe.Columns["ID"]!=null)
 			{
-				dgvRighe.Columns["ID"].DisplayIndex = 0;
+				dgvRighe.Columns["ID"].VisibleIndex = 0;
 			}
 			if (dgvRighe.Columns["Entity"] != null)
 			{
 				dgvRighe.Columns["Entity"].Visible= false;
 			}
-			for (int i = 0; i < dgvRighe.ColumnCount; i++)
+			for (int i = 0; i < dgvRighe.Columns.Count; i++)
 			{
-				dgvRighe.Columns[i].HeaderText = UtilityView.GetTextSplitted(dgvRighe.Columns[i].HeaderText);
+				dgvRighe.Columns[i].Caption = 
+					UtilityView.GetTextSplitted(dgvRighe.Columns[i].Caption);
 			}
 		}
 
@@ -218,7 +243,8 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 		private void DgvMaster_SelectionChanged(object sender, EventArgs e)
 		{
-			var item = dgvRighe.GetCurrentItemSelected<TBaseItem>();
+			var current = dgvRighe.GetRow(dgvRighe.FocusedRowHandle);
+			var item = (TBaseItem)current;
 			if (item != null && item.Entity != null)
 			{
 				EventAggregator.Instance().Publish(new ItemSelected<TBaseItem, TEntity>(item));
@@ -230,6 +256,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 					SelectionChanged(this, new EventArgs());
 				}
 			}
+			UpdateButtonState();
 		}
 		public event EventHandler SelectionChanged;
 		public MenuTab GetMenu()
@@ -245,7 +272,6 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 		private async void EditItemView()
 		{
-			
 			bool skipView = false;
 			var itemSelected = UtilityView.GetCurrentItemSelected<TBaseItem>(dgvRighe);
 			if (onEditItemShowView != null)
@@ -263,8 +289,8 @@ namespace StrumentiMusicali.App.View.BaseControl
 				Controller.ShowEditView();
 			}
 			Controller.RefreshList(null);
-			dgvRighe.DataSource = Controller.DataSource;
-			dgvRighe.Update();
+			gridControl1.DataSource = Controller.DataSource;
+			dgvRighe.RefreshData();
 			FormatGrid();
 			if (itemSelected!=null)
 			await dgvRighe.SelezionaRiga(itemSelected.ID);
@@ -279,7 +305,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 				var menu = GetMenu();
 				menu.Enabled = !(dgvRighe.DataSource == null);
 
-				menu.ApplyValidation(dgvRighe.SelectedRows.Count > 0);
+				menu.ApplyValidation(dgvRighe.FocusedRowHandle >= 0);
 				foreach (var item in menu.ItemByTag(MenuTab.TagCerca))
 				{
 					item.Checked = pnlCerca.Visible;
@@ -297,44 +323,36 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 			UpdateButtonState();
 
-			//this.InvokeIfRequired((b) =>
-			//{
-
-			//	{
-			//	}
-			//}
-			//)).Wait();
-			
 		}
 
 		private void ForceUpdateGridAsync()
 		{
 			this.Invalidate();
 
-			dgvRighe.DataSource = Controller.DataSource;
+			gridControl1.DataSource = Controller.DataSource;
 
-			dgvRighe.Refresh();
+			dgvRighe.RefreshData();
 			//dgvRighe.Update();
 				
 		}
 
 		private void DgvRighe_DoubleClick(object sender, EventArgs e)
 		{
-			var g = sender as DataGridView;
+			var g = sender as GridView;
 			if (g != null)
 			{
-				var p = g.PointToClient(MousePosition);
-				var hti = g.HitTest(p.X, p.Y);
-				if (hti.Type == DataGridViewHitTestType.ColumnHeader)
+
+				if (g == null) return;
+				var location = gridControl1.PointToClient(Cursor.Position);
+				// Get a View at the current point.
+				// Retrieve information on the current View element.
+				GridHitInfo gridHI = g.CalcHitInfo(location);
+				if (gridHI != null)
+					Text = gridHI.HitTest.ToString();
+				//var p = g.CalcHitInfo(MousePosition);
+				if (gridHI.InRowCell)
 				{
-					var columnIndex = hti.ColumnIndex;
-					//You handled a double click on column header
-					//Do what you need
-				}
-				else if (hti.Type == DataGridViewHitTestType.RowHeader || hti.Type == DataGridViewHitTestType.Cell)
-				{
-					var rowIndex = hti.RowIndex;
-					
+					 
 					//You handled a double click on row header
 					EventAggregator.Instance().Publish<Edit<TEntity>>(new Edit<TEntity>());
 				}

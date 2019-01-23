@@ -34,12 +34,12 @@ namespace StrumentiMusicali.App.View
 		}
 
 		public override void FormatGrid()
-		{  
+		{
 			dgvRighe.Columns["Entity"].Visible = false;
-			dgvRighe.AutoResizeColumns();
-			dgvRighe.Columns["ID"].DisplayIndex = 0;
-			dgvRighe.Columns["Codice"].DisplayIndex = 1;
-			dgvRighe.Columns["RagioneSociale"].DisplayIndex = 2;
+			dgvRighe.BestFitColumns(true);
+			dgvRighe.Columns["ID"].VisibleIndex = 0;
+			dgvRighe.Columns["Codice"].VisibleIndex = 1;
+			dgvRighe.Columns["RagioneSociale"].VisibleIndex = 2;
 		}
 		 
 		 

@@ -19,14 +19,14 @@ namespace StrumentiMusicali.App.View
 		}
 		private void control_Load(object sender, System.EventArgs e)
 		{
-			dgvRighe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+			//dgvRighe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 		}
 
 		public override void FormatGrid()
 		{
-			if (dgvRighe.Columns.Count>0)
-				dgvRighe.Columns["Entity"].Visible = false;
-			dgvRighe.AutoResizeColumns();
+			dgvRighe.Columns["Entity"].Visible = false;
+			dgvRighe.BestFitColumns(true);
+			dgvRighe.Columns["ID"].VisibleIndex = 0;
 		}
 		
 		

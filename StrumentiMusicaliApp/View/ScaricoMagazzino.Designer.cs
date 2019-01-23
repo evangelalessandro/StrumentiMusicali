@@ -1,4 +1,7 @@
-﻿namespace StrumentiMusicali.App.View
+﻿using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Views.Grid;
+
+namespace StrumentiMusicali.App.View
 {
 	partial class ScaricoMagazzinoView
 	{
@@ -28,8 +31,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.txtCodiceABarre = new System.Windows.Forms.TextBox();
-			this.dgvMaster = new System.Windows.Forms.DataGridView();
+			this.txtCodiceABarre = new System.Windows.Forms.TextBox(); 
 			this.txtQta = new System.Windows.Forms.NumericUpDown();
 			this.cboDeposito = new System.Windows.Forms.ComboBox();
 			this.label1 = new System.Windows.Forms.Label();
@@ -40,7 +42,10 @@
 			this.pnlTop = new System.Windows.Forms.Panel();
 			this.label4 = new System.Windows.Forms.Label();
 			this.lblGiacenzaArticolo = new System.Windows.Forms.Label();
-			((System.ComponentModel.ISupportInitialize)(this.dgvMaster)).BeginInit();
+			this.gridControl1 = new DevExpress.XtraGrid.GridControl();
+			this.dgvRighe = new DevExpress.XtraGrid.Views.Grid.GridView();
+			((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.dgvRighe)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtQta)).BeginInit();
 			this.pnlTop.SuspendLayout();
 			this.SuspendLayout();
@@ -54,23 +59,20 @@
 			this.txtCodiceABarre.Size = new System.Drawing.Size(462, 26);
 			this.txtCodiceABarre.TabIndex = 1;
 			this.txtCodiceABarre.TextChanged += new System.EventHandler(this.txtCodiceABarre_TextChanged);
+
+			this.gridControl1.Location = new System.Drawing.Point(8, -15);
+			this.gridControl1.MainView = this.dgvRighe;
+			this.gridControl1.Name = "gridControl1";
+			this.gridControl1.Size = new System.Drawing.Size(411, 244);
+			this.gridControl1.TabIndex = 0;
+			this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+			this.dgvRighe});
+			this.gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			//
+			// gridView1
 			// 
-			// dgvMaster
-			// 
-			this.dgvMaster.AllowUserToAddRows = false;
-			this.dgvMaster.AllowUserToDeleteRows = false;
-			this.dgvMaster.AllowUserToOrderColumns = true;
-			this.dgvMaster.AllowUserToResizeRows = false;
-			this.dgvMaster.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgvMaster.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.dgvMaster.Location = new System.Drawing.Point(0, 227);
-			this.dgvMaster.MultiSelect = false;
-			this.dgvMaster.Name = "dgvMaster";
-			this.dgvMaster.ReadOnly = true;
-			this.dgvMaster.RowTemplate.Height = 24;
-			this.dgvMaster.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dgvMaster.Size = new System.Drawing.Size(1000, 442);
-			this.dgvMaster.TabIndex = 2;
+			this.dgvRighe.GridControl = this.gridControl1;
+			this.dgvRighe.Name = "gridView1";
 			// 
 			// txtQta
 			// 
@@ -87,7 +89,6 @@
 			this.txtQta.TabIndex = 3;
 			this.txtQta.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.txtQta.UpDownAlign = System.Windows.Forms.LeftRightAlignment.Left;
-			this.txtQta.ValueChanged += new System.EventHandler(this.txtQta_ValueChanged);
 			// 
 			// cboDeposito
 			// 
@@ -204,14 +205,14 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.dgvMaster);
+			this.Controls.Add(this.gridControl1);
 			this.Controls.Add(this.pnlTop);
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 			this.MinimumSize = new System.Drawing.Size(1000, 669);
 			this.Name = "ScaricoMagazzinoView";
 			this.Size = new System.Drawing.Size(1000, 669);
-			((System.ComponentModel.ISupportInitialize)(this.dgvMaster)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtQta)).EndInit();
 			this.pnlTop.ResumeLayout(false);
 			this.pnlTop.PerformLayout();
@@ -222,7 +223,8 @@
 		#endregion
 
 		private System.Windows.Forms.TextBox txtCodiceABarre;
-		private System.Windows.Forms.DataGridView dgvMaster;
+		internal GridControl gridControl1;
+		internal GridView dgvRighe;
 		private System.Windows.Forms.NumericUpDown txtQta;
 		private System.Windows.Forms.ComboBox cboDeposito;
 		private System.Windows.Forms.Label label1;

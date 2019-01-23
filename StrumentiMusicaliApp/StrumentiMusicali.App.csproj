@@ -89,9 +89,6 @@
     <Reference Include="DevExpress.XtraCharts.v18.1.Design">
     </Reference>
     <Reference Include="DevExpress.XtraGrid.v18.1, Version=18.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraGrid.v8.3">
-      <HintPath>References\DevExpress_8.3.x\DevExpress.XtraGrid.v8.3.dll</HintPath>
-    </Reference>
     <Reference Include="DevExpress.XtraLayout.v18.1, Version=18.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPrinting.v18.1">
     </Reference>

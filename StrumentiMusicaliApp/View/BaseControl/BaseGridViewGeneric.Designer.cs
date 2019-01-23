@@ -1,4 +1,7 @@
-﻿namespace StrumentiMusicali.App.View.BaseControl
+﻿using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Views.Grid;
+
+namespace StrumentiMusicali.App.View.BaseControl
 {
 	partial class BaseGridViewGeneric<TBaseItem, TController, TEntity>
 	{
@@ -16,36 +19,37 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.dgvRighe = new System.Windows.Forms.DataGridView();
+			this.gridControl1 = new DevExpress.XtraGrid.GridControl();
+			this.dgvRighe = new DevExpress.XtraGrid.Views.Grid.GridView();
+			((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgvRighe)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// dgvRighe
+			// gridControl1
 			// 
-			this.dgvRighe.AllowUserToAddRows = false;
-			this.dgvRighe.AllowUserToDeleteRows = false;
-			this.dgvRighe.AllowUserToOrderColumns = true;
-			this.dgvRighe.AllowUserToResizeRows = false;
-			this.dgvRighe.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgvRighe.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.dgvRighe.Location = new System.Drawing.Point(5, 5);
-			this.dgvRighe.Margin = new System.Windows.Forms.Padding(2);
-			this.dgvRighe.MultiSelect = false;
-			this.dgvRighe.Name = "dgvRighe";
-			this.dgvRighe.ReadOnly = true;
-			this.dgvRighe.RowTemplate.Height = 24;
-			this.dgvRighe.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dgvRighe.Size = new System.Drawing.Size(417, 219);
-			this.dgvRighe.TabIndex = 3;
+			this.gridControl1.Location = new System.Drawing.Point(8, -15);
+			this.gridControl1.MainView = this.dgvRighe;
+			this.gridControl1.Name = "gridControl1";
+			this.gridControl1.Size = new System.Drawing.Size(411, 244);
+			this.gridControl1.TabIndex = 0;
+			this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.dgvRighe});
+			this.gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			//
+			// gridView1
 			// 
-			// FatturaRigheListView
+			this.dgvRighe.GridControl = this.gridControl1;
+			this.dgvRighe.Name = "gridView1";
+			// 
+			// BaseGridViewGeneric
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.dgvRighe);
-			this.Name = "FatturaRigheListView";
+			this.Controls.Add(this.gridControl1);
+			this.Name = "BaseGridViewGeneric";
 			this.Padding = new System.Windows.Forms.Padding(5);
 			this.Size = new System.Drawing.Size(427, 229);
+			((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgvRighe)).EndInit();
 			this.ResumeLayout(false);
 
@@ -53,6 +57,7 @@
 
 		#endregion
 
-		protected System.Windows.Forms.DataGridView dgvRighe;
+		internal GridControl gridControl1;
+		internal GridView dgvRighe;
 	}
 }

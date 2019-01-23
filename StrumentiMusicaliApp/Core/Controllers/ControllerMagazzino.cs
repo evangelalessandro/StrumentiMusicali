@@ -29,6 +29,13 @@ namespace StrumentiMusicali.App.Core.Controllers
 			sub1 = EventAggregator.Instance().Subscribe<ScaricaQtaMagazzino>(ScaricaMagazzino);
 			sub2 = EventAggregator.Instance().Subscribe<CaricaQtaMagazzino>(CaricaMagazzino);
 		}
+		public ControllerMagazzino(Articolo articolo)
+			: this()
+		{
+			ArticoloFilter= articolo;
+		}
+ 
+		public Articolo ArticoloFilter { get; private set; }
 		private MenuTab _menuTab = null;
 		public MenuTab GetMenu()
 		{

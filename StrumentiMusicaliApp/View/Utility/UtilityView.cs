@@ -181,6 +181,10 @@ namespace StrumentiMusicali.App.View.Utility
 						{
 							cnt.DataBindings.Add("SelectedValue", businessObject, item.Name);
 						}
+						else if (cnt is System.Windows.Forms.ListBox)
+						{
+							cnt.DataBindings.Add("SelectedValue", businessObject, item.Name);
+						}
 						else if (cnt is DateTimePicker)
 						{
 							cnt.DataBindings.Add(new DateTimePickerBinding(businessObject, item.Name

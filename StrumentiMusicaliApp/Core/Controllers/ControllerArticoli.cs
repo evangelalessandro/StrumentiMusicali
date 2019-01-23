@@ -50,13 +50,11 @@ namespace StrumentiMusicali.App.Core.Controllers
 		private void Sconta(ArticoloSconta obj)
 		{
 
-			if (!MessageManager.QuestionMessage(string.Format(@"Sei sicuro di volere applicare questo sconto\aumento 
-					su tutti gli articoli {0} visualizzati nella lista?", DataSource.Count())))
+			if (!MessageManager.QuestionMessage(string.Format(@"Sei sicuro di volere applicare questo sconto su tutti i {0} articoli visualizzati nella lista?", DataSource.Count())))
 				return;
 			if (DataSource.Count() > 100)
 			{
-				if (!MessageManager.QuestionMessage(string.Format(@"Sei sicuro di volere applicare questo sconto\aumento 
-					su tutti gli articoli {0} visualizzati nella lista?", DataSource.Count())))
+				if (!MessageManager.QuestionMessage(string.Format(@"Sei veramente sicuro di volere applicare questo sconto su tutti i {0} articoli  visualizzati nella lista?", DataSource.Count())))
 					return;
 			}
 			_logger.Info("Applicato sconto su marca {0} e filtro ricerca {1} di {2} %.  ", FiltroMarca, this.TestoRicerca, obj.Percentuale);
@@ -109,13 +107,22 @@ namespace StrumentiMusicali.App.Core.Controllers
 			rib2.Click += (a, e) =>
 			{
 				ScontaArticoliShowView();
-
 			};
-
-			//var pnl3 = GetMenu().Tabs[0].Add("Magazzino");
-			//var rib3 = pnl3.Add("Qta Magazzino", Properties.Resources.UnloadWareHouse);
-			//rib3.Click += (a, e) =>
-			//{
+			if (LoginData.utenteLogin.Magazzino)
+			{
+				var pnl3 = GetMenu().Tabs[0].Add("Magazzino");
+				var rib3 = pnl3.Add("Qta Magazzino", Properties.Resources.UnloadWareHouse, true);
+				rib3.Click += (a, e) =>
+				{
+					using (var depo = new Core.Controllers.ControllerMagazzino(SelectedItem))
+					{
+						using (var view = new View.ScaricoMagazzinoView(depo))
+						{
+							ShowView(view, enAmbiente.Magazzino, depo, true, true);
+						}
+					}
+				};
+			}
 			//	EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ScaricoMagazzino));
 			//	EventAggregator.Instance().Publish(new MagazzinoSelezionaArticolo() { Articolo=SelectedItem});
 
@@ -392,7 +399,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 								folderFoto, listFile, save.UnitOfWork, itemFoto);
 						}
 						immaginiController.DeleteFile(listFile);
-						var mag= save.UnitOfWork.MagazzinoRepository.Find(a => a.ArticoloID == item.ID);
+						var mag = save.UnitOfWork.MagazzinoRepository.Find(a => a.ArticoloID == item.ID);
 						foreach (Magazzino itemMg in mag)
 						{
 							save.UnitOfWork.MagazzinoRepository.Delete(itemMg);
@@ -495,9 +502,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 							&& (a.Marca.Contains(FiltroMarca) && FiltroMarca.Length > 0
 							|| FiltroMarca == "")
 							);
-						foreach (var ricerca in datoRicerca.Where(a=>a.Length>0).ToList())
+						foreach (var ricerca in datoRicerca.Where(a => a.Length > 0).ToList())
 						{
-							 
+
 							datList = datList.Where(a =>
 
 							   a.Titolo.Contains(ricerca)
@@ -517,8 +524,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 						.Select(a => new { a.Categoria, Articolo = a }).ToList().Select(a => a.Articolo).Select(a => new ArticoloItem(a)
 						{
 
-						//Pinned = a.Pinned
-					}).ToList();
+							//Pinned = a.Pinned
+						}).ToList();
 
 						var listArt = list.Select(b => b.ID);
 						var giacenza = uof.MagazzinoRepository.Find(a => listArt.Contains(a.ArticoloID))

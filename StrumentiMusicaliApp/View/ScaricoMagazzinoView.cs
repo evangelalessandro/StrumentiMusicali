@@ -28,7 +28,7 @@ namespace StrumentiMusicali.App.View
 		public ScaricoMagazzinoView(ControllerMagazzino controllerMagazzino)
 			: base()
 		{
-			
+
 			_controllerMagazzino = controllerMagazzino;
 			_controllerMagazzino.SelectedItem = new MovimentoMagazzino();
 			_controllerMagazzino.SelectedItem.Qta = 1;
@@ -36,20 +36,20 @@ namespace StrumentiMusicali.App.View
 			lblTitoloArt.Text = "";
 			UtilityView.InitGridDev(dgvRighe);
 
-			cboDeposito.DisplayMember = "Descrizione";
-			cboDeposito.ValueMember = "ID";
+			listDepositi.DisplayMember = "Descrizione";
+			listDepositi.ValueMember = "ID";
 			txtQta.ValueChanged += (a, b) =>
 			{
 				_controllerMagazzino.SelectedItem.Qta = txtQta.Value;
 
 				UpdateButton();
 			};
-			cboDeposito.SelectedValueChanged += (a, b) =>
+			listDepositi.SelectedValueChanged += (a, b) =>
 			{
 				try
 				{
 					_controllerMagazzino.SelectedItem.Deposito =
-						((DepositoScaricoItem)cboDeposito.SelectedItem).ID;
+						((DepositoScaricoItem)listDepositi.SelectedItem).ID;
 				}
 				catch (Exception ex)
 				{
@@ -58,7 +58,7 @@ namespace StrumentiMusicali.App.View
 				UpdateButton();
 			};
 			txtQta.Tag = "Qta";
-			cboDeposito.Tag = "Deposito";
+			listDepositi.Tag = "Deposito";
 
 
 			UtilityView.SetDataBind(this, null, _controllerMagazzino.SelectedItem);
@@ -70,20 +70,24 @@ namespace StrumentiMusicali.App.View
 				(a) => { this.Validate(); }
 				);
 
-			_selectItem = EventAggregator.Instance().Subscribe<MagazzinoSelezionaArticolo>(SelezionaArticolo);
-
+			if (_controllerMagazzino.ArticoloFilter != null)
+			{
+				txtCodiceABarre.Text = "";
+				_cboArticoli.Controllo.EditValue = _controllerMagazzino.ArticoloFilter.ID;
+				_cboArticoli.Visible = false;
+				txtCodiceABarre.Visible = false;
+				pnlTop.Visible = false;
+			}
 		}
 
 		private Subscription<MagazzinoSelezionaArticolo> _selectItem;
-		private void SelezionaArticolo(MagazzinoSelezionaArticolo obj)
-		{
-			txtCodiceABarre.Text = "";
-			_cboArticoli.Controllo.EditValue = obj.Articolo.ID;
-		}
+
 
 		private void ScaricoMagazzino_LoadSync(object sender, EventArgs e)
 		{
 			LoadListArticoli();
+
+			 
 		}
 
 		private void RefreshData(MovimentiUpdate obj)
@@ -105,19 +109,19 @@ namespace StrumentiMusicali.App.View
 				if (articolo != null)
 				{
 					lblTitoloArticolo.ForeColor = System.Drawing.Color.Green;
-					var depoSel = cboDeposito.SelectedIndex;
+					var depoSel = listDepositi.SelectedIndex;
 					_controllerMagazzino.SelectedItem.ArticoloID = articolo.ID;
-					lblTitoloArt.Text = articolo.Titolo;
+					lblTitoloArt.Text = " {" +articolo.ID.ToString() + "} " +  articolo.Titolo;
 
 					var listDepo = _controllerMagazzino.ListDepositi();
-					cboDeposito.DataSource = listDepo;
+					listDepositi.DataSource = listDepo;
 					if (depoSel == -1 && listDepo.Count > 0)
 					{
-						cboDeposito.SelectedIndex = 0;
+						listDepositi.SelectedIndex = 0;
 					}
 					else
 					{
-						cboDeposito.SelectedIndex = depoSel;
+						listDepositi.SelectedIndex = depoSel;
 					}
 					movimenti = uof.MagazzinoRepository.Find(a => a.ArticoloID == _controllerMagazzino.SelectedItem.ArticoloID)
 						.Select(a => new MovimentoItem()
@@ -135,7 +139,7 @@ namespace StrumentiMusicali.App.View
 				}
 				else
 				{
-					cboDeposito.DataSource = new List<DepositoItem>();
+					listDepositi.DataSource = new List<DepositoItem>();
 					movimenti = uof.MagazzinoRepository.Find(a => 1 == 1)
 						.OrderByDescending(a => a.ID).Take(100)
 						.Select(a => new MovimentoItem()
@@ -170,8 +174,9 @@ namespace StrumentiMusicali.App.View
 			_cboArticoli.Top = 0;
 			_cboArticoli.Font = this.Font;
 			_cboArticoli.Left = txtCodiceABarre.Left + txtCodiceABarre.Width + 10;
-			_cboArticoli.Width = pnlTop.Width - _cboArticoli.Left - 20;
+			_cboArticoli.Width = pnlMidle.Width - _cboArticoli.Left - 20;
 			_cboArticoli.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Top;
+			_cboArticoli.Controllo.Properties.PopupWidth = pnlTop.Width;
 			using (var uof = new UnitOfWork())
 			{
 				var list = uof.ArticoliRepository.Find(a => true)
@@ -221,14 +226,12 @@ namespace StrumentiMusicali.App.View
 				}
 				this.Validate();
 
-
-
 			}
 			catch (Exception ex)
 			{
 				ExceptionManager.ManageError(ex);
 			}
 		}
-		 
+		
 	}
 }

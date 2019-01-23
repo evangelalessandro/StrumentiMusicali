@@ -34,11 +34,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			var member = enumValue.GetType().GetMember(enumValue.ToString()).FirstOrDefault();
 			return (T)member?.GetCustomAttributes(typeof(T), false).FirstOrDefault();
 		}
-		public void ShowView(UserControl view, enAmbiente ambiente, BaseController controller = null, bool disposeForm = true)
+		public void ShowView(UserControl view, enAmbiente ambiente, BaseController controller = null, bool disposeForm = true, bool forceFormView=false)
 		{
 			var attr = GetAttribute<UIAmbienteAttribute>(ambiente);
 
-			if (ModalitàAForm || (attr!=null && attr.OnlyViewInForm))
+			if (ModalitàAForm || (attr!=null && attr.OnlyViewInForm) || forceFormView)
 			{
 				AggiungiInForm(view, ambiente, controller, disposeForm);
 			}
@@ -154,6 +154,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			while (closed == false)
 			{
 				Application.DoEvents();
+				if (_closeMain)
+					break;
 			}
 			AmbientiAttivi.RemoveAll(a=>a.Ambiente== ambiente);
 
@@ -162,7 +164,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 			//ribbonMaster.ActiveTab = ribbonMaster.PreviousTab;
 		}
-
+		static bool _closeMain;
 		private void RemoveMenu(MenuTab menu, Ribbon ribbon)
 		{
 
@@ -269,8 +271,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 						_ribbonMaster = ribbon1;
 						_MainForm = frm;
 						_PreviusForm.Add(frm);
-						frm.ShowDialog();
+						frm.FormClosing += Frm_FormClosing;
 						
+						frm.ShowDialog();
+
 					}
 					else
 					{
@@ -320,6 +324,18 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			}
 		}
 
+		private void Frm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (!MessageManager.QuestionMessage("Sei sicuro di volere chiudere l'applicazione?"))
+			{
+				e.Cancel = true;
+				return;
+			}
+			e.Cancel = false;
+			_closeMain = true;
+
+		}
+		
 		private void AddStatusBarProgress(Form form)
 		{
 			// StatusBar

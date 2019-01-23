@@ -162,9 +162,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 			dgvRighe.RefreshData();
 
-			FormatGrid();
-
-			UpdateButtonState();
+			ForceRefreshSelectItem();
 		}
 		private string getLayoutFile()
 		{
@@ -218,8 +216,8 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 
 			FormatNameColumn();
-			FormatGrid();
-			UpdateButtonState();
+
+			ForceRefreshSelectItem();
 		}
 
 		private void FormatNameColumn()
@@ -319,9 +317,15 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 			ForceUpdateGridAsync();
 
+			ForceRefreshSelectItem();
+
+		}
+
+		private void ForceRefreshSelectItem()
+		{
 			FormatGrid();
 
-			UpdateButtonState();
+			DgvMaster_SelectionChanged(gridControl1, null);
 
 		}
 

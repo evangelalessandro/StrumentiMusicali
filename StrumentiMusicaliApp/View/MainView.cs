@@ -166,14 +166,14 @@ namespace StrumentiMusicali.App
 					EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ClientiList));
 				};
 			}
-			if (LoginData.utenteLogin.Magazzino)
-			{
-				var ribMagaz = panel1.Add("Magazzino", Properties.Resources.UnloadWareHouse);
-				ribMagaz.Click += (s, e) =>
-				{
-					EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ScaricoMagazzino));
-				};
-			}
+			//if (LoginData.utenteLogin.Magazzino)
+			//{
+			//	var ribMagaz = panel1.Add("Magazzino", Properties.Resources.UnloadWareHouse);
+			//	ribMagaz.Click += (s, e) =>
+			//	{
+			//		EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ScaricoMagazzino));
+			//	};
+			//}
 			var ribArticoli = panel1.Add("Articoli", Properties.Resources.StrumentoMusicale);
 			ribArticoli.Click += (s, e) =>
 			{

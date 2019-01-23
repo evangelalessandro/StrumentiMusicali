@@ -431,11 +431,11 @@
     <Compile Include="View\BaseControl\BaseDataControl.Designer.cs">
       <DependentUpon>BaseDataControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\ScaricoMagazzino.cs">
+    <Compile Include="View\ScaricoMagazzinoView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\ScaricoMagazzino.Designer.cs">
-      <DependentUpon>ScaricoMagazzino.cs</DependentUpon>
+    <Compile Include="View\ScaricoMagazzinoView.Designer.cs">
+      <DependentUpon>ScaricoMagazzinoView.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -525,8 +525,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\ScaricoMagazzino.resx">
-      <DependentUpon>ScaricoMagazzino.cs</DependentUpon>
+    <EmbeddedResource Include="View\ScaricoMagazzinoView.resx">
+      <DependentUpon>ScaricoMagazzinoView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Test.resx">
       <DependentUpon>Test.cs</DependentUpon>

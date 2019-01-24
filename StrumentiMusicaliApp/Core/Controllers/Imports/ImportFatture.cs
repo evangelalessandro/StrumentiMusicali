@@ -377,7 +377,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Fatture
 						TrasportoACura = (a["Trasporto a cura"].ToString()),
 						Vettore = (a["Vettore"].ToString()),
 					};
-					fattura.TipoDocumento = EnTipoDocumento.Fattura;
+					fattura.TipoDocumento = EnTipoDocumento.FatturaDiCortesia;
 					if (fattura.Codice.StartsWith("N"))
 					{
 						fattura.TipoDocumento = EnTipoDocumento.NotaDiCredito;

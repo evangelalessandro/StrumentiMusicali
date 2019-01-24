@@ -23,7 +23,7 @@ namespace StrumentiMusicali.App.Settings
 			var list = UtilityView.GetProperties(datiIntestazioneStampaFattura);
 			foreach (var item in list)
 			{
-				if (string.IsNullOrEmpty( (string) item.GetValue(datiIntestazioneStampaFattura).ToString()))
+				if (item.GetValue(datiIntestazioneStampaFattura) ==null || string.IsNullOrEmpty( (string) item.GetValue(datiIntestazioneStampaFattura).ToString()))
 				{
 					var act = new Action(() => {
 						EventAggregator.Instance().Publish(

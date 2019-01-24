@@ -58,12 +58,6 @@ namespace StrumentiMusicali.App.View
 				{
 					dgvRighe.Columns[i].ColumnEdit = new RepositoryItemPictureEdit();
 				}
-				if (dgvRighe.Columns[i].FieldName.Contains("Data"))
-				{
-					dgvRighe.Columns[i].DisplayFormat.FormatString = "G";
-				}
-
-
 			}
 		}
 

@@ -3,8 +3,10 @@
 	public enum EnTipoDocumento
 	{
 		NonSpecificato=0,
-		Fattura=1,
-		NotaDiCredito=2,
+		FatturaDiCortesia=1,
+		RicevutaFiscale = 4,
+
+		NotaDiCredito = 2,
 		DDT=3,
 	}
 }

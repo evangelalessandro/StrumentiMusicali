@@ -16,7 +16,7 @@ namespace StrumentiMusicali.Library.Entity
 		public decimal ImponibileIva { get; set; }
 		public decimal TotaleIva { get; set; }
 		public decimal TotaleFattura { get; set; }
-		[Range(1,3,
+		[Range(1,4,
 		ErrorMessage = "Occorre specificare il tipo documento")]
 		public EnTipoDocumento TipoDocumento { get; set; }
 

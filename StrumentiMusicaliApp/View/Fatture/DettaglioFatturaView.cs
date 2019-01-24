@@ -102,7 +102,9 @@ namespace StrumentiMusicali.App.View
 			var listItem = new List<EnTipoDocumento>();
 			listItem.Add((EnTipoDocumento.NonSpecificato));
 			listItem.Add(EnTipoDocumento.DDT);
-			listItem.Add(EnTipoDocumento.Fattura);
+			listItem.Add(EnTipoDocumento.FatturaDiCortesia);
+			listItem.Add(EnTipoDocumento.RicevutaFiscale);
+
 			listItem.Add(EnTipoDocumento.NotaDiCredito);
 
 			cboTipoDocumento.DataSource = listItem.Select(a =>

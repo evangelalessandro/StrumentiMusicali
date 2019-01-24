@@ -89,7 +89,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 			{
 				case EnTipoDocumento.NonSpecificato:
 					return "";
-				case EnTipoDocumento.Fattura:
+				case EnTipoDocumento.FatturaDiCortesia:
+				case EnTipoDocumento.RicevutaFiscale:
 					prefix = "F";
 					break;
 				case EnTipoDocumento.NotaDiCredito:
@@ -178,7 +179,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void AddFattura(Add<Fattura> obj)
 		{
-			EditItem = new Fattura() { TipoDocumento = EnTipoDocumento.Fattura };
+			EditItem = new Fattura() { TipoDocumento = EnTipoDocumento.FatturaDiCortesia };
 			EditItem.Codice = CalcolaCodice();
 			EditItem.Data = DateTime.Now.Date;
 			ShowDettaglio();

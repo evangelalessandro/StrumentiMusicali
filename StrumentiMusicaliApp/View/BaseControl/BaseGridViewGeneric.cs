@@ -1,18 +1,14 @@
-﻿using DevExpress.XtraBars.Docking2010.Views;
-using DevExpress.XtraGrid.Views.Base.ViewInfo;
-using DevExpress.XtraGrid.Views.Grid;
+﻿using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Item.Base;
 using StrumentiMusicali.App.Core.MenuRibbon;
-using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Base;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
@@ -22,7 +18,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 {
 	public abstract partial class BaseGridViewGeneric<TBaseItem, TController, TEntity> : UserControl, IDisposable, Interfaces.ICloseSave
 		where TEntity : BaseEntity, new()
-		where TBaseItem : BaseItem<TEntity>,new()
+		where TBaseItem : BaseItem<TEntity>, new()
 		where TController : BaseControllerGeneric<TEntity, TBaseItem>
 	{
 		private System.Windows.Forms.Panel pnlGridView;
@@ -39,19 +35,19 @@ namespace StrumentiMusicali.App.View.BaseControl
 			InitializeComponent();
 			Init();
 			txtCerca.Text = controllerItem.TestoRicerca;
-			
+
 			this.dgvRighe.DoubleClick += DgvRighe_DoubleClick;
 			Controller = controllerItem;
 			controllerItem.RefreshList(null);
 			this.gridControl1.DataSource = controllerItem.DataSource;
 			this.Load += Control_Load;
 			if (File.Exists(getLayoutFile()))
-			{ 
+			{
 				dgvRighe.RestoreLayoutFromXml(getLayoutFile());
 			}
 
 			this.dgvRighe.FocusedRowChanged += DgvMaster_SelectionChanged;
-			
+
 			//this.dgvRighe.FocusedRowChanged += DgvMaster_SelectionChanged;
 
 			_selectSub = EventAggregator.Instance().
@@ -166,7 +162,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 		}
 		private string getLayoutFile()
 		{
-			var dir = Application.StartupPath+ @"\Layout\";
+			var dir = Application.StartupPath + @"\Layout\";
 			if (!System.IO.Directory.Exists(dir))
 				System.IO.Directory.CreateDirectory(dir);
 			return dir + "Layout_Grid_" + this.Name + ".xml";
@@ -181,7 +177,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			if (disposing && (components != null))
 			{
 				// free managed resources
-				
+
 				components.Dispose();
 			}
 			EventAggregator.Instance().UnSbscribe(_selectSub);
@@ -222,22 +218,26 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 		private void FormatNameColumn()
 		{
-			if (dgvRighe.Columns["ID"]!=null)
+			if (dgvRighe.Columns["ID"] != null)
 			{
 				dgvRighe.Columns["ID"].VisibleIndex = 0;
 			}
 			if (dgvRighe.Columns["Entity"] != null)
 			{
-				dgvRighe.Columns["Entity"].Visible= false;
+				dgvRighe.Columns["Entity"].Visible = false;
 			}
 			for (int i = 0; i < dgvRighe.Columns.Count; i++)
 			{
-				dgvRighe.Columns[i].Caption = 
+				dgvRighe.Columns[i].Caption =
 					UtilityView.GetTextSplitted(dgvRighe.Columns[i].Caption);
+
+				if (dgvRighe.Columns[i].FieldName.Contains("Data"))
+				{
+					dgvRighe.Columns[i].DisplayFormat.FormatString = "G";
+				}
 			}
 		}
-
-		public abstract  void FormatGrid();
+		public abstract void FormatGrid();
 
 		private void DgvMaster_SelectionChanged(object sender, EventArgs e)
 		{
@@ -290,8 +290,8 @@ namespace StrumentiMusicali.App.View.BaseControl
 			gridControl1.DataSource = Controller.DataSource;
 			dgvRighe.RefreshData();
 			FormatGrid();
-			if (itemSelected!=null)
-			await dgvRighe.SelezionaRiga(itemSelected.ID);
+			if (itemSelected != null)
+				await dgvRighe.SelezionaRiga(itemSelected.ID);
 		}
 
 
@@ -337,7 +337,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 			dgvRighe.RefreshData();
 			//dgvRighe.Update();
-				
+
 		}
 
 		private void DgvRighe_DoubleClick(object sender, EventArgs e)
@@ -356,7 +356,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 				//var p = g.CalcHitInfo(MousePosition);
 				if (gridHI.InRowCell)
 				{
-					 
+
 					//You handled a double click on row header
 					EventAggregator.Instance().Publish<Edit<TEntity>>(new Edit<TEntity>());
 				}
@@ -367,6 +367,6 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 
 		public void RaiseClose() => OnClose(this, new EventArgs());
-		
+
 	}
 }

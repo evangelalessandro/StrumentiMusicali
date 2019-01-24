@@ -6,7 +6,6 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers.Exports
 {
@@ -25,45 +24,61 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 
 			using (var uof = new UnitOfWork())
 			{
-				var list = uof.MagazzinoRepository.Find(a => true).GroupBy(a =>
-				new { Articolo = a.Articolo, Depo = a.Deposito.NomeDeposito })
+				var listArt = uof.ArticoliRepository.Find(a => true).Select(a=>new { a.Libro, a.Categoria, articolo = a }).ToList().
+					Select(a=>a.articolo).ToList();
 
-				.Select(a => new
+				var dt = ToDataTable(listArt.Select(a =>
+				new
 				{
-					Quantita = a.Sum(b => b.Qta),
-					a.Key.Articolo.Categoria,
-					a.Key.Articolo,
-					a.Key.Depo
-				});
-				foreach (var item in list.GroupBy(a => a.Depo).ToList())
+					a.ID,
+					Categoria = a.Categoria.Nome,
+					a.Categoria.Reparto,
+					a.Titolo,
+					Condizione = a.Condizione.ToString(),
+					a.CodiceABarre,
+					Prezzo = a.Prezzo.ToString("C2"),
+					a.Colore,
+					a.Marca,
+					a.Note1,
+					a.Note2,
+					a.Note3,
+					a.Rivenditore,
+					a.Testo,
+					a.Libro.Autore,
+					a.Libro.Edizione,
+					a.Libro.Edizione2,
+					a.Libro.Genere,
+					a.Libro.Ordine,
+					a.Libro.Settore
+				}
+
+				).ToList());
+
+				var qta =uof.MagazzinoRepository.Find(a => true)
+					.Select(a => new { a.ArticoloID, a.Deposito, a.Qta })
+					.GroupBy(a => new { a.ArticoloID, a.Deposito })
+					.Select(a => new { a.Key, sumQta = a.Sum(b => b.Qta) })
+					.ToList();
+
+				foreach (var item in uof.DepositoRepository.Find(a => true).ToList())
 				{
-					var dt = ToDataTable(item.Select(a => new
-					{
-						a.Articolo.ID,
-						Categoria = a.Articolo.Categoria.Nome,
-						a.Articolo.Categoria.Reparto,
-						a.Articolo.Titolo,
-						Condizione = a.Articolo.Condizione.ToString(),
-						a.Articolo.CodiceABarre,
-						Prezzo=a.Articolo.Prezzo.ToString("C2"),
-						a.Quantita,
-						a.Articolo.Colore,
-						a.Articolo.Marca,
-						a.Articolo.Note1,
-						a.Articolo.Note2,
-						a.Articolo.Note3,
-						a.Articolo.Rivenditore,
-						a.Articolo.Testo,
-						a.Articolo.Libro.Autore,
-						a.Articolo.Libro.Edizione,
-						a.Articolo.Libro.Edizione2,
-						a.Articolo.Libro.Genere,
-						a.Articolo.Libro.Ordine,
-						a.Articolo.Libro.Settore
-					}).ToList());
-					_excel.AddWorksheet(dt, item.Key);
+					dt.Columns.Add("Qta_" + item.NomeDeposito);
 
 				}
+				foreach (DataRow itemRow in dt.Rows)
+				{
+					var qtaArt = qta.FindAll(a => a.Key.ArticoloID.ToString() == itemRow["ID"].ToString()).ToList();
+					foreach (var itemQta in qtaArt)
+					{
+						itemRow["Qta_" + itemQta.Key.Deposito.NomeDeposito] = itemQta.sumQta;
+						qta.Remove(itemQta);
+					}
+					 
+					
+				}
+				_excel.AddWorksheet(dt, "Generale");
+
+
 			}
 
 			var newfile = Path.Combine(System.IO.Path.GetTempPath(), DateTime.Now.Ticks.ToString() + "_Magazzino.xlsx");

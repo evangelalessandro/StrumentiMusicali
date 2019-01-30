@@ -1,4 +1,5 @@
 ﻿using StrumentiMusicali.App.Core.Controllers;
+using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.Interfaces;
@@ -8,7 +9,6 @@ using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
@@ -23,17 +23,23 @@ namespace StrumentiMusicali.App.View
 
 		private ControllerRigheFatture _controllerRighe;
 		private Subscription<RebindItemUpdated<Fattura>> _bindSub;
+		private Subscription<FatturaCambiaTipoDoc> _cambioTipo;
 		public DettaglioFatturaView(ControllerFatturazione controllerFatturazione)
 			: base()
 		{
 			_controllerFatturazione = controllerFatturazione;
+			_cambioTipo = EventAggregator.Instance().Subscribe<FatturaCambiaTipoDoc>(AbilitaCambioTipoFatt);
 
 			InitializeComponent();
-			
 			UpdateViewByTipoDocumento();
 			_bindSub = EventAggregator.Instance().Subscribe<RebindItemUpdated<Fattura>>((a) => { RebindEditItem(); });
 		}
-		
+
+		private void AbilitaCambioTipoFatt(FatturaCambiaTipoDoc obj)
+		{
+			cboTipoDocumento.Enabled = true;
+		}
+
 		private void UpdateViewByTipoDocumento()
 		{
 			pnl3Basso.Visible = (_controllerFatturazione.EditItem.TipoDocumento != EnTipoDocumento.DDT);
@@ -52,7 +58,11 @@ namespace StrumentiMusicali.App.View
 			{
 				_controllerRighe.Dispose();
 			}
+
 			EventAggregator.Instance().UnSbscribe(_bindSub);
+
+			EventAggregator.Instance().UnSbscribe(_cambioTipo);
+
 			_controllerRighe = null;
 			foreach (Control item in tabPage2.Controls)
 			{
@@ -111,7 +121,7 @@ namespace StrumentiMusicali.App.View
 					new
 					{
 						ID = a,
-						Descrizione = UtilityView.GetTextSplitted( a.ToString())
+						Descrizione = UtilityView.GetTextSplitted(a.ToString())
 					}
 					).ToList();
 			cboTipoDocumento.DisplayMember = "Descrizione";
@@ -260,6 +270,9 @@ namespace StrumentiMusicali.App.View
 				ribPannelRighe.Enabled = tabControl1.SelectedTab == tabPage2 &&
 					_controllerFatturazione.SelectedItem.ID > 0;
 				GetMenu().ApplyValidation(_controllerFatturazione.EditItem.ID > 0);
+				var button= GetMenu().Tabs.First().Pannelli.SelectMany(a => a.Pulsanti).Where(a => a.Testo 
+						== ControllerFatturazione.PulsanteCambioTipoDoc).First();
+				button.Enabled = true;
 			}
 			this.UpdateViewByTipoDocumento();
 		}

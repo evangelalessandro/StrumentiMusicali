@@ -67,7 +67,11 @@ namespace StrumentiMusicali.App.View
 
 			EventAggregator.Instance().Subscribe<MovimentiUpdate>(RefreshData);
 			EventAggregator.Instance().Subscribe<ValidateViewEvent<Magazzino>>(
-				(a) => { this.Validate(); }
+				(a) => {
+					txtQta.Validate();
+					txtQta.Value = txtQta.Value;
+					this.Validate();
+				}
 				);
 
 			if (_controllerMagazzino.ArticoloFilter != null)
@@ -77,6 +81,7 @@ namespace StrumentiMusicali.App.View
 				_cboArticoli.Visible = false;
 				txtCodiceABarre.Visible = false;
 				pnlTop.Visible = false;
+				gridControl1.Visible = false;
 			}
 		}
 

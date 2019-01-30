@@ -240,6 +240,7 @@
     <Compile Include="Core\Events\Articoli\ImportMagExcel.cs" />
     <Compile Include="Core\Events\Articoli\ImportArticoliMulino.cs" />
     <Compile Include="Core\Events\Articoli\InvioArticoliCSV.cs" />
+    <Compile Include="Core\Events\Fatture\FatturaCambiaTipoDoc.cs" />
     <Compile Include="Core\Events\Generics\Add.cs" />
     <Compile Include="Core\Events\Generics\ApriAmbiente.cs" />
     <Compile Include="Core\Events\Generics\BaseGeneric.cs" />

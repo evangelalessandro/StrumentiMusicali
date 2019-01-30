@@ -16,7 +16,6 @@ using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers
@@ -40,9 +39,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 		private Subscription<Save<Fattura>> _sub4;
 		private Subscription<Edit<Fattura>> _sub3;
 		private Subscription<Add<Fattura>> _sub2;
-		 
+
 		public new void Dispose()
-		{ 
+		{
 			EventAggregator.Instance().UnSbscribe(_sub2);
 			EventAggregator.Instance().UnSbscribe(_sub3);
 			EventAggregator.Instance().UnSbscribe(_sub4);
@@ -226,7 +225,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 					using (var stampaFattura = new StampaFattura())
 					{
 						var setting = DatiIntestazioneStampaFatturaValidator.ReadSetting();
-						 
+
 						if (DatiIntestazioneStampaFatturaValidator.Validate())
 						{
 							stampaFattura.Stampa(
@@ -287,7 +286,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				{
 					using (var stampa = new FattElettronica())
 					{
-						
+
 						using (var uof = new UnitOfWork())
 						{
 							uof.DatiMittenteRepository.Find(a => 1 == 1).FirstOrDefault();
@@ -322,7 +321,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 								throw new MessageException("Tipo pagamento non gestito");
 							}
 							header.Data = fatt.Fattura.Data;
-							
+
 							header.ImportoTotaleDocumento = CalcolaTotali(fatt.Fattura).TotaleFattura;
 
 							stampa.FattureList.Add(header);
@@ -354,9 +353,19 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 			AggiungiComandiStampa(GetMenu().Tabs[0], false);
 		}
-
+		public static readonly string PulsanteCambioTipoDoc = "Cambio tipo documento";
 		public void AggiungiComandiStampa(MenuRibbon.RibbonMenuTab tab, bool editItem)
 		{
+			if (editItem)
+			{
+				var pnlTipoDoc = tab.Add("Tipo documento");
+
+				var fattCortesia = pnlTipoDoc.Add(PulsanteCambioTipoDoc, Properties.Resources.Edit, false);
+				fattCortesia.Click += (a, e) =>
+				{
+					EventAggregator.Instance().Publish<FatturaCambiaTipoDoc>(new FatturaCambiaTipoDoc());
+				};
+			}
 			var pnlStampa = tab.Add("Stampa");
 
 			var ribStampa = pnlStampa.Add("Avvia stampa", Properties.Resources.Print_48, true);
@@ -408,8 +417,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 								EventAggregator.Instance().Publish<Save<Cliente>>
 								(new Save<Cliente>());
 							};
-							ShowView(view, enAmbiente.Cliente,null,false);
-							ViewFactory.AddView(enAmbiente.Cliente,view);
+							ShowView(view, enAmbiente.Cliente, null, false);
+							ViewFactory.AddView(enAmbiente.Cliente, view);
 						}
 						//else
 						//{
@@ -454,7 +463,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 						PIVA = a.PIVA,
 						Codice = a.Codice,
 						RagioneSociale = a.RagioneSociale,
-						TipoDocumento =Enum.GetName(typeof( EnTipoDocumento), a.TipoDocumento)
+						TipoDocumento = Enum.GetName(typeof(EnTipoDocumento), a.TipoDocumento)
 					}).ToList();
 				}
 
@@ -462,7 +471,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 			catch (Exception ex)
 			{
-				 ExceptionManager.ManageError(ex);  
+				ExceptionManager.ManageError(ex);
 
 			}
 		}

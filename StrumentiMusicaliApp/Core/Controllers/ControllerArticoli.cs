@@ -502,7 +502,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 							&& (a.Marca.Contains(FiltroMarca) && FiltroMarca.Length > 0
 							|| FiltroMarca == "")
 							);
-						foreach (var ricerca in datoRicerca.Where(a => a.Length > 0).ToList())
+
+						var listRicerche = datoRicerca.Where(a => a.Length > 0).ToList();
+						foreach (var ricerca in listRicerche)
 						{
 
 							datList = datList.Where(a =>
@@ -513,10 +515,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 							  || a.Categoria.Nome.Contains(ricerca)
 							  || a.Categoria.Reparto.Contains(ricerca)
 							  || a.Categoria.CategoriaCondivisaCon.Contains(ricerca)
+
+							  || (((a.CodiceABarre.Equals(ricerca) && a.CodiceABarre.Length>0) || a.CodiceABarre.Length==0))
 							);
-
-
 						}
+						
+
 
 
 

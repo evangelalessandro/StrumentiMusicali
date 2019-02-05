@@ -16,17 +16,17 @@ namespace StrumentiMusicali.App.Core
 			Titolo = articolo.Titolo;
 			Marca = articolo.Marca;
 			CodiceABarre = articolo.CodiceABarre;
-			CaricaInEcommerce = articolo.CaricainECommerce;
-			CaricaInMercatino = articolo.CaricaInMercatino;
+			//CaricaInEcommerce = articolo.CaricainECommerce;
+			//CaricaInMercatino = articolo.CaricaInMercatino;
 			Categoria = articolo.Categoria.Nome;
 			Reparto= articolo.Categoria.Reparto;
 			ID = articolo.ID;
 			Entity = articolo;
 			TagImport = articolo.TagImport;
-
+			PrezzoAcquisto = articolo.PrezzoAcquisto.ToString("C2");
 			Prezzo = articolo.Prezzo.ToString("C2");
-			DataCreazione = articolo.DataCreazione;
-			DataModifica = articolo.DataUltimaModifica;
+			//DataCreazione = articolo.DataCreazione;
+			//DataModifica = articolo.DataUltimaModifica;
 		}
 		
 		public string Reparto { get; set; }
@@ -36,12 +36,14 @@ namespace StrumentiMusicali.App.Core
 		public string CodiceABarre { get; set; }
 		public string TagImport { get; }
 		public string Prezzo { get; set; }
-		public int Quantita { get; set; }
-		public bool CaricaInEcommerce { get; set; } 
-		public bool CaricaInMercatino { get; set; } 
+		public string PrezzoAcquisto { get; set; }
+		public int QuantitaNegozio { get; set; }
+		public int QuantitaTotale { get; set; }
+		//public bool CaricaInEcommerce { get; set; } 
+		//public bool CaricaInMercatino { get; set; } 
 
-		public DateTime DataCreazione { get; set; }
-		public DateTime DataModifica { get; set; }
+		//public DateTime DataCreazione { get; set; }
+		//public DateTime DataModifica { get; set; }
 
 		//public bool Pinned { get; set; }
 

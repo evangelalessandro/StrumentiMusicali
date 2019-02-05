@@ -55,11 +55,8 @@ namespace StrumentiMusicali.App.View.BaseControl
 				(a) =>
 				 {
 					 {
-						 var T = new Task(() =>
-						 {
-							 dgvRighe.SelezionaRiga(a.ItemSelected.ID);
-						 });
-						 Task.WhenAll(new Task[] { T });
+						 dgvRighe.SelezionaRiga(a.ItemSelected.ID);
+						  
 					 };
 				 }
 			);
@@ -187,7 +184,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			base.Dispose(disposing);
 		}
 
-		public new void Dispose()
+		public virtual void Dispose()
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
@@ -291,7 +288,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			dgvRighe.RefreshData();
 			FormatGrid();
 			if (itemSelected != null)
-				await dgvRighe.SelezionaRiga(itemSelected.ID);
+				dgvRighe.SelezionaRiga(itemSelected.ID);
 		}
 
 

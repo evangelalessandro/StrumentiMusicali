@@ -22,6 +22,6 @@ namespace StrumentiMusicali.App.Core.Events.Tab
 		public string Text { get; set; }
 		public enAmbiente Ambiente { get; set; }
 
-		public TabPage Tab { get; set; }
+		public DevExpress.XtraTab.XtraTabPage Tab { get; set; }
 	}
 }

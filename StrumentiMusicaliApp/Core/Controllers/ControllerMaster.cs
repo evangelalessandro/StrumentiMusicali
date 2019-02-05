@@ -48,9 +48,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void ExportMag(ExportMagazzino obj)
 		{
-			using (var export = new Controllers.Exports.ExportMagazzino())
+			using (var mouseman = new Manager.CursorManager())
 			{
-				export.Stampa();
+				using (var export = new Controllers.Exports.ExportMagazzino())
+				{
+					export.Stampa();
+				}
 			}
 		}
 
@@ -132,62 +135,54 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 				case enAmbiente.ArticoliList:
 
-					using (var controller = new ControllerArticoli())
-					{
+					var controllerArt = new ControllerArticoli();
+					var viewArt = new ArticoliListView(controllerArt);
+					this.ShowView(viewArt, obj.TipoEnviroment, controllerArt);
 
-						using (var view = new ArticoliListView(controller))
-						{
-							this.ShowView(view, obj.TipoEnviroment, controller);
-						}
-					}
+
 					break;
 				case enAmbiente.UtentiList:
 
-					using (var controller = new ControllerUtenti())
-					{
+					var controllerUtenti = new ControllerUtenti();
 
-						using (var view = new UtentiListView(controller))
-						{
-							this.ShowView(view, obj.TipoEnviroment, controller);
-						}
-					}
+
+					var viewUtenti = new UtentiListView(controllerUtenti);
+
+					this.ShowView(viewUtenti, obj.TipoEnviroment, controllerUtenti);
+
+
 					break;
 
 				case enAmbiente.FattureList:
-					using (var controller = new ControllerFatturazione())
-					{
-						using (var view = new FattureListView(controller, enAmbiente.FattureList, enAmbiente.Fattura))
-						{
-							ShowView(view, enAmbiente.FattureList, controller);
-						}
-					}
+					var controllerFatt = new ControllerFatturazione();
+
+					var viewFatt = new FattureListView(controllerFatt, enAmbiente.FattureList, enAmbiente.Fattura);
+
+					ShowView(viewFatt, enAmbiente.FattureList, controllerFatt);
+
 					break;
 				case enAmbiente.LogViewList:
-					using (var controllerLog = new ControllerLog())
-					{
-						using (var view = new LogViewList(controllerLog))
-						{
-							this.ShowView(view, obj.TipoEnviroment, controllerLog);
-						}
-					}
+					var controllerLog = new ControllerLog();
+
+					var viewLog = new LogViewList(controllerLog);
+
+					this.ShowView(viewLog, obj.TipoEnviroment, controllerLog);
+
+
 					break;
 				case enAmbiente.ClientiList:
-					using (var controller = new ControllerClienti())
-					{
-						using (var view = new ClientiListView(controller))
-						{
-							this.ShowView(view, obj.TipoEnviroment, controller);
-						}
-					}
+					var controllerClienti = new ControllerClienti();
+
+					var viewCli = new ClientiListView(controllerClienti);
+
+					this.ShowView(viewCli, obj.TipoEnviroment, controllerClienti);
 					break;
 				case enAmbiente.DepositoList:
-					using (var controller = new ControllerDepositi())
-					{
-						using (var view = new DepositiListView(controller))
-						{
-							this.ShowView(view, obj.TipoEnviroment, controller);
-						}
-					}
+					var controllerDep = new ControllerDepositi();
+
+					var viewDep = new DepositiListView(controllerDep);
+
+					this.ShowView(viewDep, obj.TipoEnviroment, controllerDep);
 					break;
 				case enAmbiente.SettingFatture:
 
@@ -207,15 +202,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 				case enAmbiente.Articolo:
 					break;
 				case enAmbiente.Magazzino:
-					break;
-				case enAmbiente.ScaricoMagazzino:
-					using (var controller = new ControllerMagazzino())
-					{
-						using (var view = new View.ScaricoMagazzinoView(controller))
-						{
-							this.ShowView(view, enAmbiente.ScaricoMagazzino, controller);
-						}
-					}
 					break;
 
 				case enAmbiente.Cliente:
@@ -255,7 +241,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 					setItem.PecConfig = new Library.Entity.PecConfig();
 				}
 
-				using (var view = new GenericSettingView(setItem))
+				var view = new GenericSettingView(setItem);
 				{
 					view.OnSave += (a, b) =>
 					{
@@ -277,7 +263,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			var setItem = DatiIntestazioneStampaFatturaValidator.ReadSetting();
 
-			using (var view = new GenericSettingView(setItem))
+			var view = new GenericSettingView(setItem);
 			{
 				view.OnSave += (a, b) =>
 				{
@@ -301,7 +287,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			var settingSito = SettingSitoValidator.ReadSetting();
 
-			using (var view = new GenericSettingView(settingSito))
+			var view = new GenericSettingView(settingSito);
 			{
 				view.OnSave += (a, b) =>
 				{

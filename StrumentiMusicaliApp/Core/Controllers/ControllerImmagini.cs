@@ -45,7 +45,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 			// free native resources if there are any.
 		}
-		public new void Dispose()
+		public override void Dispose()
 		{
 			base.Dispose();
 			Dispose(true);

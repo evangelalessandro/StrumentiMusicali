@@ -10,5 +10,8 @@ namespace StrumentiMusicali.Library.Entity
 		[Index(IsUnique = true)]
 		[StringLength(20,ErrorMessage = "Il nome deve essere univoco")]
 		public string NomeDeposito { get; set; }
+
+		
+		public bool Principale { get; set; }
 	}
 }

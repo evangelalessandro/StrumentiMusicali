@@ -34,30 +34,35 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			var member = enumValue.GetType().GetMember(enumValue.ToString()).FirstOrDefault();
 			return (T)member?.GetCustomAttributes(typeof(T), false).FirstOrDefault();
 		}
-		public void ShowView(UserControl view, enAmbiente ambiente, BaseController controller = null, bool disposeForm = true, bool forceFormView=false)
+		public void ShowView(UserControl view, enAmbiente ambiente, BaseController controller = null, bool disposeForm = true, bool forceFormView = false)
 		{
 			var attr = GetAttribute<UIAmbienteAttribute>(ambiente);
 
-			if (ModalitàAForm || (attr!=null && attr.OnlyViewInForm) || forceFormView)
+			if (ModalitàAForm || (attr != null && attr.OnlyViewInForm) || forceFormView)
 			{
 				AggiungiInForm(view, ambiente, controller, disposeForm);
 			}
 			else
 			{
-				AggiungiTab(view, ambiente, controller, disposeForm);
-
+				using (var curs = new Manager.CursorManager())
+				{
+					AggiungiTab(view, ambiente, controller, disposeForm);
+				}
 			}
 		}
-		
-		public static List<( enAmbiente Ambiente, TabPage Pagina, MenuTab MenuPagina)> AmbientiAttivi { get; set; } = new List<(enAmbiente Ambiente, TabPage Pagina, MenuTab MenuPagina)>();
+
+		public static List<(enAmbiente Ambiente, DevExpress.XtraTab.XtraTabPage Pagina, MenuTab MenuPagina)> AmbientiAttivi { get; set; }
+			= new List<(enAmbiente Ambiente, DevExpress.XtraTab.XtraTabPage Pagina, MenuTab MenuPagina)>();
 		private void AggiungiTab(UserControl view, enAmbiente ambiente, BaseController controller, bool disposeForm)
 		{
 			var attr = GetAttribute<UIAmbienteAttribute>(ambiente);
 
-			var currentAlreadyPresentItem = AmbientiAttivi.Where(a => a.Ambiente == ambiente).DefaultIfEmpty((enAmbiente.NonSpecificato, null,null)).FirstOrDefault();
-			if (currentAlreadyPresentItem.Ambiente==ambiente && attr!=null && attr.Exclusive)
-			{ 
-				((TabControl)currentAlreadyPresentItem.Pagina.Parent).SelectedTab= currentAlreadyPresentItem.Pagina;
+			var currentAlreadyPresentItem = AmbientiAttivi.Where(a => a.Ambiente == ambiente).DefaultIfEmpty(
+				(enAmbiente.NonSpecificato, null, null)).FirstOrDefault();
+			if (currentAlreadyPresentItem.Ambiente == ambiente && attr != null && attr.Exclusive)
+			{
+				((DevExpress.XtraTab.XtraTabControl)currentAlreadyPresentItem.Pagina.Parent).SelectedTabPage
+					= currentAlreadyPresentItem.Pagina;
 				currentAlreadyPresentItem.MenuPagina.Tabs[0].PerformSelect();
 				return;
 			}
@@ -92,9 +97,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 			var newTab = arg.Tab;
 
-			TabControl tabControl = ((TabControl)newTab.Parent);
+			var tabControl = ((DevExpress.XtraTab.XtraTabControl)newTab.Parent);
 
-			((TabControl)newTab.Parent).ControlRemoved += (b, c) =>
+			((DevExpress.XtraTab.XtraTabControl)newTab.Parent).ControlRemoved += (b, c) =>
 			{
 				if (c.Control == newTab)
 				{
@@ -102,33 +107,33 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 						closeSave.RaiseClose();
 				}
 			};
-			Action actionSelectedIndex = new Action(() =>
-			{
-				var visible = (tabControl.SelectedTab == newTab);
-
-				foreach (var item in menu.Tabs)
-				{
-					item.Visible = visible;
-					if (visible)
-					{
-						item.PerformSelect();
-					}
-
-				}
-			});
 			AmbientiAttivi.Add((ambiente, newTab, menu));
 
-			tabControl.SelectedIndexChanged += (b, c) =>
+			tabControl.SelectedPageChanged += (b, c) =>
 			  {
 
-				  if (actionSelectedIndex != null)
+				  var visible = (tabControl.SelectedTabPage == newTab);
+
+				  foreach (var item in menu.Tabs)
 				  {
-					  actionSelectedIndex.Invoke();
+					  item.Visible = visible;
+					  if (visible)
+					  {
+						  item.PerformSelect();
+					  }
+
 				  }
+				  //if (actionSelectedIndex != null)
+				  //{
+				  // actionSelectedIndex.Invoke();
+				  //}
 
 			  };
+
 			view.Dock = DockStyle.Fill;
 			newTab.Controls.Add(view);
+
+			tabControl.SelectedTabPage = newTab;
 
 			//view.BackColor = Color.Transparent;
 			//view.ForeColor= Color.White;
@@ -139,11 +144,25 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 					b, c) =>
 				{
 					EventAggregator.Instance().Publish(new RemoveNewTab(newTab));
+					if (closed)
+						return;
 					closed = true;
 					if (!disposeForm)
 					{
 						newTab.Controls.Remove(view);
 					}
+					AmbientiAttivi.RemoveAll(a => a.Ambiente == ambiente);
+
+					RemoveMenu(menu, _ribbonMaster);
+
+					view.Dispose();
+					if (controller != null)
+					{
+						controller.Dispose();
+						GC.SuppressFinalize(controller);
+					}
+
+
 				};
 			}
 			if (menu != null)
@@ -151,20 +170,18 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 				//seleziono la tab
 				menu.Tabs[0].PerformSelect();
 			}
-			while (closed == false)
-			{
-				Application.DoEvents();
-				if (_closeMain)
-					break;
-			}
-			AmbientiAttivi.RemoveAll(a=>a.Ambiente== ambiente);
+			//while (closed == false)
+			//{
+			//	Application.DoEvents();
+			//	if (_closeMain)
+			//		break;
+			//}
 
-			RemoveMenu(menu, _ribbonMaster);
-			actionSelectedIndex = null;
 
 			//ribbonMaster.ActiveTab = ribbonMaster.PreviousTab;
 		}
-		static bool _closeMain;
+
+		private static bool _closeMain;
 		private void RemoveMenu(MenuTab menu, Ribbon ribbon)
 		{
 
@@ -197,7 +214,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		/// </summary>
 		private static Ribbon _ribbonMaster = null;
 		private static Form _MainForm;
-		private static List<Form> _PreviusForm=new List<Form>();
+		private static List<Form> _PreviusForm = new List<Form>();
 		private void AggiungiInForm(UserControl view, enAmbiente ambiente, BaseController controller, bool disposeForm)
 		{
 			Ribbon ribbon1 = null;
@@ -272,19 +289,19 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 						_MainForm = frm;
 						_PreviusForm.Add(frm);
 						frm.FormClosing += Frm_FormClosing;
-						
+
 						frm.ShowDialog();
 
 					}
 					else
 					{
-						var last=_PreviusForm.Last();
+						var last = _PreviusForm.Last();
 						_PreviusForm.Add(frm);
-						
+
 						frm.ShowDialog(last);
 						_PreviusForm.Remove(frm);
 					}
-					
+
 
 					SavSettingForm(ambiente, frm);
 
@@ -311,8 +328,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 					if (!disposeForm && frm != null)
 					{
 						frm.Controls.Remove(view);
-
-
+						view.Dispose();
+						GC.SuppressFinalize(view);
 					}
 				}
 			}
@@ -333,7 +350,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			_closeMain = true;
 
 		}
-		
+
 		private void AddStatusBarProgress(Form form)
 		{
 			// StatusBar
@@ -404,7 +421,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 					return "Articolo";
 
 				case enAmbiente.ArticoliList:
-					return "Articoli";
+					return "Gestione Articoli";
 
 				case enAmbiente.Magazzino:
 					return "Magazzino";
@@ -673,8 +690,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			{
 				setting.Form = new List<(enAmbiente ambiente, FormRicerca form)>();
 			}
-			if (setting.Form.Where(a => a.ambiente == ambiente).Count()==0)
-			{ 
+			if (setting.Form.Where(a => a.ambiente == ambiente).Count() == 0)
+			{
 				setting.Form.Add((ambiente, new FormRicerca()));
 				SaveSetting(setting);
 			}
@@ -695,7 +712,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 				JsonConvert.SerializeObject(settings));
 		}
 
-		public void Dispose()
+		public virtual void Dispose()
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);

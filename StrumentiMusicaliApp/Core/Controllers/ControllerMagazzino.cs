@@ -87,7 +87,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		public event EventHandler<EventArgs> OnSave;
 		public event EventHandler<EventArgs> OnClose;
 
-		public new void Dispose()
+		public override void Dispose()
 		{
 			base.Dispose();
 			EventAggregator.Instance().UnSbscribe(sub1);

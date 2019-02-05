@@ -97,6 +97,8 @@ namespace StrumentiMusicali.App.View
 
 		private void RefreshData(MovimentiUpdate obj)
 		{
+			if (this.IsDisposed)
+				return;
 			lblTitoloArticolo.ForeColor = System.Drawing.Color.Red;
 			lblGiacenzaArticolo.Text = "-";
 			var movimenti = new List<MovimentoItem>();

@@ -34,6 +34,23 @@ namespace StrumentiMusicali.Library.Model
 					result.ValidationErrors.Add(item);
 				} 
 			}
+			else if (entityEntry.Entity is Deposito)
+			{
+				var deposito = entityEntry.Entity as Deposito;
+				if (deposito.Principale)
+				{
+					using (var uof=new UnitOfWork())
+					{
+						var firstDepPrin= uof.DepositoRepository.Find(a => a.Principale && a.ID != deposito.ID).FirstOrDefault();
+						if (firstDepPrin!=null)
+						{
+							firstDepPrin.Principale = false;
+							uof.DepositoRepository.Update(firstDepPrin);
+							uof.Commit();
+						}
+					}
+				}
+			}
 			if (result.ValidationErrors.Count > 0)
 			{
 				return result;

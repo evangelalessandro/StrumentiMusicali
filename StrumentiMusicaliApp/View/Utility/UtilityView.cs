@@ -83,7 +83,7 @@ namespace StrumentiMusicali.App.View.Utility
 			}
 			
 		}
-		public static async Task SelezionaRiga(this GridView dataGrid, int idItem)
+		public static void SelezionaRiga(this GridView dataGrid, int idItem)
 		{
 			var colVisible = -1;
 			for (int i = 0; i < dataGrid.Columns.Count; i++)

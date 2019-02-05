@@ -1,4 +1,6 @@
-﻿using NLog;
+﻿using DevExpress.XtraTab;
+using DevExpress.XtraTab.ViewInfo;
+using NLog;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Controllers.Exports;
 using StrumentiMusicali.App.Core.Events.Articoli;
@@ -6,7 +8,6 @@ using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Events.Tab;
 using StrumentiMusicali.App.Core.MenuRibbon;
-using StrumentiMusicali.App.CustomComponents;
 using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.Library.Core;
@@ -21,7 +22,7 @@ namespace StrumentiMusicali.App
 		private BaseController _baseController;
 
 		private MenuTab _menuTab = null;
-		private TabCustom tab;
+		private DevExpress.XtraTab.XtraTabControl tab;
 		public MainView(BaseController baseController)
 		{
 			_baseController = baseController;
@@ -29,24 +30,40 @@ namespace StrumentiMusicali.App
 
 			_logger.Debug("Form main init");
 
-			tab = new TabCustom() { Dock = DockStyle.Fill, AllowAdd = false };
+			tab = new DevExpress.XtraTab.XtraTabControl
+			{
+				Dock = DockStyle.Fill,
+				ClosePageButtonShowMode = DevExpress.XtraTab.ClosePageButtonShowMode.InAllTabPageHeaders,
+				HeaderButtonsShowMode = DevExpress.XtraTab.TabButtonShowMode.Always
+			};
+			tab.CloseButtonClick += Tab_CloseButtonClick;
 			this.Controls.Add(tab);
 
-			
+
 			EventAggregator.Instance().Subscribe<GetNewTab>(TakeNewTab);
 			EventAggregator.Instance().Subscribe<RemoveNewTab>(RemoveTab);
 
-			
+
+		}
+
+
+
+		private void Tab_CloseButtonClick(object sender, System.EventArgs e)
+		{
+			ClosePageButtonEventArgs arg = e as ClosePageButtonEventArgs;
+			tab.TabPages.Remove(arg.Page as XtraTabPage);
 		}
 
 		private void RemoveTab(RemoveNewTab obj)
 		{
-			tab.RemoveTab(obj.Tab);
+			tab.TabPages.Remove(obj.Tab);
 		}
 
 		private void TakeNewTab(GetNewTab obj)
 		{
-			obj.Tab = tab.AddTab(obj.Text, obj.Ambiente.ToString());
+			obj.Tab = tab.TabPages.Add(obj.Text);
+
+			obj.Tab.Tag = obj.Ambiente;
 
 		}
 
@@ -152,9 +169,9 @@ namespace StrumentiMusicali.App
 		private void AggiungiPrincipale()
 		{
 			var tabImportExport = _menuTab.Add(@"Principale");
-			var panel1 = tabImportExport.Add("Ambienti");
 			if (LoginData.utenteLogin.Fatturazione)
 			{
+				var panel1 = tabImportExport.Add("Ambienti Fatturazione");
 				var ribFatt = panel1.Add("Fatturazione", Properties.Resources.Invoice);
 				ribFatt.Click += (s, e) =>
 				{
@@ -174,7 +191,8 @@ namespace StrumentiMusicali.App
 			//		EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ScaricoMagazzino));
 			//	};
 			//}
-			var ribArticoli = panel1.Add("Articoli", Properties.Resources.StrumentoMusicale);
+			var panel2 = tabImportExport.Add("Gestione articoli");
+			var ribArticoli = panel2.Add("Gestione articoli", Properties.Resources.StrumentoMusicale);
 			ribArticoli.Click += (s, e) =>
 			{
 				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ArticoliList));
@@ -182,8 +200,8 @@ namespace StrumentiMusicali.App
 			if (LoginData.utenteLogin.AdminUtenti)
 			{
 
-				var panel2 = tabImportExport.Add("Utenti");
-				var ribUtenti = panel2.Add("Login", Properties.Resources.Utenti);
+				var panel3 = tabImportExport.Add("Utenti");
+				var ribUtenti = panel3.Add("Utenti Login", Properties.Resources.Utenti);
 				ribUtenti.Click += (s, e) =>
 				{
 					EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.UtentiList));

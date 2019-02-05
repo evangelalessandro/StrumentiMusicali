@@ -4,21 +4,18 @@ using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Data;
-using System.Data.OleDb;
-using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers.Imports
 {
 	public class ImportCavalloPazzoExcel : BaseImportExcel, IDisposable
 	{
 		public ImportCavalloPazzoExcel()
-			:base()
+			: base()
 		{
-			
+
 		}
-		
+
 		protected override void Import()
 		{
 			using (var uof = new UnitOfWork())
@@ -84,7 +81,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 				articolo.Condizione = enCondizioneArticolo.Nuovo;
 				articolo.Prezzo = (item.PrezzoVendita);
 				articolo.CodiceABarre = item.CodiceABarre;
-				var categoriaSel = listCategorie.Where(a => 
+				var categoriaSel = listCategorie.Where(a =>
 				a.Nome.ToUpper() == item.Categoria.ToUpper()).FirstOrDefault();
 				if (categoriaSel == null)
 				{
@@ -109,7 +106,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 				magItem.Qta = item.Quantita;
 				magItem.Articolo = articolo;
 				magItem.Deposito = deposito;
-				magItem.PrezzoAcquisto = 0;
+				
 
 				uof.MagazzinoRepository.Add(magItem);
 				ProgressManager.Instance().Value++;
@@ -170,9 +167,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 					magItem.Articolo = articolo;
 					magItem.Deposito = deposito;
 					decimal prezzoAcq = 0;
-					if (decimal.TryParse(item.PrezzoAcq,out prezzoAcq))
-					magItem.PrezzoAcquisto = prezzoAcq;
-
+					if (decimal.TryParse(item.PrezzoAcq, out prezzoAcq))
+					{
+						articolo.PrezzoAcquisto = prezzoAcq;
+					}
 					uof.MagazzinoRepository.Add(magItem);
 					ProgressManager.Instance().Value++;
 				}
@@ -189,7 +187,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 			LIBRI,
 			strum
 		}
-		
+
 		private void ImportArticoli(UnitOfWork uof, Deposito deposito, System.Collections.Generic.List<Categoria> listCategorie)
 		{
 			DataTable dt = ReadDatatable(enNomeTabellaExcel.artic.ToString());
@@ -233,7 +231,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 
 					articolo.Titolo = item.Marca + " " + item.Articolo;
 
-					if (!string.IsNullOrEmpty (item.Varie1) && !item.Varie1.Contains( "?"))
+					if (!string.IsNullOrEmpty(item.Varie1) && !item.Varie1.Contains("?"))
 						articolo.Titolo += " " + item.Varie1;
 
 					articolo.Rivenditore = item.Rivenditore;
@@ -241,6 +239,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 					articolo.Note2 = item.Varie2;
 					articolo.Note3 = item.Varie3;
 					articolo.Condizione = enCondizioneArticolo.NonSpecificato;
+					articolo.PrezzoAcquisto = decimal.Parse(item.PrezzoAcq);
 
 					articolo.TagImport = "MulinoArticoli";
 					magItem.Qta = int.Parse(item.Quantita);
@@ -260,6 +259,6 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 
 		}
 
-		
+
 	}
 }

@@ -160,10 +160,12 @@ namespace StrumentiMusicali.App.Core.Controllers.Imports
 						magItem.Articolo = articolo;
 						magItem.Deposito = deposito;
 						if (!string.IsNullOrEmpty(item.PrezzoAcq) && item.PrezzoAcq.Trim().Length > 0)
-							magItem.PrezzoAcquisto = decimal.Parse(item.PrezzoAcq);
+						{
+							articolo.PrezzoAcquisto = decimal.Parse(item.PrezzoAcq);
+						}
 						else
 						{
-							magItem.PrezzoAcquisto = 0;
+							articolo.PrezzoAcquisto = 0;
 						}
 						magItem.Articolo = articolo;
 						//uof.ArticoliRepository.Find(a=>a.)

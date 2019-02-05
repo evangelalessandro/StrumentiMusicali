@@ -13,19 +13,40 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 	public class ExportMagazzino : IDisposable
 	{
 		private ClosedXML.Excel.XLWorkbook _excel;
+		public bool SoloLibriMancanti { get; set; }
 		public ExportMagazzino()
 		{
-
-			_excel = new ClosedXML.Excel.XLWorkbook();
 		}
 		public void Stampa()
 		{
+			SoloLibriMancanti = (MessageManager.QuestionMessage("Vuoi solo i libri mancanti?"));
+
+			_excel = new ClosedXML.Excel.XLWorkbook();
 
 
 			using (var uof = new UnitOfWork())
 			{
 				var listArt = uof.ArticoliRepository.Find(a => true).Select(a=>new { a.Libro, a.Categoria, articolo = a }).ToList().
 					Select(a=>a.articolo).ToList();
+
+				var qta = uof.MagazzinoRepository.Find(a => true)
+					.Select(a => new { a.ArticoloID, a.Deposito, a.Qta })
+					.GroupBy(a => new { a.ArticoloID, a.Deposito })
+					.Select(a => new { a.Key, sumQta = a.Sum(b => b.Qta) })
+					.ToList();
+				if (SoloLibriMancanti)
+				{
+					qta = qta.Where(a => a.sumQta == 0 && a.Key.Deposito.Principale).ToList();
+					listArt=listArt.Where(a => qta.Select(b => b.Key.ArticoloID).Contains(a.ID)).ToList();
+
+					listArt=listArt.Where(a => !string.IsNullOrEmpty(a.Libro.Autore)
+								|| !string.IsNullOrEmpty(a.Libro.Edizione)
+								|| !string.IsNullOrEmpty(a.Libro.Genere)
+								|| !string.IsNullOrEmpty(a.Libro.Settore)
+								|| a.Categoria.Nome.Contains("libr")
+
+								).ToList();
+				}
 
 				var dt = ToDataTable(listArt.Select(a =>
 				new
@@ -37,6 +58,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 					Condizione = a.Condizione.ToString(),
 					a.CodiceABarre,
 					Prezzo = a.Prezzo.ToString("C2"),
+					PrezzoAcquisto = a.PrezzoAcquisto.ToString("C2"),
 					a.Colore,
 					a.Marca,
 					a.Note1,
@@ -54,13 +76,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 
 				).ToList());
 
-				var qta =uof.MagazzinoRepository.Find(a => true)
-					.Select(a => new { a.ArticoloID, a.Deposito, a.Qta })
-					.GroupBy(a => new { a.ArticoloID, a.Deposito })
-					.Select(a => new { a.Key, sumQta = a.Sum(b => b.Qta) })
-					.ToList();
-
-				foreach (var item in uof.DepositoRepository.Find(a => true).ToList())
+				
+				foreach (var item in uof.DepositoRepository.Find(a => (a.Principale && SoloLibriMancanti) || !SoloLibriMancanti).ToList())
 				{
 					dt.Columns.Add("Qta_" + item.NomeDeposito);
 

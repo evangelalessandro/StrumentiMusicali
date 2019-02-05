@@ -10,11 +10,11 @@ namespace StrumentiMusicali.App.Core.Events.Tab
 {
 	public class RemoveNewTab
 	{
-		public RemoveNewTab(TabPage tab)
+		public RemoveNewTab(DevExpress.XtraTab.XtraTabPage tab)
 		{
 			Tab = tab;
 		}
 		
-		public TabPage Tab { get; set; }
+		public DevExpress.XtraTab.XtraTabPage Tab { get; set; }
 	}
 }

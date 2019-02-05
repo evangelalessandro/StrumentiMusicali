@@ -2,6 +2,7 @@
 using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Events.Image;
+using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Forms;
 using StrumentiMusicali.App.Settings;
@@ -75,8 +76,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			}
 		}
 
-		public new void Dispose()
-
+		public override void Dispose()
 		{
 			base.Dispose();
 			EventAggregator.Instance().UnSbscribe(sub1);
@@ -119,9 +119,36 @@ namespace StrumentiMusicali.App.Core.Controllers
 						using (var view = new View.ScaricoMagazzinoView(depo))
 						{
 							ShowView(view, enAmbiente.Magazzino, depo, true, true);
+
+							RiselezionaSelezionato();
 						}
 					}
 				};
+				var rib4 = pnl3.Add("1 pezzo venduto", Properties.Resources.Remove, true);
+				rib4.Click += (a, e) =>
+				{
+					using (var depo = new Core.Controllers.ControllerMagazzino(SelectedItem))
+					{
+						ScaricaQtaMagazzino scarica=new ScaricaQtaMagazzino();
+
+						scarica.Qta = 1;
+
+						using (var uof=new UnitOfWork())
+						{
+							var principale=	uof.DepositoRepository.Find(b => b.Principale).FirstOrDefault();
+							if (principale==null)
+							{
+								MessageManager.NotificaWarnig("Occorre impostare un deposito principale, vai in depositi e imposta il deposito principale.");
+								return;
+							}
+							scarica.Deposito = principale.ID;
+							scarica.ArticoloID = SelectedItem.ID;
+							EventAggregator.Instance().Publish<ScaricaQtaMagazzino>(scarica);
+							RiselezionaSelezionato();
+						}
+					}
+				};
+
 			}
 			//	EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ScaricoMagazzino));
 			//	EventAggregator.Instance().Publish(new MagazzinoSelezionaArticolo() { Articolo=SelectedItem});
@@ -182,9 +209,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void ShowViewDettaglio()
 		{
-
-
-
 			if (!SettingSitoValidator.CheckFolderImmagini())
 			{
 				return;
@@ -533,15 +557,19 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 						var listArt = list.Select(b => b.ID);
 						var giacenza = uof.MagazzinoRepository.Find(a => listArt.Contains(a.ArticoloID))
-						   .Select(a => new { a.ArticoloID, a.Qta }).GroupBy(a => a.ArticoloID)
-						   .Select(a => new { Sum = a.Sum(b => b.Qta), ArticoloID = a.Key }).ToList();
+						   .Select(a => new { a.ArticoloID, a.Qta,a.Deposito }).GroupBy(a => new { a.ArticoloID,a.Deposito})
+						   .Select(a => new { Sum = a.Sum(b => b.Qta), Articolo = a.Key }).ToList();
 
 
 						foreach (var item in list)
 						{
-							var val = giacenza.Where(a => a.ArticoloID == item.ID).Select(a => a.Sum).FirstOrDefault();
+							var val = giacenza.Where(a => a.Articolo.ArticoloID == item.ID).ToList();
+							//.Select(a => a.Sum).FirstOrDefault();
 
-							item.Quantita = val;
+							item.QuantitaNegozio =val.Where(a => a.Articolo.Deposito.Principale).Select(a => a.Sum)
+									.DefaultIfEmpty(0).FirstOrDefault();
+
+							item.QuantitaTotale = val.Sum(a=>a.Sum);
 						}
 					}
 

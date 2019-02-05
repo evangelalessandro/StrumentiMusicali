@@ -40,7 +40,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		private Subscription<Edit<Fattura>> _sub3;
 		private Subscription<Add<Fattura>> _sub2;
 
-		public new void Dispose()
+		public override void Dispose()
 		{
 			EventAggregator.Instance().UnSbscribe(_sub2);
 			EventAggregator.Instance().UnSbscribe(_sub3);

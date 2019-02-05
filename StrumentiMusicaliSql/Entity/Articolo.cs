@@ -56,6 +56,9 @@ namespace StrumentiMusicali.Library.Entity
 		[CustomUIViewAttribute(Width = 60, Ordine = 42)]
 		public decimal PrezzoBarrato { get; set; } = 0;
 
+		[CustomUIViewAttribute(Width = 80, Ordine = 43)]
+		public decimal PrezzoAcquisto { get; set; } = 0;
+
 		[MaxLength(2000)]
 		[CustomUIViewAttribute(Width = 500, Ordine = 111,MultiLine =4)]
 		public string Testo { get; set; }
@@ -74,17 +77,22 @@ namespace StrumentiMusicali.Library.Entity
 
 		[MaxLength(100)]
 		public string Note2 { get; set; }
+
 		[CustomUIViewAttribute(Ordine = 22)]
 		[MaxLength(100)]
 		public string Note3 { get; set; }
+
 		[CustomUIViewAttribute(Ordine = 15)]
 		[MaxLength(100)]
 		public string Rivenditore { get; set; }
+
 		[CustomUIViewAttribute(Ordine = 30)]
 		public virtual Libro Libro { get; set; } = new Libro();
+
 		[MaxLength(50)]
 		[CustomHideUIAttribute]
 		public string TagImport { get; set; }
+
 		[CustomUIViewAttribute(Ordine = 45)]
 		[MaxLength(50)]
 		public string Colore { get; set; }

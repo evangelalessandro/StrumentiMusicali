@@ -30,7 +30,7 @@ namespace StrumentiMusicali.App.View
 		}
 		
 		
-		public new void Dispose()
+		public override void Dispose()
 		{
 			base.Dispose();	
 		}

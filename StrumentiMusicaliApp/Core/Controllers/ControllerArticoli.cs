@@ -240,7 +240,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 					var art =
 					(new StrumentiMusicali.Library.Entity.Articolo()
 					{
-						Categoria = itemCurrent.Categoria,
+						CategoriaID = itemCurrent.Categoria.ID,
 						Condizione = itemCurrent.Condizione,
 						BoxProposte = itemCurrent.BoxProposte,
 						Marca = itemCurrent.Marca,

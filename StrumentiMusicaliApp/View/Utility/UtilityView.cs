@@ -100,8 +100,8 @@ namespace StrumentiMusicali.App.View.Utility
 			{
 				if (((BaseItemID)(dataGrid.GetRow(i))).ID == idItem)
 				{
-					dataGrid.SelectRow(i);
-					dataGrid.SelectCell(i, dataGrid.Columns[colVisible]);
+					dataGrid.FocusedRowHandle=i;
+					//dataGrid.SelectCell(i, dataGrid.Columns[colVisible]);
 					break;
 				}
 			}

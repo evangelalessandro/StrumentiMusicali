@@ -1,4 +1,6 @@
-﻿using StrumentiMusicali.App.Core;
+﻿using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraGrid.Localization;
+using StrumentiMusicali.App.Core;
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.Library.Core;
@@ -14,6 +16,8 @@ namespace StrumentiMusicali.App
 		[STAThread]
 		private static void Main(string[] args)
 		{
+			GridLocalizer.Active = new ItalianGridLocalizer();
+			//Localizer.Active = new GermanEditorsLocalizer();
 			if (args == null || args.Length==0 || string.IsNullOrEmpty( args[0]))
 			{
 				using (var controller = new ControllerMaster())

@@ -297,6 +297,7 @@
     <Compile Include="CustomComponents\TabCustom.Designer.cs">
       <DependentUpon>TabCustom.cs</DependentUpon>
     </Compile>
+    <Compile Include="Localization_it.cs" />
     <Compile Include="View\Attributes\UIAmbienteAttribute.cs" />
     <Compile Include="View\BaseControl\ElementiDettaglio\EDCombo.cs">
       <SubType>UserControl</SubType>

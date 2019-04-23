@@ -142,7 +142,15 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 
 					break;
-				case enAmbiente.UtentiList:
+                case enAmbiente.PagamentiList:
+
+                    var controllerPagamenti = new ControllerPagamenti();
+                    var viewPagamenti = new PagamentiListView(controllerPagamenti);
+                    this.ShowView(viewPagamenti, obj.TipoEnviroment, controllerPagamenti);
+
+
+                    break;
+                case enAmbiente.UtentiList:
 
 					var controllerUtenti = new ControllerUtenti();
 

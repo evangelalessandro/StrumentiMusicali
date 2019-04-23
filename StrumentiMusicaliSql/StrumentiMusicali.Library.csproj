@@ -34,8 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.Data.v18.1, Version=18.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpo.v18.1, Version=18.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -72,6 +70,7 @@
     <Compile Include="Entity\Base\RigaDoc.cs" />
     <Compile Include="Entity\DatiIntestazioneFattura.cs" />
     <Compile Include="Entity\DatiMittente.cs" />
+    <Compile Include="Entity\Pagamento.cs" />
     <Compile Include="Entity\FattureGenerateInvio.cs" />
     <Compile Include="Entity\Fatture\Cliente.cs" />
     <Compile Include="Entity\Deposito.cs" />

@@ -47,7 +47,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		public TEntity EditItem { get; set; } = new TEntity();
 
 
-		private Subscription<UpdateList<TEntity>> _updateList;
+		private Subscription<UpdateList<TEntity>> _updateList=null;
 		private Subscription<ItemSelected<TBaseItem, TEntity>> _selectItemSub;
 
 

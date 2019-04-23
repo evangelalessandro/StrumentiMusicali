@@ -122,8 +122,8 @@ namespace StrumentiMusicali.Library.Model
 		{
 			modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
 			modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
-
-			modelBuilder.Entity<Deposito>().ToTable("Depositi");
+            modelBuilder.Entity<Pagamento>().ToTable("Pagamenti");
+            modelBuilder.Entity<Deposito>().ToTable("Depositi");
 			modelBuilder.Entity<Magazzino>().ToTable("Magazzino");
 			modelBuilder.Entity<Articolo>().ToTable("Articoli");
 			modelBuilder.Entity<Categoria>().ToTable("Categorie");
@@ -142,8 +142,10 @@ namespace StrumentiMusicali.Library.Model
 
 			modelBuilder.Entity<Cliente>().ToTable("Clienti");
 			modelBuilder.Entity<FattureGenerateInvio>().ToTable("FattureGenerate");
-
-			modelBuilder.Entity<Articolo>().Property(e => e.Prezzo).HasPrecision(19, 2);
+            modelBuilder.Entity<Pagamento>().Property(e => e.ImportoRata).HasPrecision(19, 2);
+            modelBuilder.Entity<Pagamento>().Property(e => e.ImportoResiduo).HasPrecision(19, 2);
+            modelBuilder.Entity<Pagamento>().Property(e => e.ImportoTotale).HasPrecision(19, 2);
+            modelBuilder.Entity<Articolo>().Property(e => e.Prezzo).HasPrecision(19, 2);
 			modelBuilder.Entity<Articolo>().Property(e => e.PrezzoBarrato).HasPrecision(19, 2);
 		}
 

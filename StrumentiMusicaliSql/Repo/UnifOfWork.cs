@@ -84,8 +84,19 @@ namespace StrumentiMusicali.Library.Repo
 			}
 		}
 
+        private Repository<Pagamento> _PagamentoRepository;
 
-		private Repository<Deposito> _DepositoRepository;
+        public IRepository<Pagamento> PagamentoRepository {
+            get {
+                if (_PagamentoRepository == null)
+                {
+                    _PagamentoRepository = new Repository<Pagamento>(dbContext);
+                }
+                return _PagamentoRepository;
+            }
+        }
+
+        private Repository<Deposito> _DepositoRepository;
 
 		public IRepository<Deposito> DepositoRepository {
 			get {

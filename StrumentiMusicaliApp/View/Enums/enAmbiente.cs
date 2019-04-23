@@ -49,7 +49,11 @@ namespace StrumentiMusicali.App.View.Enums
 
 
 		NonSpecificato = 100,
-	}
+        [UIAmbienteAttribute(false)]
+        PagamentiList = 701,
+        [UIAmbienteAttribute(true)]
+        Pagamento = 702,
+    }
 
 
 }

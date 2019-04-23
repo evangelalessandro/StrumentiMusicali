@@ -190,8 +190,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 			//ribbonMaster.ActiveTab = ribbonMaster.PreviousTab;
 		}
-
-		private static bool _closeMain;
+         
 		private void RemoveMenu(MenuTab menu, Ribbon ribbon)
 		{
 
@@ -359,7 +358,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 				return;
 			}
 			e.Cancel = false;
-			_closeMain = true;
+			 
 
 		}
 
@@ -466,8 +465,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 					return "Utenti";
 				case enAmbiente.Utente:
 					return "Utente";
-
-				case enAmbiente.NonSpecificato:
+                case enAmbiente.PagamentiList:
+                    return "Pagamenti";
+                case enAmbiente.Pagamento:
+                    return "Pagamento";
+                case enAmbiente.NonSpecificato:
 					break;
 				default:
 					return "NIENTE DI IMPOSTATO";
@@ -480,7 +482,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 		{
 			switch (ambiente)
 			{
-				case enAmbiente.ClientiList:
+                case enAmbiente.PagamentiList:
+                case enAmbiente.Pagamento:
+                    frm.Icon = UtilityView.GetIco(Properties.Resources.Payment);
+                    break;
+                case enAmbiente.ClientiList:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.Customer_48);
 					break;
 				case enAmbiente.UtentiList:

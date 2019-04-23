@@ -104,9 +104,19 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 			using (UnitOfWork uof = new UnitOfWork())
 			{
-				var codice = uof.FatturaRepository.Find(a => a.TipoDocumento == fattura.TipoDocumento)
-					.Where(a => a.Data.Year == fattura.Data.Year).ToList()
-					.OrderByDescending(a => a.Data).Select(a => a.Codice).DefaultIfEmpty("").FirstOrDefault();
+				var list = new List<EnTipoDocumento>();
+				list.Add(EnTipoDocumento.FatturaDiCortesia);
+				list.Add(EnTipoDocumento.RicevutaFiscale);
+
+				var codiceList = uof.FatturaRepository.Find(a => a.Data.Year == fattura.Data.Year).ToList();
+
+				codiceList = codiceList.Where(a => a.TipoDocumento == fattura.TipoDocumento ||
+				  ((list.Contains(fattura.TipoDocumento) &&
+				  (list.Contains(a.TipoDocumento)
+				  ))))
+					.ToList();
+
+				var codice=	codiceList.OrderByDescending(a => a.Codice).Select(a => a.Codice).DefaultIfEmpty("").FirstOrDefault();
 				var valore = 1;
 				if (codice != "")
 				{

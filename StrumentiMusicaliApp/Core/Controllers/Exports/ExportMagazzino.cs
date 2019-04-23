@@ -19,8 +19,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Exports
 		}
 		public void Stampa()
 		{
-			SoloLibriMancanti = (MessageManager.QuestionMessage("Vuoi solo i libri mancanti?"));
-
+		 
 			_excel = new ClosedXML.Excel.XLWorkbook();
 
 

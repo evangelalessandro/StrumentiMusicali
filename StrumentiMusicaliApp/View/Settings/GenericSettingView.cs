@@ -9,14 +9,16 @@ namespace StrumentiMusicali.App.View.Settings
 			: base()
 		{
 			_itemToBind = itemToBind;
-			//this.Load += GenericSettingView_Load;
-			BindProp(_itemToBind, "");
-		}
+            this.Load += GenericSettingView_Load;
+            this.SuspendLayout();
+            BindProp(_itemToBind, "");
+            
+        }
 
 		private void GenericSettingView_Load(object sender, System.EventArgs e)
 		{
-			
-		}
+            this.ResumeLayout();
+        }
 
 		//public void Rebind(object itemToBind)
 		//{

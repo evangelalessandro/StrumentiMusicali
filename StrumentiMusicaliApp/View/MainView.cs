@@ -11,6 +11,7 @@ using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.Library.Core;
+using System;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App
@@ -51,7 +52,12 @@ namespace StrumentiMusicali.App
 		private void Tab_CloseButtonClick(object sender, System.EventArgs e)
 		{
 			ClosePageButtonEventArgs arg = e as ClosePageButtonEventArgs;
-			tab.TabPages.Remove(arg.Page as XtraTabPage);
+            var page = arg.Page as XtraTabPage;
+
+            tab.TabPages.Remove(page);
+            page.Dispose();
+            GC.SuppressFinalize(page);
+
 		}
 
 		private void RemoveTab(RemoveNewTab obj)
@@ -141,6 +147,13 @@ namespace StrumentiMusicali.App
 			{
 				EventAggregator.Instance().Publish(new ExportMagazzino());
 			};
+
+			var ribExport2 = pnlExport.Add("Elenco libri mancanti", Properties.Resources.Add);
+			ribExport2.Click += (s, e) =>
+			{
+				EventAggregator.Instance().Publish(new ExportMagazzino() { SoloLibriMancanti = true });
+			};
+
 
 			var pnlImport = tabImportExport.Add("Import");
 			var ribImportCsv = pnlImport.Add("Import csv mercatino", Properties.Resources.ImportCsv);

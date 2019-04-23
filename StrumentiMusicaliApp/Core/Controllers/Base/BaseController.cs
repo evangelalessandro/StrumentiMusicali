@@ -59,12 +59,18 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 			var currentAlreadyPresentItem = AmbientiAttivi.Where(a => a.Ambiente == ambiente).DefaultIfEmpty(
 				(enAmbiente.NonSpecificato, null, null)).FirstOrDefault();
+
+
 			if (currentAlreadyPresentItem.Ambiente == ambiente && attr != null && attr.Exclusive)
 			{
 				((DevExpress.XtraTab.XtraTabControl)currentAlreadyPresentItem.Pagina.Parent).SelectedTabPage
 					= currentAlreadyPresentItem.Pagina;
 				currentAlreadyPresentItem.MenuPagina.Tabs[0].PerformSelect();
-				return;
+
+                view.Dispose();
+                controller.Dispose();
+
+                return;
 			}
 			bool closed = false;
 			MenuTab menu = null;
@@ -161,9 +167,13 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 						controller.Dispose();
 						GC.SuppressFinalize(controller);
 					}
-
-
-				};
+					GC.SuppressFinalize(view);
+					view = null;
+                    if (!disposeForm)
+                    {
+                        newTab.Dispose(); 
+                    }
+                };
 			}
 			if (menu != null)
 			{
@@ -188,10 +198,12 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 			foreach (var tab in menu.Tabs)
 			{
-				var rbTab = ribbon.Tabs.Where(a => a.Tag.ToString() == tab.GetHashCode().ToString()).First();
+				var rbTab = ribbon.Tabs.Where(a => a.Tag.ToString() == tab.GetHashCode().ToString()).FirstOrDefault();
 
+                if (rbTab == null)
+                    break;
 
-				foreach (var pannello in tab.Pannelli)
+                foreach (var pannello in tab.Pannelli)
 				{
 					var rbPannel = rbTab.Panels.Where(a => a.Tag.ToString() == pannello.GetHashCode().ToString()).First();
 

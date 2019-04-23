@@ -12,8 +12,9 @@ namespace StrumentiMusicali.App.View.BaseControl.ElementiDettaglio
 			InitializeComponent();
 			this.MaximumSize = new Size(1000, 1000);
 			this.Load += EDBase_Load;
-			this.Paint += SettingBaseView_Paint;
+			
 			this.BackColor = Color.Transparent;
+            this.SuspendLayout();
 		}
 		private void SettingBaseView_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
 		{
@@ -31,8 +32,11 @@ namespace StrumentiMusicali.App.View.BaseControl.ElementiDettaglio
 			if (this.Width< textSize || SetMinSize)
 				this.Width= textSize +20;
 
-		}
-		public bool SetMinSize { get; set; }
+            this.ResumeLayout();
+            this.Paint += SettingBaseView_Paint;
+            
+        }
+        public bool SetMinSize { get; set; }
 		public string Titolo { get { return label1.Text; } set { label1.Text = value; } }
 
 		public virtual void BindProprieta(CustomUIViewAttribute attribute,

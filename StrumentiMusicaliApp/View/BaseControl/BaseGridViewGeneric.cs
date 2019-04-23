@@ -112,7 +112,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(43, 16);
 			this.label1.TabIndex = 1;
-			this.label1.Text = "Testo";
+			this.label1.Text = "Testo - Codice a barre";
 			// 
 			// txtCerca
 			// 
@@ -184,7 +184,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			base.Dispose(disposing);
 		}
 
-		public virtual void Dispose()
+		public new void Dispose()
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);

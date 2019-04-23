@@ -611,6 +611,7 @@
     <Content Include="References\DevExpress_8.3.x\DevExpress.XtraVerticalGrid.v8.3.xml" />
     <Content Include="References\DevExpress_8.3.x\DevExpress.XtraWizard.v8.3.dll" />
     <Content Include="References\DevExpress_8.3.x\DevExpress.XtraWizard.v8.3.xml" />
+    <None Include="Resources\BackGroundForm.jpg" />
     <Content Include="Resources\StrumentoMusicale.ico" />
     <Content Include="StrumentoMusicale.ico" />
     <None Include="Resources\Close.png" />

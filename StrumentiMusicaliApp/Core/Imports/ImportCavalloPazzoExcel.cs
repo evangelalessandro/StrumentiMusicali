@@ -6,7 +6,7 @@ using System;
 using System.Data;
 using System.Linq;
 
-namespace StrumentiMusicali.App.Core.Controllers.Imports
+namespace StrumentiMusicali.App.Core.Imports
 {
 	public class ImportCavalloPazzoExcel : BaseImportExcel, IDisposable
 	{

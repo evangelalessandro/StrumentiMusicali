@@ -4,7 +4,7 @@ using System.Data.OleDb;
 using System.IO;
 using System.Windows.Forms;
 
-namespace StrumentiMusicali.App.Core.Controllers.Imports
+namespace StrumentiMusicali.App.Core.Imports
 {
 	public abstract class BaseImportExcel : IDisposable
 	{

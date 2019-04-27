@@ -1,9 +1,9 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Controllers.FatturaElett;
-using StrumentiMusicali.App.Core.Controllers.Fatture;
 using StrumentiMusicali.App.Core.Controllers.Stampa;
 using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Generics;
+using StrumentiMusicali.App.Core.Fatture;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
@@ -20,7 +20,7 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-	public class ControllerFatturazione : BaseControllerGeneric<Fattura, FatturaItem>, IDisposable
+    public class ControllerFatturazione : BaseControllerGeneric<Fattura, FatturaItem>, IDisposable
 	{
 
 		public ControllerFatturazione() :

@@ -1,4 +1,5 @@
 ﻿using NLog;
+using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
@@ -15,7 +16,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace StrumentiMusicali.App.Core.Controllers.Exports
+namespace StrumentiMusicali.App.Core.Exports
 {
 	internal class ExportArticoliCsv : IDisposable
 	{

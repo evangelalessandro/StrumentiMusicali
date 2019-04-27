@@ -2,11 +2,11 @@
 using DevExpress.XtraTab.ViewInfo;
 using NLog;
 using StrumentiMusicali.App.Core.Controllers.Base;
-using StrumentiMusicali.App.Core.Controllers.Exports;
 using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Events.Tab;
+using StrumentiMusicali.App.Core.Exports;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Interfaces;
@@ -16,7 +16,7 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App
 {
-	public partial class MainView : UserControl, IMenu
+    public partial class MainView : UserControl, IMenu
 	{
 		private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 

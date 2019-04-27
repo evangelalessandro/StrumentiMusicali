@@ -51,7 +51,7 @@ namespace StrumentiMusicali.App.View
 					_controllerMagazzino.SelectedItem.Deposito =
 						((DepositoScaricoItem)listDepositi.SelectedItem).ID;
 				}
-				catch (Exception ex)
+				catch 
 				{
 				}
 
@@ -85,7 +85,7 @@ namespace StrumentiMusicali.App.View
 			}
 		}
 
-		private Subscription<MagazzinoSelezionaArticolo> _selectItem;
+		private Subscription<MagazzinoSelezionaArticolo> _selectItem=null;
 
 
 		private void ScaricoMagazzino_LoadSync(object sender, EventArgs e)

@@ -1,4 +1,5 @@
 ﻿using NLog;
+using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
@@ -9,7 +10,7 @@ using System.Data.OleDb;
 using System.Diagnostics;
 using System.Linq;
 
-namespace StrumentiMusicali.App.Core.Controllers.Fatture
+namespace StrumentiMusicali.App.Core.Fatture
 {
 	public class ImportFatture : IDisposable
 	{

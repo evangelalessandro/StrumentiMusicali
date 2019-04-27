@@ -1,10 +1,11 @@
 ﻿using NLog;
 using NLog.Targets;
 using StrumentiMusicali.App.Core.Controllers.Base;
-using StrumentiMusicali.App.Core.Controllers.Exports;
 using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.App.Core.Events.Fatture;
 using StrumentiMusicali.App.Core.Events.Generics;
+using StrumentiMusicali.App.Core.Exports;
+using StrumentiMusicali.App.Core.Imports;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
@@ -20,7 +21,7 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-	public class ControllerMaster : BaseController
+    public class ControllerMaster : BaseController
 	{
 
 
@@ -50,7 +51,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			using (var mouseman = new Manager.CursorManager())
 			{
-				using (var export = new Controllers.Exports.ExportMagazzino())
+				using (var export = new ExportMagazzino())
 				{
 					export.SoloLibriMancanti = obj.SoloLibriMancanti;
 					export.Stampa();
@@ -60,14 +61,14 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void ImportMagExcel(ImportMagExcel obj)
 		{
-			using (var import = new Controllers.Imports.ImportMagazziniExcel())
+			using (var import = new ImportMagazziniExcel())
 			{
 				import.ImportFile();
 			}
 		}
 		private void ImportArticoliMulinoExcel(ImportArticoliMulino obj)
 		{
-			using (var import = new Controllers.Imports.ImportCavalloPazzoExcel())
+			using (var import = new ImportCavalloPazzoExcel())
 			{
 				import.ImportFile();
 			}

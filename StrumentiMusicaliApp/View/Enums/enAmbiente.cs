@@ -53,6 +53,10 @@ namespace StrumentiMusicali.App.View.Enums
         PagamentiList = 701,
         [UIAmbienteAttribute(true)]
         Pagamento = 702,
+
+        [UIAmbienteAttribute(false)]
+        RicercaArticolo = 703,
+
     }
 
 

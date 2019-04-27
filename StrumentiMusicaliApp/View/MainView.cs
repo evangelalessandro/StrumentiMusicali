@@ -210,7 +210,13 @@ namespace StrumentiMusicali.App
 			{
 				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ArticoliList));
 			};
-            var panelPag = tabImportExport.Add("Pagamenti");
+
+            var ribRicArticoli = panel2.Add("Ricerca articoli", Properties.Resources.Search_48);
+            ribRicArticoli.Click += (s, e) =>
+            {
+                EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.RicercaArticolo));
+            };
+            //var panelPag = tabImportExport.Add("Pagamenti");
          
             //var ribPag = panelPag.Add("Gestione Pagamenti", Properties.Resources.Payment);
             //ribPag.Click += (s, e) =>

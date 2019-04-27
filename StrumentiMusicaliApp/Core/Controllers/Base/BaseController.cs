@@ -411,74 +411,75 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 		public string TestoAmbiente(enAmbiente ambiente)
 		{
-			switch (ambiente)
-			{
-				case enAmbiente.ClientiList:
-					return "Clienti";
+            switch (ambiente)
+            {
+                case enAmbiente.ClientiList:
+                    return "Clienti";
 
-				case enAmbiente.Cliente:
-					return "Cliente";
+                case enAmbiente.Cliente:
+                    return "Cliente";
 
-				case enAmbiente.Main:
-					return "Gestione magazzino e fatturazione";
+                case enAmbiente.Main:
+                    return "Gestione magazzino e fatturazione";
 
-				case enAmbiente.Fattura:
-					return "Fattura";
+                case enAmbiente.Fattura:
+                    return "Fattura";
 
-				case enAmbiente.FattureList:
-					return "Fatture";
+                case enAmbiente.FattureList:
+                    return "Fatture";
 
-				case enAmbiente.Articolo:
-					return "Articolo";
+                case enAmbiente.Articolo:
+                    return "Articolo";
 
-				case enAmbiente.ArticoliList:
-					return "Gestione Articoli";
+                case enAmbiente.ArticoliList:
+                    return "Gestione Articoli";
 
-				case enAmbiente.Magazzino:
-					return "Magazzino";
+                case enAmbiente.Magazzino:
+                    return "Magazzino";
 
-				case enAmbiente.SettingFatture:
-					return "Impostazioni fatture";
+                case enAmbiente.SettingFatture:
+                    return "Impostazioni fatture";
 
-				case enAmbiente.SettingSito:
-					return "Impostazioni sito";
+                case enAmbiente.SettingSito:
+                    return "Impostazioni sito";
 
-				case enAmbiente.ScaricoMagazzino:
-					return "Scarico Magazzino";
+                case enAmbiente.ScaricoMagazzino:
+                    return "Scarico Magazzino";
 
-				case enAmbiente.LogViewList:
-					return "Visualizzatore dei log";
-				case enAmbiente.SettingStampa:
-					return "Settaggi di stampa fattura";
+                case enAmbiente.LogViewList:
+                    return "Visualizzatore dei log";
+                case enAmbiente.SettingStampa:
+                    return "Settaggi di stampa fattura";
 
-				case enAmbiente.FattureRigheList:
-					break;
-				case enAmbiente.FattureRigheDett:
-					return "Dettaglio riga";
-				case enAmbiente.Deposito:
-					return "Deposito";
-				case enAmbiente.DepositoList:
-					return "Depositi";
-				case enAmbiente.ArticoloSconto:
-					return "Sconta articoli";
-				case enAmbiente.UtentiList:
-					return "Utenti";
-				case enAmbiente.Utente:
-					return "Utente";
+                case enAmbiente.FattureRigheList:
+                    break;
+                case enAmbiente.FattureRigheDett:
+                    return "Dettaglio riga";
+                case enAmbiente.Deposito:
+                    return "Deposito";
+                case enAmbiente.DepositoList:
+                    return "Depositi";
+                case enAmbiente.ArticoloSconto:
+                    return "Sconta articoli";
+                case enAmbiente.UtentiList:
+                    return "Utenti";
+                case enAmbiente.Utente:
+                    return "Utente";
                 case enAmbiente.PagamentiList:
                     return "Pagamenti";
                 case enAmbiente.Pagamento:
                     return "Pagamento";
-                case enAmbiente.NonSpecificato:
-					break;
-				default:
-					return "NIENTE DI IMPOSTATO";
+                case enAmbiente.RicercaArticolo:
+                    return "Ricerca articolo";
+                    break;
+                default:
+                    return "NIENTE DI IMPOSTATO";
 
-			}
-			return "NIENTE DI IMPOSTATO";
+            }
+            return "NIENTE DI IMPOSTATO";
 
-		}
-		private void ImpostaIconaETesto(enAmbiente ambiente, Form frm)
+        }
+        private void ImpostaIconaETesto(enAmbiente ambiente, Form frm)
 		{
 			switch (ambiente)
 			{
@@ -499,7 +500,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 				case enAmbiente.Main:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.StrumentoMusicale);
 					break;
-				case enAmbiente.Fattura:
+                case enAmbiente.RicercaArticolo:
+                    frm.Icon = UtilityView.GetIco(Properties.Resources.Search_48);
+                    break;
+                case enAmbiente.Fattura:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.Invoice);
 					break;
 				case enAmbiente.FattureList:
@@ -754,5 +758,5 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 			}
 			// free native resources if there are any.
 		}
-	}
+    }
 }

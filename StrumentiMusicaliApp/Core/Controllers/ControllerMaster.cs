@@ -9,6 +9,7 @@ using StrumentiMusicali.App.Core.Imports;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
+using StrumentiMusicali.App.View.Articoli;
 using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.Library.Core;
@@ -108,7 +109,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void InvioArCSV(InvioArticoliCSV obj)
 		{
-			using (var controllerArt = new ControllerArticoli())
+			using (var controllerArt = new ControllerArticoli(false))
 			{
 				controllerArt.InvioArticoli(obj);
 			}
@@ -124,7 +125,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void ImportaCsvArticoli(ImportArticoliCSVMercatino obj)
 		{
-			using (var controllerArt = new ControllerArticoli())
+			using (var controllerArt = new ControllerArticoli(false))
 			{
 				controllerArt.ImportaCsvArticoli(null);
 			}
@@ -137,12 +138,21 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 				case enAmbiente.ArticoliList:
 
-					var controllerArt = new ControllerArticoli();
+					var controllerArt = new ControllerArticoli(false);
 					var viewArt = new ArticoliListView(controllerArt);
 					this.ShowView(viewArt, obj.TipoEnviroment, controllerArt);
 
 
 					break;
+                case enAmbiente.RicercaArticolo:
+
+                    var contrArt = new ControllerArticoli(true);
+                    var viewRicercaArt= new RicercaArticoliStyleView(contrArt);
+                    
+                    this.ShowView(viewRicercaArt, obj.TipoEnviroment, contrArt);
+
+
+                    break;
                 case enAmbiente.PagamentiList:
 
                     var controllerPagamenti = new ControllerPagamenti();

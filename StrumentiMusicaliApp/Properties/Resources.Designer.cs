@@ -223,6 +223,16 @@ namespace StrumentiMusicali.App.Properties {
         /// <summary>
         ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Excel_export {
+            get {
+                object obj = ResourceManager.GetObject("Excel_export", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Fattura_xml_48 {
             get {
                 object obj = ResourceManager.GetObject("Fattura_xml_48", resourceCulture);

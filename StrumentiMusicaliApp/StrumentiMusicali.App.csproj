@@ -303,6 +303,12 @@
     <Compile Include="View\Articoli\RicercaArticoliStyleView.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="View\MarcaView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\MarcaView.Designer.cs">
+      <DependentUpon>MarcaView.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\PagamentiListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -623,6 +629,7 @@
     <None Include="Resources\Payment.png" />
     <None Include="Resources\Search_48.png" />
     <None Include="Resources\Search.png" />
+    <None Include="Resources\Excel_export.png" />
     <Content Include="Resources\StrumentoMusicale.ico" />
     <Content Include="StrumentoMusicale.ico" />
     <None Include="Resources\Close.png" />
@@ -653,6 +660,9 @@
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="View\Articoli\RicercaArticoliStyleView.resx">
       <DependentUpon>RicercaArticoliStyleView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\MarcaView.resx">
+      <DependentUpon>MarcaView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\PagamentiListView.resx">
       <DependentUpon>PagamentiListView.cs</DependentUpon>

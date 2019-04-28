@@ -1,27 +1,25 @@
 ﻿using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.Library.Repo;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View.Articoli
 {
     public class RicercaArticoliStyleView : BaseControl.BaseDataControl
     {
-        private TextBox txtRicerca;
+        private ControllerArticoli _controllerArticoli;
         private Label label1;
         private RichTextBox rtcNote;
-
+        private TextBox txtRicerca;
+        
         public RicercaArticoliStyleView()
             : base()
         {
             InitializeComponent();
         }
-        ControllerArticoli _controllerArticoli;
+        Core.MenuRibbon.MenuTab _menu = null;
         public RicercaArticoliStyleView(Core.Controllers.ControllerArticoli controllerArticoli)
             : base()
         {
@@ -29,74 +27,22 @@ namespace StrumentiMusicali.App.View.Articoli
             InitializeComponent();
             txtRicerca.AcceptsReturn = true;
             this.txtRicerca.KeyUp += TxtRicerca_KeyUp;
+
+            _menu = _controllerArticoli.GetMenu();
+            _menu.ApplyValidation(false);
         }
 
-        private void TxtRicerca_KeyUp(object sender, KeyEventArgs e)
+        private void AggiungiIntestazione(string dato)
         {
-            if (e.KeyCode == Keys.Return)
-            {
-                AvviaRicerca();
-            }
+            richTextBox_LOG_write_text(dato.PadRight(10) + "\t", Color.Blue, Color.Transparent);
         }
 
-        private void InitializeComponent()
+        private void AggiungiValore(string item,bool highlight=false)
         {
-            this.txtRicerca = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.rtcNote = new System.Windows.Forms.RichTextBox();
-            this.SuspendLayout();
-            // 
-            // txtRicerca
-            // 
-            this.txtRicerca.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txtRicerca.Location = new System.Drawing.Point(10, 41);
-            this.txtRicerca.Name = "txtRicerca";
-            this.txtRicerca.Size = new System.Drawing.Size(836, 38);
-            this.txtRicerca.TabIndex = 0;
-            this.txtRicerca.TextChanged += new System.EventHandler(this.TxtRicerca_TextChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Location = new System.Drawing.Point(10, 10);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(115, 31);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Ricerca:";
-            // 
-            // rtcNote
-            // 
-            this.rtcNote.AcceptsTab = true;
-            this.rtcNote.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtcNote.Location = new System.Drawing.Point(10, 79);
-            this.rtcNote.Name = "rtcNote";
-            this.rtcNote.Size = new System.Drawing.Size(836, 386);
-            this.rtcNote.TabIndex = 2;
-            this.rtcNote.Text = "";
-            // 
-            // RicercaArticoliStyleView
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
-            this.Controls.Add(this.rtcNote);
-            this.Controls.Add(this.txtRicerca);
-            this.Controls.Add(this.label1);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Name = "RicercaArticoliStyleView";
-            this.Padding = new System.Windows.Forms.Padding(10);
-            this.Size = new System.Drawing.Size(856, 475);
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
-        }
-
-        private void TxtRicerca_TextChanged(object sender, EventArgs e)
-        {
-
-            if (txtRicerca.Text.Contains(Environment.NewLine))
-            {
-                AvviaRicerca();
-            }
+            Color color = Color.Transparent;
+            if (highlight)
+                color = Color.Yellow;
+            richTextBox_LOG_write_text(item + Environment.NewLine, Color.Black,  color);
         }
 
         private void AvviaRicerca()
@@ -108,8 +54,14 @@ namespace StrumentiMusicali.App.View.Articoli
                 var item = uof.ArticoliRepository.Find(a => a.CodiceABarre == txtRicerca.Text).
                     FirstOrDefault();
                 txtRicerca.Text = "";
+                _menu.ApplyValidation((item != null));
+
                 if (item == null)
                 {
+                    _controllerArticoli.EditItem = null;
+                    _controllerArticoli.SelectedItem = null;
+                     
+
                     return;
                 }
                 _controllerArticoli.EditItem = item;
@@ -119,29 +71,65 @@ namespace StrumentiMusicali.App.View.Articoli
                     Where(a => a.Deposito.Principale == true).
                     Select(a => a.Qta).Sum();
 
-
-                AggiungiIntestazione("Codice:" );
+                AggiungiIntestazione("Codice:");
                 AggiungiValore(item.ID.ToString());
                 AggiungiIntestazione("Articolo: ");
                 AggiungiValore(item.Titolo.ToString());
                 AggiungiIntestazione("Prezzo: ");
-                AggiungiValore(item.Prezzo.ToString("C2"));
+                AggiungiValore(item.Prezzo.ToString("C2"),true);
                 AggiungiIntestazione("Pezzi: ");
                 AggiungiValore(itemQta.ToString(""));
-
-
             }
         }
 
-        private void AggiungiValore(string item)
+        private void InitializeComponent()
         {
-            richTextBox_LOG_write_text(item + Environment.NewLine, Color.Black, Color.Transparent);
-        }
-
-        private void AggiungiIntestazione(string dato)
-        {
-
-            richTextBox_LOG_write_text( dato.PadRight(10) + "\t", Color.Blue, Color.Transparent);
+            this.txtRicerca = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.rtcNote = new System.Windows.Forms.RichTextBox();
+            this.SuspendLayout();
+            //
+            // txtRicerca
+            //
+            this.txtRicerca.Dock = System.Windows.Forms.DockStyle.Top;
+            this.txtRicerca.Location = new System.Drawing.Point(10, 41);
+            this.txtRicerca.Name = "txtRicerca";
+            this.txtRicerca.Size = new System.Drawing.Size(836, 38);
+            this.txtRicerca.TabIndex = 0;
+            this.txtRicerca.TextChanged += new System.EventHandler(this.TxtRicerca_TextChanged);
+            //
+            // label1
+            //
+            this.label1.AutoSize = true;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label1.Location = new System.Drawing.Point(10, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(115, 31);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Ricerca:";
+            //
+            // rtcNote
+            //
+            this.rtcNote.AcceptsTab = true;
+            this.rtcNote.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtcNote.Location = new System.Drawing.Point(10, 79);
+            this.rtcNote.Name = "rtcNote";
+            this.rtcNote.Size = new System.Drawing.Size(836, 386);
+            this.rtcNote.TabIndex = 2;
+            this.rtcNote.Text = "";
+            //
+            // RicercaArticoliStyleView
+            //
+            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
+            this.Controls.Add(this.rtcNote);
+            this.Controls.Add(this.txtRicerca);
+            this.Controls.Add(this.label1);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Name = "RicercaArticoliStyleView";
+            this.Padding = new System.Windows.Forms.Padding(10);
+            this.Size = new System.Drawing.Size(856, 475);
+            this.ResumeLayout(false);
+            this.PerformLayout();
         }
 
         private void richTextBox_LOG_write_text(string text, Color text_color, Color background_color)
@@ -154,7 +142,7 @@ namespace StrumentiMusicali.App.View.Articoli
                     return;
                 }
                 int text_size = rtcNote.Text.Length;
-                
+
                 rtcNote.AppendText(text);
                 rtcNote.Select(text_size, text.Length);
                 if (text_color == null)
@@ -164,7 +152,7 @@ namespace StrumentiMusicali.App.View.Articoli
                 Font currentFont = rtcNote.SelectionFont;
                 FontStyle newFontStyle = (FontStyle)(currentFont.Style | FontStyle.Bold);
                 rtcNote.SelectionFont = new Font(currentFont.FontFamily, 28, newFontStyle);
-                
+
                 rtcNote.SelectionColor = text_color;
                 if (background_color != null)
                 {
@@ -172,6 +160,21 @@ namespace StrumentiMusicali.App.View.Articoli
                 }
             }
             catch { }
+        }
+
+        private void TxtRicerca_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Return)
+            {
+                AvviaRicerca();
+            }
+        }
+        private void TxtRicerca_TextChanged(object sender, EventArgs e)
+        {
+            if (txtRicerca.Text.Contains(Environment.NewLine))
+            {
+                AvviaRicerca();
+            }
         }
     }
 }

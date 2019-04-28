@@ -13,12 +13,30 @@ namespace StrumentiMusicali.App.Core.Exports
     public class ExportMagazzino : IDisposable
     {
         private ClosedXML.Excel.XLWorkbook _excel;
-        public bool SoloLibriMancanti { get; set; }
+        public TipoExport TipoExp { get; set; } = TipoExport.Tutto;
+
+
+        public enum TipoExport
+        {
+            Tutto,
+            SoloLibriMancanti,
+            PerMarca
+        }
         public ExportMagazzino()
         {
         }
         public void Stampa()
         {
+            string marcaFiltro = "";
+            if (TipoExp == TipoExport.PerMarca)
+            {
+                using (var frmMarche = new View.MarcaView())
+                {
+                    frmMarche.ShowDialog();
+                    marcaFiltro = frmMarche.Marca;
+
+                }
+            }
 
             _excel = new ClosedXML.Excel.XLWorkbook();
 
@@ -33,7 +51,9 @@ namespace StrumentiMusicali.App.Core.Exports
                     .GroupBy(a => new { a.ArticoloID, a.Deposito })
                     .Select(a => new { a.Key, sumQta = a.Sum(b => b.Qta) })
                     .ToList();
-                if (SoloLibriMancanti)
+
+
+                if (TipoExp == TipoExport.SoloLibriMancanti)
                 {
                     qta = qta.Where(a => a.sumQta == 0 && a.Key.Deposito.Principale).ToList();
                     listArt = listArt.Where(a => qta.Select(b => b.Key.ArticoloID).Contains(a.ID)).ToList();
@@ -45,6 +65,18 @@ namespace StrumentiMusicali.App.Core.Exports
                                   || a.Categoria.Nome.Contains("libr")
 
                                 ).ToList();
+                }
+                if (TipoExp == TipoExport.PerMarca)
+                {
+                    /*filtro per marca*/
+                    listArt = listArt.Where(a => a.Marca != null && a.Marca.Trim() == marcaFiltro).ToList();
+
+                    var qtaAZero = qta.Select(a => new { a.Key.ArticoloID, a.sumQta })
+                        .GroupBy(a => a.ArticoloID).Select(a =>
+                         new { Somma = a.Sum(b => b.sumQta), ArticoloId = a.Key })
+                         .Where(a => a.Somma == 0).Select(a => a.ArticoloId).ToList();
+                    /*filtro per le qta a zero*/
+                    listArt = listArt.Where(a => qtaAZero.Contains(a.ID)).ToList();
                 }
                 var listToExport = listArt.Select(a =>
                   new
@@ -72,10 +104,10 @@ namespace StrumentiMusicali.App.Core.Exports
                       a.Libro.Settore
                   }
 
-                ).ToList();
+            ).ToList();
 
                 DataTable dt = null;
-                if (SoloLibriMancanti)
+                if (TipoExp == TipoExport.SoloLibriMancanti)
                 {
                     dt = ToDataTable(listToExport.Select(a => new
                     {
@@ -88,13 +120,28 @@ namespace StrumentiMusicali.App.Core.Exports
                         a.Prezzo
                     }).ToList());
                 }
+                else if (TipoExp == TipoExport.PerMarca)
+                {
+                    dt = ToDataTable(listToExport.Select(a => new
+                    {
+                        a.ID,
+                        a.Titolo,
+                        a.Prezzo,
+                        a.PrezzoAcquisto,
+                        a.Marca,
+                        a.Note1,
+                        a.Note2,
+                        a.Note3
+                    }).ToList());
+                }
+
                 else
                 {
                     dt = ToDataTable(listToExport.ToList());
                 }
-                if (!SoloLibriMancanti)
+                if (TipoExp == TipoExport.Tutto)
                 {
-                    foreach (var item in uof.DepositoRepository.Find(a => (a.Principale && SoloLibriMancanti) || !SoloLibriMancanti).ToList())
+                    foreach (var item in uof.DepositoRepository.Find(a => (a.Principale && TipoExp == TipoExport.SoloLibriMancanti) || TipoExp != TipoExport.SoloLibriMancanti).ToList())
                     {
                         dt.Columns.Add("Qta_" + item.NomeDeposito);
 
@@ -109,13 +156,13 @@ namespace StrumentiMusicali.App.Core.Exports
                         }
                     }
                 }
-                if (SoloLibriMancanti)
+                if (TipoExp != TipoExport.Tutto)
                     dt.Columns.Remove("ID");
 
                 _excel.AddWorksheet(dt, "Generale");
             }
 
-            var newfile = Path.Combine(System.IO.Path.GetTempPath(), DateTime.Now.Ticks.ToString() + "_Magazzino.xlsx");
+            var newfile = Path.Combine(System.IO.Path.GetTempPath(), TipoExp.ToString() +"_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_Magazzino.xlsx");
             _excel.SaveAs(newfile);
             Process.Start(newfile);
         }

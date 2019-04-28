@@ -142,20 +142,25 @@ namespace StrumentiMusicali.App
 			{
 				EventAggregator.Instance().Publish(new InvioArticoliCSV());
 			};
-			var ribExport1 = pnlExport.Add("Export Stato Magazzino", Properties.Resources.Add);
+			var ribExport1 = pnlExport.Add("Export Stato Magazzino", Properties.Resources.Excel_export);
 			ribExport1.Click += (s, e) =>
 			{
 				EventAggregator.Instance().Publish(new ExportMagazzino());
 			};
-
-			var ribExport2 = pnlExport.Add("Elenco libri mancanti", Properties.Resources.Add);
+            var pnlExport2 = tabImportExport.Add("Elenco Mancanti");
+            var ribExport2 = pnlExport2.Add("Libri(Betta)", Properties.Resources.Excel_export);
 			ribExport2.Click += (s, e) =>
 			{
-				EventAggregator.Instance().Publish(new ExportMagazzino() { SoloLibriMancanti = true });
+				EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp =ExportMagazzino.TipoExport.SoloLibriMancanti});
 			};
+            var ribExport3 = pnlExport2.Add("X marca (Luca)", Properties.Resources.Excel_export);
+            ribExport3.Click += (s, e) =>
+            {
+                EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp = ExportMagazzino.TipoExport.PerMarca});
+            };
 
 
-			var pnlImport = tabImportExport.Add("Import");
+            var pnlImport = tabImportExport.Add("Import");
 			var ribImportCsv = pnlImport.Add("Import csv mercatino", Properties.Resources.ImportCsv);
 			ribImportCsv.Click += (s, e) =>
 			{

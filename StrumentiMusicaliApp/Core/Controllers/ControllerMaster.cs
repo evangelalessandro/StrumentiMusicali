@@ -54,7 +54,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			{
 				using (var export = new ExportMagazzino())
 				{
-					export.SoloLibriMancanti = obj.SoloLibriMancanti;
+					export.TipoExp = obj.TipoExp;
 					export.Stampa();
 				}
 			}

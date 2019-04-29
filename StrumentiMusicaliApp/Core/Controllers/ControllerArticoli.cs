@@ -554,6 +554,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                     List<ArticoloItem> list = new List<ArticoloItem>();
 
+                    FiltroLibri = FiltroLibri.Trim();
+                    FiltroMarca = FiltroMarca.Trim();
+
                     using (var uof = new UnitOfWork())
                     {
                         var datList = uof.ArticoliRepository.Find(a => datoRicerca.Count == 0 || ((

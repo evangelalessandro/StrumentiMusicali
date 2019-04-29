@@ -80,6 +80,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                 if (item != enAmbiente.NonSpecificato)
                 {
                     MessageBox.Show("Occorre chiudere l'ambiente '" + TestoAmbiente(item) + "'");
+                    view.Dispose();
+                    controller.Dispose();
                     return;
                 }
             }

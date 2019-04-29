@@ -71,8 +71,19 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                 controller.Dispose();
 
                 return;
-			}
-			bool closed = false;
+			} 
+            if (attr.AmbienteMutuale!=enAmbiente.NonSpecificato)
+            {
+                var item = AmbientiAttivi.Where(a => a.Ambiente
+                 == attr.AmbienteMutuale).DefaultIfEmpty(
+                     (enAmbiente.NonSpecificato, null, null)).FirstOrDefault().Ambiente;
+                if (item != enAmbiente.NonSpecificato)
+                {
+                    MessageBox.Show("Occorre chiudere l'ambiente '" + TestoAmbiente(item) + "'");
+                    return;
+                }
+            }
+            bool closed = false;
 			MenuTab menu = null;
 			if (controller != null && controller is IMenu)
 			{

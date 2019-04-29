@@ -14,7 +14,7 @@ namespace StrumentiMusicali.App.View.Enums
 		Articolo=4,
 		[UIAmbienteAttribute(true)]
 		ArticoloSconto = 700,
-		[UIAmbienteAttribute(false)]
+		[UIAmbienteAttribute(false, AmbienteMutuale = enAmbiente.RicercaArticolo)]
 		ArticoliList=5,
 		Magazzino=6,
 		[UIAmbienteAttribute(false)]
@@ -54,7 +54,7 @@ namespace StrumentiMusicali.App.View.Enums
         [UIAmbienteAttribute(true)]
         Pagamento = 702,
 
-        [UIAmbienteAttribute(false)]
+        [UIAmbienteAttribute(false,AmbienteMutuale =enAmbiente.ArticoliList)]
         RicercaArticolo = 703,
 
     }

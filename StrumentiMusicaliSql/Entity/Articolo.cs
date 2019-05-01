@@ -103,11 +103,13 @@ namespace StrumentiMusicali.Library.Entity
 	}
 	public class Libro
 	{
-		public string Autore { get; set; }
+        public string TitoloDelLibro { get; set; }
+        public string Autore { get; set; }
 		public string Edizione { get; set; }
 		public string Edizione2 { get; set; }
 		public string Genere { get; set; }
 		public string Ordine { get; set; }
 		public string Settore { get; set; }
-	}
+
+    }
 }

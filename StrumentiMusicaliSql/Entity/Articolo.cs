@@ -2,6 +2,7 @@
 using StrumentiMusicali.Library.Entity.Base;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using PropertyChanged;
 
 namespace StrumentiMusicali.Library.Entity
 {
@@ -13,7 +14,7 @@ namespace StrumentiMusicali.Library.Entity
 
 		NonSpecificato=-100
 	}
-
+    [AddINotifyPropertyChangedInterface]
 	public class Articolo : BaseEntity
 	{
 		[CustomUIViewAttribute(Ordine = 6)]
@@ -105,7 +106,12 @@ namespace StrumentiMusicali.Library.Entity
 		[NotMapped]
 		[CustomHideUIAttribute]
 		public bool? ShowLibro { get; set; } = null;
-	}
+
+
+        [NotMapped]
+        [CustomUIViewAttribute(Width = 80, Ordine = 50,Enable =false)]
+        public int QtaNegozio { get; set; } = 0;
+    }
 	public class Libro
 	{
         [MaxLength(100)]

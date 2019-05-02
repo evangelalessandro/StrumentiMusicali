@@ -11,9 +11,9 @@ namespace StrumentiMusicali.Library.Entity.Base
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int ID { get; set; }
-		[CustomUIViewAttribute(DateTimeView =true,Width =200)]
+		[CustomUIViewAttribute(DateTimeView =true,Width =200,Enable =false)]
 		public DateTime DataCreazione { get; set; } = DateTime.Now;
-		[CustomUIViewAttribute(DateTimeView = true, Width = 200)]
+		[CustomUIViewAttribute(DateTimeView = true, Width = 200,Enable =false)]
 		public DateTime DataUltimaModifica { get; set; } = DateTime.Now;
 	}
 }

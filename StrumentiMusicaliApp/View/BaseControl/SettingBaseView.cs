@@ -192,9 +192,13 @@ namespace StrumentiMusicali.App.View.BaseControl
                 controlBase.Height = 50 * (attribute.MultiLine + 1);
 
             }
-            if (item.Name == "DataCreazione"
-                || item.Name == "DataUltimaModifica"
-                || item.Name == "ID")
+            var hideAttr = (CustomHideUIAttribute)item.GetCustomAttributes(typeof(CustomHideUIAttribute), true).FirstOrDefault();
+
+            if ((attribute!=null && attribute.Enable==false
+                )
+                ||
+                hideAttr!=null 
+                )
             {
                 controlBase.Enabled = false;
             }

@@ -25,7 +25,9 @@ namespace StrumentiMusicali.Library.Core
 		public bool DateTimeView { get; set; }
 
 		public TipoDatiCollegati Combo { get; set; } = TipoDatiCollegati.Nessuno;
-	}
+
+        public bool Enable { get; set; } = true;
+    }
 	public enum TipoDatiCollegati
 	{
 		Nessuno,

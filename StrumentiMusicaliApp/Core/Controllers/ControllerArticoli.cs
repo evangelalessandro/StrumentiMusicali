@@ -243,6 +243,13 @@ namespace StrumentiMusicali.App.Core.Controllers
             if (MessageManager.QuestionMessage("Vuoi aggiungere un libro?"))
             {
                 EditItem.ShowLibro = true;
+                using (var uof=new UnitOfWork())
+                {
+
+                    EditItem.Categoria = uof.CategorieRepository.Find(a => a.Codice == 133).FirstOrDefault();
+                    EditItem.CategoriaID = EditItem.Categoria.ID;
+
+                }
             }
             else
             {

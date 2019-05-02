@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -14,31 +15,13 @@ namespace CheckUpdate
 
             ServerRemoto = CheckUpdate.Properties.Settings.Default.CartellaServer;
             CartellaLocale = CheckUpdate.Properties.Settings.Default.CartellaLocale;
-            this.Activated += Form1_Activated;
             TipoFile = CheckUpdate.Properties.Settings.Default.tipoFile;
             FileDaAprireAlTermine = CheckUpdate.Properties.Settings.Default.ApplicazioneDaAprire;
+            CartelleDaIncludere= CheckUpdate.Properties.Settings.Default.SottoCartelle;
 
         }
         public string TipoFile { get; set; }
-
-        private void Form1_Activated(object sender, EventArgs e)
-        {
-
-            foreach (var estensione in TipoFile.Split(';').Where(a=>a.Length>0))
-            {
-                foreach (var item in Directory.GetFiles(
-                   ServerRemoto, estensione))
-                {
-                    CheckFile(item);
-                }
-            } 
-
-            Process.Start(Path.Combine(CartellaLocale
-                , FileDaAprireAlTermine));
-            this.Activated -= Form1_Activated;
-            this.Hide();
-        }
-
+        public string CartelleDaIncludere { get; set; }
         public string ServerRemoto { get; set; }
         public string CartellaLocale { get; set; }
         public string FileDaAprireAlTermine { get; set; }
@@ -55,6 +38,7 @@ namespace CheckUpdate
                 file = file.Remove(0, 1);
             var path2 = Path.Combine(CartellaLocale
                 , file);
+            _background.ReportProgress(1, file);
 
             if (!File.Exists(path2))
             {
@@ -64,6 +48,7 @@ namespace CheckUpdate
             bool filesAreEqual = File.ReadAllBytes(file1).SequenceEqual(File.ReadAllBytes(path2));
             if (!filesAreEqual)
             {
+
                 File.Copy(file1, path2, true);
                 return;
             }
@@ -72,5 +57,53 @@ namespace CheckUpdate
 
             }
         }
+        BackgroundWorker _background;
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            _background = new BackgroundWorker();
+            _background.DoWork += Background_DoWork;
+            _background.WorkerReportsProgress = true;
+            _background.ProgressChanged += Background_ProgressChanged;
+            _background.RunWorkerCompleted += _background_RunWorkerCompleted;
+            _background.RunWorkerAsync();
+        }
+
+        private void _background_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+            var start= Process.Start(Path.Combine(CartellaLocale
+                , FileDaAprireAlTermine));
+            MessageBox.Show("Attendere l'apertura dell'applicazione STRUMENTI MUSICALI!", "Attenzione", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            this.Hide();
+        }
+
+        private void Background_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            this.Text = "Aggiornamento... " + e.UserState.ToString();
+            Application.DoEvents();
+        }
+
+        private void Background_DoWork(object sender, DoWorkEventArgs e)
+        {
+            GetFiles(ServerRemoto);
+            foreach (var item in Directory.GetDirectories(
+               ServerRemoto + @"\",this.CartelleDaIncludere,SearchOption.AllDirectories))
+            {
+                GetFiles(item);
+            }
+        }
+
+        private void GetFiles(string directory)
+        {
+            foreach (var estensione in TipoFile.Split(';').Where(a => a.Length > 0))
+            {
+                foreach (var item in Directory.GetFiles(
+                   directory, estensione))
+                {
+                    CheckFile(item);
+                }
+            }
+        }
     }
+
 }

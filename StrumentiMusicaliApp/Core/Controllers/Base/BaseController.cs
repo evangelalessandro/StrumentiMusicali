@@ -484,7 +484,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                     return "Pagamento";
                 case enAmbiente.RicercaArticolo:
                     return "Ricerca articolo";
-                    break;
+                  
                 default:
                     return "NIENTE DI IMPOSTATO";
 

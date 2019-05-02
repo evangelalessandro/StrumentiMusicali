@@ -16,6 +16,8 @@ namespace CheckUpdate
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            MessageBox.Show("Controllo aggiornamenti, premere ok e attendere!", "Attenzione", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            
             Application.Run(new Form1());
         }
     }

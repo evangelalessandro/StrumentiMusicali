@@ -25,7 +25,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
             Init();
 
-            TestoRicerca = ReadSetting(ambiente).LastStringaRicerca;
+            //TestoRicerca = ReadSetting(ambiente).LastStringaRicerca;
 
         }
         internal void UpdateButtonState()
@@ -102,11 +102,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
             if (disposing)
             {
                 var dato = ReadSetting(Ambiente);
-                dato.LastStringaRicerca = TestoRicerca;
-                if (string.IsNullOrEmpty(dato.LastStringaRicerca))
-                {
-                    dato.LastStringaRicerca = "";
-                }
+                //dato.LastStringaRicerca = TestoRicerca;
+                //if (string.IsNullOrEmpty(dato.LastStringaRicerca))
+                //{
+                //    dato.LastStringaRicerca = "";
+                //}
                 SaveSetting(Ambiente, dato);
 
                 // free managed resources

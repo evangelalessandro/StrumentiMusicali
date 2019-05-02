@@ -15,7 +15,7 @@ namespace StrumentiMusicali.App.View.Login
 			NomeUtente = nomeUtente;
 		}
 
-		private async void LoginButton_Click(object sender, EventArgs e)
+		private void LoginButton_Click(object sender, EventArgs e)
 		{
 			/**
 			* @desc Do your login thing here, for example we sleep it here for a bit of time

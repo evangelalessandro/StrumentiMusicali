@@ -269,7 +269,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 		public event EventHandler<EventArgs> OnSave;
 		public event EventHandler<EventArgs> OnClose;
 
-		private async void EditItemView()
+		private void EditItemView()
 		{
 			bool skipView = false;
 			var itemSelected = UtilityView.GetCurrentItemSelected<TBaseItem>(dgvRighe);

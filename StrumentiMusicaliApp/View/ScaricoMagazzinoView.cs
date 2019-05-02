@@ -168,7 +168,7 @@ namespace StrumentiMusicali.App.View
 
 		private EDCombo _cboArticoli = new EDCombo();
 
-		private async void ScaricoMagazzino_Load(object sender, EventArgs e)
+		private void ScaricoMagazzino_Load(object sender, EventArgs e)
 		{
 			UpdateButton();
 			RefreshData(new MovimentiUpdate());
@@ -207,7 +207,7 @@ namespace StrumentiMusicali.App.View
 			RefreshData(new MovimentiUpdate());
 		}
 
-		private async void txtCodiceABarre_TextChanged(object sender, EventArgs e)
+		private void txtCodiceABarre_TextChanged(object sender, EventArgs e)
 		{
 			_controllerMagazzino.SelectedItem.ArticoloID = 0;
 			lblTitoloArt.Text = "";

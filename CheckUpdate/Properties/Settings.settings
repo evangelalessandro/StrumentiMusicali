@@ -17,5 +17,8 @@
     <Setting Name="ApplicazioneDaAprire" Type="System.String" Scope="Application">
       <Value Profile="(Default)">StrumentiMusicali.App.exe</Value>
     </Setting>
+    <Setting Name="SottoCartelle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Template*</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

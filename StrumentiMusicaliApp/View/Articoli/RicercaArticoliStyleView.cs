@@ -1,4 +1,6 @@
 ﻿using StrumentiMusicali.App.Core.Controllers;
+using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Drawing;
@@ -13,13 +15,20 @@ namespace StrumentiMusicali.App.View.Articoli
         private Label label1;
         private RichTextBox rtcNote;
         private TextBox txtRicerca;
-        
+
         public RicercaArticoliStyleView()
             : base()
         {
             InitializeComponent();
         }
-        Core.MenuRibbon.MenuTab _menu = null;
+        protected override void Dispose(bool disposing)
+        {
+            _UpdateList.Dispose();
+        
+            base.Dispose(disposing);
+
+        }
+        private Core.MenuRibbon.MenuTab _menu = null;
         public RicercaArticoliStyleView(Core.Controllers.ControllerArticoli controllerArticoli)
             : base()
         {
@@ -30,6 +39,14 @@ namespace StrumentiMusicali.App.View.Articoli
 
             _menu = _controllerArticoli.GetMenu();
             _menu.ApplyValidation(false);
+
+            _UpdateList = EventAggregator.Instance().Subscribe<UpdateList<Articolo>>(UpdateArt);
+
+        }
+        private Subscription<UpdateList<Articolo>> _UpdateList;
+        private void UpdateArt(UpdateList<Articolo> obj)
+        {
+            AggiornaDatiArticolo();
         }
 
         private void AggiungiIntestazione(string dato)
@@ -37,12 +54,12 @@ namespace StrumentiMusicali.App.View.Articoli
             richTextBox_LOG_write_text(dato.PadRight(10) + "\t", Color.Blue, Color.Transparent);
         }
 
-        private void AggiungiValore(string item,bool highlight=false)
+        private void AggiungiValore(string item, bool highlight = false)
         {
             Color color = Color.Transparent;
             if (highlight)
                 color = Color.Yellow;
-            richTextBox_LOG_write_text(item + Environment.NewLine, Color.Black,  color);
+            richTextBox_LOG_write_text(item + Environment.NewLine, Color.Black, color);
         }
 
         private void AvviaRicerca()
@@ -60,29 +77,41 @@ namespace StrumentiMusicali.App.View.Articoli
                 {
                     _controllerArticoli.EditItem = null;
                     _controllerArticoli.SelectedItem = null;
-                     
+
 
                     return;
                 }
                 _controllerArticoli.EditItem = item;
                 _controllerArticoli.SelectedItem = item;
+                AggiornaDatiArticolo();
+            }
+        }
+
+        private void AggiornaDatiArticolo()
+        {
+            txtRicerca.Text = "";
+            rtcNote.Clear();
+            var item = _controllerArticoli.SelectedItem;
+            using (var uof = new UnitOfWork())
+            {
+
 
                 var itemQta = uof.MagazzinoRepository.Find(a => a.ArticoloID == item.ID).
-                    Where(a => a.Deposito.Principale == true).
-                    Select(a => a.Qta).Sum();
+                                    Where(a => a.Deposito.Principale == true).
+                                    Select(a => a.Qta).Sum();
 
 
                 AggiungiIntestazione("Articolo: ");
                 AggiungiValore(item.Titolo.ToString());
                 AggiungiIntestazione("Prezzo: ");
-                AggiungiValore(item.Prezzo.ToString("C2"),true);
+                AggiungiValore(item.Prezzo.ToString("C2"), true);
                 AggiungiIntestazione("Pezzi: ");
                 AggiungiValore(itemQta.ToString(""));
-                
+
                 AggiungiIntestazione("Codice Ordine: ");
-                if (item.Libro!=null && item.Libro.Ordine!=null)
+                if (item.Libro != null && item.Libro.Ordine != null)
                     AggiungiValore(item.Libro.Ordine);
-                
+
                 AggiungiIntestazione("Non Imponibile:");
                 if (item.NonImponibile)
                 {

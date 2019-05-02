@@ -7,9 +7,9 @@ namespace StrumentiMusicali.Library.Entity
 {
 	public class RigaDoc : BaseEntity
 	{
-		
-		[CustomUIViewAttribute(Ordine = 1)]
-		public string CodiceArticoloOld { get; set; }
+
+        [CustomHideUIAttribute]
+        public string CodiceArticoloOld { get; set; }
 
 		[ComboData(TypeList = "Articoli")]
 		[CustomHideUIAttribute]

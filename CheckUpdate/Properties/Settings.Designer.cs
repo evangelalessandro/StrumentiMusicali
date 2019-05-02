@@ -68,5 +68,14 @@ namespace CheckUpdate.Properties {
                 return ((string)(this["ApplicazioneDaAprire"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Template*")]
+        public string SottoCartelle {
+            get {
+                return ((string)(this["SottoCartelle"]));
+            }
+        }
     }
 }

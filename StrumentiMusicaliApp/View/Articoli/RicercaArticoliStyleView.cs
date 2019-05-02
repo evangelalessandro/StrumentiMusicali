@@ -78,6 +78,11 @@ namespace StrumentiMusicali.App.View.Articoli
                 AggiungiValore(item.Prezzo.ToString("C2"),true);
                 AggiungiIntestazione("Pezzi: ");
                 AggiungiValore(itemQta.ToString(""));
+                
+                AggiungiIntestazione("Codice Ordine: ");
+                if (item.Libro!=null && item.Libro.Ordine!=null)
+                    AggiungiValore(item.Libro.Ordine);
+                
                 AggiungiIntestazione("Non Imponibile:");
                 if (item.NonImponibile)
                 {

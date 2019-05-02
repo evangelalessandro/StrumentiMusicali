@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CheckUpdate.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="tipoFile" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">*.dll;*.exe</Value>
+    </Setting>
+    <Setting Name="FileDaEscludere" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">*.config</Value>
+    </Setting>
+    <Setting Name="CartellaServer" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Users\fastcode13042017\Source\Repos\StrumentiMusicali\StrumentiMusicaliApp\bin\Debug</Value>
+    </Setting>
+    <Setting Name="CartellaLocale" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Users\fastcode13042017\Desktop\PRova</Value>
+    </Setting>
+    <Setting Name="ApplicazioneDaAprire" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">StrumentiMusicali.App.exe</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

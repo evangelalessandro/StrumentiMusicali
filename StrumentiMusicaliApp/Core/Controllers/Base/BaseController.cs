@@ -643,8 +643,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 					foreach (var button in pannello.Pulsanti)
 					{
 						var rbButton = new RibbonButton(button.Testo);
+                        
 
-						rbButton.Tag = button.GetHashCode();
+                        rbButton.Tag = button.GetHashCode();
 						(button as INotifyPropertyChanged).PropertyChanged += (a, e) =>
 					   {
 						   UpdateButton(button, rbButton);

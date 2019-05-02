@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.202
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.Library", "StrumentiMusicaliSql\StrumentiMusicali.Library.csproj", "{114B9DB5-6A31-4D89-BBB8-7AE7DD1A25C6}"
 EndProject
@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestModel", "TestMOdel\Test
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testForm", "testForm\testForm.csproj", "{421D2CAB-412B-481D-888F-E839945B6B9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckUpdate", "CheckUpdate\CheckUpdate.csproj", "{8195E64E-272F-42F2-972D-67831CC83CD7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +36,10 @@ Global
 		{421D2CAB-412B-481D-888F-E839945B6B9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{421D2CAB-412B-481D-888F-E839945B6B9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{421D2CAB-412B-481D-888F-E839945B6B9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8195E64E-272F-42F2-972D-67831CC83CD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8195E64E-272F-42F2-972D-67831CC83CD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8195E64E-272F-42F2-972D-67831CC83CD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8195E64E-272F-42F2-972D-67831CC83CD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

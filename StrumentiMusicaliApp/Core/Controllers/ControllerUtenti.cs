@@ -110,7 +110,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 				DataSource = new View.Utility.MySortableBindingList<UtentiItem>(list);
 
-			}
+
+                base.RefreshList(obj);
+            }
 			catch (Exception ex)
 			{
 				new Action(() =>

@@ -240,6 +240,7 @@
     <Compile Include="Core\Controllers\ControllerMagazzino.cs" />
     <Compile Include="Core\Controllers\ControllerClienti.cs" />
     <Compile Include="Core\Controllers\ControllerRigheFatture.cs" />
+    <Compile Include="Core\Events\Generics\ClearRicerca.cs" />
     <Compile Include="Core\Exports\ExportArticoliCsv.cs" />
     <Compile Include="Core\Exports\ExportMagazzino.cs" />
     <Compile Include="Core\Controllers\FatturaElett\FattElettronica.cs" />
@@ -643,6 +644,7 @@
     <None Include="Resources\Search_48.png" />
     <None Include="Resources\Search.png" />
     <None Include="Resources\Excel_export.png" />
+    <None Include="Resources\MantieniFiltro.png" />
     <Content Include="Resources\StrumentoMusicale.ico" />
     <Content Include="StrumentoMusicale.ico" />
     <None Include="Resources\Close.png" />

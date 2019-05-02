@@ -478,7 +478,10 @@ namespace StrumentiMusicali.App.Core.Controllers
 				}
 
 				DataSource = new View.Utility.MySortableBindingList<FatturaItem>(list);
-			}
+
+
+                base.RefreshList(obj);
+            }
 			catch (Exception ex)
 			{
 				ExceptionManager.ManageError(ex);

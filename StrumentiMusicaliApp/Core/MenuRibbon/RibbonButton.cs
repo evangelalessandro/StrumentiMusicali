@@ -94,7 +94,9 @@ namespace StrumentiMusicali.App.Core.MenuRibbon
 		}
 
 		public const string TagCerca = "CERCA";
-		public const string TagAdd = "ADD";
+        public const string TagCercaClear = "CERCAClear";
+        
+        public const string TagAdd = "ADD";
 		public const string TagRemove = "Remove";
 		public const string TagEdit = "Edit";
 

@@ -69,18 +69,19 @@ namespace StrumentiMusicali.App.View.BaseControl
 			});
 			viewRicerca = EventAggregator.Instance().Subscribe<ViewRicerca<TEntity>>((a) =>
 			{
-				bool visibleCerca = pnlCerca.Visible;
-				pnlCerca.Visible = !visibleCerca;
-				splitter1.Visible = !visibleCerca;
-				if (!visibleCerca)
-				{
+				 
+                Controller.PannelloRicercaVisibile = !Controller.PannelloRicercaVisibile;
+                pnlCerca.Visible = Controller.PannelloRicercaVisibile;
+                splitter1.Visible = Controller.PannelloRicercaVisibile;
+                if (Controller.PannelloRicercaVisibile)
+                {
 					pnlGridView.Dock = DockStyle.Fill;
 				}
 				else
 				{
 					pnlCerca.Dock = DockStyle.Top;
 				}
-				UpdateButtonState();
+				Controller.UpdateButtonState();
 			});
 			txtCerca.KeyUp += TxtCerca_KeyUp;
 		}
@@ -254,7 +255,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 					SelectionChanged(this, new EventArgs());
 				}
 			}
-			UpdateButtonState();
+			Controller.UpdateButtonState();
 		}
 		public event EventHandler SelectionChanged;
 		public MenuTab GetMenu()
@@ -296,21 +297,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 
 
-		private void UpdateButtonState()
-		{
-			if (GetMenu() != null)
-			{
-				var menu = GetMenu();
-				menu.Enabled = !(gridControl1.DataSource == null);
-
-				menu.ApplyValidation(dgvRighe.FocusedRowHandle >= 0);
-				foreach (var item in menu.ItemByTag(MenuTab.TagCerca))
-				{
-					item.Checked = pnlCerca.Visible;
-				}
-
-			}
-		}
+	
 		private void RefreshList(UpdateList<TEntity> obj)
 		{
 			Controller.RefreshList(obj);

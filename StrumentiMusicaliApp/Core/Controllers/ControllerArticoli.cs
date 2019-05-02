@@ -97,13 +97,14 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private void AggiungiComandiMenu()
         {
-            var tabFirst= GetMenu().Tabs[0];
+            var tabFirst = GetMenu().Tabs[0];
             var pnl = tabFirst.Pannelli.First();
-            
+
             if (ModalitaRicerca)
             {
                 pnl.Pulsanti.RemoveAll(a => a.Tag == MenuTab.TagAdd
-                || a.Tag == MenuTab.TagRemove || a.Tag == MenuTab.TagCerca);
+                || a.Tag == MenuTab.TagRemove || a.Tag == MenuTab.TagCerca
+                || a.Tag == MenuTab.TagCercaClear);
 
                 tabFirst.Pannelli.RemoveAt(2);
                 tabFirst.Pannelli.RemoveAt(1);
@@ -566,6 +567,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                             || a.Libro.Genere.Contains(FiltroLibri)
                             || a.Libro.Ordine.Contains(FiltroLibri)
                             || a.Libro.Settore.Contains(FiltroLibri)
+                            || a.Libro.TitoloDelLibro.Contains(FiltroLibri)
                             && FiltroLibri.Length > 0)
                             || FiltroLibri == "")
 
@@ -623,11 +625,14 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 
                     DataSource = new View.Utility.MySortableBindingList<ArticoloItem>(list);
-
-                    TestoRicerca = "";
-                    FiltroMarca = "";
-                    FiltroLibri = "";
+                    if (ClearRicerca)
+                    {
+                        TestoRicerca = "";
+                        FiltroMarca = "";
+                        FiltroLibri = "";
+                    }
                 }
+                base.RefreshList(obj);
             }
             catch (Exception ex)
             {

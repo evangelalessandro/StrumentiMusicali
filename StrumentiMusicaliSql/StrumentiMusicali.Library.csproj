@@ -92,6 +92,10 @@
     <Compile Include="Migrations\201901091647225_TabSettings.Designer.cs">
       <DependentUpon>201901091647225_TabSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905012047491_RestrizioneLibri.cs" />
+    <Compile Include="Migrations\201905012047491_RestrizioneLibri.Designer.cs">
+      <DependentUpon>201905012047491_RestrizioneLibri.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -115,6 +119,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901091647225_TabSettings.resx">
       <DependentUpon>201901091647225_TabSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905012047491_RestrizioneLibri.resx">
+      <DependentUpon>201905012047491_RestrizioneLibri.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

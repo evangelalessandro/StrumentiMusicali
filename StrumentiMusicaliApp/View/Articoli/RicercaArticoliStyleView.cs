@@ -71,14 +71,22 @@ namespace StrumentiMusicali.App.View.Articoli
                     Where(a => a.Deposito.Principale == true).
                     Select(a => a.Qta).Sum();
 
-                AggiungiIntestazione("Codice:");
-                AggiungiValore(item.ID.ToString());
+
                 AggiungiIntestazione("Articolo: ");
                 AggiungiValore(item.Titolo.ToString());
                 AggiungiIntestazione("Prezzo: ");
                 AggiungiValore(item.Prezzo.ToString("C2"),true);
                 AggiungiIntestazione("Pezzi: ");
                 AggiungiValore(itemQta.ToString(""));
+                AggiungiIntestazione("Non Imponibile:");
+                if (item.NonImponibile)
+                {
+                    AggiungiValore("Sì");
+                }
+                else
+                {
+                    AggiungiValore("No");
+                }
             }
         }
 

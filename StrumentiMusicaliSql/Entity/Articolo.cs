@@ -50,13 +50,18 @@ namespace StrumentiMusicali.Library.Entity
 		[CustomUIViewAttribute(Width = 80, Ordine = 40)]
 		[Required]
 		public decimal Prezzo { get; set; } = 0;
-		[CustomUIViewAttribute(Width = 60, Ordine = 41)]
+
+        [CustomUIViewAttribute(Width = 80, Ordine = 41)]
+        [Required]
+        public bool NonImponibile { get; set; } = false;
+
+        [CustomUIViewAttribute(Width = 60, Ordine = 44)]
 		public bool PrezzoARichiesta { get; set; } = false;
 
-		[CustomUIViewAttribute(Width = 60, Ordine = 42)]
+		[CustomUIViewAttribute(Width = 60, Ordine = 45)]
 		public decimal PrezzoBarrato { get; set; } = 0;
 
-		[CustomUIViewAttribute(Width = 80, Ordine = 43)]
+		[CustomUIViewAttribute(Width = 80, Ordine = 46)]
 		public decimal PrezzoAcquisto { get; set; } = 0;
 
 		[MaxLength(2000)]
@@ -103,12 +108,18 @@ namespace StrumentiMusicali.Library.Entity
 	}
 	public class Libro
 	{
+        [MaxLength(100)]
         public string TitoloDelLibro { get; set; }
+        [MaxLength(20)]
         public string Autore { get; set; }
-		public string Edizione { get; set; }
-		public string Edizione2 { get; set; }
-		public string Genere { get; set; }
-		public string Ordine { get; set; }
+        [MaxLength(20)]
+        public string Edizione { get; set; }
+        [MaxLength(20)]
+        public string Edizione2 { get; set; }
+        [MaxLength(20)]
+        public string Genere { get; set; }
+        [MaxLength(20)]
+        public string Ordine { get; set; }
 		public string Settore { get; set; }
 
     }

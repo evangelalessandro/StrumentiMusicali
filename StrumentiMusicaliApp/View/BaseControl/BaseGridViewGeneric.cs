@@ -34,7 +34,9 @@ namespace StrumentiMusicali.App.View.BaseControl
 		{
 			InitializeComponent();
 			Init();
-			txtCerca.Text = controllerItem.TestoRicerca;
+            
+            txtCerca.DataBindings.Add("Text", controllerItem, "TestoRicerca");
+            txtCerca.Text = controllerItem.TestoRicerca;
 
 			this.dgvRighe.DoubleClick += DgvRighe_DoubleClick;
 			Controller = controllerItem;
@@ -143,9 +145,10 @@ namespace StrumentiMusicali.App.View.BaseControl
 			{
 				Controller.TestoRicerca = txtCerca.Text;
 				RicercaRefresh();
+ 
 
-			}
-		}
+            }
+        }
 
 		public void RicercaRefresh()
 		{

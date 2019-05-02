@@ -623,6 +623,10 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 
                     DataSource = new View.Utility.MySortableBindingList<ArticoloItem>(list);
+
+                    TestoRicerca = "";
+                    FiltroMarca = "";
+                    FiltroLibri = "";
                 }
             }
             catch (Exception ex)

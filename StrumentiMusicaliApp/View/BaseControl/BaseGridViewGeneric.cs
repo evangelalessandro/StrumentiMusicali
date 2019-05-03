@@ -47,8 +47,10 @@ namespace StrumentiMusicali.App.View.BaseControl
 			{
 				dgvRighe.RestoreLayoutFromXml(getLayoutFile());
 			}
+            dgvRighe.ClearColumnsFilter();
 
-			this.dgvRighe.FocusedRowChanged += DgvMaster_SelectionChanged;
+
+            this.dgvRighe.FocusedRowChanged += DgvMaster_SelectionChanged;
 
 			//this.dgvRighe.FocusedRowChanged += DgvMaster_SelectionChanged;
 

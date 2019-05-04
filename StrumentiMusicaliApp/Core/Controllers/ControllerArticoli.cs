@@ -294,7 +294,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                         CategoriaID = itemCurrent.Categoria.ID,
                         Condizione = itemCurrent.Condizione,
                         BoxProposte = itemCurrent.BoxProposte,
-                        Marca = itemCurrent.Marca,
                         Prezzo = itemCurrent.Prezzo,
                         PrezzoARichiesta = itemCurrent.PrezzoARichiesta,
                         PrezzoBarrato = itemCurrent.PrezzoBarrato,
@@ -304,6 +303,9 @@ namespace StrumentiMusicali.App.Core.Controllers
                         DataUltimaModifica = DateTime.Now,
                         DataCreazione = DateTime.Now
                     });
+                    art.Strumento= itemCurrent.Strumento;
+                    art.Libro = itemCurrent.Libro;
+
                     uof.ArticoliRepository.Add(art);
                     if (saveEntity.SaveEntity(enSaveOperation.Duplicazione))
                     {
@@ -417,7 +419,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             {
                 CategoriaID = int.Parse(dat[1]),
                 Condizione = cond,
-                Marca = dat[3],
+                
                 Titolo = dat[4],
                 Testo = dat[5].Replace("<br>", Environment.NewLine),
                 Prezzo = prezzo,
@@ -425,7 +427,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                 PrezzoBarrato = prezzoBarrato,
                 BoxProposte = int.Parse(dat[9]) == 1 ? true : false
             });
-
+            artNew.Strumento.Marca = dat[3];
             uof.ArticoliRepository.Add(artNew);
             var foto = dat[7];
             if (foto.Length > 0)
@@ -578,7 +580,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                             && FiltroLibri.Length > 0)
                             || FiltroLibri == "")
 
-                            && (a.Marca.Contains(FiltroMarca) && FiltroMarca.Length > 0
+                            && (a.Strumento.Marca.Contains(FiltroMarca) && FiltroMarca.Length > 0
                             || FiltroMarca == "")
                             );
 

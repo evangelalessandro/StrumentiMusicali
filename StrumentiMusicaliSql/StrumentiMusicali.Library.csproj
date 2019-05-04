@@ -96,6 +96,22 @@
     <Compile Include="Migrations\201905012047491_RestrizioneLibri.Designer.cs">
       <DependentUpon>201905012047491_RestrizioneLibri.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905042120308_AddStrumentoClass.cs" />
+    <Compile Include="Migrations\201905042120308_AddStrumentoClass.Designer.cs">
+      <DependentUpon>201905042120308_AddStrumentoClass.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905042144460_InsertStrumentoData.cs" />
+    <Compile Include="Migrations\201905042144460_InsertStrumentoData.Designer.cs">
+      <DependentUpon>201905042144460_InsertStrumentoData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905042147540_UpdateStrumento.cs" />
+    <Compile Include="Migrations\201905042147540_UpdateStrumento.Designer.cs">
+      <DependentUpon>201905042147540_UpdateStrumento.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905042201085_RemovedModelloMarca.cs" />
+    <Compile Include="Migrations\201905042201085_RemovedModelloMarca.Designer.cs">
+      <DependentUpon>201905042201085_RemovedModelloMarca.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -122,6 +138,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905012047491_RestrizioneLibri.resx">
       <DependentUpon>201905012047491_RestrizioneLibri.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905042120308_AddStrumentoClass.resx">
+      <DependentUpon>201905042120308_AddStrumentoClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905042144460_InsertStrumentoData.resx">
+      <DependentUpon>201905042144460_InsertStrumentoData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905042147540_UpdateStrumento.resx">
+      <DependentUpon>201905042147540_UpdateStrumento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905042201085_RemovedModelloMarca.resx">
+      <DependentUpon>201905042201085_RemovedModelloMarca.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -14,7 +14,7 @@ namespace StrumentiMusicali.App.Core
         public ArticoloItem(Articolo articolo)
         {
             Titolo = articolo.Titolo;
-            Marca = articolo.Marca;
+            Marca = articolo.Strumento.Marca;
             CodiceABarre = articolo.CodiceABarre;
             //CaricaInEcommerce = articolo.CaricainECommerce;
             //CaricaInMercatino = articolo.CaricaInMercatino;

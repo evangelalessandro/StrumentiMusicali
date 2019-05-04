@@ -69,7 +69,7 @@ namespace StrumentiMusicali.App.Core.Exports
                 if (TipoExp == TipoExport.PerMarca)
                 {
                     /*filtro per marca*/
-                    listArt = listArt.Where(a => a.Marca != null && a.Marca.Trim() == marcaFiltro).ToList();
+                    listArt = listArt.Where(a => a.Strumento.Marca != null && a.Strumento.Marca.Trim() == marcaFiltro).ToList();
 
                     var qtaAZero = qta.Select(a => new { a.Key.ArticoloID, a.sumQta })
                         .GroupBy(a => a.ArticoloID).Select(a =>
@@ -89,8 +89,8 @@ namespace StrumentiMusicali.App.Core.Exports
                       a.CodiceABarre,
                       Prezzo = a.Prezzo.ToString("C2"),
                       PrezzoAcquisto = a.PrezzoAcquisto.ToString("C2"),
-                      a.Colore,
-                      a.Marca,
+                      a.Strumento.Colore,
+                      a.Strumento.Marca,
                       a.Note1,
                       a.Note2,
                       a.Note3,

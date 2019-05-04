@@ -86,7 +86,7 @@ namespace StrumentiMusicali.App.Core.Imports
 					{
 						var magItem = new Magazzino();
 						var articolo = new Articolo();
-						articolo.Marca = item.Marca;
+						articolo.Strumento.Marca = item.Marca;
 						if (item.PrezzoVendita != null)
 						{
 							articolo.Prezzo = decimal.Parse(item.PrezzoVendita.Replace("€", "").Trim());
@@ -98,7 +98,7 @@ namespace StrumentiMusicali.App.Core.Imports
 
 						articolo.Testo = (item.DescrBreve);
 						articolo.Note1 = (item.Note);
-						articolo.Colore = (item.Colore);
+						articolo.Strumento.Colore = (item.Colore);
 						articolo.Titolo = item.Marca + " " + item.Modello + " " + item.DescrBreve + " " + item.Colore;
 						articolo.Titolo = articolo.Titolo.Trim();
 						articolo.Testo = articolo.Titolo;

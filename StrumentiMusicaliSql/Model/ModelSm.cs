@@ -56,12 +56,7 @@ namespace StrumentiMusicali.Library.Model
                 var articolo = entityEntry.Entity as Articolo;
                 if (articolo.ID == 0)
                 {
-                    if (articolo.Libro != null && articolo.Libro.Edizione != null &&
-                        articolo.Libro.Edizione.Length > 0)
-                    {
-                        articolo.Titolo = (articolo.Libro.Autore + " " + articolo.Libro.TitoloDelLibro + " " + articolo.Libro.Genere + " " + articolo.Libro.Edizione + " " + articolo.Libro.Edizione2 + " "
-                            + articolo.Libro.Ordine).Trim().Replace("  ", " ");
-                    }
+                    articolo.UpdateTitolo();
                 }
                 if (articolo.CategoriaID == 0)
                 {

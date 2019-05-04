@@ -26,8 +26,8 @@ namespace StrumentiMusicali.App.View
             _combo.Controllo.Properties.NullText = "Selezionare un elemento";
             using (var uof = new UnitOfWork())
             {
-                var list = uof.ArticoliRepository.Find(a => a.Marca.Length > 0)
-                    .Select(a => a.Marca.ToUpper()).Distinct().OrderBy(a=>a).ToList();
+                var list = uof.ArticoliRepository.Find(a => a.Strumento.Marca.Length > 0)
+                    .Select(a => a.Strumento.Marca.ToUpper()).Distinct().OrderBy(a=>a).ToList();
 
 
                 _combo.SetList(list.Select(a => new { ID = a, Descrizione = a }).ToList());

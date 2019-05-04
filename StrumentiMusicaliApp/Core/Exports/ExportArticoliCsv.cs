@@ -188,11 +188,11 @@ namespace StrumentiMusicali.App.Core.Exports
 					break;
 			}
 			sb.Append(Separatore);
-			if (art.Marca.Length>100)
-				sb.Append(art.Marca.Substring(0, 100));
+			if (art.Strumento.Marca.Length>100)
+				sb.Append(art.Strumento.Marca.Substring(0, 100));
 			else
 			{
-				sb.Append(art.Marca);
+				sb.Append(art.Strumento.Marca);
 			}
 			sb.Append(Separatore);
 			if (art.Titolo.Length > 100)

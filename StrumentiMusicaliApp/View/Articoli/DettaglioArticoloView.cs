@@ -80,7 +80,8 @@ namespace StrumentiMusicali.App.Forms
                     || !string.IsNullOrEmpty(articoloController.EditItem.Libro.Edizione)
                     || !string.IsNullOrEmpty(articoloController.EditItem.Libro.Settore));
             }
-            
+            articoloController.EditItem.ShowStrumento = !articoloController.EditItem.ShowLibro;
+
             _EditView = new View.Settings.GenericSettingView(articoloController.EditItem);
             _EditView.Dock = DockStyle.Fill;
             tabPage1.Controls.Add(_EditView);

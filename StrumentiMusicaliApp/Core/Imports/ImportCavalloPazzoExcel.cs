@@ -145,7 +145,7 @@ namespace StrumentiMusicali.App.Core.Imports
 					var magItem = new Magazzino();
 					var articolo = new Articolo();
 					articolo.Condizione = enCondizioneArticolo.Nuovo;
-					articolo.Marca = item.Marca;
+					articolo.Strumento.Marca = item.Marca;
 					decimal prezzoVend = 0;
 					if (decimal.TryParse(item.PrezzoVendita, out prezzoVend))
 						articolo.Prezzo = prezzoVend;
@@ -218,7 +218,7 @@ namespace StrumentiMusicali.App.Core.Imports
 					var magItem = new Magazzino();
 					var articolo = new Articolo();
 					articolo.Condizione = enCondizioneArticolo.Nuovo;
-					articolo.Marca = item.Marca;
+					articolo.Strumento.Marca = item.Marca;
 
 					articolo.Prezzo = decimal.Parse(item.PrezzoVendita);
 					articolo.CodiceABarre = item.CodiceABarre;

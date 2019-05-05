@@ -246,8 +246,8 @@ namespace StrumentiMusicali.App.Core.Controllers
                 using (var uof=new UnitOfWork())
                 {
 
-                    EditItem.Categoria = uof.CategorieRepository.Find(a => a.Codice == 133).FirstOrDefault();
-                    EditItem.CategoriaID = EditItem.Categoria.ID;
+                    var categoria = uof.CategorieRepository.Find(a => a.Codice == 133).FirstOrDefault();
+                    EditItem.CategoriaID = categoria.ID;
 
                 }
             }

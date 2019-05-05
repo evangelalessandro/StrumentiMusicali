@@ -56,7 +56,7 @@ namespace StrumentiMusicali.Library.Model
                 var articolo = entityEntry.Entity as Articolo;
                 if (articolo.ID == 0)
                 {
-                    articolo.UpdateTitolo();
+                    articolo.UpdateTitolo="";
                 }
                 if (articolo.CategoriaID == 0)
                 {
@@ -162,6 +162,10 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<Pagamento>().Property(e => e.ImportoTotale).HasPrecision(19, 2);
             modelBuilder.Entity<Articolo>().Property(e => e.Prezzo).HasPrecision(19, 2);
             modelBuilder.Entity<Articolo>().Property(e => e.PrezzoBarrato).HasPrecision(19, 2);
+
+            modelBuilder.Entity<Categoria>()
+           .HasIndex(b => new { b.Nome,b.Codice,b.Reparto})
+           .IsUnique();
         }
 
         public virtual DbSet<Deposito> Depositi { get; set; }

@@ -1,6 +1,7 @@
 ﻿using PropertyChanged;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Base;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,6 +18,19 @@ namespace StrumentiMusicali.Library.Entity
     [AddINotifyPropertyChangedInterface]
     public class Articolo : BaseEntity
     {
+        public Articolo()
+        {
+            Strumento.PropertyChanged += Strumento_PropertyChanged;
+            Libro.PropertyChanged += Strumento_PropertyChanged;
+        }
+
+
+        private void Strumento_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            UpdateTitolo = Titolo;
+
+        }
+
         [CustomUIViewAttribute(Ordine = 6)]
         public bool BoxProposte { get; set; }
 
@@ -70,14 +84,21 @@ namespace StrumentiMusicali.Library.Entity
 
         [CustomUIViewAttribute(Width = 500, Ordine = 3)]
         [MaxLength(100), Required]
-        public string Titolo { get; set; }
+        public string Titolo {
+            get;
+            set;
+        }
 
         [CustomUIViewAttribute(Ordine = 5)]
         public bool UsaAnnuncioTurbo { get; set; }
 
         [CustomUIViewAttribute(Ordine = 20)]
         [MaxLength(100)]
-        public string Note1 { get; set; }
+        [AlsoNotifyFor("UpdateTitolo")]
+        public string Note1 {
+            get;
+            set;
+        }
 
         [CustomUIViewAttribute(Ordine = 21)]
         [MaxLength(100)]
@@ -92,13 +113,14 @@ namespace StrumentiMusicali.Library.Entity
         public string Rivenditore { get; set; }
 
         [CustomUIViewAttribute(Ordine = 30)]
+        [AlsoNotifyFor("UpdateTitolo")]
         public virtual Libro Libro { get; set; } = new Libro();
 
         [MaxLength(50)]
         [CustomHideUIAttribute]
         public string TagImport { get; set; }
 
-        
+
         [NotMapped]
         [CustomHideUIAttribute]
         public bool? ShowLibro { get; set; } = null;
@@ -107,36 +129,54 @@ namespace StrumentiMusicali.Library.Entity
         [NotMapped]
         [CustomUIViewAttribute(Width = 80, Ordine = 50, Enable = false)]
         public int QtaNegozio { get; set; } = 0;
+        [NotMapped]
+        [AlsoNotifyFor("Titolo")]
+        [CustomHideUIAttribute]
+        public string UpdateTitolo {
+            set {
 
-        public void UpdateTitolo()
+            }
+            get {
+                Titolo = GetTitoloDesc();
+                return Titolo;
+            }
+        }
+        private string GetTitoloDesc()
         {
             if (this.ID == 0)
             {
+
+
+                string titolo = "";
                 if (this.ShowLibro.GetValueOrDefault(false))
                 {
-                    Titolo = (Libro.Autore + " " + 
-                                Libro.TitoloDelLibro + " " + 
-                                Libro.Genere + " " + 
-                                Libro.Edizione + " " + 
-                                Libro.Edizione2 + " " + 
+                    titolo = (Libro.Autore + " " +
+                                Libro.TitoloDelLibro + " " +
+                                Libro.Genere + " " +
+                                Libro.Edizione + " " +
+                                Libro.Edizione2 + " " +
                                 Libro.Ordine).Trim().Replace("    ", " ").Replace("  ", " ");
                 }
                 else
                 {
-                    Titolo = (this.Strumento.Marca + " " + this.Strumento.Colore + " " + Strumento.Modello).Trim().Replace("    ", " ").Replace("  ", " ");
+                    titolo = (this.Strumento.Marca + " " + Strumento.Modello + " " + this.Strumento.Colore).Trim().Replace("    ", " ").Replace("  ", " ");
 
                 }
+                return titolo;
             }
+            return Titolo;
+
         }
         [NotMapped]
         [CustomHideUIAttribute]
         public bool? ShowStrumento { get; set; } = null;
 
+        [AlsoNotifyFor("UpdateTitolo")]
         [CustomUIViewAttribute(Ordine = 5)]
         public virtual StrumentoAcc Strumento { get; set; } = new StrumentoAcc();
 
     }
-    public class Libro
+    public class Libro : INotifyPropertyChanged
     {
         [MaxLength(100)]
         public string TitoloDelLibro { get; set; }
@@ -152,9 +192,10 @@ namespace StrumentiMusicali.Library.Entity
         public string Ordine { get; set; }
         public string Settore { get; set; }
 
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 
-    public class StrumentoAcc
+    public class StrumentoAcc : INotifyPropertyChanged
     {
         [CustomUIViewAttribute(Width = 150, Ordine = 2)]
         [MaxLength(100)]
@@ -164,9 +205,15 @@ namespace StrumentiMusicali.Library.Entity
         [MaxLength(100)]
         public string Modello { get; set; } = "";
 
-        [CustomUIViewAttribute(Ordine = 4)]
+        [CustomUIViewAttribute(Width = 150, Ordine = 4)]
+        [MaxLength(100)]
+        public string CodiceOrdine { get; set; } = "";
+
+        [CustomUIViewAttribute(Ordine = 5)]
         [MaxLength(50)]
         public string Colore { get; set; } = "";
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
     }
 }

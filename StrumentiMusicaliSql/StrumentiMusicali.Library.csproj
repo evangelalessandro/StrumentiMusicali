@@ -112,6 +112,14 @@
     <Compile Include="Migrations\201905042201085_RemovedModelloMarca.Designer.cs">
       <DependentUpon>201905042201085_RemovedModelloMarca.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905051116116_AddCodiceOrdine.cs" />
+    <Compile Include="Migrations\201905051116116_AddCodiceOrdine.Designer.cs">
+      <DependentUpon>201905051116116_AddCodiceOrdine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905051144115_AddCodiceOrdine1.cs" />
+    <Compile Include="Migrations\201905051144115_AddCodiceOrdine1.Designer.cs">
+      <DependentUpon>201905051144115_AddCodiceOrdine1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -150,6 +158,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905042201085_RemovedModelloMarca.resx">
       <DependentUpon>201905042201085_RemovedModelloMarca.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905051116116_AddCodiceOrdine.resx">
+      <DependentUpon>201905051116116_AddCodiceOrdine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905051144115_AddCodiceOrdine1.resx">
+      <DependentUpon>201905051144115_AddCodiceOrdine1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

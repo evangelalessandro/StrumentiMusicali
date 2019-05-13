@@ -1,5 +1,6 @@
 ﻿using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;

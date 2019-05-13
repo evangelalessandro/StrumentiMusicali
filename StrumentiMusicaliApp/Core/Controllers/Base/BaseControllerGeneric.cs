@@ -1,13 +1,14 @@
 ﻿using PropertyChanged;
-using StrumentiMusicali.App.Core.Events.Generics;
-using StrumentiMusicali.App.Core.Item.Base;
 using StrumentiMusicali.App.Core.MenuRibbon;
-using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
+
+using StrumentiMusicali.Library.Core.Events.Generics;
+using StrumentiMusicali.Library.Core.Item.Base;
 using StrumentiMusicali.Library.Entity.Base;
+using StrumentiMusicali.Library.View.Enums;
 using System;
 
 namespace StrumentiMusicali.App.Core.Controllers.Base
@@ -17,6 +18,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
         where TEntity : BaseEntity, new()
         where TBaseItem : BaseItem<TEntity>, new()
     {
+
+      
+
         public BaseControllerGeneric(enAmbiente ambiente, enAmbiente ambienteDettaglio)
         {
             AmbienteDettaglio = ambienteDettaglio;
@@ -69,7 +73,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
             }
         }
 
-        public TEntity EditItem { get; set; } = new TEntity();
+        public TEntity EditItem { get;
+            set; } = new TEntity();
 
 
         private Subscription<UpdateList<TEntity>> _updateList = null;
@@ -122,13 +127,13 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
         internal void RiselezionaSelezionato()
         {
             var item = (TEntity)SelectedItem;
-            EventAggregator.Instance().Publish<UpdateList<TEntity>>(new UpdateList<TEntity>());
+            EventAggregator.Instance().Publish<UpdateList<TEntity>>(new UpdateList<TEntity>(this));
             EventAggregator.Instance().Publish<ItemSelected<TBaseItem, TEntity>>(
                 new ItemSelected<TBaseItem, TEntity>(new TBaseItem()
                 {
                     ID = item.ID,
                     Entity = item
-                }));
+                },this));
         }
         public TEntity SelectedItem { get; set; }
         public void ShowEditView()
@@ -140,7 +145,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                 {
                     view.Validate();
                     EventAggregator.Instance().Publish<Save<TEntity>>
-                    (new Save<TEntity>());
+                    (new Save<TEntity>(this));
                 };
                 ShowView(view, AmbienteDettaglio);
             }
@@ -200,7 +205,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
             ribCrea.Click += (a, e) =>
             {
-                EventAggregator.Instance().Publish(new Add<TEntity>());
+                EventAggregator.Instance().Publish(new Add<TEntity>(this));
             };
             
             var ribClearFilter = panel2.Add("Mantieni filtro", Properties.Resources.MantieniFiltro);
@@ -216,11 +221,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
             ribDelete.Click += (a, e) =>
               {
-                  EventAggregator.Instance().Publish(new Remove<TEntity>());
+                  EventAggregator.Instance().Publish(new Remove<TEntity>(this));
               };
                 ribEdit.Click += (a, e) =>
               {
-                  EventAggregator.Instance().Publish(new Edit<TEntity>());
+                  EventAggregator.Instance().Publish(new Edit<TEntity>(this));
               };
             ribCerca.Click += (a, e) =>
             {
@@ -241,7 +246,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                   {
                       ViewAllItem = false;
                   }
-                  EventAggregator.Instance().Publish(new UpdateList<TEntity>());
+                  EventAggregator.Instance().Publish(new UpdateList<TEntity>(this));
               };
 
         }

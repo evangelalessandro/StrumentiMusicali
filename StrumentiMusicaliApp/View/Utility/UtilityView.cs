@@ -1,10 +1,10 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
-using StrumentiMusicali.App.Core.Item.Base;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.CustomComponents;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Core.Item.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,7 +17,7 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View.Utility
 {
-	public static class UtilityView
+    public static class UtilityView
 	{
 		public static T GetCurrentItemSelected<T>(this DataGridView dataGrid)
 		{

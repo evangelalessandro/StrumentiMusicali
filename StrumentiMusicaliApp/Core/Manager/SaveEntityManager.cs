@@ -3,7 +3,7 @@ using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
 using System;
 
-namespace StrumentiMusicali.App.Core.Controllers
+namespace StrumentiMusicali.App.Core.Manager
 {
 	public class SaveEntityManager : IDisposable
 	{

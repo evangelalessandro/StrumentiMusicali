@@ -1,16 +1,9 @@
-﻿using StrumentiMusicali.App.Settings;
-using StrumentiMusicali.App.View.Enums;
-using StrumentiMusicali.App.View.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using StrumentiMusicali.App.View.Interfaces;
+using StrumentiMusicali.Library.View.Enums;
 
 namespace StrumentiMusicali.App.Core.Events.Tab
 {
-	public class GetNewTab
+    public class GetNewTab
 	{
 		public GetNewTab(string text,enAmbiente ambiente, ICloseSave closeEvent)
 		{

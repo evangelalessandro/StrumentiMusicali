@@ -1,14 +1,8 @@
-﻿using StrumentiMusicali.App.Settings;
-using StrumentiMusicali.App.View.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using StrumentiMusicali.Library.View.Enums;
 
 namespace StrumentiMusicali.App.Core.Events.Generics
 {
-	public class ApriAmbiente
+    public class ApriAmbiente
 	{
 		public ApriAmbiente(enAmbiente tipoEnviroment)
 		{

@@ -1,11 +1,11 @@
-﻿using StrumentiMusicali.App.Core.Item.Base;
+﻿using StrumentiMusicali.Library.Core.Item.Base;
 using StrumentiMusicali.Library.Entity;
 using System;
 using System.Drawing;
 
 namespace StrumentiMusicali.App.Core.Item
 {
-	public class LogItem : BaseItem<EventLog>
+    public class LogItem : BaseItem<EventLog>
 	{
 		public LogItem()
 			: base()

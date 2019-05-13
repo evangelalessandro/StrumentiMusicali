@@ -1,18 +1,16 @@
 ﻿using StrumentiMusicali.App.Core;
-using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
+using StrumentiMusicali.Library.View.Enums;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StrumentiMusicali.App.Settings
 {
-	public static class SettingSitoValidator
+    public static class SettingSitoValidator
 	{
 		 
 
@@ -24,7 +22,7 @@ namespace StrumentiMusicali.App.Settings
 		{
 			var settingSito = ReadSetting();
 			var item = settingSito.CartellaLocaleImmagini;
-			var act = new Action(() => EventAggregator.Instance().Publish(new Core.Events.Generics.ApriAmbiente(enAmbiente.SettingSito)));
+			var act = new Action(() => EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingSito)));
 			if (string.IsNullOrEmpty(item))
 			{
 				MessageManager.NotificaWarnig("Occorre impostare la cartella per le immagini in locale! " + Environment.NewLine + "Clicca per settare.", act);

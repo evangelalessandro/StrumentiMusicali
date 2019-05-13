@@ -1,9 +1,9 @@
-﻿using StrumentiMusicali.App.View.Enums;
+﻿using StrumentiMusicali.Library.View.Enums;
 using System;
 
 namespace StrumentiMusicali.App.View.Attributes
 {
-	public class UIAmbienteAttribute : Attribute
+    public class UIAmbienteAttribute : Attribute
 	{
 		public UIAmbienteAttribute(bool viewInForm)
 		{

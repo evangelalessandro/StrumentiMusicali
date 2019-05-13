@@ -2,15 +2,15 @@
 using DevExpress.XtraTab.ViewInfo;
 using NLog;
 using StrumentiMusicali.App.Core.Controllers.Base;
-using StrumentiMusicali.App.Core.Events.Articoli;
-using StrumentiMusicali.App.Core.Events.Fatture;
-using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Events.Tab;
 using StrumentiMusicali.App.Core.Exports;
 using StrumentiMusicali.App.Core.MenuRibbon;
-using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Core.Events.Articoli;
+using StrumentiMusicali.Library.Core.Events.Fatture;
+using StrumentiMusicali.Library.Core.Events.Generics;
+using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Windows.Forms;
 

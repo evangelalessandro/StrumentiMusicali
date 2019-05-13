@@ -1,19 +1,24 @@
-﻿using StrumentiMusicali.App.Core.Events.Articoli;
+﻿using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Core.Events.Articoli;
 using System;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View.Articoli
 {
-	public partial class ScontaArticoliView : UserControl, IMenu, ICloseSave
+    public partial class ScontaArticoliView : UserControl, IMenu, ICloseSave
 	{
-		public ScontaArticoliView()
+        ControllerArticoli _controllerArticoli;
+
+        public ScontaArticoliView( ControllerArticoli controllerArticoli)
 		{
 			InitializeComponent();
-		}
+            _controllerArticoli = controllerArticoli;
+
+        }
 
 		private MenuTab _menuTab = null;
 
@@ -45,7 +50,8 @@ namespace StrumentiMusicali.App.View.Articoli
 		private void RibCrea_Click(object sender, EventArgs e)
 		{
 			this.Validate();
-			EventAggregator.Instance().Publish(new ArticoloSconta(numericUpDown1.Value ) );
+			EventAggregator.Instance().Publish(new ArticoloSconta(
+                numericUpDown1.Value , _controllerArticoli) );
 			RaiseClose();
 		}
 

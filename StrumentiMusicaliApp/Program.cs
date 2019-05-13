@@ -1,14 +1,12 @@
-﻿using DevExpress.XtraEditors.Controls;
-using DevExpress.XtraGrid.Localization;
-using StrumentiMusicali.App.Core;
+﻿using DevExpress.XtraGrid.Localization;
 using StrumentiMusicali.App.Core.Controllers;
-using StrumentiMusicali.App.Core.Events.Articoli;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Core.Events.Articoli;
 using System;
 
 namespace StrumentiMusicali.App
 {
-	internal static class Program
+    internal static class Program
 	{
 		/// <summary>
 		/// Punto di ingresso principale dell'applicazione.

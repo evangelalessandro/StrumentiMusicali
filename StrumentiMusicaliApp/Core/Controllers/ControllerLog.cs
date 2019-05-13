@@ -1,25 +1,22 @@
-﻿using PropertyChanged;
-using StrumentiMusicali.App.Core.Controllers.Base;
-using StrumentiMusicali.App.Core.Events.Generics;
+﻿using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
-using StrumentiMusicali.App.Settings;
-using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.Library.Core;
+
+using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
+using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-	//[AddINotifyPropertyChangedInterface]
-	public class ControllerLog : BaseControllerGeneric<EventLog, LogItem>, IMenu
+    //[AddINotifyPropertyChangedInterface]
+    public class ControllerLog : BaseControllerGeneric<EventLog, LogItem>, IMenu
 	{
 		Subscription<Remove<EventLog>> sub1;
 		public ControllerLog()
@@ -34,13 +31,13 @@ namespace StrumentiMusicali.App.Core.Controllers
 						var sel =uof.EventLogRepository.Find(a => a.ID == item.ID).FirstOrDefault();
 						if (sel==null)
 						{
-							EventAggregator.Instance().Publish<UpdateList<EventLog>>(new UpdateList<EventLog>());
+							EventAggregator.Instance().Publish<UpdateList<EventLog>>(new UpdateList<EventLog>(this));
 							return;
 						}
 						uof.EventLogRepository.Delete(sel);
 						if (saveEntity.SaveEntity(operation: enSaveOperation.OpDelete))
 						{
-							EventAggregator.Instance().Publish<UpdateList<EventLog>>(new UpdateList<EventLog>());
+							EventAggregator.Instance().Publish<UpdateList<EventLog>>(new UpdateList<EventLog>(this));
 
 						}
 

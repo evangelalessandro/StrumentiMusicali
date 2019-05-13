@@ -1,13 +1,12 @@
 ﻿using StrumentiMusicali.App.Core.Controllers;
-using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.View.BaseControl;
 using StrumentiMusicali.App.View.Utility;
+using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
-using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View
 {
-	public class FattureRigheListView : BaseGridViewGeneric<FatturaRigaItem, ControllerRigheFatture, FatturaRiga>
+    public class FattureRigheListView : BaseGridViewGeneric<FatturaRigaItem, ControllerRigheFatture, FatturaRiga>
 	{
 		private ControllerRigheFatture _controllerRigheFatture;
 

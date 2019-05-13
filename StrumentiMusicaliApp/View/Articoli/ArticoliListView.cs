@@ -1,17 +1,13 @@
 ﻿using NLog;
-using StrumentiMusicali.App.Core;
 using StrumentiMusicali.App.Core.Controllers;
-using StrumentiMusicali.App.Core.Item;
-using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.CustomComponents;
-using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View.BaseControl;
-using StrumentiMusicali.App.View.Interfaces;
+using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 
 namespace StrumentiMusicali.App.View
 {
-	public partial class ArticoliListView :
+    public partial class ArticoliListView :
 		BaseGridViewGeneric<ArticoloItem, ControllerArticoli, Articolo>
 	{
 		private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();

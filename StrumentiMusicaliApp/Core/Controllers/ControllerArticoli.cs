@@ -1,16 +1,17 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
-using StrumentiMusicali.App.Core.Events.Articoli;
-using StrumentiMusicali.App.Core.Events.Generics;
-using StrumentiMusicali.App.Core.Events.Image;
-using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Forms;
 using StrumentiMusicali.App.Settings;
-using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.Library.Core;
+
+using StrumentiMusicali.Library.Core.Events.Articoli;
+using StrumentiMusicali.Library.Core.Events.Generics;
+using StrumentiMusicali.Library.Core.Events.Image;
+using StrumentiMusicali.Library.Core.Events.Magazzino;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
+using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,7 +32,7 @@ namespace StrumentiMusicali.App.Core.Controllers
         private Subscription<Save<Articolo>> sub8;
         private Subscription<ArticoloSconta> sub6;
         private bool ModalitaRicerca { get; set; }
-        private ControllerImmagini _controllerImmagini = new ControllerImmagini();
+        internal ControllerImmagini _controllerImmagini = new ControllerImmagini();
         //private List<Subscription<object>> subList = new List<Subscription<object>>();
         public ControllerArticoli(bool modalitaRicerca)
             : base(enAmbiente.ArticoliList, enAmbiente.Articolo)
@@ -72,7 +73,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                 }
                 if (saveEnt.SaveEntity("Variazione applicata con successo"))
                 {
-                    EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>());
+                    EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>(this));
                 }
 
             }
@@ -115,7 +116,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                 var rib1 = pnl.Add("Duplica", Properties.Resources.Duplicate, true);
                 rib1.Click += (a, e) =>
                 {
-                    EventAggregator.Instance().Publish<ArticoloDuplicate>(new ArticoloDuplicate());
+                    EventAggregator.Instance().Publish<ArticoloDuplicate>(new ArticoloDuplicate(this));
 
                 };
                 var pnl2 = GetMenu().Tabs[0].Add("Prezzi");
@@ -203,7 +204,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private void ScontaArticoliShowView()
         {
-            using (var view = new View.Articoli.ScontaArticoliView())
+            using (var view = new View.Articoli.ScontaArticoliView(this))
             {
                 ShowView(view, enAmbiente.ArticoloSconto);
             }
@@ -231,11 +232,14 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private void EditArt(Edit<Articolo> obj)
         {
+            
             EditItem = SelectedItem;
             ShowViewDettaglio();
         }
-        private void AggiungiArticolo(object articoloAdd)
+        private void AggiungiArticolo(Add<Articolo> obj)
         {
+            
+
             _logger.Info("Apertura ambiente AggiungiArticolo");
 
             EditItem = new Articolo();
@@ -272,7 +276,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                 {
                     view.Validate();
                     EventAggregator.Instance().Publish<Save<Articolo>>
-                    (new Save<Articolo>());
+                    (new Save<Articolo>(this));
                 };
 
                 ShowView(view, enAmbiente.Articolo);
@@ -282,6 +286,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private void DuplicaArticolo(ArticoloDuplicate obj)
         {
+          
+
             try
             {
                 using (var saveEntity = new SaveEntityManager())
@@ -312,7 +318,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                         _logger.Info("Duplica articolo");
 
                         SelectedItem = art;
-                        EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>());
+                        EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>(this));
 
 
                     }
@@ -364,7 +370,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                                 }
                             }
                         }
-                        EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>());
+                        EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>(this));
                         MessageManager.NotificaInfo("Terminata importazione articoli");
                     }
                 }
@@ -484,7 +490,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                         save.UnitOfWork.ArticoliRepository.Delete(item);
                         if (save.SaveEntity(enSaveOperation.OpDelete))
                         {
-                            EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>());
+                            EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>(this));
                         }
                     }
                 }
@@ -515,7 +521,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                     if (
                     save.SaveEntity(enSaveOperation.OpSave))
                     {
-                        EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>());
+                        EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>(this));
                     }
                 }
             }
@@ -531,6 +537,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private void AggiungiImmagine(ImageAdd eventArg)
         {
+           
             try
             {
                 using (OpenFileDialog res = new OpenFileDialog())
@@ -544,7 +551,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                     if (res.ShowDialog() == DialogResult.OK)
                     {
                         EventAggregator.Instance().Publish<ImageAddFiles>(
-                            new ImageAddFiles(eventArg.Articolo, res.FileNames.ToList()));
+                            new ImageAddFiles(eventArg.Articolo, res.FileNames.ToList(),this));
                     }
                 }
             }

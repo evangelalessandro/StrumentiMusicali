@@ -5,11 +5,12 @@ using StrumentiMusicali.App.Core.Events.Tab;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Settings;
-using StrumentiMusicali.App.View.Attributes;
-using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Core.Attributes;
+using StrumentiMusicali.Library.Core.interfaces;
+using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,12 +21,15 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers.Base
 {
-	public class BaseController : IDisposable
-	{
+    public class BaseController : IDisposable, IKeyController
+    {
 		internal readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 		internal readonly string _PathSetting = Path.Combine(Application.StartupPath, @"settings.json");
+        public readonly Guid _INSTANCE_KEY = Guid.NewGuid();
 
-		public BaseController()
+        Guid IKeyController.INSTANCE_KEY { get { return _INSTANCE_KEY; }  }
+
+        public BaseController()
 		{
 		}
 		public const bool ModalitàAForm = false;
@@ -53,7 +57,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 		public static List<(enAmbiente Ambiente, DevExpress.XtraTab.XtraTabPage Pagina, MenuTab MenuPagina)> AmbientiAttivi { get; set; }
 			= new List<(enAmbiente Ambiente, DevExpress.XtraTab.XtraTabPage Pagina, MenuTab MenuPagina)>();
-		private void AggiungiTab(UserControl view, enAmbiente ambiente, BaseController controller, bool disposeForm)
+
+ 
+
+        private void AggiungiTab(UserControl view, enAmbiente ambiente, BaseController controller, bool disposeForm)
 		{
 			var attr = GetAttribute<UIAmbienteAttribute>(ambiente);
 

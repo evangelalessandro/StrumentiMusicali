@@ -62,7 +62,58 @@
     <Compile Include="Core\ComboDataAttribute.cs" />
     <Compile Include="Core\CustomUIViewAttribute.cs" />
     <Compile Include="Core\CustomHideUIAttribute.cs" />
+    <Compile Include="Core\Attributes\UIAmbienteAttribute.cs" />
+    <Compile Include="Core\Enums\enAmbiente.cs" />
     <Compile Include="Core\EventAggregator.cs" />
+    <Compile Include="Core\Events\Articoli\ArticoloDuplicate.cs" />
+    <Compile Include="Core\Events\Articoli\ArticoloSconta.cs" />
+    <Compile Include="Core\Events\Articoli\ImportArticoliCSVMercatino.cs" />
+    <Compile Include="Core\Events\Articoli\ImportArticoliMulino.cs" />
+    <Compile Include="Core\Events\Articoli\ImportMagExcel.cs" />
+    <Compile Include="Core\Events\Articoli\InvioArticoliCSV.cs" />
+    <Compile Include="Core\Events\Base\FilterControllerEvent.cs" />
+    <Compile Include="Core\Events\Fatture\FatturaCambiaTipoDoc.cs" />
+    <Compile Include="Core\Events\Fatture\FattureUpdate.cs" />
+    <Compile Include="Core\Events\Fatture\ImportaFattureAccess.cs" />
+    <Compile Include="Core\Events\Generics\Add.cs" />
+    <Compile Include="Core\Events\Generics\AddPriority.cs" />
+    <Compile Include="Core\Events\Generics\ApriAmbiente.cs" />
+    <Compile Include="Core\Events\Generics\BaseGeneric.cs" />
+    <Compile Include="Core\Events\Generics\ClearRicerca.cs" />
+    <Compile Include="Core\Events\Generics\Edit.cs" />
+    <Compile Include="Core\Events\Generics\ItemSelected.cs" />
+    <Compile Include="Core\Events\Generics\RebindItemUpdated.cs" />
+    <Compile Include="Core\Events\Generics\Remove.cs" />
+    <Compile Include="Core\Events\Generics\RemovePriority.cs" />
+    <Compile Include="Core\Events\Generics\Save.cs" />
+    <Compile Include="Core\Events\Generics\UpdateList.cs" />
+    <Compile Include="Core\Events\Generics\ValidateViewEvent.cs" />
+    <Compile Include="Core\Events\Generics\ViewRicerca.cs" />
+    <Compile Include="Core\Events\Image\ImageAdd.cs" />
+    <Compile Include="Core\Events\Image\ImageAddFiles.cs" />
+    <Compile Include="Core\Events\Image\ImageListUpdate.cs" />
+    <Compile Include="Core\Events\Image\ImageOrderSet.cs" />
+    <Compile Include="Core\Events\Image\ImageRemove.cs" />
+    <Compile Include="Core\Events\Magazzino\CaricaQtaMagazzino.cs" />
+    <Compile Include="Core\Events\Magazzino\ExportMagazzino.cs" />
+    <Compile Include="Core\Events\Magazzino\MagazzinoSelezionaArticolo.cs" />
+    <Compile Include="Core\Events\Magazzino\MovimentiUpdate.cs" />
+    <Compile Include="Core\Events\Magazzino\MovimentoMagazzino.cs" />
+    <Compile Include="Core\Events\Magazzino\ScaricaQtaMagazzino.cs" />
+    <Compile Include="Core\Interfaces\IKeyController.cs" />
+    <Compile Include="Core\Item\ArticoloItem.cs" />
+    <Compile Include="Core\Item\Base\BaseItem.cs" />
+    <Compile Include="Core\Item\Base\BaseItemID.cs" />
+    <Compile Include="Core\Item\Base\CurrentItem.cs" />
+    <Compile Include="Core\Item\CategoriaItem.cs" />
+    <Compile Include="Core\Item\ClientiItem.cs" />
+    <Compile Include="Core\Item\DepositoItem.cs" />
+    <Compile Include="Core\Item\DepositoScaricoItem.cs" />
+    <Compile Include="Core\Item\FatturaItem.cs" />
+    <Compile Include="Core\Item\FatturaRigaItem.cs" />
+    <Compile Include="Core\Item\MovimentoItem.cs" />
+    <Compile Include="Core\Item\PagamentoItem.cs" />
+    <Compile Include="Core\Item\UtentiItem.cs" />
     <Compile Include="Core\LoginData.cs" />
     <Compile Include="Core\MessageException.cs" />
     <Compile Include="Entity\Articolo.cs" />
@@ -166,6 +217,7 @@
       <DependentUpon>201905051144115_AddCodiceOrdine1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.3.2.9\build\Fody.targets" Condition="Exists('..\packages\Fody.3.2.9\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

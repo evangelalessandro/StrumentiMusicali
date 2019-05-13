@@ -89,14 +89,19 @@ namespace StrumentiMusicali.App.Core.Exports
                       a.CodiceABarre,
                       Prezzo = a.Prezzo.ToString("C2"),
                       PrezzoAcquisto = a.PrezzoAcquisto.ToString("C2"),
-                      a.Strumento.Colore,
+                      
                       a.Strumento.Marca,
+                      a.Strumento.CodiceOrdine,
+                      a.Strumento.Colore,
+
                       a.Note1,
                       a.Note2,
                       a.Note3,
+                      a.NonImponibile,
                       a.Rivenditore,
                       a.Testo,
                       a.Libro.Autore,
+                      a.Libro.TitoloDelLibro,
                       a.Libro.Edizione,
                       a.Libro.Edizione2,
                       a.Libro.Genere,
@@ -113,6 +118,7 @@ namespace StrumentiMusicali.App.Core.Exports
                     {
                         a.ID,
                         a.Titolo,
+                        a.TitoloDelLibro,
                         a.Autore,
                         a.Genere,
                         a.Edizione,
@@ -129,6 +135,7 @@ namespace StrumentiMusicali.App.Core.Exports
                         a.Prezzo,
                         a.PrezzoAcquisto,
                         a.Marca,
+                        a.CodiceOrdine,
                         a.Note1,
                         a.Note2,
                         a.Note3

@@ -232,6 +232,7 @@
     <Compile Include="Core\Controllers\Base\BaseController.cs" />
     <Compile Include="Core\Controllers\ControllerArticoli.cs" />
     <Compile Include="Core\Controllers\ControllerPagamenti.cs" />
+    <Compile Include="Core\Controllers\ControllerStrumenti.cs" />
     <Compile Include="Core\Controllers\ControllerUtenti.cs" />
     <Compile Include="Core\Controllers\ControllerDepositi.cs" />
     <Compile Include="Core\Controllers\ControllerFatturazione.cs" />
@@ -240,7 +241,8 @@
     <Compile Include="Core\Controllers\ControllerMagazzino.cs" />
     <Compile Include="Core\Controllers\ControllerClienti.cs" />
     <Compile Include="Core\Controllers\ControllerRigheFatture.cs" />
-    <Compile Include="Core\Events\Generics\ClearRicerca.cs" />
+    <Compile Include="Core\Events\Tab\GetNewTab.cs" />
+    <Compile Include="Core\Events\Tab\RemoveNewTab.cs" />
     <Compile Include="Core\Exports\ExportArticoliCsv.cs" />
     <Compile Include="Core\Exports\ExportMagazzino.cs" />
     <Compile Include="Core\Controllers\FatturaElett\FattElettronica.cs" />
@@ -249,60 +251,12 @@
     <Compile Include="Core\Imports\ImportFatture.cs" />
     <Compile Include="Core\Imports\ImportCavalloPazzoExcel.cs" />
     <Compile Include="Core\Imports\ImportMagazziniExcel.cs" />
-    <Compile Include="Core\Controllers\SaveEntityManager.cs" />
-    <Compile Include="Core\Controllers\Stampa\Fattura.cs" />
-    <Compile Include="Core\Events\Articoli\ArticoloSconta.cs" />
-    <Compile Include="Core\Events\Articoli\ImportMagExcel.cs" />
-    <Compile Include="Core\Events\Articoli\ImportArticoliMulino.cs" />
-    <Compile Include="Core\Events\Articoli\InvioArticoliCSV.cs" />
-    <Compile Include="Core\Events\Fatture\FatturaCambiaTipoDoc.cs" />
-    <Compile Include="Core\Events\Generics\Add.cs" />
-    <Compile Include="Core\Events\Generics\ApriAmbiente.cs" />
-    <Compile Include="Core\Events\Generics\BaseGeneric.cs" />
-    <Compile Include="Core\Events\Generics\RebindItemUpdated.cs" />
-    <Compile Include="Core\Events\Generics\ValidateViewEvent.cs" />
-    <Compile Include="Core\Events\Generics\ViewRicerca.cs" />
-    <Compile Include="Core\Events\Generics\RemovePriority.cs" />
-    <Compile Include="Core\Events\Generics\AddPriority.cs" />
-    <Compile Include="Core\Events\Generics\Remove.cs" />
-    <Compile Include="Core\Events\Generics\Save.cs" />
-    <Compile Include="Core\Events\Generics\UpdateList.cs" />
-    <Compile Include="Core\Events\Fatture\FattureUpdate.cs" />
-    <Compile Include="Core\Events\Fatture\ImportaFattureAccess.cs" />
-    <Compile Include="Core\Events\Image\ImageAddFiles.cs" />
-    <Compile Include="Core\Events\Image\ImageListUpdate.cs" />
-    <Compile Include="Core\Events\Image\ImageOrderSet.cs" />
-    <Compile Include="Core\Events\Interfaces\ArticoloCurrent.cs" />
-    <Compile Include="Core\Events\Magazzino\MagazzinoSelezionaArticolo.cs" />
-    <Compile Include="Core\Events\Magazzino\ExportMagazzino.cs" />
-    <Compile Include="Core\Events\Magazzino\MovimentiUpdate.cs" />
-    <Compile Include="Core\Events\Magazzino\MovimentoMagazzino.cs" />
-    <Compile Include="Core\Events\Magazzino\CaricaQtaMagazzino.cs" />
-    <Compile Include="Core\Events\Magazzino\ScaricaQtaMagazzino.cs" />
-    <Compile Include="Core\Events\Tab\RemoveNewTab.cs" />
-    <Compile Include="Core\Events\Tab\GetNewTab.cs" />
-    <Compile Include="Core\Item\ArticoloItem.cs" />
-    <Compile Include="Core\Item\Base\BaseItemID.cs" />
-    <Compile Include="Core\Item\PagamentoItem.cs" />
-    <Compile Include="Core\Item\UtentiItem.cs" />
-    <Compile Include="Core\Item\DepositoItem.cs" />
-    <Compile Include="Core\Item\DepositoScaricoItem.cs" />
-    <Compile Include="Core\Item\FatturaRigaItem.cs" />
-    <Compile Include="Core\Item\FatturaItem.cs" />
-    <Compile Include="Core\Item\Base\BaseItem.cs" />
-    <Compile Include="Core\Item\Base\CurrentItem.cs" />
-    <Compile Include="Core\Item\CategoriaItem.cs" />
-    <Compile Include="Core\Controllers\ControllerMaster.cs" />
-    <Compile Include="Core\Item\ClientiItem.cs" />
     <Compile Include="Core\Item\LogItem.cs" />
-    <Compile Include="Core\Item\MovimentoItem.cs" />
+    <Compile Include="Core\Manager\SaveEntityManager.cs" />
+    <Compile Include="Core\Controllers\Stampa\Fattura.cs" />
+    <Compile Include="Core\Controllers\ControllerMaster.cs" />
     <Compile Include="Core\Manager\CursorHandler.cs" />
-    <Compile Include="Core\Events\Image\ImageRemove.cs" />
-    <Compile Include="Core\Events\Articoli\ArticoloDuplicate.cs" />
-    <Compile Include="Core\Events\Articoli\ImportArticoliCSVMercatino.cs" />
-    <Compile Include="Core\Events\Interfaces\FatturaCurrent.cs" />
     <Compile Include="Core\Manager\ExceptionManager.cs" />
-    <Compile Include="Core\Events\Image\ImageAdd.cs" />
     <Compile Include="Core\Manager\MessageManager.cs" />
     <Compile Include="Core\Manager\ProgressManager.cs" />
     <Compile Include="Core\MenuRibbon\RibbonButton.cs" />
@@ -326,7 +280,6 @@
     <Compile Include="View\PagamentiListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Attributes\UIAmbienteAttribute.cs" />
     <Compile Include="View\BaseControl\ElementiDettaglio\EDCombo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -348,7 +301,6 @@
     <Compile Include="View\UtentiListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Enums\enAmbiente.cs" />
     <Compile Include="View\Articoli\ScontaArticoliView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -431,14 +383,12 @@
     <Compile Include="View\Settings\GenericSettingView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Core\Events\Generics\Edit.cs" />
     <Compile Include="View\BaseControl\BaseGridViewGeneric.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\BaseControl\BaseGridViewGeneric.Designer.cs">
       <DependentUpon>BaseGridViewGeneric.cs</DependentUpon>
     </Compile>
-    <Compile Include="Core\Events\Generics\ItemSelected.cs" />
     <Compile Include="View\Fatture\FattureRigheListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -781,7 +731,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Core\Events\Base\" />
+    <Folder Include="View\Attributes\" />
+    <Folder Include="View\Enums\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="References\System.Windows.Forms.Ribbon.dll">

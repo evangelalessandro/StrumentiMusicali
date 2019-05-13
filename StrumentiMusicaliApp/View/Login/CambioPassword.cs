@@ -1,5 +1,6 @@
 ﻿using StrumentiMusicali.App.Core;
 using StrumentiMusicali.App.Core.Controllers;
+using StrumentiMusicali.App.Core.Manager;
 using System;
 using System.Linq;
 using System.Windows.Forms;

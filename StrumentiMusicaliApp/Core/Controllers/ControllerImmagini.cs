@@ -1,8 +1,8 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
-using StrumentiMusicali.App.Core.Events.Image;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Core.Events.Image;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-	internal class ControllerImmagini : BaseController, IDisposable
+    internal class ControllerImmagini : BaseController, IDisposable
 	{
 		Subscription<ImageOrderSet> _subOrderImage;
 		Subscription<ImageAddFiles> _subAddImage;
@@ -53,7 +53,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 		}
 		private void RemoveImage(ImageRemove obj)
 		{
-			if (!CheckFolderImmagini())
+            
+            if (!CheckFolderImmagini())
 				return;
 			var folderFoto = SettingSitoValidator.ReadSetting().CartellaLocaleImmagini;
 			try
@@ -114,7 +115,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void OrderImage(ImageOrderSet obj)
 		{
-			try
+             
+            try
 			{
 				using (var curs = new CursorManager())
 				{
@@ -189,7 +191,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 		}
 		private void AddImageFiles(ImageAddFiles args)
 		{
-			if (!CheckFolderImmagini())
+             
+            if (!CheckFolderImmagini())
 				return;
 			try
 			{

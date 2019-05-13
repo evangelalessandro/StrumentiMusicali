@@ -1,13 +1,13 @@
 ﻿using StrumentiMusicali.App.Core;
 using StrumentiMusicali.App.Core.Controllers;
-using StrumentiMusicali.App.Core.Events.Generics;
-using StrumentiMusicali.App.Core.Events.Image;
-using StrumentiMusicali.App.Core.Events.Magazzino;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Core.Events.Generics;
+using StrumentiMusicali.Library.Core.Events.Image;
+using StrumentiMusicali.Library.Core.Events.Magazzino;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -200,14 +200,14 @@ namespace StrumentiMusicali.App.Forms
         private void AumentaPrioritàToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EventAggregator.Instance().Publish<ImageOrderSet>(
-                new ImageOrderSet(enOperationOrder.AumentaPriorita, _fotoArticoloSelected));
+                new ImageOrderSet(enOperationOrder.AumentaPriorita, _fotoArticoloSelected,_articoloController));
         }
 
 
         private void DiminuisciPrioritàToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EventAggregator.Instance().Publish<ImageOrderSet>(
-                new ImageOrderSet(enOperationOrder.DiminuisciPriorita, _fotoArticoloSelected));
+                new ImageOrderSet(enOperationOrder.DiminuisciPriorita, _fotoArticoloSelected, _articoloController));
         }
 
         private void frmArticolo_Load(object sender, EventArgs e)
@@ -234,7 +234,7 @@ namespace StrumentiMusicali.App.Forms
         private void MenuImpostaPrincipale_Click(object sender, EventArgs e)
         {
             EventAggregator.Instance().Publish<ImageOrderSet>(
-                new ImageOrderSet(enOperationOrder.ImpostaPrincipale, _fotoArticoloSelected));
+                new ImageOrderSet(enOperationOrder.ImpostaPrincipale, _fotoArticoloSelected,_articoloController._controllerImmagini));
         }
 
         private void PanelImage_DragDrop(object sender, DragEventArgs e)
@@ -253,7 +253,7 @@ namespace StrumentiMusicali.App.Forms
                 var list = new List<string>() { lastFilename };
 
                 EventAggregator.Instance().Publish<ImageAddFiles>(
-                    new ImageAddFiles(_articoloController.EditItem, list));
+                    new ImageAddFiles(_articoloController.EditItem, list,_articoloController));
 
                 //AdjustView();
                 if (pb.Image != null)
@@ -410,7 +410,7 @@ namespace StrumentiMusicali.App.Forms
 
         private void RimuoviImmagineToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            EventAggregator.Instance().Publish<ImageRemove>(new ImageRemove(_fotoArticoloSelected));
+            EventAggregator.Instance().Publish<ImageRemove>(new ImageRemove(_fotoArticoloSelected,_articoloController));
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -518,7 +518,8 @@ namespace StrumentiMusicali.App.Forms
 
                 ribAdd.Click += (a, e) =>
                 {
-                    EventAggregator.Instance().Publish<ImageAdd>(new ImageAdd(_articoloController.EditItem));
+                    EventAggregator.Instance().Publish<ImageAdd>(
+                        new ImageAdd(_articoloController.EditItem, _articoloController));
                 };
 
                 _ribRemove = _ribPannelImmagini.Add(
@@ -527,7 +528,7 @@ namespace StrumentiMusicali.App.Forms
                 );
                 _ribRemove.Click += (a, e) =>
                 {
-                    EventAggregator.Instance().Publish<ImageRemove>(new ImageRemove(_fotoArticoloSelected));
+                    EventAggregator.Instance().Publish<ImageRemove>(new ImageRemove(_fotoArticoloSelected,_articoloController));
                 };
                 var magazzino= tab.Add("Magazzino");
 
@@ -603,7 +604,7 @@ namespace StrumentiMusicali.App.Forms
         {
             this.Validate();
             EventAggregator.Instance().Publish<Save<Articolo>>(
-                new Save<Articolo>());
+                new Save<Articolo>(_articoloController));
             UpdateButtonState();
         }
 

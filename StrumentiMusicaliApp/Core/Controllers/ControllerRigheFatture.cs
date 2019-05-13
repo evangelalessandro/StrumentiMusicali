@@ -1,20 +1,19 @@
 ﻿using PropertyChanged;
 using StrumentiMusicali.App.Core.Controllers.Base;
-using StrumentiMusicali.App.Core.Events.Generics;
-using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
-using StrumentiMusicali.App.Settings;
-using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Core.Events.Generics;
+using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
+using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-	[AddINotifyPropertyChangedInterface]
+    [AddINotifyPropertyChangedInterface]
 	public class ControllerRigheFatture : BaseControllerGeneric<FatturaRiga, FatturaRigaItem>, IDisposable
 	{
 		private Subscription<RemovePriority<FatturaRiga>> _addPrio;
@@ -64,7 +63,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 						{
 							AggiornaTotaliFattura();
 
-							EventAggregator.Instance().Publish<UpdateList<FatturaRiga>>(new UpdateList<FatturaRiga>());
+							EventAggregator.Instance().Publish<UpdateList<FatturaRiga>>(new UpdateList<FatturaRiga>(this));
 						}
 					}
 				}
@@ -83,8 +82,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 			_controllerFatturazione.EditItem = item;
 
-			EventAggregator.Instance().Publish(new RebindItemUpdated<Fattura>());
-			EventAggregator.Instance().Publish(new Save<Fattura>());
+			EventAggregator.Instance().Publish(new RebindItemUpdated<Fattura>(_controllerFatturazione));
+			EventAggregator.Instance().Publish(new Save<Fattura>(_controllerFatturazione));
 
 		}
 

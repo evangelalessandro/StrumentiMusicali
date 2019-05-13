@@ -1,14 +1,11 @@
 ﻿using StrumentiMusicali.App.Core.Controllers;
-using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.View.BaseControl;
-using StrumentiMusicali.App.View.Interfaces;
+using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
-using System;
-using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View
 {
-	public class DepositiListView : BaseGridViewGeneric<DepositoItem, ControllerDepositi, Deposito>
+    public class DepositiListView : BaseGridViewGeneric<DepositoItem, ControllerDepositi, Deposito>
 	{
 		 
 		public DepositiListView(ControllerDepositi controller)

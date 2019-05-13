@@ -1,10 +1,10 @@
 ﻿using StrumentiMusicali.App.Core.Controllers;
-using StrumentiMusicali.App.Core.Events.Fatture;
-using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Core.Events.Fatture;
+using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -17,7 +17,7 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View
 {
-	public partial class DettaglioFatturaView : UserControl, IMenu, ICloseSave
+    public partial class DettaglioFatturaView : UserControl, IMenu, ICloseSave
 	{
 		private ControllerFatturazione _controllerFatturazione;
 
@@ -287,7 +287,7 @@ namespace StrumentiMusicali.App.View
 		{
 			this.Validate();
 			EventAggregator.Instance().Publish<Save<Fattura>>(
-				new Save<Fattura>());
+				new Save<Fattura>(_controllerFatturazione));
 
 			txtID.Text = _controllerFatturazione.EditItem.ID.ToString();
 
@@ -314,12 +314,12 @@ namespace StrumentiMusicali.App.View
 				ribPannelRighe = tab.Add("Righe");
 				ribPannelRighe.Add("Aggiungi", Properties.Resources.Add).Click += (a, b) =>
 				{
-					EventAggregator.Instance().Publish<Add<FatturaRiga>>(new Add<FatturaRiga>());
+					EventAggregator.Instance().Publish<Add<FatturaRiga>>(new Add<FatturaRiga>(_controllerRighe));
 				};
 				ribPannelRighe.Add("Rimuovi", Properties.Resources.Remove).Click
 					+= (a, b) =>
 					{
-						EventAggregator.Instance().Publish<Remove<FatturaRiga>>(new Remove<FatturaRiga>());
+						EventAggregator.Instance().Publish<Remove<FatturaRiga>>(new Remove<FatturaRiga>(_controllerRighe));
 					};
 
 				ribPannelRighe.Add("Meno prioritario", Properties.Resources.Up).Click += (a, b) =>

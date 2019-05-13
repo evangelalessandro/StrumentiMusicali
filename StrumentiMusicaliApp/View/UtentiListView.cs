@@ -1,14 +1,13 @@
 ﻿using StrumentiMusicali.App.Core.Controllers;
-using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.View.BaseControl;
 using StrumentiMusicali.App.View.Interfaces;
+using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
 using System;
-using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View
 {
-	public class UtentiListView : BaseGridViewGeneric<UtentiItem, ControllerUtenti, Utente>, IMenu, IDisposable
+    public class UtentiListView : BaseGridViewGeneric<UtentiItem, ControllerUtenti, Utente>, IMenu, IDisposable
 	{
 		 
 		public UtentiListView(ControllerUtenti controller)

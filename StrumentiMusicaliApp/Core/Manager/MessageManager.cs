@@ -1,5 +1,6 @@
 ﻿using NLog;
 using StrumentiMusicali.App.Core.Controllers;
+using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.View.Utility;
 using System;
 using System.Drawing;

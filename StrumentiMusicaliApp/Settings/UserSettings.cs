@@ -1,13 +1,11 @@
-﻿using StrumentiMusicali.App.Core.Controllers.FatturaElett;
-using StrumentiMusicali.App.View.Enums;
-using System;
+﻿using StrumentiMusicali.Library.View.Enums;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Settings
 {
-	public class UserSettings
+    public class UserSettings
 	{
 		public List<( enAmbiente ambiente, FormRicerca form)> Form { get; set; }
 	}

@@ -1,12 +1,12 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
-using StrumentiMusicali.App.Core.Events.Generics;
-using StrumentiMusicali.App.Core.Events.Magazzino;
-using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Core.Events.Generics;
+using StrumentiMusicali.Library.Core.Events.Magazzino;
+using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-	public class ControllerMagazzino : BaseController, IDisposable, ICloseSave, IMenu
+    public class ControllerMagazzino : BaseController, IDisposable, ICloseSave, IMenu
 	{
 		public MovimentoMagazzino SelectedItem { get; set; } = new MovimentoMagazzino();
 

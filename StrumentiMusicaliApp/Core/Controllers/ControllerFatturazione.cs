@@ -1,18 +1,19 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Controllers.FatturaElett;
 using StrumentiMusicali.App.Core.Controllers.Stampa;
-using StrumentiMusicali.App.Core.Events.Fatture;
-using StrumentiMusicali.App.Core.Events.Generics;
 using StrumentiMusicali.App.Core.Fatture;
-using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
-using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.Library.Core;
+
+using StrumentiMusicali.Library.Core.Events.Fatture;
+using StrumentiMusicali.Library.Core.Events.Generics;
+using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
+using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +71,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 				if (saveManager.SaveEntity(enSaveOperation.OpSave))
 				{
 					EventAggregator.Instance().Publish<UpdateList<Fattura>>(
-							new UpdateList<Fattura>());
+							new UpdateList<Fattura>(this));
 				}
 			}
 		}
@@ -162,7 +163,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 					if (saveEntity.SaveEntity(enSaveOperation.OpDelete))
 					{
 						EventAggregator.Instance().Publish<UpdateList<Fattura>>(
-							new UpdateList<Fattura>());
+							new UpdateList<Fattura>(this));
 					}
 				}
 			}
@@ -425,7 +426,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 							{
 								view.Validate();
 								EventAggregator.Instance().Publish<Save<Cliente>>
-								(new Save<Cliente>());
+								(new Save<Cliente>(controllerCl));
 							};
 							ShowView(view, enAmbiente.Cliente, null, false);
 							ViewFactory.AddView(enAmbiente.Cliente, view);

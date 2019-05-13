@@ -1,17 +1,12 @@
-﻿using StrumentiMusicali.App.Settings;
-using StrumentiMusicali.App.View.Enums;
-using StrumentiMusicali.App.View.Settings;
+﻿using StrumentiMusicali.App.View.Settings;
+using StrumentiMusicali.Library.View.Enums;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View
 {
-	static class ViewFactory
+    static class ViewFactory
 	{
 		private static ObservableCollection<Tuple<enAmbiente, GenericSettingView>> _windows=new ObservableCollection<Tuple<enAmbiente, GenericSettingView>>();
 

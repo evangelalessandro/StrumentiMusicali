@@ -1,19 +1,16 @@
 ﻿using StrumentiMusicali.App.Core;
-using StrumentiMusicali.App.Core.Events.Generics;
-using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
+using StrumentiMusicali.Library.View.Enums;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StrumentiMusicali.App.Settings
 {
-	public class DatiIntestazioneStampaFatturaValidator
+    public class DatiIntestazioneStampaFatturaValidator
 	{
 		 
 

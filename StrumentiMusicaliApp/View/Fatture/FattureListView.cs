@@ -1,16 +1,16 @@
 ﻿using NLog;
 
 using StrumentiMusicali.App.Core.Controllers;
-using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.BaseControl;
-using StrumentiMusicali.App.View.Enums;
 using StrumentiMusicali.App.View.Interfaces;
+using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.View.Enums;
 
 namespace StrumentiMusicali.App.View
 {
-	public partial class FattureListView :
+    public partial class FattureListView :
 		BaseGridViewGeneric<FatturaItem, ControllerFatturazione, Fattura>, IMenu
 	{
 		private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();

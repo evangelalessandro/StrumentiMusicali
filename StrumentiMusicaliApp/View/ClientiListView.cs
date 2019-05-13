@@ -2,6 +2,7 @@
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.View.BaseControl;
 using StrumentiMusicali.App.View.Interfaces;
+using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
 using System;
 using System.Windows.Forms;

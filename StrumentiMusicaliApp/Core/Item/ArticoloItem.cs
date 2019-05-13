@@ -25,7 +25,8 @@ namespace StrumentiMusicali.App.Core
             //TagImport = articolo.TagImport;
             PrezzoAcquisto = articolo.PrezzoAcquisto.ToString("C2");
             Prezzo = articolo.Prezzo.ToString("C2");
-            CodiceOrdine = articolo.Libro!=null && articolo.Libro.Ordine != null ? articolo.Libro.Ordine : "";
+            CodiceOrdine = articolo.Libro!=null && articolo.Libro.Ordine != null ? articolo.Libro.Ordine : 
+                articolo.Strumento!=null && articolo.Strumento.CodiceOrdine!=null ? articolo.Strumento.CodiceOrdine : "";
             //DataCreazione = articolo.DataCreazione;
             //DataModifica = articolo.DataUltimaModifica;
         }

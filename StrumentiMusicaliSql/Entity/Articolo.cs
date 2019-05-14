@@ -82,7 +82,7 @@ namespace StrumentiMusicali.Library.Entity
         [CustomUIViewAttribute(Width = 500, Ordine = 111, MultiLine = 4)]
         public string Testo { get; set; }
 
-        [CustomUIViewAttribute(Width = 500, Ordine = 3)]
+        [CustomUIViewAttribute(Width = 500, Ordine = 3,Titolo ="Titolo annuncio")]
         [MaxLength(100), Required]
         public string Titolo {
             get;

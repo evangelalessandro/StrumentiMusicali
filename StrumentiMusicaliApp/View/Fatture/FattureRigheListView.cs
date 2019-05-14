@@ -46,23 +46,22 @@ namespace StrumentiMusicali.App.View
 			   //var provider = new System.Globalization.CultureInfo("en");
 			   if (dgvRighe.Columns.Count == 0)
 				   return;
-			   //dgvRighe.Columns["PrezzoUnitario"].DisplayFormat..FormatProvider = provider;
-			   dgvRighe.Columns["PrezzoUnitario"].DisplayFormat.FormatString = "C2";
+               dgvRighe.Columns["PrezzoUnitario"].DisplayFormat.Format = provider;
+               dgvRighe.Columns["PrezzoUnitario"].DisplayFormat.FormatString = "C2";
 			   //dgvRighe.Columns["PrezzoUnitario"]. = DataGridViewContentAlignment.MiddleRight;
 
-			   //dgvRighe.Columns["RigaImporto"].DefaultCellStyle.FormatProvider = provider;
-			   dgvRighe.Columns["RigaImporto"].DisplayFormat.FormatString = "C2";
+			   dgvRighe.Columns["RigaImporto"].DisplayFormat.Format = provider;
+               dgvRighe.Columns["RigaImporto"].DisplayFormat.FormatString = "C2";
 			   //dgvRighe.Columns["RigaImporto"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
 			   dgvRighe.Columns["Entity"].Visible = false;
 			   dgvRighe.Columns["ID"].Visible = false;
 			   dgvRighe.BestFitColumns(true);
-			   dgvRighe.Columns["CodiceArt"].VisibleIndex = 0;
-			   dgvRighe.Columns["RigaDescrizione"].VisibleIndex = 1;
-			   dgvRighe.Columns["RigaQta"].VisibleIndex = 2;
-			   dgvRighe.Columns["PrezzoUnitario"].VisibleIndex = 3;
-			   dgvRighe.Columns["RigaImporto"].VisibleIndex = 4;
-			   dgvRighe.Columns["Iva"].VisibleIndex = 5;
+			   //dgvRighe.Columns["RigaDescrizione"].VisibleIndex = 1;
+			   //dgvRighe.Columns["RigaQta"].VisibleIndex = 2;
+			   //dgvRighe.Columns["PrezzoUnitario"].VisibleIndex = 3;
+			   //dgvRighe.Columns["RigaImporto"].VisibleIndex = 4;
+			   //dgvRighe.Columns["Iva"].VisibleIndex = 5;
 		   });
 		}
 	}

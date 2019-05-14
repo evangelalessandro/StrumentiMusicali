@@ -5,7 +5,7 @@ namespace StrumentiMusicali.Library.Core.Item
 {
 	public class FatturaRigaItem : BaseItem<FatturaRiga>
 	{
-		public string CodiceArt { get; set; }
+		//public string CodiceArt { get; set; }
 
 		public string RigaDescrizione { get; set; }
 

@@ -21,7 +21,13 @@ namespace StrumentiMusicali.App.Core.MenuRibbon
 			if (Click != null)
 				Click(this, new EventArgs());
 		}
-	}
+        public override string ToString()
+        {
+            var text = this.Testo;
+            text +=  this.Enabled ? "Abilitato" : "Disabilitato" ;
+            return text;
+        }
+    }
 
 	//[ImplementPropertyChanged]
 	//[AddINotifyPropertyChangedInterface]

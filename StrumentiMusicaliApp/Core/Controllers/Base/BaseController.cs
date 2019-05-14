@@ -460,11 +460,17 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                 case enAmbiente.FattureList:
                     return "Fatture";
 
-                case enAmbiente.Articolo:
-                    return "Articolo";
+                case enAmbiente.StrumentiDetail:
+                    return "Strumento";
 
-                case enAmbiente.ArticoliList:
-                    return "Gestione Articoli";
+                case enAmbiente.StrumentiList:
+                    return "Gestione Strumenti";
+
+                case enAmbiente.LibriDetail:
+                    return "Libro";
+
+                case enAmbiente.LibriList:
+                    return "Gestione Libri";
 
                 case enAmbiente.Magazzino:
                     return "Magazzino";
@@ -541,13 +547,15 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 				case enAmbiente.FattureList:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.Invoice);
 					break;
-				case enAmbiente.Articolo:
+				case enAmbiente.StrumentiDetail:
+				case enAmbiente.StrumentiList:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.StrumentoMusicale);
 					break;
-				case enAmbiente.ArticoliList:
-					frm.Icon = UtilityView.GetIco(Properties.Resources.StrumentoMusicale);
-					break;
-				case enAmbiente.Magazzino:
+                case enAmbiente.LibriDetail:
+                case enAmbiente.LibriList:
+                    frm.Icon = UtilityView.GetIco(Properties.Resources.Libro_48);
+                    break;
+                case enAmbiente.Magazzino:
 					frm.Icon = UtilityView.GetIco(Properties.Resources.UnloadWareHouse);
 					break;
 				case enAmbiente.SettingFatture:

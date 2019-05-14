@@ -76,9 +76,9 @@ namespace StrumentiMusicali.App.Forms
             /*controlla se mostrare libro o no*/
             if (!articoloController.EditItem.ShowLibro.HasValue)
             {
-                articoloController.EditItem.ShowLibro = (!string.IsNullOrEmpty(articoloController.EditItem.Libro.Autore)
-                    || !string.IsNullOrEmpty(articoloController.EditItem.Libro.Edizione)
-                    || !string.IsNullOrEmpty(articoloController.EditItem.Libro.Settore));
+                articoloController.EditItem.ShowLibro = 
+                    articoloController.EditItem.IsLibro();
+                    
             }
             articoloController.EditItem.ShowStrumento = !articoloController.EditItem.ShowLibro;
 

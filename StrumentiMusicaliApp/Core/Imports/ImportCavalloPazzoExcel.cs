@@ -160,7 +160,7 @@ namespace StrumentiMusicali.App.Core.Imports
 
 					articolo.Titolo = item.Marca + " " + item.Articolo + " " + item.Modello;
 
-					articolo.Rivenditore = item.Rivenditore;
+					articolo.Strumento.Rivenditore = item.Rivenditore;
 					articolo.Note1 = item.Varie1;
 					articolo.TagImport = "MulinoStrumenti";
 					magItem.Qta = int.Parse(item.Quantita);
@@ -234,7 +234,7 @@ namespace StrumentiMusicali.App.Core.Imports
 					if (!string.IsNullOrEmpty(item.Varie1) && !item.Varie1.Contains("?"))
 						articolo.Titolo += " " + item.Varie1;
 
-					articolo.Rivenditore = item.Rivenditore;
+					articolo.Strumento.Rivenditore = item.Rivenditore;
 					articolo.Note1 = item.Varie1;
 					articolo.Note2 = item.Varie2;
 					articolo.Note3 = item.Varie3;

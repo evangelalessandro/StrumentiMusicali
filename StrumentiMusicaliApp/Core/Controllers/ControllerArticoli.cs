@@ -31,13 +31,22 @@ namespace StrumentiMusicali.App.Core.Controllers
         private Subscription<ImageAdd> sub5;
         private Subscription<Save<Articolo>> sub8;
         private Subscription<ArticoloSconta> sub6;
-        private bool ModalitaRicerca { get; set; }
+        internal enModalitaArticolo ModalitaController { get; private set; }
         internal ControllerImmagini _controllerImmagini = new ControllerImmagini();
-        //private List<Subscription<object>> subList = new List<Subscription<object>>();
-        public ControllerArticoli(bool modalitaRicerca)
-            : base(enAmbiente.ArticoliList, enAmbiente.Articolo)
+
+        public enum enModalitaArticolo
         {
-            ModalitaRicerca = modalitaRicerca;
+            Tutto = 0,
+            Ricerca = 1,
+            SoloStrumenti = 2,
+            SoloLibri = 3,
+
+        }
+        //private List<Subscription<object>> subList = new List<Subscription<object>>();
+        public ControllerArticoli(enModalitaArticolo modalitaController)
+            : base(enAmbiente.StrumentiList, enAmbiente.StrumentiDetail)
+        {
+            ModalitaController = modalitaController;
             sub1 = EventAggregator.Instance().Subscribe<Add<Articolo>>(AggiungiArticolo);
             sub2 = EventAggregator.Instance().Subscribe<Edit<Articolo>>(EditArt);
 
@@ -101,7 +110,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             var tabFirst = GetMenu().Tabs[0];
             var pnl = tabFirst.Pannelli.First();
 
-            if (ModalitaRicerca)
+            if (ModalitaController == enModalitaArticolo.Ricerca)
             {
                 pnl.Pulsanti.RemoveAll(a => a.Tag == MenuTab.TagAdd
                 || a.Tag == MenuTab.TagRemove || a.Tag == MenuTab.TagCerca
@@ -111,7 +120,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                 tabFirst.Pannelli.RemoveAt(1);
 
             }
-            if (!ModalitaRicerca)
+            if (ModalitaController != enModalitaArticolo.Ricerca)
             {
                 var rib1 = pnl.Add("Duplica", Properties.Resources.Duplicate, true);
                 rib1.Click += (a, e) =>
@@ -130,7 +139,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             {
                 var pnl3 = GetMenu().Tabs[0].Add("Magazzino");
 
-                if (!ModalitaRicerca)
+                if (ModalitaController != enModalitaArticolo.Ricerca)
                 {
                     var rib3 = pnl3.Add("Qta Magazzino", Properties.Resources.UnloadWareHouse, true);
                     rib3.Click += (a, e) =>
@@ -220,11 +229,11 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         ~ControllerArticoli()
         {
-            var dato = this.ReadSetting(enAmbiente.ArticoliList);
+            var dato = this.ReadSetting(enAmbiente.StrumentiList);
             if (SelectedItem != null)
             {
                 dato.LastItemSelected = SelectedItem.ID;
-                this.SaveSetting(enAmbiente.ArticoliList, dato);
+                this.SaveSetting(enAmbiente.StrumentiList, dato);
             }
         }
 
@@ -232,22 +241,44 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private void EditArt(Edit<Articolo> obj)
         {
-            
+
             EditItem = SelectedItem;
             ShowViewDettaglio();
         }
         private void AggiungiArticolo(Add<Articolo> obj)
         {
-            
 
-            _logger.Info("Apertura ambiente AggiungiArticolo");
+
+            _logger.Info("Apertura Aggiungi Articolo");
 
             EditItem = new Articolo();
-
-            if (MessageManager.QuestionMessage("Vuoi aggiungere un libro?"))
+            bool libro = false;
+            if (ModalitaController == enModalitaArticolo.Tutto)
             {
-                EditItem.ShowLibro = true;
-                using (var uof=new UnitOfWork())
+                if (MessageManager.QuestionMessage("Vuoi aggiungere un libro?"))
+                {
+                    libro = true;
+                }
+
+            }
+            else
+            {
+                if (ModalitaController == enModalitaArticolo.SoloLibri)
+                {
+                    libro = true;
+                }
+                else if (ModalitaController == enModalitaArticolo.SoloStrumenti)
+                {
+                    libro = false;
+                    EditItem.ShowStrumento = true;
+                }
+                else
+                    return;
+            }
+            EditItem.ShowLibro = libro;
+            if (libro)
+            {
+                using (var uof = new UnitOfWork())
                 {
 
                     var categoria = uof.CategorieRepository.Find(a => a.Codice == 133).FirstOrDefault();
@@ -255,10 +286,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                 }
             }
-            else
-            {
-                EditItem.ShowLibro = false;
-            }
+
             ShowViewDettaglio();
         }
 
@@ -279,14 +307,14 @@ namespace StrumentiMusicali.App.Core.Controllers
                     (new Save<Articolo>(this));
                 };
 
-                ShowView(view, enAmbiente.Articolo);
+                ShowView(view, enAmbiente.StrumentiDetail);
             }
 
         }
 
         private void DuplicaArticolo(ArticoloDuplicate obj)
         {
-          
+
 
             try
             {
@@ -309,7 +337,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                         DataUltimaModifica = DateTime.Now,
                         DataCreazione = DateTime.Now
                     });
-                    art.Strumento= itemCurrent.Strumento;
+                    art.Strumento = itemCurrent.Strumento;
                     art.Libro = itemCurrent.Libro;
 
                     uof.ArticoliRepository.Add(art);
@@ -425,7 +453,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             {
                 CategoriaID = int.Parse(dat[1]),
                 Condizione = cond,
-                
+
                 Titolo = dat[4],
                 Testo = dat[5].Replace("<br>", Environment.NewLine),
                 Prezzo = prezzo,
@@ -537,7 +565,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private void AggiungiImmagine(ImageAdd eventArg)
         {
-           
+
             try
             {
                 using (OpenFileDialog res = new OpenFileDialog())
@@ -551,7 +579,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                     if (res.ShowDialog() == DialogResult.OK)
                     {
                         EventAggregator.Instance().Publish<ImageAddFiles>(
-                            new ImageAddFiles(eventArg.Articolo, res.FileNames.ToList(),this));
+                            new ImageAddFiles(eventArg.Articolo, res.FileNames.ToList(), this));
                     }
                 }
             }
@@ -589,9 +617,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                             && (a.Strumento.Marca.Contains(FiltroMarca) && FiltroMarca.Length > 0
                             || FiltroMarca == "")
-                            );
+                            );//.Select(a=>new { a, a.Categoria }).ToList().Select(a=>a.a).ToList();
 
                         var listRicerche = datoRicerca.Where(a => a.Length > 0).ToList();
+
+
+
                         foreach (var ricerca in listRicerche)
                         {
 
@@ -608,12 +639,22 @@ namespace StrumentiMusicali.App.Core.Controllers
                             );
                         }
 
+                        list = datList.OrderByDescending(a => a.ID)
+                            .Select(a => new { a.Categoria, Articolo = a }).ToList()
 
+                        .Select(a => a.Articolo)
+                        .Where(a => (
+                        a.IsLibro() == true
+                        && ModalitaController == enModalitaArticolo.SoloLibri)
+                        ||
+                        (a.IsLibro() == false
+                        && ModalitaController == enModalitaArticolo.SoloStrumenti)
+                        ||
+                        ModalitaController == enModalitaArticolo.Tutto
+                        )
+                            .Take(ViewAllItem ? 100000 : 300)
 
-
-
-                        list = datList.OrderByDescending(a => a.ID).Take(ViewAllItem ? 100000 : 300)
-                        .Select(a => new { a.Categoria, Articolo = a }).ToList().Select(a => a.Articolo).Select(a => new ArticoloItem(a)
+                        .Select(a => new ArticoloItem(a)
                         {
 
                             //Pinned = a.Pinned

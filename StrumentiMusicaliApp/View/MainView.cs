@@ -209,14 +209,18 @@ namespace StrumentiMusicali.App
 			//		EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ScaricoMagazzino));
 			//	};
 			//}
-			var panel2 = tabImportExport.Add("Gestione articoli");
-			var ribArticoli = panel2.Add("Gestione articoli", Properties.Resources.StrumentoMusicale);
+			var panel2 = tabImportExport.Add(@"Gestione articoli\libri");
+			var ribArticoli = panel2.Add("Gestione strumenti", Properties.Resources.StrumentoMusicale);
 			ribArticoli.Click += (s, e) =>
 			{
-				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ArticoliList));
+				EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.StrumentiList));
 			};
-
-            var ribRicArticoli = panel2.Add("Ricerca articoli", Properties.Resources.Search_48);
+            var ribLibri = panel2.Add("Gestione libri", Properties.Resources.Libro_48);
+            ribLibri.Click += (s, e) =>
+            {
+                EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.LibriList));
+            };
+            var ribRicArticoli = panel2.Add(@"Ricerca articoli\libri", Properties.Resources.Search_48);
             ribRicArticoli.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.RicercaArticolo));

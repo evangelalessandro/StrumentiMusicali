@@ -175,6 +175,14 @@
     <Compile Include="Migrations\201905051144115_AddCodiceOrdine1.Designer.cs">
       <DependentUpon>201905051144115_AddCodiceOrdine1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905142029487_metaMaggio1.cs" />
+    <Compile Include="Migrations\201905142029487_metaMaggio1.Designer.cs">
+      <DependentUpon>201905142029487_metaMaggio1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905142036574_SpostatoRivenditore.cs" />
+    <Compile Include="Migrations\201905142036574_SpostatoRivenditore.Designer.cs">
+      <DependentUpon>201905142036574_SpostatoRivenditore.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Repo\IRepository.cs" />
@@ -218,6 +226,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905051144115_AddCodiceOrdine1.resx">
       <DependentUpon>201905051144115_AddCodiceOrdine1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905142029487_metaMaggio1.resx">
+      <DependentUpon>201905142029487_metaMaggio1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905142036574_SpostatoRivenditore.resx">
+      <DependentUpon>201905142036574_SpostatoRivenditore.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

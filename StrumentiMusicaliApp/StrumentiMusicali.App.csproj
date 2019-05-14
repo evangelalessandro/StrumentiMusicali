@@ -232,7 +232,6 @@
     <Compile Include="Core\Controllers\Base\BaseController.cs" />
     <Compile Include="Core\Controllers\ControllerArticoli.cs" />
     <Compile Include="Core\Controllers\ControllerPagamenti.cs" />
-    <Compile Include="Core\Controllers\ControllerStrumenti.cs" />
     <Compile Include="Core\Controllers\ControllerUtenti.cs" />
     <Compile Include="Core\Controllers\ControllerDepositi.cs" />
     <Compile Include="Core\Controllers\ControllerFatturazione.cs" />
@@ -595,6 +594,7 @@
     <None Include="Resources\Search.png" />
     <None Include="Resources\Excel_export.png" />
     <None Include="Resources\MantieniFiltro.png" />
+    <None Include="Resources\Libro_48.png" />
     <Content Include="Resources\StrumentoMusicale.ico" />
     <Content Include="StrumentoMusicale.ico" />
     <None Include="Resources\Close.png" />

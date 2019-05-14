@@ -11,12 +11,18 @@ namespace StrumentiMusicali.Library.View.Enums
 		[UIAmbienteAttribute(false)]
 		FattureList=3,
 		[UIAmbienteAttribute(true)]
-		Articolo=4,
+		StrumentiDetail=4,
 		[UIAmbienteAttribute(true)]
 		ArticoloSconto = 700,
 		[UIAmbienteAttribute(false, AmbienteMutuale = enAmbiente.RicercaArticolo)]
-		ArticoliList=5,
-		Magazzino=6,
+		StrumentiList=5,
+
+        [UIAmbienteAttribute(false, AmbienteMutuale = enAmbiente.RicercaArticolo)]
+        LibriList = 50,
+        [UIAmbienteAttribute(true)]
+        LibriDetail = 51,
+
+        Magazzino = 6,
 		[UIAmbienteAttribute(false)]
 		SettingFatture=7,
 		[UIAmbienteAttribute(false)]
@@ -54,7 +60,7 @@ namespace StrumentiMusicali.Library.View.Enums
         [UIAmbienteAttribute(true)]
         Pagamento = 702,
 
-        [UIAmbienteAttribute(false,AmbienteMutuale =enAmbiente.ArticoliList)]
+        [UIAmbienteAttribute(false,AmbienteMutuale =enAmbiente.StrumentiList)]
         RicercaArticolo = 703,
 
     }

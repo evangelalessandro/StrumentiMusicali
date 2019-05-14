@@ -109,7 +109,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void InvioArCSV(InvioArticoliCSV obj)
 		{
-			using (var controllerArt = new ControllerArticoli(false))
+			using (var controllerArt = new ControllerArticoli(ControllerArticoli.enModalitaArticolo.Tutto))
 			{
 				controllerArt.InvioArticoli(obj);
 			}
@@ -125,7 +125,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 		private void ImportaCsvArticoli(ImportArticoliCSVMercatino obj)
 		{
-			using (var controllerArt = new ControllerArticoli(false))
+			using (var controllerArt = new ControllerArticoli(ControllerArticoli.enModalitaArticolo.Tutto))
 			{
 				controllerArt.ImportaCsvArticoli(null);
 			}
@@ -136,17 +136,23 @@ namespace StrumentiMusicali.App.Core.Controllers
 			switch (obj.TipoEnviroment)
 			{
 
-				case enAmbiente.ArticoliList:
-
-					var controllerArt = new ControllerArticoli(false);
+				case enAmbiente.StrumentiList:
+                    { 
+					var controllerArt = new ControllerArticoli(ControllerArticoli.enModalitaArticolo.SoloStrumenti);
 					var viewArt = new ArticoliListView(controllerArt);
 					this.ShowView(viewArt, obj.TipoEnviroment, controllerArt);
-
-
 					break;
+                    }
+                case enAmbiente.LibriList:
+                    { 
+                    var controllerArt = new ControllerArticoli(ControllerArticoli.enModalitaArticolo.SoloLibri);
+                    var viewArt = new ArticoliListView(controllerArt);
+                    this.ShowView(viewArt, obj.TipoEnviroment, controllerArt);
+                    break;
+                    }
                 case enAmbiente.RicercaArticolo:
 
-                    var contrArt = new ControllerArticoli(true);
+                    var contrArt = new ControllerArticoli(ControllerArticoli.enModalitaArticolo.Ricerca);
                     var viewRicercaArt= new RicercaArticoliStyleView(contrArt);
                     
                     this.ShowView(viewRicercaArt, obj.TipoEnviroment, contrArt);
@@ -219,7 +225,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 					break;
 				case enAmbiente.Fattura:
 					break;
-				case enAmbiente.Articolo:
+				case enAmbiente.StrumentiDetail:
 					break;
 				case enAmbiente.Magazzino:
 					break;

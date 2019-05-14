@@ -19,8 +19,11 @@ namespace StrumentiMusicali.App.View
 
 			onEditItemShowView += ((a, b) =>
 			{ b.Cancel = true; });
-			AggiungiFiltroMarca(controller);
-			AggiungiFiltroLibro(controller);
+            if (controller.ModalitaController==ControllerArticoli.enModalitaArticolo.SoloLibri)
+                AggiungiFiltroLibro(controller);
+            if (controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti)
+                AggiungiFiltroMarca(controller);
+			
 		}
 
 		private void AggiungiFiltroLibro(ControllerArticoli controller)

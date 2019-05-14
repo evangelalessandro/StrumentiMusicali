@@ -93,12 +93,12 @@ namespace StrumentiMusicali.App.Core.Exports
                       a.Strumento.Marca,
                       a.Strumento.CodiceOrdine,
                       a.Strumento.Colore,
-
+                      a.Strumento.Rivenditore,
                       a.Note1,
                       a.Note2,
                       a.Note3,
                       a.NonImponibile,
-                      a.Rivenditore,
+                      
                       a.Testo,
                       a.Libro.Autore,
                       a.Libro.TitoloDelLibro,

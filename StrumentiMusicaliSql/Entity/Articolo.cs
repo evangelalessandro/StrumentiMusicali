@@ -102,15 +102,12 @@ namespace StrumentiMusicali.Library.Entity
 
         [CustomUIViewAttribute(Ordine = 21)]
         [MaxLength(100)]
-        public string Note2 { get; set; }
+        public string Note2 { get; set; } = "";
 
         [CustomUIViewAttribute(Ordine = 22)]
         [MaxLength(100)]
-        public string Note3 { get; set; }
-
-        [CustomUIViewAttribute(Ordine = 15)]
-        [MaxLength(100)]
-        public string Rivenditore { get; set; }
+        public string Note3 { get; set; } = "";
+        
 
         [CustomUIViewAttribute(Ordine = 30)]
         [AlsoNotifyFor("UpdateTitolo")]
@@ -125,6 +122,18 @@ namespace StrumentiMusicali.Library.Entity
         [CustomHideUIAttribute]
         public bool? ShowLibro { get; set; } = null;
 
+        /*Indica se è un libro*/
+        public bool IsLibro()
+        {
+            var dato= (!string.IsNullOrEmpty(Libro.Autore)
+                    || !string.IsNullOrEmpty(Libro.Edizione)
+                    || !string.IsNullOrEmpty(Libro.Settore));
+            if (dato)
+            {
+                System.Diagnostics.Debug.Print("Prova");
+            }
+            return dato;
+        }
 
         [NotMapped]
         [CustomUIViewAttribute(Width = 80, Ordine = 50, Enable = false)]
@@ -197,21 +206,26 @@ namespace StrumentiMusicali.Library.Entity
 
     public class StrumentoAcc : INotifyPropertyChanged
     {
-        [CustomUIViewAttribute(Width = 150, Ordine = 2)]
+        [CustomUIViewAttribute(Width = 150, Ordine = 20)]
         [MaxLength(100)]
         public string Marca { get; set; } = "";
 
-        [CustomUIViewAttribute(Width = 150, Ordine = 3)]
+        [CustomUIViewAttribute(Width = 150, Ordine = 30)]
         [MaxLength(100)]
         public string Modello { get; set; } = "";
 
-        [CustomUIViewAttribute(Width = 150, Ordine = 4)]
+        [CustomUIViewAttribute(Width = 150, Ordine = 40)]
         [MaxLength(100)]
         public string CodiceOrdine { get; set; } = "";
 
-        [CustomUIViewAttribute(Ordine = 5)]
+        [CustomUIViewAttribute(Ordine = 50)]
+        [MaxLength(100)]
+        public string Rivenditore { get; set; } = "";
+
+        [CustomUIViewAttribute(Ordine = 60)]
         [MaxLength(50)]
         public string Colore { get; set; } = "";
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

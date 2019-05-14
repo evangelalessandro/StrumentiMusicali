@@ -17,7 +17,7 @@ namespace StrumentiMusicali.App.View
 		{
 
             onEditItemShowView += ((a, b) =>
-            { b.Cancel = true; });
+            { b.Cancel = false; });
 
         }
 

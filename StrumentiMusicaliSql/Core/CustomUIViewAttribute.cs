@@ -27,13 +27,16 @@ namespace StrumentiMusicali.Library.Core
 		public TipoDatiCollegati Combo { get; set; } = TipoDatiCollegati.Nessuno;
 
         public bool Enable { get; set; } = true;
+
+        public string Titolo { get; set; } = "";
     }
 	public enum TipoDatiCollegati
 	{
 		Nessuno,
 		Clienti,
 		Categorie,
-		Condizione
+		Condizione,
+        Articoli
 	}
 	 
 

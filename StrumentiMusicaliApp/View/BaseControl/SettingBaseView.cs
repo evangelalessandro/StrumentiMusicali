@@ -81,6 +81,14 @@ namespace StrumentiMusicali.App.View.BaseControl
 
                 string titolo = UtilityView.GetTextSplitted(item.Name);
                 titolo = prefixText + titolo;
+
+                if (widthAttr!=null)
+                {
+                    if (widthAttr.Titolo.Length>0)
+                    {
+                        titolo = widthAttr.Titolo;
+                    }
+                }
                 EDBase newControl = null;
 
                 if (widthAttr != null && widthAttr.Combo != TipoDatiCollegati.Nessuno)
@@ -157,9 +165,19 @@ namespace StrumentiMusicali.App.View.BaseControl
                     case TipoDatiCollegati.Clienti:
                         break;
                     case TipoDatiCollegati.Categorie:
-                        var list = uof.CategorieRepository.Find(a => true).Select(a => new { a.ID, Descrizione = a.Reparto + " - " + a.Nome + " - " + a.Codice }).ToList();
+                        {
+                            var list = uof.CategorieRepository.Find(a => true).Select(a => new { a.ID, Descrizione = a.Reparto + " - " + a.Nome + " - " + a.Codice }).ToList();
 
-                        artCNT.SetList(list);
+                            artCNT.SetList(list);
+                        }
+                        break;
+                    case TipoDatiCollegati.Articoli:
+                        {
+                            var list = uof.ArticoliRepository.Find(a => true).Select(a => new { a.ID, a.Titolo, a.Prezzo }).ToList()
+                                .Select(a => new { a.ID, Descrizione = a.Titolo , Prezzo= a.Prezzo }).ToList();
+
+                            artCNT.SetList(list);
+                        }
                         break;
                     case TipoDatiCollegati.Condizione:
 

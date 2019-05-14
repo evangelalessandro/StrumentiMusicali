@@ -39,7 +39,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                 var menu = GetMenu();
                 menu.Enabled = !(DataSource == null);
 
-                menu.ApplyValidation(SelectedItem   !=null);
+                menu.ApplyValidation(SelectedItem   !=null && SelectedItem.ID>0);
                 foreach (var item in menu.ItemByTag(MenuTab.TagCerca))
                 {
                     item.Checked = PannelloRicercaVisibile;
@@ -128,6 +128,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
         {
             var item = (TEntity)SelectedItem;
             EventAggregator.Instance().Publish<UpdateList<TEntity>>(new UpdateList<TEntity>(this));
+            if (item!=null)
             EventAggregator.Instance().Publish<ItemSelected<TBaseItem, TEntity>>(
                 new ItemSelected<TBaseItem, TEntity>(new TBaseItem()
                 {

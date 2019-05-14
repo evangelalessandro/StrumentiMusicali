@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StrumentiMusicali.App.Core.Events.Articoli
+namespace StrumentiMusicali.Library.Core.Events.Generics
 {
-	public class InvioArticoliCSV
-	{
-	}
+    public class ForceCloseActiveFormView
+    {
+    }
 }

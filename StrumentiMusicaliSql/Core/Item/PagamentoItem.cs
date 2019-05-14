@@ -14,9 +14,9 @@ namespace StrumentiMusicali.Library.Core.Item
 		{
 			Nome = pagamento.Nome;
 			Cognome = pagamento.Cognome;
-			DataInizio = pagamento.DataInizio;
+			DataInizio = pagamento.DataInizio.Date;
 			Articolo = pagamento.Articolo.Titolo;
-			DataRata = pagamento.DataRata;
+			DataRata = pagamento.DataRata.Date;
 			ImportoRata = pagamento.ImportoRata;
 			ImportoResiduo = pagamento.ImportoResiduo;
 			ImportoTotale = pagamento.ImportoTotale;

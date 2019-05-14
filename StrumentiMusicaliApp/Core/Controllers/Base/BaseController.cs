@@ -9,6 +9,7 @@ using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Attributes;
+using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Core.interfaces;
 using StrumentiMusicali.Library.View.Enums;
 using System;
@@ -29,9 +30,20 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
         Guid IKeyController.INSTANCE_KEY { get { return _INSTANCE_KEY; }  }
 
+        static Subscription<ForceCloseActiveFormView> _sub1 = EventAggregator.Instance().Subscribe<ForceCloseActiveFormView>(a => {
+
+            var frm = _PreviusForm.Last();
+            if (frm != null)
+            {
+                frm.Close();
+            }
+        });
         public BaseController()
 		{
-		}
+            //
+         
+
+        }
 		public const bool ModalitàAForm = false;
 		public static T GetAttribute<T>(Enum enumValue) where T : Attribute
 		{

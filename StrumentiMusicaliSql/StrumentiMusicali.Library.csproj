@@ -81,6 +81,7 @@
     <Compile Include="Core\Events\Generics\BaseGeneric.cs" />
     <Compile Include="Core\Events\Generics\ClearRicerca.cs" />
     <Compile Include="Core\Events\Generics\Edit.cs" />
+    <Compile Include="Core\Events\Generics\ForceCloseActiveView.cs" />
     <Compile Include="Core\Events\Generics\ItemSelected.cs" />
     <Compile Include="Core\Events\Generics\RebindItemUpdated.cs" />
     <Compile Include="Core\Events\Generics\Remove.cs" />

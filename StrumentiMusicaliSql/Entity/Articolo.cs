@@ -34,12 +34,12 @@ namespace StrumentiMusicali.Library.Entity
         [CustomUIViewAttribute(Ordine = 6)]
         public bool BoxProposte { get; set; }
 
-        [CustomUIViewAttribute(Ordine = 7)]
+        [CustomUIViewAttribute(Ordine = 7,Titolo = "Carica in ECommerce")]
         public bool CaricainECommerce { get; set; } = true;
-        [CustomUIViewAttribute(Ordine = 8)]
+        [CustomUIViewAttribute(Ordine = 8, Titolo = "Carica in Mercatino")]
         public bool CaricaInMercatino { get; set; } = true;
 
-        [CustomUIViewAttribute(Width = 350, Ordine = 1, Combo = TipoDatiCollegati.Categorie)]
+        [CustomUIViewAttribute(Width = 350, Ordine = 1, Combo = TipoDatiCollegati.Categorie,Titolo ="Categoria")]
         [Required]
         public int CategoriaID { get; set; }
 

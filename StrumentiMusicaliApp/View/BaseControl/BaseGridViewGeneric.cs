@@ -260,14 +260,14 @@ namespace StrumentiMusicali.App.View.BaseControl
 
                 Controller.SelectedItem = item.Entity;
 
-                if (SelectionChanged != null)
-                {
-                    SelectionChanged(this, new EventArgs());
-                }
+                 
+            }
+            else
+            {
+                Controller.SelectedItem = null;
             }
             Controller.UpdateButtonState();
-        }
-        public event EventHandler SelectionChanged;
+        } 
         public MenuTab GetMenu()
         {
             return Controller.GetMenu();

@@ -211,7 +211,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
             
             var ribClearFilter = panel2.Add("Mantieni filtro", Properties.Resources.MantieniFiltro);
             ribClearFilter.Tag = MenuTab.TagCercaClear;
-            ribClearFilter.Checked = true;
+            ribClearFilter.Checked = false;
             ribClearFilter.Click += (a, e) =>
             {
                 ClearRicerca = !ClearRicerca;
@@ -252,7 +252,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
         }
         public bool ViewAllItem { get; set; }
-        public bool ClearRicerca { get; set; } = true;
+        public bool ClearRicerca { get; set; } = false;
         public void RaiseSave()
         {
             if (OnSave != null)

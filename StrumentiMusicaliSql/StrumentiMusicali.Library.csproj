@@ -62,10 +62,11 @@
     <Compile Include="..\StrumentiMusicaliApp\Properties\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Core\ComboDataAttribute.cs" />
-    <Compile Include="Core\CustomUIViewAttribute.cs" />
-    <Compile Include="Core\CustomHideUIAttribute.cs" />
+    <Compile Include="Core\Attributes\ComboDataAttribute.cs" />
+    <Compile Include="Core\Attributes\CustomUIViewAttribute.cs" />
+    <Compile Include="Core\Attributes\CustomHideUIAttribute.cs" />
     <Compile Include="Core\Attributes\UIAmbienteAttribute.cs" />
+    <Compile Include="Core\Cloner\ClonerHelpers.cs" />
     <Compile Include="Core\Enums\enAmbiente.cs" />
     <Compile Include="Core\EventAggregator.cs" />
     <Compile Include="Core\Events\Articoli\ArticoloDuplicate.cs" />
@@ -104,6 +105,11 @@
     <Compile Include="Core\Events\Magazzino\MovimentiUpdate.cs" />
     <Compile Include="Core\Events\Magazzino\MovimentoMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\ScaricaQtaMagazzino.cs" />
+    <Compile Include="Core\Cloner\ExpressionTreeCloner.cs" />
+    <Compile Include="Core\Cloner\ExpressionTreeCloner.FieldBased.cs" />
+    <Compile Include="Core\Cloner\ExpressionTreeCloner.PropertyBased.cs" />
+    <Compile Include="Core\Cloner\ExpressionTreeCloner.Test.cs" />
+    <Compile Include="Core\Cloner\ICloneFactory.cs" />
     <Compile Include="Core\Interfaces\IKeyController.cs" />
     <Compile Include="Core\Item\ArticoloItem.cs" />
     <Compile Include="Core\Item\Base\BaseItem.cs" />
@@ -183,6 +189,10 @@
     <Compile Include="Migrations\201905142036574_SpostatoRivenditore.Designer.cs">
       <DependentUpon>201905142036574_SpostatoRivenditore.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905151938342_PagamentiDeleteArt.cs" />
+    <Compile Include="Migrations\201905151938342_PagamentiDeleteArt.Designer.cs">
+      <DependentUpon>201905151938342_PagamentiDeleteArt.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Repo\IRepository.cs" />
@@ -232,6 +242,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905142036574_SpostatoRivenditore.resx">
       <DependentUpon>201905142036574_SpostatoRivenditore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905151938342_PagamentiDeleteArt.resx">
+      <DependentUpon>201905151938342_PagamentiDeleteArt.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

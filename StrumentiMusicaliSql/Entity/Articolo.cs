@@ -79,7 +79,7 @@ namespace StrumentiMusicali.Library.Entity
         public decimal PrezzoAcquisto { get; set; } = 0;
 
         [MaxLength(2000)]
-        [CustomUIViewAttribute(Width = 500, Ordine = 111, MultiLine = 4)]
+        [CustomUIViewAttribute(Width = 500, Ordine = 111, MultiLine = 4,Titolo ="Testo annuncio")]
         public string Testo { get; set; }
 
         [CustomUIViewAttribute(Width = 500, Ordine = 3,Titolo ="Titolo annuncio")]

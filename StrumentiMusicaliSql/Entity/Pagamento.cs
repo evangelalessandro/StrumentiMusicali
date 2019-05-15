@@ -15,62 +15,46 @@ namespace StrumentiMusicali.Library.Entity
     {
         public Pagamento()
         {
-            if ((this as INotifyPropertyChanged) != null)
-                (this as INotifyPropertyChanged).PropertyChanged += Pagamento_PropertyChanged;
+             
         }
-
-        private void Pagamento_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        public object Clone()
         {
-            var prova = UpdateImportoTotale;
+            return this.MemberwiseClone();
         }
 
         [CustomUIViewAttribute(Width = 250, Ordine = 1)]
         [Required]
+        [MaxLength(100)]
         public string Cognome { get; set; }
 
-        [CustomUIViewAttribute(Width = 250, Ordine = 2)]
+        [CustomUIViewAttribute(Width = 250, Ordine = 5)]
         [Required]
+        [MaxLength(100)]
         public string Nome { get; set; }
 
-        [Required]
-        [CustomUIViewAttribute(Width = 450, Ordine = 3, Combo = TipoDatiCollegati.Articoli, Titolo = "Articolo")]
-        [AlsoNotifyFor("UpdateImportoTotale")]
-        public int ArticoloID { get; set; }
+        [CustomUIViewAttribute(Width = 250, Ordine = 10)]
+        [MaxLength(120)]
+        public string Indirizzo { get; set; }
 
-        [CustomHideUIAttribute]
-        [AlsoNotifyFor("UpdateImportoTotale")]
-        public virtual Articolo Articolo { get; set; }
 
-        [NotMapped]
-        [AlsoNotifyFor("ImportoTotale")]
-        [CustomHideUIAttribute]
-        public decimal UpdateImportoTotale {
-            set {
+        [CustomUIViewAttribute(Width = 250, Ordine = 15)]
+        [MaxLength(60)]
+        public string Telefono { get; set; }
 
-            }
-            get {
-                if (ImportoTotale==0)
-                ImportoTotale = GetImportoArticolo();
-                return ImportoTotale;
-            }
-        }
-        private decimal GetImportoArticolo()
-        {
-            if (this.ID == 0)
-            {
+        [CustomUIViewAttribute(Width = 250, 
+            Ordine = 20,Titolo ="Numero carta d'identità")]
+        [MaxLength(60)]
+        public string CartaIdentita{ get; set; }
 
-                using (var uof = new UnitOfWork())
-                {
-                    var art = uof.ArticoliRepository.Find(a => a.ID == ArticoloID).Select(a => a.Prezzo).DefaultIfEmpty(0).FirstOrDefault();
+        [CustomUIViewAttribute(Width = 250, Ordine = 125, Titolo = "Note",MultiLine =4)]
+        [MaxLength(500)]
+        public string Note{ get; set; }
 
-                    return art;
 
-                }
+        [CustomUIViewAttribute(Width = 500, Ordine = 50,Titolo ="Articolo")]
+        [MaxLength(100)]
+        public string ArticoloAcq { get; set; }
 
-            }
-            return ImportoTotale;
-
-        }
         [NotMapped]
         [CustomHideUIAttribute]
         public Boolean ShowNumeroRate {
@@ -87,18 +71,18 @@ namespace StrumentiMusicali.Library.Entity
             }
         }
         [NotMapped]
-        [CustomUIViewAttribute(Width = 100, Ordine = 4)]
+        [CustomUIViewAttribute(Width = 100, Ordine = 55)]
         public Int32 NumeroRate { get; set; } = 3;
 
         //public event PropertyChangedEventHandler PropertyChanged;
 
         [Required]
-        [CustomUIViewAttribute(Width = 100, Ordine = 5)]
+        [CustomUIViewAttribute(Width = 100, Ordine = 60)]
         public decimal ImportoTotale { get; set; }
 
 
         [Required]
-        [CustomUIViewAttribute(Width = 100, Ordine = 6, Titolo = "Data Inizio")]
+        [CustomUIViewAttribute(Width = 100, Ordine = 65, Titolo = "Data Inizio")]
         public DateTime DataInizio { get; set; } = DateTime.Now;
 
         [NotMapped]
@@ -126,16 +110,14 @@ namespace StrumentiMusicali.Library.Entity
         public Boolean ShowImportoResiduo { get { return ShowImportoRata; } }
 
         [Required]
-        [CustomUIViewAttribute(Width = 100, Ordine = 9)]
+        [CustomUIViewAttribute(Width = 100, Ordine = 70)]
         public decimal ImportoRata { get; set; }
         [Required]
-        [CustomUIViewAttribute(Width = 100, Ordine = 10, Titolo = "Data pagamento rata")]
+        [CustomUIViewAttribute(Width = 100, Ordine = 75, Titolo = "Data pagamento rata")]
         public DateTime DataRata { get; set; } = DateTime.Now;
 
         [Required]
-        [CustomUIViewAttribute(Width = 100, Ordine = 11)]
+        [CustomUIViewAttribute(Width = 100, Ordine = 80)]
         public decimal ImportoResiduo { get; set; }
-
-
     }
 }

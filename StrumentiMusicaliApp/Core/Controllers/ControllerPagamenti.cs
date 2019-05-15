@@ -93,10 +93,11 @@ namespace StrumentiMusicali.App.Core.Controllers
                     list = uof.PagamentoRepository.Find(a =>
                     a.Nome.Contains(TestoRicerca) ||
                     a.Cognome.Contains(TestoRicerca) ||
+                    a.ArticoloAcq.Contains(TestoRicerca) ||
                         TestoRicerca == ""
                     ).Take(ViewAllItem ? 100000 : 300)
-                    .Select(a => new { Pagamento = a, a.Articolo }).ToList()
-                    .Select(a => new PagamentoItem(a.Pagamento)
+                    .ToList()
+                    .Select(a => new PagamentoItem(a)
                     {
 
 
@@ -149,24 +150,20 @@ namespace StrumentiMusicali.App.Core.Controllers
                         var importoRata = EditItem.ImportoTotale / (decimal)EditItem.NumeroRate;
                         foreach (var item in Enumerable.Range(1, EditItem.NumeroRate))
                         {
-                            var pagamento = new Pagamento()
+                            var pagamento = (Pagamento)EditItem.Clone();
+                            
                             {
-                                Nome = EditItem.Nome,
-                                Cognome = EditItem.Cognome,
-                                ImportoTotale = EditItem.ImportoTotale,
-                                ImportoRata = importoRata,
-                                DataRata = EditItem.DataInizio.AddMonths(item),
-                                DataInizio = EditItem.DataInizio,
-                                ArticoloID = EditItem.ArticoloID,
-                                ImportoResiduo = EditItem.ImportoTotale - (importoRata * item),
+                                pagamento.ImportoRata = importoRata;
+                                pagamento.DataRata = EditItem.DataInizio.AddMonths(item);
+                                pagamento.ImportoResiduo = 
+                                    EditItem.ImportoTotale - (importoRata * item);
                             };
                             uof.PagamentoRepository.Add(pagamento);
 
                             if (nuovoPagamento == null)
                                 nuovoPagamento = pagamento;
                         }
-                        EditItem = nuovoPagamento;
-                    }
+                                            }
                 }
 
                 if (saveManager.SaveEntity(enSaveOperation.OpSave))

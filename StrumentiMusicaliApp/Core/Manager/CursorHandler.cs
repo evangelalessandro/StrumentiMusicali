@@ -9,6 +9,10 @@ namespace StrumentiMusicali.App.Core.Manager
 		public CursorManager(Cursor cursor = null)
 		{
 			_saved = Cursor.Current;
+            if (_saved==null)
+            {
+                _saved = Cursors.Default;
+            }
 			Cursor.Current = cursor ?? Cursors.WaitCursor;
 		}
 

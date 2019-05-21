@@ -113,6 +113,10 @@ namespace StrumentiMusicali.App.View.Articoli
                 if (item.Libro != null && item.Libro.Ordine != null)
                     AggiungiValore(item.Libro.Ordine);
 
+                AggiungiIntestazione("Settore: ");
+                if (item.Libro != null && item.Libro.Settore!= null)
+                    AggiungiValore(item.Libro.Settore);
+
                 AggiungiIntestazione("Non Imponibile:");
                 if (item.NonImponibile)
                 {

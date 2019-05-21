@@ -65,8 +65,18 @@ namespace StrumentiMusicali.App.View
 
 		public override void FormatGrid()
 		{
-			
-		}
+			if (Controller.ModalitaController==ControllerArticoli.enModalitaArticolo.SoloLibri)
+            {
+                dgvRighe.BestFitColumns(true);
+                dgvRighe.Columns["Marca"].Visible = false;
+                dgvRighe.Columns["Categoria"].Visible = false;
+                dgvRighe.Columns["Reparto"].Visible = false;
+            }
+            else if (Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti)
+            {
+                dgvRighe.Columns["Settore"].Visible = false;
+            }
+        }
 
 
 	}

@@ -1,4 +1,5 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
+using StrumentiMusicali.App.Core.Controllers.Stampa;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Generics;
@@ -59,7 +60,32 @@ namespace StrumentiMusicali.App.Core.Controllers
            {
                Save(null);
            });
+            ///comando di stampa
+			AggiungiComandi();
+
         }
+        private void AggiungiComandi()
+        {
+
+            AggiungiComandiStampa(GetMenu().Tabs[0], false);
+        }
+        public void AggiungiComandiStampa(MenuRibbon.RibbonMenuTab tab, bool editItem)
+        {
+             
+            var pnlStampa = tab.Add("Stampa");
+
+            var ribStampa = pnlStampa.Add("Avvia stampa", Properties.Resources.Print_48, true);
+            ribStampa.Click += (a, e) =>
+            {
+                if (editItem)
+                    Stampa(EditItem);
+                else
+                    Stampa(SelectedItem);
+
+            };
+
+  
+         }
 
 
         // NOTE: Leave out the finalizer altogether if this class doesn't
@@ -129,6 +155,27 @@ namespace StrumentiMusicali.App.Core.Controllers
             }
             // free native resources if there are any.
         }
+        internal void Stampa(Pagamento pagamento)
+        {
+            _logger.Info("Avvio stampa");
+            try
+            {
+                using (var cursorManger = new CursorManager())
+                {
+                    using (var stampa = new StampaPagamento())
+                    {
+
+                        stampa.Stampa(pagamento);
+                        _logger.Info("Stampa completata correttamente.");
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.ManageError(ex);
+            }
+        }
 
 
 
@@ -147,15 +194,17 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                     if (EditItem.ID == 0)
                     {
+                        Guid guid = Guid.NewGuid();
                         var importoRata = EditItem.ImportoTotale / (decimal)EditItem.NumeroRate;
                         foreach (var item in Enumerable.Range(1, EditItem.NumeroRate))
                         {
                             var pagamento = (Pagamento)EditItem.Clone();
-                            
+
                             {
+                                pagamento.IDPagamenti = guid;
                                 pagamento.ImportoRata = importoRata;
                                 pagamento.DataRata = EditItem.DataInizio.AddMonths(item);
-                                pagamento.ImportoResiduo = 
+                                pagamento.ImportoResiduo =
                                     EditItem.ImportoTotale - (importoRata * item);
                             };
                             uof.PagamentoRepository.Add(pagamento);
@@ -163,7 +212,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                             if (nuovoPagamento == null)
                                 nuovoPagamento = pagamento;
                         }
-                                            }
+                    }
                 }
 
                 if (saveManager.SaveEntity(enSaveOperation.OpSave))
@@ -172,7 +221,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                     if (nuovoPagamento != null)
                     {
                         EventAggregator.Instance().Publish<ForceCloseActiveFormView>(new ForceCloseActiveFormView());
-
                     }
 
                 }

@@ -119,5 +119,10 @@ namespace StrumentiMusicali.Library.Entity
         [Required]
         [CustomUIViewAttribute(Width = 100, Ordine = 80)]
         public decimal ImportoResiduo { get; set; }
+
+        [Required]
+        [CustomHideUIAttribute]
+        /*raggruppamento dei pagamenti*/
+        public Guid IDPagamenti { get; set; }
     }
 }

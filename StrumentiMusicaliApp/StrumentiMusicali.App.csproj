@@ -240,6 +240,7 @@
     <Compile Include="Core\Controllers\ControllerMagazzino.cs" />
     <Compile Include="Core\Controllers\ControllerClienti.cs" />
     <Compile Include="Core\Controllers\ControllerRigheFatture.cs" />
+    <Compile Include="Core\Controllers\Stampa\Pagamento.cs" />
     <Compile Include="Core\Events\Tab\GetNewTab.cs" />
     <Compile Include="Core\Events\Tab\RemoveNewTab.cs" />
     <Compile Include="Core\Exports\ExportArticoliCsv.cs" />
@@ -706,6 +707,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="TemplateExcel\ProtoFatt.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TemplateExcel\ProtoPagamento.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

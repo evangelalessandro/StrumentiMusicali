@@ -763,7 +763,12 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 		public void SaveSetting(enAmbiente ambiente, FormRicerca formRicerca)
 		{
-			var setting = ReadSetting();
+            if (ambiente==enAmbiente.Main)
+            {
+                return;
+            }
+
+            var setting = ReadSetting();
 			setting.Form.RemoveAll(a => a.Item1 == ambiente);
 			setting.Form.Add((ambiente, formRicerca));
 			SaveSetting(setting);

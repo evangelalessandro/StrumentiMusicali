@@ -168,7 +168,7 @@ namespace StrumentiMusicali.Library.Entity
                 }
                 else
                 {
-                    titolo = (this.Strumento.Marca + " " + Strumento.Modello + " " + this.Strumento.Colore).Trim().Replace("    ", " ").Replace("  ", " ");
+                    titolo = (this.Strumento.Marca + " "  + Strumento.Nome + " " + Strumento.Modello + " " + this.Strumento.Colore).Trim().Replace("    ", " ").Replace("  ", " ");
 
                 }
                 return titolo;
@@ -181,7 +181,7 @@ namespace StrumentiMusicali.Library.Entity
         public bool? ShowStrumento { get; set; } = null;
 
         [AlsoNotifyFor("UpdateTitolo")]
-        [CustomUIViewAttribute(Ordine = 5)]
+        [CustomUIViewAttribute(Ordine = 5,ShowGroupName =false)]
         public virtual StrumentoAcc Strumento { get; set; } = new StrumentoAcc();
 
     }
@@ -226,6 +226,10 @@ namespace StrumentiMusicali.Library.Entity
         [MaxLength(50)]
         public string Colore { get; set; } = "";
 
+
+        [CustomUIViewAttribute(Ordine = 70,Titolo ="Nome strumento")]
+        [MaxLength(50)]
+        public string Nome { get; set; } = "";
 
         public event PropertyChangedEventHandler PropertyChanged;
 

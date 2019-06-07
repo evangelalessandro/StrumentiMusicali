@@ -635,7 +635,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                               || a.Categoria.Reparto.Contains(ricerca)
                               || a.Categoria.CategoriaCondivisaCon.Contains(ricerca)
 
-                              || (((a.CodiceABarre.Equals(ricerca) && a.CodiceABarre.Length > 0) || a.CodiceABarre.Length == 0))
+                              || (((a.CodiceABarre.Equals(ricerca) && a.CodiceABarre.Length > 0) ))
                             );
                         }
 

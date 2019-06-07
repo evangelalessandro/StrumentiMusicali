@@ -94,6 +94,8 @@ namespace StrumentiMusicali.App.Core.Exports
                       a.Strumento.CodiceOrdine,
                       a.Strumento.Colore,
                       a.Strumento.Rivenditore,
+                      a.Strumento.Modello,
+                      a.Strumento.Nome,
                       a.Note1,
                       a.Note2,
                       a.Note3,

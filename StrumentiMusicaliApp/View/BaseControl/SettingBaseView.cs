@@ -128,8 +128,12 @@ namespace StrumentiMusicali.App.View.BaseControl
                     if (item != null && (!item.PropertyType.Name.StartsWith("System.")
                         ))
                     {
-
-                        BindProp(item.GetValue(objToBind), "[" + titolo + "]  ");
+                        string gruppo = "[" + titolo + "]  ";
+                        if (widthAttr != null && widthAttr.ShowGroupName==false)
+                        {
+                            gruppo = "";
+                        }
+                        BindProp(item.GetValue(objToBind), gruppo);
                     }
                     else
                     {

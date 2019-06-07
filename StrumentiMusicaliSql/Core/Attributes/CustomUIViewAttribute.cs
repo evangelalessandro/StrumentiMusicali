@@ -29,8 +29,11 @@ namespace StrumentiMusicali.Library.Core
         public bool Enable { get; set; } = true;
 
         public string Titolo { get; set; } = "";
+
+        public bool ShowGroupName { get; set; } = true;
+
     }
-	public enum TipoDatiCollegati
+    public enum TipoDatiCollegati
 	{
 		Nessuno,
 		Clienti,

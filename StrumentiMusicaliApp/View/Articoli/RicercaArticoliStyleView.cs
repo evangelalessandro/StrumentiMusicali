@@ -96,10 +96,10 @@ namespace StrumentiMusicali.App.View.Articoli
             using (var uof = new UnitOfWork())
             {
 
-
-                var itemQta = uof.MagazzinoRepository.Find(a => a.ArticoloID == item.ID).
-                                    Where(a => a.Deposito.Principale == true).
-                                    Select(a => a.Qta).Sum();
+                /*se non ha articoli va non ritorna il dato su articolo nuovo*/
+                var list = uof.MagazzinoRepository.Find(a => a.ArticoloID == item.ID).
+                                    Where(a => a.Deposito.Principale == true).ToList();
+                var itemQta = list.Select(a => a.Qta).DefaultIfEmpty(0).Sum();
 
 
                 AggiungiIntestazione("Articolo: ");

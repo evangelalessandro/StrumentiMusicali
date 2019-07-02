@@ -3,6 +3,7 @@ using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Base;
 using StrumentiMusicali.Library.Repo;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -124,5 +125,24 @@ namespace StrumentiMusicali.Library.Entity
         [CustomHideUIAttribute]
         /*raggruppamento dei pagamenti*/
         public Guid IDPagamenti { get; set; }
+
+
+
+
+    }
+
+    public class PagamentoDocumenti : BaseEntity
+    {
+        
+        [Required]
+        public string FileName { get; set; }
+        [Required]
+        public string PathFile { get; set; }
+
+        [CustomHideUIAttribute]
+        [Required]
+        public Guid IDPagamenti { get; set; }
+
+         
     }
 }

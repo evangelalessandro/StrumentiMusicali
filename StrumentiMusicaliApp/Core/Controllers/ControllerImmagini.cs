@@ -16,15 +16,16 @@ namespace StrumentiMusicali.App.Core.Controllers
 {
     internal class ControllerImmagini : BaseController, IDisposable
 	{
-		Subscription<ImageOrderSet> _subOrderImage;
-		Subscription<ImageAddFiles> _subAddImage;
-		Subscription<ImageRemove> _subRemoveImage;
+		Subscription<ImageArticoloOrderSet> _subOrderImage;
+		Subscription<ImageArticoloAddFiles> _subAddImage;
+		Subscription<ImageArticoloRemove> _subRemoveImage;
 		public ControllerImmagini() : base()
 		{
-			_subOrderImage =	EventAggregator.Instance().Subscribe<ImageOrderSet>(OrderImage);
-			_subAddImage = EventAggregator.Instance().Subscribe<ImageAddFiles>(AddImageFiles);
-			_subRemoveImage = EventAggregator.Instance().Subscribe<ImageRemove>(RemoveImage);
+			_subOrderImage =	EventAggregator.Instance().Subscribe<ImageArticoloOrderSet>(OrderImage);
+			_subAddImage = EventAggregator.Instance().Subscribe<ImageArticoloAddFiles>(AddImageFiles);
+			_subRemoveImage = EventAggregator.Instance().Subscribe<ImageArticoloRemove>(RemoveImage);
 		}
+
 		// NOTE: Leave out the finalizer altogether if this class doesn't
 		// own unmanaged resources, but leave the other methods
 		// exactly as they are.
@@ -51,7 +52,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
-		private void RemoveImage(ImageRemove obj)
+		private void RemoveImage(ImageArticoloRemove obj)
 		{
             
             if (!CheckFolderImmagini())
@@ -113,7 +114,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 			listFileToDelete.Add(Path.Combine(folderFoto, item.UrlFoto));
 		}
 
-		private void OrderImage(ImageOrderSet obj)
+		private void OrderImage(ImageArticoloOrderSet obj)
 		{
              
             try
@@ -189,7 +190,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 		{
 			return SettingSitoValidator.CheckFolderImmagini(); 
 		}
-		private void AddImageFiles(ImageAddFiles args)
+		private void AddImageFiles(ImageArticoloAddFiles args)
 		{
              
             if (!CheckFolderImmagini())

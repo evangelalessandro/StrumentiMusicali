@@ -3,9 +3,9 @@ using StrumentiMusicali.Library.Entity;
 
 namespace StrumentiMusicali.Library.Core.Events.Image
 {
-    public class ImageRemove : FilterEvent
+    public class ImageSelected : FilterEvent
     {
-		public ImageRemove(string file, System.Guid key)
+		public ImageSelected(string file, System.Guid key)
             : base(key)
         {
             File= file;

@@ -83,9 +83,13 @@ namespace StrumentiMusicali.App.Core.Controllers
                     Stampa(SelectedItem);
 
             };
+            var pnlDoc = tab.Add("Documenti");
 
-  
-         }
+            var ribDocumenti = pnlDoc.Add("Documenti", Properties.Resources.Identity_48, true);
+
+
+
+        }
 
 
         // NOTE: Leave out the finalizer altogether if this class doesn't

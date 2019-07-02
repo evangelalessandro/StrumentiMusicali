@@ -271,6 +271,12 @@
     <Compile Include="View\Articoli\RicercaArticoliStyleView.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="View\EditorListImmagini.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\EditorListImmagini.Designer.cs">
+      <DependentUpon>EditorListImmagini.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\MarcaView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -596,6 +602,7 @@
     <None Include="Resources\Excel_export.png" />
     <None Include="Resources\MantieniFiltro.png" />
     <None Include="Resources\Libro_48.png" />
+    <None Include="Resources\Identity_48.png" />
     <Content Include="Resources\StrumentoMusicale.ico" />
     <Content Include="StrumentoMusicale.ico" />
     <None Include="Resources\Close.png" />
@@ -626,6 +633,9 @@
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="View\Articoli\RicercaArticoliStyleView.resx">
       <DependentUpon>RicercaArticoliStyleView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\EditorListImmagini.resx">
+      <DependentUpon>EditorListImmagini.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\MarcaView.resx">
       <DependentUpon>MarcaView.cs</DependentUpon>

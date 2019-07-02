@@ -1,19 +1,21 @@
 ﻿using StrumentiMusicali.Library.Core.Events.Base;
-using StrumentiMusicali.Library.Entity;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace StrumentiMusicali.Library.Core.Events.Image
 {
-    public class ImageAddFiles : FilterControllerEvent
+    public class ImageAddFiles :FilterEvent
     {
-		public ImageAddFiles(Articolo articolo, List<string> files, interfaces.IKeyController controller)
-            : base(controller)
+        public ImageAddFiles(List<string> files, Guid key)
+            :base(key)
         {
-            Articolo = articolo;
-			Files = files;
-		}
+            
+            Files = files;
+        }
 
-		public Articolo Articolo { get; private set; }
-		public List<string> Files { get; private set; }
-	}
+        public List<string> Files { get; private set; }
+    }
 }

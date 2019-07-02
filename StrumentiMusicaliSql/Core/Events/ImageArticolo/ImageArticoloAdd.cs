@@ -3,9 +3,9 @@ using StrumentiMusicali.Library.Entity;
 
 namespace StrumentiMusicali.Library.Core.Events.Image
 {
-    public class ImageAdd : FilterControllerEvent
+    public class ImageArticoloAdd : FilterControllerEvent
     {
-		public ImageAdd(Articolo articolo, interfaces.IKeyController controller)
+		public ImageArticoloAdd(Articolo articolo, interfaces.IKeyController controller)
             :base(controller)
 		{
 			Articolo = articolo;

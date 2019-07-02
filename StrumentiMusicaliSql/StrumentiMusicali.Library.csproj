@@ -76,6 +76,7 @@
     <Compile Include="Core\Events\Articoli\ImportMagExcel.cs" />
     <Compile Include="Core\Events\Articoli\InvioArticoliCSV.cs" />
     <Compile Include="Core\Events\Base\FilterControllerEvent.cs" />
+    <Compile Include="Core\Events\Base\FilterEvent.cs" />
     <Compile Include="Core\Events\Fatture\FatturaCambiaTipoDoc.cs" />
     <Compile Include="Core\Events\Fatture\FattureUpdate.cs" />
     <Compile Include="Core\Events\Fatture\ImportaFattureAccess.cs" />
@@ -94,11 +95,15 @@
     <Compile Include="Core\Events\Generics\UpdateList.cs" />
     <Compile Include="Core\Events\Generics\ValidateViewEvent.cs" />
     <Compile Include="Core\Events\Generics\ViewRicerca.cs" />
-    <Compile Include="Core\Events\Image\ImageAdd.cs" />
+    <Compile Include="Core\Events\ImageArticolo\ImageArticoloAdd.cs" />
+    <Compile Include="Core\Events\ImageArticolo\ImageArticoloAddFiles.cs" />
+    <Compile Include="Core\Events\ImageArticolo\ImageListUpdate.cs" />
+    <Compile Include="Core\Events\ImageArticolo\ImageArticoloOrderSet.cs" />
+    <Compile Include="Core\Events\ImageArticolo\ImageArticoloRemove.cs" />
     <Compile Include="Core\Events\Image\ImageAddFiles.cs" />
-    <Compile Include="Core\Events\Image\ImageListUpdate.cs" />
-    <Compile Include="Core\Events\Image\ImageOrderSet.cs" />
+    <Compile Include="Core\Events\Image\ImageSelected.cs" />
     <Compile Include="Core\Events\Image\ImageRemove.cs" />
+    <Compile Include="Core\Events\Image\ImageOrderSet.cs" />
     <Compile Include="Core\Events\Magazzino\CaricaQtaMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\ExportMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\MagazzinoSelezionaArticolo.cs" />

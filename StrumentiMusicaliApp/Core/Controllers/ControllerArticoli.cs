@@ -28,12 +28,12 @@ namespace StrumentiMusicali.App.Core.Controllers
         private Subscription<Edit<Articolo>> sub2;
         private Subscription<Remove<Articolo>> sub3;
         private Subscription<ArticoloDuplicate> sub4;
-        private Subscription<ImageAdd> sub5;
+        private Subscription<ImageArticoloAdd> sub5;
         private Subscription<Save<Articolo>> sub8;
         private Subscription<ArticoloSconta> sub6;
         internal enModalitaArticolo ModalitaController { get; private set; }
         internal ControllerImmagini _controllerImmagini = new ControllerImmagini();
-
+        private Subscription<ImageSelected> sub10;
         public enum enModalitaArticolo
         {
             Tutto = 0,
@@ -42,9 +42,8 @@ namespace StrumentiMusicali.App.Core.Controllers
             SoloLibri = 3,
 
         }
-        //private List<Subscription<object>> subList = new List<Subscription<object>>();
         public ControllerArticoli(enModalitaArticolo modalitaController)
-            : base(enAmbiente.StrumentiList, enAmbiente.StrumentiDetail)
+                    : base(enAmbiente.StrumentiList, enAmbiente.StrumentiDetail)
         {
             ModalitaController = modalitaController;
             sub1 = EventAggregator.Instance().Subscribe<Add<Articolo>>(AggiungiArticolo);
@@ -53,11 +52,106 @@ namespace StrumentiMusicali.App.Core.Controllers
 
             sub3 = EventAggregator.Instance().Subscribe<Remove<Articolo>>(DeleteArticolo);
             sub4 = EventAggregator.Instance().Subscribe<ArticoloDuplicate>(DuplicaArticolo);
-            sub5 = EventAggregator.Instance().Subscribe<ImageAdd>(AggiungiImmagine);
+            sub5 = EventAggregator.Instance().Subscribe<ImageArticoloAdd>(AggiungiImmagine);
             sub8 = EventAggregator.Instance().Subscribe<Save<Articolo>>(SaveArticolo);
             sub6 = EventAggregator.Instance().Subscribe<ArticoloSconta>(Sconta);
 
+            sub10 = EventAggregator.Instance().Subscribe<ImageSelected>(ImmagineSelezionata);
+
             AggiungiComandiMenu();
+
+            SetKeyImageListUI();
+        }
+        string _fileFotoSelezionato = null;
+        private void ImmagineSelezionata(ImageSelected obj)
+        {
+            _fileFotoSelezionato = obj.File;
+        }
+
+        Subscription<ImageAddFiles> _subAddImage;
+        Subscription<ImageOrderSet> _orderImage;
+        Subscription<ImageRemove> _imageRemove;
+
+
+        private void SetKeyImageListUI()
+        {
+            _subAddImage = EventAggregator.Instance()
+                .Subscribe<ImageAddFiles>
+                (AddImageFiles);
+
+            _orderImage = EventAggregator.Instance()
+                .Subscribe<ImageOrderSet>(
+                ImageSetOrder);
+
+            _imageRemove = EventAggregator.Instance()
+                .Subscribe<ImageRemove>(
+                ImageRemoveSet
+                );
+
+        }
+
+        private void ImageRemoveSet(ImageRemove obj)
+        {
+            if (obj.GuidKey == this._INSTANCE_KEY)
+            {
+                EventAggregator.Instance().Publish<ImageArticoloRemove>(
+                    new ImageArticoloRemove(
+                    FotoSelezionata(), this._controllerImmagini));
+
+            }
+        }
+
+        private void ImageSetOrder(ImageOrderSet obj)
+        {
+            if (obj.GuidKey == this._INSTANCE_KEY)
+            {
+                EventAggregator.Instance().Publish<ImageArticoloOrderSet>(
+                    new ImageArticoloOrderSet(obj.TipoOperazione,
+                    FotoSelezionata(), this._controllerImmagini));
+
+            }
+
+        }
+        List<Tuple<string, FotoArticolo>> _listFotoArticolo
+            = new List<Tuple<string, FotoArticolo>>();
+        public FotoArticolo FotoSelezionata()
+        {
+            return FotoSelezionata(_fileFotoSelezionato);
+        }
+        private FotoArticolo FotoSelezionata(string file)
+        {
+            if (file == null)
+                return null;
+            return _listFotoArticolo.Where(a => a.Item1 == file).Select(a => a.Item2).DefaultIfEmpty(null).FirstOrDefault();
+        }
+        internal List<string> RefreshImageListData()
+        {
+
+            using (var uof = new UnitOfWork())
+            {
+                var settingSito = SettingSitoValidator.ReadSetting();
+
+                var imageList = uof.FotoArticoloRepository.Find(a => a.Articolo.ID == this.EditItem.ID)
+                    .OrderBy(a => a.Ordine).ToList();
+
+                _listFotoArticolo = imageList.Select(a => new Tuple<string, FotoArticolo>(Path.Combine(
+                    settingSito.CartellaLocaleImmagini, a.UrlFoto)
+                                 , a)).ToList();
+
+                return (_listFotoArticolo.Select(a => a.Item1).ToList());
+
+
+            }
+        }
+
+        private void AddImageFiles(ImageAddFiles obj)
+        {
+            if (obj.GuidKey == this._INSTANCE_KEY)
+            {
+                EventAggregator.Instance().Publish<ImageArticoloAddFiles>(
+                  new ImageArticoloAddFiles(this.EditItem,
+                  obj.Files, this._controllerImmagini));
+            }
         }
 
         private void Sconta(ArticoloSconta obj)
@@ -91,6 +185,8 @@ namespace StrumentiMusicali.App.Core.Controllers
         public override void Dispose()
         {
             base.Dispose();
+
+            EventAggregator.Instance().UnSbscribe(sub10);
             EventAggregator.Instance().UnSbscribe(sub1);
             EventAggregator.Instance().UnSbscribe(sub2);
             EventAggregator.Instance().UnSbscribe(sub3);
@@ -98,6 +194,9 @@ namespace StrumentiMusicali.App.Core.Controllers
             EventAggregator.Instance().UnSbscribe(sub5);
             EventAggregator.Instance().UnSbscribe(sub6);
             EventAggregator.Instance().UnSbscribe(sub8);
+
+            EventAggregator.Instance().UnSbscribe(_orderImage);
+            EventAggregator.Instance().UnSbscribe(_subAddImage);
 
 
             _controllerImmagini.Dispose();
@@ -297,7 +396,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                 return;
             }
 
-            using (var view = new DettaglioArticoloView(this, SettingSitoValidator.ReadSetting()))
+            using (var view = new DettaglioArticoloView(this))
             {
                 //view.BindProp(EditItem,"");
                 view.OnSave += (a, b) =>
@@ -563,7 +662,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             }
         }
 
-        private void AggiungiImmagine(ImageAdd eventArg)
+        private void AggiungiImmagine(ImageArticoloAdd eventArg)
         {
 
             try
@@ -578,8 +677,9 @@ namespace StrumentiMusicali.App.Core.Controllers
                     //When the user select the file
                     if (res.ShowDialog() == DialogResult.OK)
                     {
-                        EventAggregator.Instance().Publish<ImageAddFiles>(
-                            new ImageAddFiles(eventArg.Articolo, res.FileNames.ToList(), this));
+                        EventAggregator.Instance().Publish<ImageArticoloAddFiles>(
+                            new ImageArticoloAddFiles(eventArg.Articolo,
+                            res.FileNames.ToList(), this._controllerImmagini));
                     }
                 }
             }
@@ -635,7 +735,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                               || a.Categoria.Reparto.Contains(ricerca)
                               || a.Categoria.CategoriaCondivisaCon.Contains(ricerca)
 
-                              || (((a.CodiceABarre.Equals(ricerca) && a.CodiceABarre.Length > 0) ))
+                              || (((a.CodiceABarre.Equals(ricerca) && a.CodiceABarre.Length > 0)))
                             );
                         }
 

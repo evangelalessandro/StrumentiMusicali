@@ -17,90 +17,91 @@ namespace StrumentiMusicali.App.Core.Controllers
 {
     //[AddINotifyPropertyChangedInterface]
     public class ControllerLog : BaseControllerGeneric<EventLog, LogItem>, IMenu
-	{
-		Subscription<Remove<EventLog>> sub1;
-		public ControllerLog()
-			:base(enAmbiente.LogViewList,enAmbiente.LogViewList)
-		{
-			sub1 =	EventAggregator.Instance().Subscribe<Remove<EventLog>>(
-				(b)=> {
-					using (var saveEntity=new SaveEntityManager())
-					{
-						var uof=saveEntity.UnitOfWork;
-						var item = ((EventLog)SelectedItem);
-						var sel =uof.EventLogRepository.Find(a => a.ID == item.ID).FirstOrDefault();
-						if (sel==null)
-						{
-							EventAggregator.Instance().Publish<UpdateList<EventLog>>(new UpdateList<EventLog>(this));
-							return;
-						}
-						uof.EventLogRepository.Delete(sel);
-						if (saveEntity.SaveEntity(operation: enSaveOperation.OpDelete))
-						{
-							EventAggregator.Instance().Publish<UpdateList<EventLog>>(new UpdateList<EventLog>(this));
+    {
+        Subscription<Remove<EventLog>> sub1;
+        public ControllerLog()
+            : base(enAmbiente.LogViewList, enAmbiente.LogViewList)
+        {
+            sub1 = EventAggregator.Instance().Subscribe<Remove<EventLog>>(
+                (b) =>
+                {
+                    using (var saveEntity = new SaveEntityManager())
+                    {
+                        var uof = saveEntity.UnitOfWork;
+                        var item = ((EventLog)SelectedItem);
+                        var sel = uof.EventLogRepository.Find(a => a.ID == item.ID).FirstOrDefault();
+                        if (sel == null)
+                        {
+                            EventAggregator.Instance().Publish<UpdateList<EventLog>>(new UpdateList<EventLog>(this));
+                            return;
+                        }
+                        uof.EventLogRepository.Delete(sel);
+                        if (saveEntity.SaveEntity(operation: enSaveOperation.OpDelete))
+                        {
+                            EventAggregator.Instance().Publish<UpdateList<EventLog>>(new UpdateList<EventLog>(this));
 
-						}
+                        }
 
-					}
-				}
-			);
+                    }
+                }
+            );
 
-		}
-		public override MenuTab GetMenu()
-		{
-			base.GetMenu().ItemByTag(MenuTab.TagAdd).ForEach(a => a.Visible = false);
-			base.GetMenu().ItemByTag(MenuTab.TagEdit).ForEach(a => a.Visible = false);
-			return base.GetMenu();
-		}
+        }
+        public override MenuTab GetMenu()
+        {
+            base.GetMenu().ItemByTag(MenuTab.TagAdd).ForEach(a => a.Visible = false);
+            base.GetMenu().ItemByTag(MenuTab.TagEdit).ForEach(a => a.Visible = false);
+            return base.GetMenu();
+        }
 
-		protected override void Dispose(bool disposing)
-		{
-		 
-			if (disposing)
-			{
-				EventAggregator.Instance().UnSbscribe(sub1);
+        protected override void Dispose(bool disposing)
+        {
 
-				//
-			}
+            if (disposing)
+            {
+                EventAggregator.Instance().UnSbscribe(sub1);
 
-			// Free any unmanaged objects here.
-			//
+                //
+            }
 
-			// Call base class implementation.
-			base.Dispose(disposing);
-		}
-		public override void RefreshList(UpdateList<EventLog> obj)
-		{
-			try
-			{
-				var datoRicerca = TestoRicerca;
-				var list = new List<LogItem>();
+            // Free any unmanaged objects here.
+            //
 
-				using (var uof = new UnitOfWork())
-				{
-					list = uof.EventLogRepository.Find(a => datoRicerca == ""
-					   || a.Errore.Contains(datoRicerca)
-						|| a.Evento.Contains(datoRicerca)
-						|| a.StackTrace.Contains(datoRicerca)
-						|| a.InnerException.Contains(datoRicerca)
+            // Call base class implementation.
+            base.Dispose(disposing);
+        }
+        public override void RefreshList(UpdateList<EventLog> obj)
+        {
+            try
+            {
+                var datoRicerca = TestoRicerca;
+                var list = new List<LogItem>();
 
-					).OrderByDescending(a => a.DataCreazione).Take(ViewAllItem ? 100000 : 300).ToList().Select(a => new LogItem(a)
-					{
-						
-						Entity = a,
+                using (var uof = new UnitOfWork())
+                {
+                    list = uof.EventLogRepository.Find(a => datoRicerca == ""
+                       || a.Errore.Contains(datoRicerca)
+                        || a.Evento.Contains(datoRicerca)
+                        || a.StackTrace.Contains(datoRicerca)
+                        || a.InnerException.Contains(datoRicerca)
 
-					}).ToList();
-				}
+                    ).OrderByDescending(a => a.DataCreazione).Take(ViewAllItem ? 100000 : 300).ToList().Select(a => new LogItem(a)
+                    {
 
-				DataSource= new View.Utility.MySortableBindingList<LogItem> (list);
+                        Entity = a,
+
+                    }).ToList();
+                }
+
+                DataSource = new View.Utility.MySortableBindingList<LogItem>(list);
 
                 base.RefreshList(obj);
             }
-			catch (Exception ex)
-			{
-				new Action(() =>
-				{ ExceptionManager.ManageError(ex); }).BeginInvoke(null, null);
-			}
-		}
-	}
+            catch (Exception ex)
+            {
+                new Action(() =>
+                { ExceptionManager.ManageError(ex); }).BeginInvoke(null, null);
+            }
+        }
+    }
 }

@@ -4,10 +4,11 @@ using System;
 
 namespace StrumentiMusicali.Library.Core.Events.Image
 {
-    public class ImageOrderSet : FilterEvent
+    public class ImageOrderSet<T> : FilterEvent
+         where T : Entity.Base.BaseEntity
     {
 		public ImageOrderSet(enOperationOrder operationOrder, 
-            string file,
+            ImmaginiFile<T> file,
               Guid key)
             : base(key)
         {
@@ -16,7 +17,7 @@ namespace StrumentiMusicali.Library.Core.Events.Image
 		}
 
 		public enOperationOrder TipoOperazione { get; private set; }
-		public string File { get; private set; }
+		public ImmaginiFile<T> File { get; private set; }
 	}
 
 	public enum enOperationOrder

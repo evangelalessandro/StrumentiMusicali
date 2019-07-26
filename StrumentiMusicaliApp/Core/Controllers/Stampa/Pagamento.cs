@@ -26,7 +26,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
             {
                 var pagamento = uof.PagamentoRepository.Find(a => a.ID == pagamentoSel.ID)
                     .First();
-                var righePag = uof.PagamentoRepository.Find(a => a.IDPagamenti == pagamentoSel.IDPagamenti
+                var righePag = uof.PagamentoRepository.Find(a => a.IDPagamentoMaster == pagamentoSel.IDPagamentoMaster
                     && a.ID != pagamentoSel.ID).OrderBy(a => a.DataRata).ToList();
 
                 ImpostaCampiTestata(pagamento);
@@ -45,7 +45,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
         private void ImpostaCampiTestata(Pagamento pagamento)
         {
             _excel.Range("Nome").Value = pagamento.Nome + " " + pagamento.Cognome;
-            
+
             _excel.Range("Articolo").Value = pagamento.ArticoloAcq;
             _excel.Range("ImportoRata").Value = pagamento.ImportoRata;
             _excel.Range("ImportoResiduo").Value = pagamento.ImportoResiduo;
@@ -54,7 +54,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
         }
 
 
-        private void ImpostaDettaglio(List<Pagamento> pagamentiRimanenti, 
+        private void ImpostaDettaglio(List<Pagamento> pagamentiRimanenti,
             Pagamento pagamento)
         {
             int colData = 1;
@@ -80,7 +80,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
         {
             _excel.Range("Righe").Range(riga, colonna, riga, colonna).Value = valore;
         }
- 
+
 
         public void Dispose()
         {

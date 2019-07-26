@@ -8,31 +8,31 @@ using System;
 namespace StrumentiMusicali.App.View
 {
     public class UtentiListView : BaseGridViewGeneric<UtentiItem, ControllerUtenti, Utente>, IMenu, IDisposable
-	{
-		 
-		public UtentiListView(ControllerUtenti controller)
-			: base(controller)
-		{
-			this.Load += control_Load;
+    {
 
-		}
-		private void control_Load(object sender, System.EventArgs e)
-		{
-			//dgvRighe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-		}
+        public UtentiListView(ControllerUtenti controller)
+            : base(controller)
+        {
+            this.Load += control_Load;
 
-		public override void FormatGrid()
-		{
-			dgvRighe.Columns["Entity"].Visible = false;
-			dgvRighe.BestFitColumns(true);
-			dgvRighe.Columns["ID"].VisibleIndex = 0;
-		}
-		
-		
-		public new void Dispose()
-		{
-			base.Dispose();	
-		}
-	}
-	
+        }
+        private void control_Load(object sender, System.EventArgs e)
+        {
+            //dgvRighe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+        }
+
+        public override void FormatGrid()
+        {
+            dgvRighe.Columns["Entity"].Visible = false;
+            dgvRighe.BestFitColumns(true);
+            dgvRighe.Columns["ID"].VisibleIndex = 0;
+        }
+
+
+        public new void Dispose()
+        {
+            base.Dispose();
+        }
+    }
+
 }

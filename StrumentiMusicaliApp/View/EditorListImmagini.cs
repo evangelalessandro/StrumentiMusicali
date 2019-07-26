@@ -1,22 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using StrumentiMusicali.Library.Core.Events.Image;
-using StrumentiMusicali.Library.Core;
-using System.Threading;
-using System.Diagnostics;
-using StrumentiMusicali.App.Core;
-using System.IO;
+﻿using StrumentiMusicali.App.Core;
 using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Core.Events.Image;
 using StrumentiMusicali.Library.Core.interfaces;
+using StrumentiMusicali.Library.Entity.Base;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View
 {
-    public partial class EditorListImmagini : UserControl
+    public partial class EditorListImmagini<K> : UserControl
+        where K : BaseEntity
     {
-        private string _fileSelected = null;
+        private ImmaginiFile<K> _fileSelected = null;
         protected DragDropEffects effect;
         protected Thread getImageThread;
         protected Image image;
@@ -26,7 +27,7 @@ namespace StrumentiMusicali.App.View
         protected Image nextImage;
         protected PictureBox thumbnail;
         private List<PictureBox> _imageList = new List<PictureBox>();
-         
+
         private PictureBox pb = new PictureBox();
         /*controller riferimento eventi*/
         IKeyController _KeyController = null;
@@ -36,7 +37,7 @@ namespace StrumentiMusicali.App.View
 
             this.AllowDrop = true;
             this.BackColor = Color.Green;
-            
+
             _KeyController = keyController;
 
             diminuisciPrioritàToolStripMenuItem.Click += DiminuisciPrioritàToolStripMenuItem_Click;
@@ -90,7 +91,7 @@ namespace StrumentiMusicali.App.View
         /// Lista immagini
         /// </summary>
         /// <param name="fileList"></param>
-        public void RefreshImageListData(List<string> fileList)
+        public void RefreshImageListData(List<ImmaginiFile<K>> fileList)
         {
             PanelImage.AutoScroll = true;
 
@@ -106,24 +107,32 @@ namespace StrumentiMusicali.App.View
             {
                 try
                 {
- 
-
                     PictureBox pb = new PictureBox();
                     pb.SizeMode = PictureBoxSizeMode.Zoom;
-                    if (!System.IO.File.Exists(item) )
+                    var extension = new FileInfo(item.File).Extension;
+                    if (!System.IO.File.Exists(item.File))
                     {
                         pb.Image = Properties.Resources.ImmagineMancante;
                         MessageManager.NotificaWarnig("Manca l'immagine " +
-                        item);
+                        item.File);
+
+                    }
+                    else if (extension.Equals(".pdf", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        pb.Image = Properties.Resources.pdfIcon;
+                    }
+                    else if (IsImage(extension))
+                    {
+                        pb.Load(item.File);
 
                     }
                     else
                     {
-                        pb.Load(item);
+                        pb.Image = Properties.Resources.PreviewIcon;
                     }
                     pb.Click += Pb_Click;
                     pb.MouseClick += Pb_MouseClick;
-
+                    pb.DoubleClick += Pb_DoubleClick;
                     pb.Padding = new Padding(10);
 
                     PanelImage.Controls.Add(pb);
@@ -144,20 +153,41 @@ namespace StrumentiMusicali.App.View
             }
 
         }
- 
-        public string FileSelezionato {
+        public bool IsImage(string extension)
+        {
+
+            return (extension.Equals(".jpg",
+                        StringComparison.InvariantCultureIgnoreCase)
+                        ||
+                        extension.Equals(".jpeg",
+                        StringComparison.InvariantCultureIgnoreCase)
+                        ||
+                        extension.Equals(".bmp",
+                        StringComparison.InvariantCultureIgnoreCase)
+                         ||
+                        extension.Equals(".png",
+                        StringComparison.InvariantCultureIgnoreCase)
+                        );
+
+        }
+        private void Pb_DoubleClick(object sender, EventArgs e)
+        {
+            Process.Start(this._fileSelected.File);
+        }
+
+        public ImmaginiFile<K> FileSelezionato {
             get {
                 return _fileSelected;
             }
             private set {
                 _fileSelected = value;
-                EventAggregator.Instance().Publish<ImageSelected>(new ImageSelected(value, _KeyController.INSTANCE_KEY));
+                EventAggregator.Instance().Publish<ImageSelected<K>>(new ImageSelected<K>(value, _KeyController.INSTANCE_KEY));
             }
         }
         public void UpdateButtonState()
         {
 
-            this.rimuoviImmagineToolStripMenuItem.Visible = FileSelezionato!=null;
+            this.rimuoviImmagineToolStripMenuItem.Visible = FileSelezionato != null;
         }
         protected void AssignImage()
         {
@@ -206,7 +236,7 @@ namespace StrumentiMusicali.App.View
                     {
                         filename = ((string[])data)[0];
                         string ext = Path.GetExtension(filename).ToLower();
-                        if ((ext == ".jpg") || (ext == ".png") || (ext == ".jpeg") || (ext == ".bmp"))
+                        if ((IsImage(ext) || (ext == ".pdf")))
                         {
                             ret = true;
                         }
@@ -261,21 +291,21 @@ namespace StrumentiMusicali.App.View
 
                 var list = new List<string>() { lastFilename };
 
-                
+
                 EventAggregator.Instance().Publish<ImageAddFiles>(
-                    new ImageAddFiles( 
+                    new ImageAddFiles(
                     list, _KeyController.INSTANCE_KEY));
 
-               
-                 
+
+
                 if (pb.Image != null)
                     pb.Image.Dispose();
                 Debug.Print("pb.Visible = false");
                 pb.Visible = false;
             }
-             
+
         }
-        
+
 
         private void PanelImage_DragEnter(object sender, DragEventArgs e)
         {
@@ -312,11 +342,11 @@ namespace StrumentiMusicali.App.View
                 if (item == sender)
                 {
                     item.BackColor = System.Drawing.Color.Orange;
-                    FileSelezionato= (string)item.Tag;
+                    FileSelezionato = (ImmaginiFile<K>)item.Tag;
                 }
             }
         }
-         
+
         private void Pb_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -335,31 +365,32 @@ namespace StrumentiMusicali.App.View
         }
         private void AumentaPrioritàToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            EventAggregator.Instance().Publish<ImageOrderSet>(
-                new ImageOrderSet(enOperationOrder.AumentaPriorita,
+            EventAggregator.Instance().Publish<ImageOrderSet<K>>(
+                new ImageOrderSet<K>(enOperationOrder.AumentaPriorita,
                 FileSelezionato, _KeyController.INSTANCE_KEY));
         }
 
         private void RimuoviImmagineToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            EventAggregator.Instance().Publish<ImageRemove>(
-                new ImageRemove(FileSelezionato,
+            EventAggregator.Instance().Publish<ImageRemove<K>>(
+                new ImageRemove<K>(FileSelezionato,
                 _KeyController.INSTANCE_KEY));
         }
         private void MenuImpostaPrincipale_Click(object sender, EventArgs e)
         {
 
-            EventAggregator.Instance().Publish<ImageOrderSet>(
-                new ImageOrderSet(enOperationOrder.ImpostaPrincipale,
-                FileSelezionato, 
+            EventAggregator.Instance().Publish<ImageOrderSet<K>>(
+                new ImageOrderSet<K>(enOperationOrder.ImpostaPrincipale,
+                FileSelezionato,
                 _KeyController.INSTANCE_KEY));
         }
         private void DiminuisciPrioritàToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            EventAggregator.Instance().Publish<ImageOrderSet>(
-                new ImageOrderSet(enOperationOrder.DiminuisciPriorita,
+            EventAggregator.Instance().Publish<ImageOrderSet<K>>(
+                new ImageOrderSet<K>(enOperationOrder.DiminuisciPriorita,
                 FileSelezionato,
                 _KeyController.INSTANCE_KEY));
         }
+
     }
 }

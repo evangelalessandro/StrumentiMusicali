@@ -143,20 +143,21 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<Articolo>().ToTable("Articoli");
             modelBuilder.Entity<Categoria>().ToTable("Categorie");
 
-            //modelBuilder.Entity<Categoria>().HasKey(a=> new { a.Codice,a.CategoriaCondivisaCon,a.Nome,a.Reparto});
-
+           
             modelBuilder.Entity<FotoArticolo>().ToTable("FotoArticoli");
 
             modelBuilder.Entity<Fattura>().ToTable("Fatture");
             modelBuilder.Entity<FatturaRiga>().ToTable("FattureRighe");
 
             modelBuilder.Entity<Utente>().ToTable("Utenti");
+            //modelBuilder.Entity<SettingSito>().ToTable("SettingSito");
+            modelBuilder.Entity<SettingBackupFtp>().ToTable("SettingBackupFtp");
+            
 
-            //modelBuilder.Entity<DDt>().ToTable("DDT");
-            //modelBuilder.Entity<DDTRiga>().ToTable("DDTRighe");
 
             modelBuilder.Entity<Cliente>().ToTable("Clienti");
             modelBuilder.Entity<FattureGenerateInvio>().ToTable("FattureGenerate");
+            modelBuilder.Entity<SettingDocumentiPagamenti>().ToTable("SettingDocumentiPagamenti");
             modelBuilder.Entity<Pagamento>().Property(e => e.ImportoRata).HasPrecision(19, 2);
             modelBuilder.Entity<Pagamento>().Property(e => e.ImportoResiduo).HasPrecision(19, 2);
             modelBuilder.Entity<Pagamento>().Property(e => e.ImportoTotale).HasPrecision(19, 2);
@@ -178,7 +179,9 @@ namespace StrumentiMusicali.Library.Model
         //public virtual DbSet<DDt> DDT { get; set; }
         //public virtual DbSet<DDTRiga> DDTRighe { get; set; }
         public virtual DbSet<FattureGenerateInvio> FattureGenerate { get; set; }
+        public virtual DbSet<SettingBackupFtp> SettingBackupFtp { get; set; }
 
+        
         public virtual DbSet<Cliente> Clienti { get; set; }
 
         public virtual DbSet<Utente> Utenti { get; set; }
@@ -190,6 +193,7 @@ namespace StrumentiMusicali.Library.Model
         public virtual DbSet<EventLog> LogEventi { get; set; }
         public virtual DbSet<FotoArticolo> FotoArticoli { get; set; }
 
+        public virtual DbSet<PagamentoDocumenti> PagamentoDocumenti { get; set; }
         public void FixEfProviderServicesProblem()
         {
             //The Entity Framework provider type 'System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer'

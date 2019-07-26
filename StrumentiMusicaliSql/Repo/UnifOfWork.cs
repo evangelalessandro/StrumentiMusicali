@@ -59,7 +59,32 @@ namespace StrumentiMusicali.Library.Repo
 			}
 		}
 
-		private Repository<FattureGenerateInvio> _FattureGenerateInvioRepository;
+        private Repository<SettingDocumentiPagamenti> _SettingDocumentiPagamentiRepository;
+
+        public IRepository<SettingDocumentiPagamenti> SettingDocumentiPagamentiRepository {
+            get {
+                if (_SettingDocumentiPagamentiRepository == null)
+                {
+                    _SettingDocumentiPagamentiRepository = new Repository<SettingDocumentiPagamenti>(dbContext);
+                }
+                return _SettingDocumentiPagamentiRepository;
+            }
+        }
+        private Repository<SettingBackupFtp> _SettingBackupFtpRepository;
+
+        public IRepository<SettingBackupFtp> SettingBackupFtpRepository {
+            get {
+                if (_SettingBackupFtpRepository == null)
+                {
+                    _SettingBackupFtpRepository = new Repository<SettingBackupFtp>(dbContext);
+                }
+                return _SettingBackupFtpRepository;
+            }
+        }
+
+        
+
+        private Repository<FattureGenerateInvio> _FattureGenerateInvioRepository;
 
 		public IRepository<FattureGenerateInvio> FattureGenerateInvioRepository {
 			get {
@@ -83,7 +108,17 @@ namespace StrumentiMusicali.Library.Repo
 				return _Utenti;
 			}
 		}
+        private Repository<PagamentoDocumenti> _PagamentoDocumentiRepository;
 
+        public IRepository<PagamentoDocumenti> PagamentoDocumentiRepository {
+            get {
+                if (_PagamentoDocumentiRepository == null)
+                {
+                    _PagamentoDocumentiRepository = new Repository<PagamentoDocumenti>(dbContext);
+                }
+                return _PagamentoDocumentiRepository;
+            }
+        }
         private Repository<Pagamento> _PagamentoRepository;
 
         public IRepository<Pagamento> PagamentoRepository {

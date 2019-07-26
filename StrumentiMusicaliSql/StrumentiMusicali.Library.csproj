@@ -104,6 +104,7 @@
     <Compile Include="Core\Events\Image\ImageSelected.cs" />
     <Compile Include="Core\Events\Image\ImageRemove.cs" />
     <Compile Include="Core\Events\Image\ImageOrderSet.cs" />
+    <Compile Include="Core\Events\Image\ImmaginiFile.cs" />
     <Compile Include="Core\Events\Magazzino\CaricaQtaMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\ExportMagazzino.cs" />
     <Compile Include="Core\Events\Magazzino\MagazzinoSelezionaArticolo.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="Core\Item\UtentiItem.cs" />
     <Compile Include="Core\LoginData.cs" />
     <Compile Include="Core\MessageException.cs" />
+    <Compile Include="Core\Settings\SettingBackupFtpValidator.cs" />
     <Compile Include="Entity\Articolo.cs" />
     <Compile Include="Entity\Base\BaseEntity.cs" />
     <Compile Include="Entity\Base\RigaDoc.cs" />
@@ -148,6 +150,8 @@
     <Compile Include="Entity\FotoArticolo.cs" />
     <Compile Include="Entity\Magazzino.cs" />
     <Compile Include="Entity\Fatture\FatturaRiga.cs" />
+    <Compile Include="Entity\SettingBackupFtp.cs" />
+    <Compile Include="Entity\SettingDocumentiFatture.cs" />
     <Compile Include="Entity\SettingSito.cs" />
     <Compile Include="Entity\Utente.cs" />
     <Compile Include="Migrations\201812261605085_Init.cs" />
@@ -197,6 +201,18 @@
     <Compile Include="Migrations\201905151938342_PagamentiDeleteArt.cs" />
     <Compile Include="Migrations\201905151938342_PagamentiDeleteArt.Designer.cs">
       <DependentUpon>201905151938342_PagamentiDeleteArt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907260907315_DocumentiPagamenti.cs" />
+    <Compile Include="Migrations\201907260907315_DocumentiPagamenti.Designer.cs">
+      <DependentUpon>201907260907315_DocumentiPagamenti.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907261501356_PagamentiDocSetting.cs" />
+    <Compile Include="Migrations\201907261501356_PagamentiDocSetting.Designer.cs">
+      <DependentUpon>201907261501356_PagamentiDocSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907261541517_PagamentiDocSettingName.cs" />
+    <Compile Include="Migrations\201907261541517_PagamentiDocSettingName.Designer.cs">
+      <DependentUpon>201907261541517_PagamentiDocSettingName.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
@@ -250,6 +266,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905151938342_PagamentiDeleteArt.resx">
       <DependentUpon>201905151938342_PagamentiDeleteArt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907260907315_DocumentiPagamenti.resx">
+      <DependentUpon>201907260907315_DocumentiPagamenti.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907261501356_PagamentiDocSetting.resx">
+      <DependentUpon>201907261501356_PagamentiDocSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907261541517_PagamentiDocSettingName.resx">
+      <DependentUpon>201907261541517_PagamentiDocSettingName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

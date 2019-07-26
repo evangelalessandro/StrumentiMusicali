@@ -33,7 +33,7 @@ namespace StrumentiMusicali.App.Core.Controllers
         private Subscription<ArticoloSconta> sub6;
         internal enModalitaArticolo ModalitaController { get; private set; }
         internal ControllerImmagini _controllerImmagini = new ControllerImmagini();
-        private Subscription<ImageSelected> sub10;
+        private Subscription<ImageSelected<FotoArticolo>> sub10;
         public enum enModalitaArticolo
         {
             Tutto = 0,
@@ -56,21 +56,24 @@ namespace StrumentiMusicali.App.Core.Controllers
             sub8 = EventAggregator.Instance().Subscribe<Save<Articolo>>(SaveArticolo);
             sub6 = EventAggregator.Instance().Subscribe<ArticoloSconta>(Sconta);
 
-            sub10 = EventAggregator.Instance().Subscribe<ImageSelected>(ImmagineSelezionata);
+            sub10 = EventAggregator.Instance().Subscribe<ImageSelected<FotoArticolo>>(ImmagineSelezionata);
 
             AggiungiComandiMenu();
 
             SetKeyImageListUI();
         }
-        string _fileFotoSelezionato = null;
-        private void ImmagineSelezionata(ImageSelected obj)
+        FotoArticolo _fileFotoSelezionato = null;
+        private void ImmagineSelezionata(ImageSelected<FotoArticolo> obj)
         {
-            _fileFotoSelezionato = obj.File;
+            if (obj.File != null)
+                _fileFotoSelezionato = obj.File.Entity;
+            else
+                _fileFotoSelezionato = null;
         }
 
         Subscription<ImageAddFiles> _subAddImage;
-        Subscription<ImageOrderSet> _orderImage;
-        Subscription<ImageRemove> _imageRemove;
+        Subscription<ImageOrderSet<FotoArticolo>> _orderImage;
+        Subscription<ImageRemove<FotoArticolo>> _imageRemove;
 
 
         private void SetKeyImageListUI()
@@ -80,17 +83,17 @@ namespace StrumentiMusicali.App.Core.Controllers
                 (AddImageFiles);
 
             _orderImage = EventAggregator.Instance()
-                .Subscribe<ImageOrderSet>(
+                .Subscribe<ImageOrderSet<FotoArticolo>>(
                 ImageSetOrder);
 
             _imageRemove = EventAggregator.Instance()
-                .Subscribe<ImageRemove>(
+                .Subscribe<ImageRemove<FotoArticolo>>(
                 ImageRemoveSet
                 );
 
         }
 
-        private void ImageRemoveSet(ImageRemove obj)
+        private void ImageRemoveSet(ImageRemove<FotoArticolo> obj)
         {
             if (obj.GuidKey == this._INSTANCE_KEY)
             {
@@ -101,7 +104,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             }
         }
 
-        private void ImageSetOrder(ImageOrderSet obj)
+        private void ImageSetOrder(ImageOrderSet<FotoArticolo> obj)
         {
             if (obj.GuidKey == this._INSTANCE_KEY)
             {
@@ -112,19 +115,19 @@ namespace StrumentiMusicali.App.Core.Controllers
             }
 
         }
-        List<Tuple<string, FotoArticolo>> _listFotoArticolo
-            = new List<Tuple<string, FotoArticolo>>();
+        List<ImmaginiFile<FotoArticolo>> _listFotoArticolo
+            = new List<ImmaginiFile<FotoArticolo>>();
         public FotoArticolo FotoSelezionata()
         {
             return FotoSelezionata(_fileFotoSelezionato);
         }
-        private FotoArticolo FotoSelezionata(string file)
+        private FotoArticolo FotoSelezionata(FotoArticolo file)
         {
             if (file == null)
                 return null;
-            return _listFotoArticolo.Where(a => a.Item1 == file).Select(a => a.Item2).DefaultIfEmpty(null).FirstOrDefault();
+            return _listFotoArticolo.Where(a => a.Entity == file).Select(a => a.Entity).DefaultIfEmpty(null).FirstOrDefault();
         }
-        internal List<string> RefreshImageListData()
+        internal List<ImmaginiFile<FotoArticolo>> RefreshImageListData()
         {
 
             using (var uof = new UnitOfWork())
@@ -134,11 +137,11 @@ namespace StrumentiMusicali.App.Core.Controllers
                 var imageList = uof.FotoArticoloRepository.Find(a => a.Articolo.ID == this.EditItem.ID)
                     .OrderBy(a => a.Ordine).ToList();
 
-                _listFotoArticolo = imageList.Select(a => new Tuple<string, FotoArticolo>(Path.Combine(
+                _listFotoArticolo = imageList.Select(a => new ImmaginiFile<FotoArticolo>(Path.Combine(
                     settingSito.CartellaLocaleImmagini, a.UrlFoto)
-                                 , a)).ToList();
+                                 , a.UrlFoto, a)).ToList();
 
-                return (_listFotoArticolo.Select(a => a.Item1).ToList());
+                return _listFotoArticolo.ToList();
 
 
             }

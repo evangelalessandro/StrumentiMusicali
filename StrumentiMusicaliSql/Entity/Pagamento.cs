@@ -1,13 +1,9 @@
 ﻿using PropertyChanged;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Base;
-using StrumentiMusicali.Library.Repo;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace StrumentiMusicali.Library.Entity
 {
@@ -16,7 +12,7 @@ namespace StrumentiMusicali.Library.Entity
     {
         public Pagamento()
         {
-             
+
         }
         public object Clone()
         {
@@ -42,17 +38,17 @@ namespace StrumentiMusicali.Library.Entity
         [MaxLength(60)]
         public string Telefono { get; set; }
 
-        [CustomUIViewAttribute(Width = 250, 
-            Ordine = 20,Titolo ="Numero carta d'identità")]
+        [CustomUIViewAttribute(Width = 250,
+            Ordine = 20, Titolo = "Numero carta d'identità")]
         [MaxLength(60)]
-        public string CartaIdentita{ get; set; }
+        public string CartaIdentita { get; set; }
 
-        [CustomUIViewAttribute(Width = 250, Ordine = 125, Titolo = "Note",MultiLine =4)]
+        [CustomUIViewAttribute(Width = 250, Ordine = 125, Titolo = "Note", MultiLine = 4)]
         [MaxLength(500)]
-        public string Note{ get; set; }
+        public string Note { get; set; }
 
 
-        [CustomUIViewAttribute(Width = 500, Ordine = 50,Titolo ="Articolo")]
+        [CustomUIViewAttribute(Width = 500, Ordine = 50, Titolo = "Articolo")]
         [MaxLength(100)]
         public string ArticoloAcq { get; set; }
 
@@ -98,7 +94,7 @@ namespace StrumentiMusicali.Library.Entity
                 {
                     return true;
                 }
- 
+
             }
         }
 
@@ -124,7 +120,7 @@ namespace StrumentiMusicali.Library.Entity
         [Required]
         [CustomHideUIAttribute]
         /*raggruppamento dei pagamenti*/
-        public Guid IDPagamenti { get; set; }
+        public Guid IDPagamentoMaster { get; set; }
 
 
 
@@ -133,7 +129,7 @@ namespace StrumentiMusicali.Library.Entity
 
     public class PagamentoDocumenti : BaseEntity
     {
-        
+
         [Required]
         public string FileName { get; set; }
         [Required]
@@ -141,8 +137,12 @@ namespace StrumentiMusicali.Library.Entity
 
         [CustomHideUIAttribute]
         [Required]
-        public Guid IDPagamenti { get; set; }
+        public int Ordine { get; set; } = 0;
 
-         
+        [CustomHideUIAttribute]
+        [Required]
+        public Guid IDPagamentoMaster { get; set; }
+
+
     }
 }

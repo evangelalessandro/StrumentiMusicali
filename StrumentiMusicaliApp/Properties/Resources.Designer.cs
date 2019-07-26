@@ -383,9 +383,29 @@ namespace StrumentiMusicali.App.Properties {
         /// <summary>
         ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap pdfIcon {
+            get {
+                object obj = ResourceManager.GetObject("pdfIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap pin_16 {
             get {
                 object obj = ResourceManager.GetObject("pin_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PreviewIcon {
+            get {
+                object obj = ResourceManager.GetObject("PreviewIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

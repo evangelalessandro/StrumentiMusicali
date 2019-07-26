@@ -1,6 +1,7 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Controllers.Stampa;
 using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.App.Forms;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Core.Item;
@@ -71,7 +72,7 @@ namespace StrumentiMusicali.App.Core.Controllers
         }
         public void AggiungiComandiStampa(MenuRibbon.RibbonMenuTab tab, bool editItem)
         {
-             
+
             var pnlStampa = tab.Add("Stampa");
 
             var ribStampa = pnlStampa.Add("Avvia stampa", Properties.Resources.Print_48, true);
@@ -86,8 +87,20 @@ namespace StrumentiMusicali.App.Core.Controllers
             var pnlDoc = tab.Add("Documenti");
 
             var ribDocumenti = pnlDoc.Add("Documenti", Properties.Resources.Identity_48, true);
+            ribDocumenti.Click += (a, e) =>
+                 {
+                     using (var controller = new ControllerPagamentiDocumenti(
+                         enAmbiente.PagamentoDocumenti,
+                         enAmbiente.PagamentoDocumenti,
+                         SelectedItem.IDPagamentoMaster))
+                     {
 
-
+                         using (var viewArt = new PagamentiDocumentiView(controller))
+                         {
+                             this.ShowView(viewArt, controller.Ambiente, controller);
+                         }
+                     }
+                 };
 
         }
 
@@ -205,7 +218,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                             var pagamento = (Pagamento)EditItem.Clone();
 
                             {
-                                pagamento.IDPagamenti = guid;
+                                pagamento.IDPagamentoMaster = guid;
                                 pagamento.ImportoRata = importoRata;
                                 pagamento.DataRata = EditItem.DataInizio.AddMonths(item);
                                 pagamento.ImportoResiduo =

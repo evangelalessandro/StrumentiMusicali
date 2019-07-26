@@ -2,11 +2,11 @@
 
 namespace StrumentiMusicali.App.View
 {
-	public partial class Test : Form
-	{
-		public Test()
-		{
-			InitializeComponent();
-		}
-	}
+    public partial class Test : Form
+    {
+        public Test()
+        {
+            InitializeComponent();
+        }
+    }
 }

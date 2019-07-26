@@ -25,7 +25,7 @@ namespace StrumentiMusicali.App.View.Articoli
         protected override void Dispose(bool disposing)
         {
             _UpdateList.Dispose();
-        
+
             base.Dispose(disposing);
 
         }
@@ -114,7 +114,7 @@ namespace StrumentiMusicali.App.View.Articoli
                     AggiungiValore(item.Libro.Ordine);
 
                 AggiungiIntestazione("Settore: ");
-                if (item.Libro != null && item.Libro.Settore!= null)
+                if (item.Libro != null && item.Libro.Settore != null)
                     AggiungiValore(item.Libro.Settore);
 
                 AggiungiIntestazione("Non Imponibile:");

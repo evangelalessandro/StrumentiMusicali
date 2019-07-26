@@ -3,15 +3,12 @@ using System.Linq;
 
 namespace TestMOdel
 {
-	internal class Program
+	  class Program
 	{
-		private static void Main(string[] args)
+		  static void Main(string[] args)
 		{
-			using (var uof=new UnitOfWork())
-			{
-				var art =uof.ArticoliRepository.Find(a => a.BoxProposte == true).First();
-
-			}
-		}
+            StrumentiMusicali.ftpBackup.Class1 class1 = new StrumentiMusicali.ftpBackup.Class1();
+            class1.Upload();
+        }
 	}
 }

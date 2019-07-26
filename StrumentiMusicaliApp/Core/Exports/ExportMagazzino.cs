@@ -89,7 +89,7 @@ namespace StrumentiMusicali.App.Core.Exports
                       a.CodiceABarre,
                       Prezzo = a.Prezzo.ToString("C2"),
                       PrezzoAcquisto = a.PrezzoAcquisto.ToString("C2"),
-                      
+
                       a.Strumento.Marca,
                       a.Strumento.CodiceOrdine,
                       a.Strumento.Colore,
@@ -100,7 +100,7 @@ namespace StrumentiMusicali.App.Core.Exports
                       a.Note2,
                       a.Note3,
                       a.NonImponibile,
-                      
+
                       a.Testo,
                       a.Libro.Autore,
                       a.Libro.TitoloDelLibro,
@@ -171,7 +171,7 @@ namespace StrumentiMusicali.App.Core.Exports
                 _excel.AddWorksheet(dt, "Generale");
             }
 
-            var newfile = Path.Combine(System.IO.Path.GetTempPath(), TipoExp.ToString() +"_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_Magazzino.xlsx");
+            var newfile = Path.Combine(System.IO.Path.GetTempPath(), TipoExp.ToString() + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_Magazzino.xlsx");
             _excel.SaveAs(newfile);
             Process.Start(newfile);
         }

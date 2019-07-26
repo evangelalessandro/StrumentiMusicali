@@ -2,8 +2,8 @@
 
 namespace StrumentiMusicali.App.View.Interfaces
 {
-	public interface IMenu
-	{
-		MenuTab GetMenu();
-	}
+    public interface IMenu
+    {
+        MenuTab GetMenu();
+    }
 }

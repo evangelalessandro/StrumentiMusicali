@@ -3,14 +3,15 @@ using StrumentiMusicali.Library.Entity;
 
 namespace StrumentiMusicali.Library.Core.Events.Image
 {
-    public class ImageSelected : FilterEvent
+    public class ImageSelected<T> : FilterEvent
+        where T : Entity.Base.BaseEntity
     {
-		public ImageSelected(string file, System.Guid key)
+		public ImageSelected(ImmaginiFile<T> file, System.Guid key)
             : base(key)
         {
             File= file;
 		}
 
-		public string File { get; private set; }
+		public ImmaginiFile<T> File { get; private set; }
 	}
 }

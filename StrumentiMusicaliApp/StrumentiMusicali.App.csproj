@@ -41,6 +41,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -232,6 +233,7 @@
     <Compile Include="Core\Controllers\Base\BaseController.cs" />
     <Compile Include="Core\Controllers\ControllerArticoli.cs" />
     <Compile Include="Core\Controllers\ControllerPagamenti.cs" />
+    <Compile Include="Core\Controllers\ControllerPagamentiDocumenti.cs" />
     <Compile Include="Core\Controllers\ControllerUtenti.cs" />
     <Compile Include="Core\Controllers\ControllerDepositi.cs" />
     <Compile Include="Core\Controllers\ControllerFatturazione.cs" />
@@ -268,6 +270,8 @@
       <DependentUpon>TabCustom.cs</DependentUpon>
     </Compile>
     <Compile Include="Localization_it.cs" />
+    <Compile Include="Settings\SettingBackupFtpValidator.cs" />
+    <Compile Include="Settings\SettingDocumentiPagamentiValidator.cs" />
     <Compile Include="View\Articoli\RicercaArticoliStyleView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -303,6 +307,12 @@
     </Compile>
     <Compile Include="View\Login\LoginForm.designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Pagamenti\PagamentiDocumentiView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Pagamenti\PagamentiDocumentiView.Designer.cs">
+      <DependentUpon>PagamentiDocumentiView.cs</DependentUpon>
     </Compile>
     <Compile Include="View\UtentiListView.cs">
       <SubType>UserControl</SubType>
@@ -603,6 +613,8 @@
     <None Include="Resources\MantieniFiltro.png" />
     <None Include="Resources\Libro_48.png" />
     <None Include="Resources\Identity_48.png" />
+    <None Include="Resources\pdfIcon.png" />
+    <None Include="Resources\PreviewIcon.png" />
     <Content Include="Resources\StrumentoMusicale.ico" />
     <Content Include="StrumentoMusicale.ico" />
     <None Include="Resources\Close.png" />
@@ -679,6 +691,9 @@
     <EmbeddedResource Include="View\BaseControl\SettingBaseView.resx">
       <DependentUpon>SettingBaseView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\Pagamenti\PagamentiDocumentiView.resx">
+      <DependentUpon>PagamentiDocumentiView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\Settings\GenericSettingView.resx">
       <DependentUpon>GenericSettingView.cs</DependentUpon>
     </EmbeddedResource>
@@ -746,7 +761,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="View\Attributes\" />
-    <Folder Include="View\Enums\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="References\System.Windows.Forms.Ribbon.dll">

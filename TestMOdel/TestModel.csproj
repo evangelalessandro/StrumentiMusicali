@@ -50,6 +50,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\StrumentiMusicali.ftpBackup\StrumentiMusicali.ftpBackup.csproj">
+      <Project>{0e29b767-416d-421e-98f6-a8eed7c7cb6f}</Project>
+      <Name>StrumentiMusicali.ftpBackup</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StrumentiMusicaliApp\StrumentiMusicali.App.csproj">
       <Project>{E6A4D0F6-DC39-431E-A562-AC0C4465BEA4}</Project>
       <Name>StrumentiMusicali.App</Name>

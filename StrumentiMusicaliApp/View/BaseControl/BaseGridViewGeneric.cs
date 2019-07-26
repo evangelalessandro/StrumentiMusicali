@@ -31,7 +31,7 @@ namespace StrumentiMusicali.App.View.BaseControl
         public TController Controller { get; private set; }
         public Guid INSTANCE_KEY {
             get {
-                if (this.Controller!=null)
+                if (this.Controller != null)
                     return this.Controller._INSTANCE_KEY;
                 return Guid.Empty;
             }
@@ -67,9 +67,9 @@ namespace StrumentiMusicali.App.View.BaseControl
                 (a) =>
                  {
                      {
-                         if (a.ItemSelected!=null)
+                         if (a.ItemSelected != null)
 
-                         dgvRighe.SelezionaRiga(a.ItemSelected.ID);
+                             dgvRighe.SelezionaRiga(a.ItemSelected.ID);
 
                      };
                  }
@@ -256,13 +256,13 @@ namespace StrumentiMusicali.App.View.BaseControl
         {
             var current = dgvRighe.GetRow(dgvRighe.FocusedRowHandle);
             var item = (TBaseItem)current;
-            
+
             if (item != null && item.Entity != null)
             {
-                
+
                 Controller.SelectedItem = item.Entity;
 
-                 
+
             }
             else
             {
@@ -272,7 +272,7 @@ namespace StrumentiMusicali.App.View.BaseControl
             EventAggregator.Instance().Publish(new ItemSelected<TBaseItem, TEntity>(item, Controller));
 
             Controller.UpdateButtonState();
-        } 
+        }
         public MenuTab GetMenu()
         {
             return Controller.GetMenu();

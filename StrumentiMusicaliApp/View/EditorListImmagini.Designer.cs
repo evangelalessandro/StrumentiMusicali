@@ -1,6 +1,6 @@
 ﻿namespace StrumentiMusicali.App.View
 {
-    partial class EditorListImmagini
+    partial class EditorListImmagini<K>
     {
         /// <summary> 
         /// Variabile di progettazione necessaria.

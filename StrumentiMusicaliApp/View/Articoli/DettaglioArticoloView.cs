@@ -1,6 +1,5 @@
 ﻿using StrumentiMusicali.App.Core;
 using StrumentiMusicali.App.Core.Controllers;
-using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View;
 using StrumentiMusicali.App.View.Interfaces;
@@ -14,11 +13,8 @@ using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.Forms
@@ -26,11 +22,11 @@ namespace StrumentiMusicali.App.Forms
     public partial class DettaglioArticoloView : UserControl, IMenu, ICloseSave
     {
 
-        
+
         private static List<CategoriaItem> _categoriList = new List<CategoriaItem>();
 
-        private EditorListImmagini _EditorListImmagini ;
-        Subscription<ImageSelected> _sub12;
+        private EditorListImmagini<FotoArticolo> _EditorListImmagini;
+        Subscription<ImageSelected<FotoArticolo>> _sub12;
         private Subscription<ImageListUpdate> _sub1;
         public DettaglioArticoloView(ControllerArticoli articoloController)
             : base()
@@ -39,10 +35,10 @@ namespace StrumentiMusicali.App.Forms
             InitializeComponent();
             if (DesignMode)
                 return;
-            _sub12 = EventAggregator.Instance().Subscribe<ImageSelected>(ImmagineSelezionata);
+            _sub12 = EventAggregator.Instance().Subscribe<ImageSelected<FotoArticolo>>(ImmagineSelezionata);
 
             tabPage2.AllowDrop = true;
-            _EditorListImmagini = new EditorListImmagini(_articoloController);
+            _EditorListImmagini = new EditorListImmagini<FotoArticolo>(_articoloController);
 
             _sub1 = EventAggregator.Instance().Subscribe<ImageListUpdate>(RefreshImageList);
 
@@ -68,7 +64,7 @@ namespace StrumentiMusicali.App.Forms
 
         }
 
-        private void ImmagineSelezionata(ImageSelected obj)
+        private void ImmagineSelezionata(ImageSelected<FotoArticolo> obj)
         {
             UpdateButtonState();
         }
@@ -102,7 +98,7 @@ namespace StrumentiMusicali.App.Forms
         private View.Settings.GenericSettingView _EditView;
 
         private ControllerArticoli _articoloController;
- 
+
         private void frmArticolo_Load(object sender, EventArgs e)
         {
             if (DesignMode)
@@ -191,7 +187,7 @@ namespace StrumentiMusicali.App.Forms
             {
                 _ribPannelImmagini.Enabled = tabControl1.SelectedTab == tabPage2;
                 _ribRemove.Enabled = true;
-                _ribRemove.Enabled = _articoloController.FotoSelezionata()!=null;
+                _ribRemove.Enabled = _articoloController.FotoSelezionata() != null;
             }
             _EditorListImmagini.UpdateButtonState();
         }
@@ -211,7 +207,7 @@ namespace StrumentiMusicali.App.Forms
             EventAggregator.Instance().UnSbscribe(_sub12);
 
             EventAggregator.Instance().UnSbscribe(_sub1);
-            
+
             if (disposing && (components != null))
             {
                 components.Dispose();

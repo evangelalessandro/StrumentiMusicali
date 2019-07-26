@@ -15,236 +15,236 @@ using System.Windows.Forms;
 namespace StrumentiMusicali.App.Core.Controllers
 {
     internal class ControllerImmagini : BaseController, IDisposable
-	{
-		Subscription<ImageArticoloOrderSet> _subOrderImage;
-		Subscription<ImageArticoloAddFiles> _subAddImage;
-		Subscription<ImageArticoloRemove> _subRemoveImage;
-		public ControllerImmagini() : base()
-		{
-			_subOrderImage =	EventAggregator.Instance().Subscribe<ImageArticoloOrderSet>(OrderImage);
-			_subAddImage = EventAggregator.Instance().Subscribe<ImageArticoloAddFiles>(AddImageFiles);
-			_subRemoveImage = EventAggregator.Instance().Subscribe<ImageArticoloRemove>(RemoveImage);
-		}
+    {
+        Subscription<ImageArticoloOrderSet> _subOrderImage;
+        Subscription<ImageArticoloAddFiles> _subAddImage;
+        Subscription<ImageArticoloRemove> _subRemoveImage;
+        public ControllerImmagini() : base()
+        {
+            _subOrderImage = EventAggregator.Instance().Subscribe<ImageArticoloOrderSet>(OrderImage);
+            _subAddImage = EventAggregator.Instance().Subscribe<ImageArticoloAddFiles>(AddImageFiles);
+            _subRemoveImage = EventAggregator.Instance().Subscribe<ImageArticoloRemove>(RemoveImage);
+        }
 
-		// NOTE: Leave out the finalizer altogether if this class doesn't
-		// own unmanaged resources, but leave the other methods
-		// exactly as they are.
-		~ControllerImmagini()
-		{
-			// Finalizer calls Dispose(false)
-			Dispose(false);
-		}
-		// The bulk of the clean-up code is implemented in Dispose(bool)
-		protected new void Dispose(bool disposing)
-		{
-			base.Dispose(disposing);
-			if (disposing)
-			{
-				EventAggregator.Instance().UnSbscribe(_subOrderImage);
-				EventAggregator.Instance().UnSbscribe(_subAddImage);
-				EventAggregator.Instance().UnSbscribe(_subRemoveImage);
-			}
-			// free native resources if there are any.
-		}
-		public override void Dispose()
-		{
-			base.Dispose();
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-		private void RemoveImage(ImageArticoloRemove obj)
-		{
-            
+        // NOTE: Leave out the finalizer altogether if this class doesn't
+        // own unmanaged resources, but leave the other methods
+        // exactly as they are.
+        ~ControllerImmagini()
+        {
+            // Finalizer calls Dispose(false)
+            Dispose(false);
+        }
+        // The bulk of the clean-up code is implemented in Dispose(bool)
+        protected new void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                EventAggregator.Instance().UnSbscribe(_subOrderImage);
+                EventAggregator.Instance().UnSbscribe(_subAddImage);
+                EventAggregator.Instance().UnSbscribe(_subRemoveImage);
+            }
+            // free native resources if there are any.
+        }
+        public override void Dispose()
+        {
+            base.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        private void RemoveImage(ImageArticoloRemove obj)
+        {
+
             if (!CheckFolderImmagini())
-				return;
-			var folderFoto = SettingSitoValidator.ReadSetting().CartellaLocaleImmagini;
-			try
-			{
-				if (!MessageManager.QuestionMessage("Sei sicuro di voler cancellare l'immagine selezionata?"))
-					return;
-				var listFileToDelete = new List<string>();
-				using (var curs = new CursorManager())
-				{
-					using (var uof = new UnitOfWork())
-					{
-						var item = uof.FotoArticoloRepository.Find(
-						   a => a.ID == obj.FotoArticolo.ID).FirstOrDefault();
-						if (item == null)
-						{
-							return;
-						}
-						RimuoviItemDaRepo(folderFoto, listFileToDelete, uof, item);
-						var articolo = uof.ArticoliRepository
-								.Find(a => a.ID == obj.FotoArticolo.ArticoloID).First();
-						/*se cambio immagini devo aggiornare le immagini su, quindi aggiorno il flag*/
-						if (!articolo.ImmaginiDaCaricare)
-						{
-							articolo.ImmaginiDaCaricare = true;
-							uof.ArticoliRepository.Update(articolo);
-						}
-						uof.Commit();
-					}
-				}
-				EventAggregator.Instance().Publish<ImageListUpdate>(new ImageListUpdate());
-				DeleteFile(listFileToDelete);
-				MessageManager.NotificaInfo("Eliminazione avvenuta con successo");
-			}
-			catch (Exception ex)
-			{
-				ExceptionManager.ManageError(ex);
-			}
-		}
-
-		public void DeleteFile(List<string> listFileToDelete)
-		{
-			Application.DoEvents();
-			Thread.Sleep(1000);
-
-			foreach (var item in listFileToDelete)
-			{
-				Application.DoEvents();
-				Thread.Sleep(100);
-				File.Delete(item);
-			}
-		}
-
-		public void RimuoviItemDaRepo(string folderFoto, List<string> listFileToDelete, UnitOfWork uof, FotoArticolo item)
-		{
-			uof.FotoArticoloRepository.Delete(item);
-			listFileToDelete.Add(Path.Combine(folderFoto, item.UrlFoto));
-		}
-
-		private void OrderImage(ImageArticoloOrderSet obj)
-		{
-             
+                return;
+            var folderFoto = SettingSitoValidator.ReadSetting().CartellaLocaleImmagini;
             try
-			{
-				using (var curs = new CursorManager())
-				{
-					using (var save = new SaveEntityManager())
-					{
-						var uof = save.UnitOfWork;
-						var articolo = uof.FotoArticoloRepository.Find(
-							a => a.ID == obj.FotoArticolo.ID).Select(a => a.Articolo).FirstOrDefault();
-						var list = uof.FotoArticoloRepository.Find(
-							a => a.Articolo.ID == articolo.ID).OrderBy(a => a.Ordine).ToList();
-						foreach (var item in list)
-						{
-							if (item.ID == obj.FotoArticolo.ID)
-							{
-								switch (obj.TipoOperazione)
-								{
-									case enOperationOrder.ImpostaPrincipale:
-										item.Ordine = -1;
-										break;
+            {
+                if (!MessageManager.QuestionMessage("Sei sicuro di voler cancellare l'immagine selezionata?"))
+                    return;
+                var listFileToDelete = new List<string>();
+                using (var curs = new CursorManager())
+                {
+                    using (var uof = new UnitOfWork())
+                    {
+                        var item = uof.FotoArticoloRepository.Find(
+                           a => a.ID == obj.FotoArticolo.ID).FirstOrDefault();
+                        if (item == null)
+                        {
+                            return;
+                        }
+                        RimuoviItemDaRepo(folderFoto, listFileToDelete, uof, item);
+                        var articolo = uof.ArticoliRepository
+                                .Find(a => a.ID == obj.FotoArticolo.ArticoloID).First();
+                        /*se cambio immagini devo aggiornare le immagini su, quindi aggiorno il flag*/
+                        if (!articolo.ImmaginiDaCaricare)
+                        {
+                            articolo.ImmaginiDaCaricare = true;
+                            uof.ArticoliRepository.Update(articolo);
+                        }
+                        uof.Commit();
+                    }
+                }
+                EventAggregator.Instance().Publish<ImageListUpdate>(new ImageListUpdate());
+                DeleteFile(listFileToDelete);
+                MessageManager.NotificaInfo("Eliminazione avvenuta con successo");
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.ManageError(ex);
+            }
+        }
 
-									case enOperationOrder.AumentaPriorita:
-										var itemToUpdate = list.Where(a => a.Ordine == item.Ordine - 1).FirstOrDefault();
-										if (itemToUpdate != null)
-										{
-											itemToUpdate.Ordine++;
-										}
-										item.Ordine--;
-										break;
+        public void DeleteFile(List<string> listFileToDelete)
+        {
+            Application.DoEvents();
+            Thread.Sleep(1000);
 
-									case enOperationOrder.DiminuisciPriorita:
-										var itemToUpdateTwo = list.Where(a => a.Ordine == item.Ordine + 1).FirstOrDefault();
-										if (itemToUpdateTwo != null)
-										{
-											itemToUpdateTwo.Ordine--;
-										}
-										item.Ordine++;
-										break;
+            foreach (var item in listFileToDelete)
+            {
+                Application.DoEvents();
+                Thread.Sleep(100);
+                File.Delete(item);
+            }
+        }
 
-									default:
-										break;
-								}
-							}
-						}
-						var setOrdine = 0;
-						foreach (var item in list.OrderBy(a => a.Ordine))
-						{
-							item.Ordine = setOrdine;
-							setOrdine++;
-							uof.FotoArticoloRepository.Update(item);
-						}
+        public void RimuoviItemDaRepo(string folderFoto, List<string> listFileToDelete, UnitOfWork uof, FotoArticolo item)
+        {
+            uof.FotoArticoloRepository.Delete(item);
+            listFileToDelete.Add(Path.Combine(folderFoto, item.UrlFoto));
+        }
 
-						if (save.SaveEntity(enSaveOperation.OpSave))
-						{
-							EventAggregator.Instance().Publish<ImageListUpdate>(new ImageListUpdate());
-						}
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				ExceptionManager.ManageError(ex);
-			}
-		}
+        private void OrderImage(ImageArticoloOrderSet obj)
+        {
 
-		/// <summary>
-		/// Controllo la cartella locale per le immagini se è correttamente settata e attiva
-		/// </summary>
-		/// <returns></returns>
-		public bool CheckFolderImmagini()
-		{
-			return SettingSitoValidator.CheckFolderImmagini(); 
-		}
-		private void AddImageFiles(ImageArticoloAddFiles args)
-		{
-             
+            try
+            {
+                using (var curs = new CursorManager())
+                {
+                    using (var save = new SaveEntityManager())
+                    {
+                        var uof = save.UnitOfWork;
+                        var articolo = uof.FotoArticoloRepository.Find(
+                            a => a.ID == obj.FotoArticolo.ID).Select(a => a.Articolo).FirstOrDefault();
+                        var list = uof.FotoArticoloRepository.Find(
+                            a => a.Articolo.ID == articolo.ID).OrderBy(a => a.Ordine).ToList();
+                        foreach (var item in list)
+                        {
+                            if (item.ID == obj.FotoArticolo.ID)
+                            {
+                                switch (obj.TipoOperazione)
+                                {
+                                    case enOperationOrder.ImpostaPrincipale:
+                                        item.Ordine = -1;
+                                        break;
+
+                                    case enOperationOrder.AumentaPriorita:
+                                        var itemToUpdate = list.Where(a => a.Ordine == item.Ordine - 1).FirstOrDefault();
+                                        if (itemToUpdate != null)
+                                        {
+                                            itemToUpdate.Ordine++;
+                                        }
+                                        item.Ordine--;
+                                        break;
+
+                                    case enOperationOrder.DiminuisciPriorita:
+                                        var itemToUpdateTwo = list.Where(a => a.Ordine == item.Ordine + 1).FirstOrDefault();
+                                        if (itemToUpdateTwo != null)
+                                        {
+                                            itemToUpdateTwo.Ordine--;
+                                        }
+                                        item.Ordine++;
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+                        var setOrdine = 0;
+                        foreach (var item in list.OrderBy(a => a.Ordine))
+                        {
+                            item.Ordine = setOrdine;
+                            setOrdine++;
+                            uof.FotoArticoloRepository.Update(item);
+                        }
+
+                        if (save.SaveEntity(enSaveOperation.OpSave))
+                        {
+                            EventAggregator.Instance().Publish<ImageListUpdate>(new ImageListUpdate());
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.ManageError(ex);
+            }
+        }
+
+        /// <summary>
+        /// Controllo la cartella locale per le immagini se è correttamente settata e attiva
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckFolderImmagini()
+        {
+            return SettingSitoValidator.CheckFolderImmagini();
+        }
+        private void AddImageFiles(ImageArticoloAddFiles args)
+        {
+
             if (!CheckFolderImmagini())
-				return;
-			try
-			{
-				var folderFoto = SettingSitoValidator.ReadSetting().CartellaLocaleImmagini;
-				using (var save = new SaveEntityManager())
-				{
-					var uof = save.UnitOfWork;
-					var maxOrdineItem = uof.FotoArticoloRepository
-						.Find(a => a.ArticoloID == args.Articolo.ID)
-						.OrderByDescending(a => a.Ordine).FirstOrDefault();
+                return;
+            try
+            {
+                var folderFoto = SettingSitoValidator.ReadSetting().CartellaLocaleImmagini;
+                using (var save = new SaveEntityManager())
+                {
+                    var uof = save.UnitOfWork;
+                    var maxOrdineItem = uof.FotoArticoloRepository
+                        .Find(a => a.ArticoloID == args.Articolo.ID)
+                        .OrderByDescending(a => a.Ordine).FirstOrDefault();
 
-					var maxOrdine = 0;
-					if (maxOrdineItem != null)
-					{
-						maxOrdine = maxOrdineItem.Ordine + 1;
-					}
+                    var maxOrdine = 0;
+                    if (maxOrdineItem != null)
+                    {
+                        maxOrdine = maxOrdineItem.Ordine + 1;
+                    }
 
-					foreach (var item in args.Files)
-					{
-						var file = new FileInfo(item);
+                    foreach (var item in args.Files)
+                    {
+                        var file = new FileInfo(item);
 
-						var newName = DateTime.Now.Ticks.ToString() + file.Extension;
-						File.Copy(item, Path.Combine(folderFoto, newName));
+                        var newName = DateTime.Now.Ticks.ToString() + file.Extension;
+                        File.Copy(item, Path.Combine(folderFoto, newName));
 
-						uof.FotoArticoloRepository.Add(
-							new FotoArticolo()
-							{
-								ArticoloID = args.Articolo.ID,
-								UrlFoto = newName,
-								Ordine = maxOrdine
-							});
-						maxOrdine++;
-					}
-					var articolo= uof.ArticoliRepository
-						.Find(a => a.ID == args.Articolo.ID).First();
-					/*se cambio immagini devo aggiornare le immagini su, quindi aggiorno il flag*/
-					if (!articolo.ImmaginiDaCaricare )
-					{ 
-						articolo.ImmaginiDaCaricare = true;
-						uof.ArticoliRepository.Update(articolo);
-					}
-					if (save.SaveEntity(string.Format(@"{0} Immagine\i aggiunta\e", args.Files.Count())))
-					{
-						EventAggregator.Instance().Publish<ImageListUpdate>(new ImageListUpdate());
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				ExceptionManager.ManageError(ex);
-			}
-		}
-	}
+                        uof.FotoArticoloRepository.Add(
+                            new FotoArticolo()
+                            {
+                                ArticoloID = args.Articolo.ID,
+                                UrlFoto = newName,
+                                Ordine = maxOrdine
+                            });
+                        maxOrdine++;
+                    }
+                    var articolo = uof.ArticoliRepository
+                        .Find(a => a.ID == args.Articolo.ID).First();
+                    /*se cambio immagini devo aggiornare le immagini su, quindi aggiorno il flag*/
+                    if (!articolo.ImmaginiDaCaricare)
+                    {
+                        articolo.ImmaginiDaCaricare = true;
+                        uof.ArticoliRepository.Update(articolo);
+                    }
+                    if (save.SaveEntity(string.Format(@"{0} Immagine\i aggiunta\e", args.Files.Count())))
+                    {
+                        EventAggregator.Instance().Publish<ImageListUpdate>(new ImageListUpdate());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.ManageError(ex);
+            }
+        }
+    }
 }

@@ -15,186 +15,186 @@ using System.Linq;
 namespace StrumentiMusicali.App.Core.Controllers
 {
     public class ControllerMagazzino : BaseController, IDisposable, ICloseSave, IMenu
-	{
-		public MovimentoMagazzino SelectedItem { get; set; } = new MovimentoMagazzino();
+    {
+        public MovimentoMagazzino SelectedItem { get; set; } = new MovimentoMagazzino();
 
-		public const string TAG_SCARICA = "SCARICA";
-		public const string TAG_CARICA = "CARICA";
-		private Subscription<ScaricaQtaMagazzino> sub1;
-		private Subscription<CaricaQtaMagazzino> sub2;
-		public ControllerMagazzino()
-			: base()
-		{
+        public const string TAG_SCARICA = "SCARICA";
+        public const string TAG_CARICA = "CARICA";
+        private Subscription<ScaricaQtaMagazzino> sub1;
+        private Subscription<CaricaQtaMagazzino> sub2;
+        public ControllerMagazzino()
+            : base()
+        {
 
-			sub1 = EventAggregator.Instance().Subscribe<ScaricaQtaMagazzino>(ScaricaMagazzino);
-			sub2 = EventAggregator.Instance().Subscribe<CaricaQtaMagazzino>(CaricaMagazzino);
-		}
-		public ControllerMagazzino(Articolo articolo)
-			: this()
-		{
-			ArticoloFilter= articolo;
-		}
- 
-		public Articolo ArticoloFilter { get; private set; }
-		private MenuTab _menuTab = null;
-		public MenuTab GetMenu()
-		{
-			if (_menuTab == null)
-			{
-				_menuTab = new MenuTab();
+            sub1 = EventAggregator.Instance().Subscribe<ScaricaQtaMagazzino>(ScaricaMagazzino);
+            sub2 = EventAggregator.Instance().Subscribe<CaricaQtaMagazzino>(CaricaMagazzino);
+        }
+        public ControllerMagazzino(Articolo articolo)
+            : this()
+        {
+            ArticoloFilter = articolo;
+        }
 
-				AggiungiComandi();
-			}
-			return _menuTab;
-		}
-		private void AggiungiComandi()
-		{
-			var tabArticoli = _menuTab.Add("Principale");
+        public Articolo ArticoloFilter { get; private set; }
+        private MenuTab _menuTab = null;
+        public MenuTab GetMenu()
+        {
+            if (_menuTab == null)
+            {
+                _menuTab = new MenuTab();
 
-			var panelComandiArticoli = tabArticoli.Add("Comandi");
-			UtilityView.AddButtonSaveAndClose(panelComandiArticoli, this, false);
+                AggiungiComandi();
+            }
+            return _menuTab;
+        }
+        private void AggiungiComandi()
+        {
+            var tabArticoli = _menuTab.Add("Principale");
 
-			var ribCarica = panelComandiArticoli.Add("Carica", Properties.Resources.Add);
-			ribCarica.Tag = TAG_CARICA;
-			ribCarica.Click += (a, e) =>
-			{
-				EventAggregator.Instance().Publish<ValidateViewEvent<Magazzino>>(null);
+            var panelComandiArticoli = tabArticoli.Add("Comandi");
+            UtilityView.AddButtonSaveAndClose(panelComandiArticoli, this, false);
 
-				EventAggregator.Instance().Publish<CaricaQtaMagazzino>(new CaricaQtaMagazzino()
-				{
-					Qta = SelectedItem.Qta,
-					Deposito = SelectedItem.Deposito,
-					ArticoloID = SelectedItem.ArticoloID
-				});
-			};
+            var ribCarica = panelComandiArticoli.Add("Carica", Properties.Resources.Add);
+            ribCarica.Tag = TAG_CARICA;
+            ribCarica.Click += (a, e) =>
+            {
+                EventAggregator.Instance().Publish<ValidateViewEvent<Magazzino>>(null);
 
-			var ribScarica = panelComandiArticoli.Add("Scarica", Properties.Resources.Remove);
-			ribScarica.Tag = TAG_SCARICA;
-			ribScarica.Click += (a, e) =>
-			{
-				EventAggregator.Instance().Publish<ValidateViewEvent<Magazzino>>(null);
-				EventAggregator.Instance().Publish<ScaricaQtaMagazzino>(new ScaricaQtaMagazzino()
-				{
-					Qta = SelectedItem.Qta,
-					Deposito = SelectedItem.Deposito,
-					ArticoloID = SelectedItem.ArticoloID
-				});
-			};
+                EventAggregator.Instance().Publish<CaricaQtaMagazzino>(new CaricaQtaMagazzino()
+                {
+                    Qta = SelectedItem.Qta,
+                    Deposito = SelectedItem.Deposito,
+                    ArticoloID = SelectedItem.ArticoloID
+                });
+            };
 
-		}
+            var ribScarica = panelComandiArticoli.Add("Scarica", Properties.Resources.Remove);
+            ribScarica.Tag = TAG_SCARICA;
+            ribScarica.Click += (a, e) =>
+            {
+                EventAggregator.Instance().Publish<ValidateViewEvent<Magazzino>>(null);
+                EventAggregator.Instance().Publish<ScaricaQtaMagazzino>(new ScaricaQtaMagazzino()
+                {
+                    Qta = SelectedItem.Qta,
+                    Deposito = SelectedItem.Deposito,
+                    ArticoloID = SelectedItem.ArticoloID
+                });
+            };
 
-		 
-		public event EventHandler<EventArgs> OnSave;
-		public event EventHandler<EventArgs> OnClose;
+        }
 
-		public override void Dispose()
-		{
-			base.Dispose();
-			EventAggregator.Instance().UnSbscribe(sub1);
-			EventAggregator.Instance().UnSbscribe(sub2);
 
-		}
-		internal System.Collections.Generic.List<DepositoScaricoItem> ListDepositi()
-		{
-			using (var uof = new UnitOfWork())
-			{
-				var listQtaDepositi = uof.MagazzinoRepository.Find(a => a.ArticoloID == SelectedItem.ArticoloID)
-										.Select(
-										a => new
-										{
-											ID = a.DepositoID,
-											Qta = a.Qta
-										}
-										)
-										.GroupBy(a => new { a.ID })
-										.Select(g => new { ID = g.Key.ID, Qta = g.Sum(x => x.Qta) })
-										.ToList();
-				/*mette i depositi vuoti per quell'articolo*/
-				var listDepositi = uof.DepositoRepository.Find(a => 1 == 1).ToList()
-					.Distinct().Select(
-					a => new DepositoScaricoItem()
-					{
-						ID = a.ID,
-						NomeDeposito = a.NomeDeposito,
-					}
-					).ToList();
+        public event EventHandler<EventArgs> OnSave;
+        public event EventHandler<EventArgs> OnClose;
 
-				foreach (var item in listDepositi)
-				{
-					var giac = listQtaDepositi.Where(b => b.ID == item.ID).FirstOrDefault();
-					if (giac != null)
-						item.Qta = giac.Qta;
-				}
+        public override void Dispose()
+        {
+            base.Dispose();
+            EventAggregator.Instance().UnSbscribe(sub1);
+            EventAggregator.Instance().UnSbscribe(sub2);
 
-				listDepositi = listDepositi.Select(a => a).OrderBy(a => a.Descrizione).ToList();
-				return listDepositi;
-			}
-		}
+        }
+        internal System.Collections.Generic.List<DepositoScaricoItem> ListDepositi()
+        {
+            using (var uof = new UnitOfWork())
+            {
+                var listQtaDepositi = uof.MagazzinoRepository.Find(a => a.ArticoloID == SelectedItem.ArticoloID)
+                                        .Select(
+                                        a => new
+                                        {
+                                            ID = a.DepositoID,
+                                            Qta = a.Qta
+                                        }
+                                        )
+                                        .GroupBy(a => new { a.ID })
+                                        .Select(g => new { ID = g.Key.ID, Qta = g.Sum(x => x.Qta) })
+                                        .ToList();
+                /*mette i depositi vuoti per quell'articolo*/
+                var listDepositi = uof.DepositoRepository.Find(a => 1 == 1).ToList()
+                    .Distinct().Select(
+                    a => new DepositoScaricoItem()
+                    {
+                        ID = a.ID,
+                        NomeDeposito = a.NomeDeposito,
+                    }
+                    ).ToList();
 
-		private void CaricaMagazzino(CaricaQtaMagazzino obj)
-		{
-			NuovoMovimento(new MovimentoMagazzino()
-			{ ArticoloID = obj.ArticoloID, Deposito = obj.Deposito, Qta = obj.Qta });
-		}
+                foreach (var item in listDepositi)
+                {
+                    var giac = listQtaDepositi.Where(b => b.ID == item.ID).FirstOrDefault();
+                    if (giac != null)
+                        item.Qta = giac.Qta;
+                }
 
-		private void NuovoMovimento(MovimentoMagazzino movimento)
-		{
-			try
-			{
-				using (var curs = new CursorManager())
-				{
-					using (var uof = new UnitOfWork())
-					{
-						if (movimento.Qta < 0)
-						{
-							var qtaDepositata = uof.MagazzinoRepository.Find(a => a.ArticoloID == movimento.ArticoloID &&
-							a.DepositoID == movimento.Deposito).Select(a => a.Qta).DefaultIfEmpty(0).Sum();
-							if (qtaDepositata < Math.Abs(movimento.Qta))
-							{
-								var depositoSel = uof.DepositoRepository.Find(a => a.ID == movimento.Deposito).First();
-								MessageManager.NotificaWarnig(
-									string.Format(
-									@"La quantità presente nel deposito {0} è di {1} pezzi",
-									depositoSel.NomeDeposito,
-									qtaDepositata
-									));
-								return;
-							}
-						}
+                listDepositi = listDepositi.Select(a => a).OrderBy(a => a.Descrizione).ToList();
+                return listDepositi;
+            }
+        }
 
-						uof.MagazzinoRepository.Add(new Library.Entity.Magazzino()
-						{
-							ArticoloID = movimento.ArticoloID,
-							DepositoID = movimento.Deposito,
-							Qta = (int)movimento.Qta
-						});
+        private void CaricaMagazzino(CaricaQtaMagazzino obj)
+        {
+            NuovoMovimento(new MovimentoMagazzino()
+            { ArticoloID = obj.ArticoloID, Deposito = obj.Deposito, Qta = obj.Qta });
+        }
 
-						uof.Commit();
-						MessageManager.NotificaInfo("Aggiunto movimento magazzino");
-						EventAggregator.Instance().Publish<MovimentiUpdate>(new MovimentiUpdate());
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				ExceptionManager.ManageError(ex);
-			}
-		}
+        private void NuovoMovimento(MovimentoMagazzino movimento)
+        {
+            try
+            {
+                using (var curs = new CursorManager())
+                {
+                    using (var uof = new UnitOfWork())
+                    {
+                        if (movimento.Qta < 0)
+                        {
+                            var qtaDepositata = uof.MagazzinoRepository.Find(a => a.ArticoloID == movimento.ArticoloID &&
+                            a.DepositoID == movimento.Deposito).Select(a => a.Qta).DefaultIfEmpty(0).Sum();
+                            if (qtaDepositata < Math.Abs(movimento.Qta))
+                            {
+                                var depositoSel = uof.DepositoRepository.Find(a => a.ID == movimento.Deposito).First();
+                                MessageManager.NotificaWarnig(
+                                    string.Format(
+                                    @"La quantità presente nel deposito {0} è di {1} pezzi",
+                                    depositoSel.NomeDeposito,
+                                    qtaDepositata
+                                    ));
+                                return;
+                            }
+                        }
 
-		private void ScaricaMagazzino(ScaricaQtaMagazzino obj)
-		{
-			NuovoMovimento(new MovimentoMagazzino()
-			{ ArticoloID = obj.ArticoloID, Deposito = obj.Deposito, Qta = -obj.Qta });
-		}
+                        uof.MagazzinoRepository.Add(new Library.Entity.Magazzino()
+                        {
+                            ArticoloID = movimento.ArticoloID,
+                            DepositoID = movimento.Deposito,
+                            Qta = (int)movimento.Qta
+                        });
 
-		public void RaiseSave()
-		{
+                        uof.Commit();
+                        MessageManager.NotificaInfo("Aggiunto movimento magazzino");
+                        EventAggregator.Instance().Publish<MovimentiUpdate>(new MovimentiUpdate());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.ManageError(ex);
+            }
+        }
 
-		}
+        private void ScaricaMagazzino(ScaricaQtaMagazzino obj)
+        {
+            NuovoMovimento(new MovimentoMagazzino()
+            { ArticoloID = obj.ArticoloID, Deposito = obj.Deposito, Qta = -obj.Qta });
+        }
 
-		public void RaiseClose()
-		{
-			OnClose?.Invoke(this, new EventArgs());
-		}
-	}
+        public void RaiseSave()
+        {
+
+        }
+
+        public void RaiseClose()
+        {
+            OnClose?.Invoke(this, new EventArgs());
+        }
+    }
 }

@@ -31,8 +31,10 @@ namespace StrumentiMusicali.App.View
             _controllerFatturazione = controllerFatturazione;
             _cambioTipo = EventAggregator.Instance().Subscribe<FatturaCambiaTipoDoc>(AbilitaCambioTipoFatt);
 
-            EventAggregator.Instance().Subscribe<ItemSelected<FatturaRigaItem,FatturaRiga>>(
-                a => { this.UpdateButtonState();
+            EventAggregator.Instance().Subscribe<ItemSelected<FatturaRigaItem, FatturaRiga>>(
+                a =>
+                {
+                    this.UpdateButtonState();
                 }
                 );
 
@@ -287,7 +289,7 @@ namespace StrumentiMusicali.App.View
                     item.Enabled =
                     enableRowSpecific;
                 }
-                 
+
             }
             this.UpdateViewByTipoDocumento();
         }
@@ -337,9 +339,9 @@ namespace StrumentiMusicali.App.View
                     {
                         EventAggregator.Instance().Publish<Remove<FatturaRiga>>(new Remove<FatturaRiga>(_controllerRighe));
                     };
-                rimuovi.Tag=ControllerRigheFatture.KEYEXISTsRiga;
+                rimuovi.Tag = ControllerRigheFatture.KEYEXISTsRiga;
 
-                var menoPrio = ribPannelRighe.Add("Meno prioritario", Properties.Resources.Up,true);
+                var menoPrio = ribPannelRighe.Add("Meno prioritario", Properties.Resources.Up, true);
                 menoPrio.Click += (a, b) =>
                 {
                     EventAggregator.Instance().Publish<AddPriority<FatturaRiga>>(
@@ -347,12 +349,12 @@ namespace StrumentiMusicali.App.View
                 };
                 menoPrio.Tag = ControllerRigheFatture.KEYEXISTsRiga;
                 var addPrio = ribPannelRighe.Add("Più prioritario", Properties.Resources.Down, true);
-                    addPrio.Click
-                    += (a, b) =>
-                    {
-                        EventAggregator.Instance().Publish<RemovePriority<FatturaRiga>>(
-                            new RemovePriority<FatturaRiga>());
-                    };
+                addPrio.Click
+                += (a, b) =>
+                {
+                    EventAggregator.Instance().Publish<RemovePriority<FatturaRiga>>(
+                        new RemovePriority<FatturaRiga>());
+                };
                 addPrio.Tag = ControllerRigheFatture.KEYEXISTsRiga;
 
                 _controllerFatturazione.AggiungiComandiStampa(tab, true);

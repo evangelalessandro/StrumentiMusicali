@@ -2,12 +2,12 @@
 
 namespace StrumentiMusicali.App.View.BaseControl
 {
-	public partial class BaseDataControl : UserControl
-	{
-		public BaseDataControl()
-			: base()
-		{
-			InitializeComponent();
-		}
-	}
+    public partial class BaseDataControl : UserControl
+    {
+        public BaseDataControl()
+            : base()
+        {
+            InitializeComponent();
+        }
+    }
 }

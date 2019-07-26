@@ -19,7 +19,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
         where TBaseItem : BaseItem<TEntity>, new()
     {
 
-      
+
 
         public BaseControllerGeneric(enAmbiente ambiente, enAmbiente ambienteDettaglio)
         {
@@ -39,7 +39,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                 var menu = GetMenu();
                 menu.Enabled = !(DataSource == null);
 
-                menu.ApplyValidation(SelectedItem   !=null && SelectedItem.ID>0);
+                menu.ApplyValidation(SelectedItem != null && SelectedItem.ID > 0);
                 foreach (var item in menu.ItemByTag(MenuTab.TagCerca))
                 {
                     item.Checked = PannelloRicercaVisibile;
@@ -73,8 +73,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
             }
         }
 
-        public TEntity EditItem { get;
-            set; } = new TEntity();
+        public TEntity EditItem {
+            get;
+            set;
+        } = new TEntity();
 
 
         private Subscription<UpdateList<TEntity>> _updateList = null;
@@ -128,13 +130,13 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
         {
             var item = (TEntity)SelectedItem;
             EventAggregator.Instance().Publish<UpdateList<TEntity>>(new UpdateList<TEntity>(this));
-            if (item!=null)
-            EventAggregator.Instance().Publish<ItemSelected<TBaseItem, TEntity>>(
-                new ItemSelected<TBaseItem, TEntity>(new TBaseItem()
-                {
-                    ID = item.ID,
-                    Entity = item
-                },this));
+            if (item != null)
+                EventAggregator.Instance().Publish<ItemSelected<TBaseItem, TEntity>>(
+                    new ItemSelected<TBaseItem, TEntity>(new TBaseItem()
+                    {
+                        ID = item.ID,
+                        Entity = item
+                    }, this));
         }
         public TEntity SelectedItem { get; set; }
         public void ShowEditView()
@@ -208,7 +210,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
             {
                 EventAggregator.Instance().Publish(new Add<TEntity>(this));
             };
-            
+
             var ribClearFilter = panel2.Add("Mantieni filtro", Properties.Resources.MantieniFiltro);
             ribClearFilter.Tag = MenuTab.TagCercaClear;
             ribClearFilter.Checked = false;
@@ -216,7 +218,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
             {
                 ClearRicerca = !ClearRicerca;
                 ribClearFilter.Checked = !ClearRicerca;
-               
+
             };
 
 
@@ -224,10 +226,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
               {
                   EventAggregator.Instance().Publish(new Remove<TEntity>(this));
               };
-                ribEdit.Click += (a, e) =>
-              {
-                  EventAggregator.Instance().Publish(new Edit<TEntity>(this));
-              };
+            ribEdit.Click += (a, e) =>
+          {
+              EventAggregator.Instance().Publish(new Edit<TEntity>(this));
+          };
             ribCerca.Click += (a, e) =>
             {
 

@@ -9,16 +9,27 @@ namespace StrumentiMusicali.Library.Entity
 	{
 		[Key]
 		public int ID { get; set; } = 1;
-		public string UrlSito { get; set; }
-		public string UrlCompletaImmagini { get; set; }
+        [MaxLength(200)]
 
-		public string CartellaLocaleImmagini { get; set; }
+        public string UrlSito { get; set; }
+        [MaxLength(200)]
 
-		public string SoloNomeFileMercatino { get; set; }
-		public string SoloNomeFileEcommerce { get; set; }
+        public string UrlCompletaImmagini { get; set; }
+        [MaxLength(200)]
 
-		public string UrlCompletoFileMercatino { get; set; }
-		public string UrlCompletoFileEcommerce { get; set; }
+        public string CartellaLocaleImmagini { get; set; }
+        
+        [MaxLength(200)]
+
+        public string SoloNomeFileMercatino { get; set; }
+        [MaxLength(200)]
+
+        public string SoloNomeFileEcommerce { get; set; }
+        [MaxLength(200)]
+
+        public string UrlCompletoFileMercatino { get; set; }
+        [MaxLength(200)]
+        public string UrlCompletoFileEcommerce { get; set; }
 
 		 
 	}

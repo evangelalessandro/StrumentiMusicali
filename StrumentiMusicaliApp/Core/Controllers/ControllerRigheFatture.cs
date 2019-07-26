@@ -74,7 +74,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                Save(null);
            });
         }
-        public const string KEYEXISTsRiga= "FatturaRIGA";
+        public const string KEYEXISTsRiga = "FatturaRIGA";
         private void AggiornaTotaliFattura()
         {
 

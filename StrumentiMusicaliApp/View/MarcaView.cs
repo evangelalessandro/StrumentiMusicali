@@ -1,14 +1,9 @@
-﻿using DevExpress.XtraEditors.Controls;
-using StrumentiMusicali.App.View.BaseControl.ElementiDettaglio;
+﻿using StrumentiMusicali.App.View.BaseControl.ElementiDettaglio;
 using StrumentiMusicali.Library.Repo;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View
@@ -27,7 +22,7 @@ namespace StrumentiMusicali.App.View
             using (var uof = new UnitOfWork())
             {
                 var list = uof.ArticoliRepository.Find(a => a.Strumento.Marca.Length > 0)
-                    .Select(a => a.Strumento.Marca.ToUpper()).Distinct().OrderBy(a=>a).ToList();
+                    .Select(a => a.Strumento.Marca.ToUpper()).Distinct().OrderBy(a => a).ToList();
 
 
                 _combo.SetList(list.Select(a => new { ID = a, Descrizione = a }).ToList());
@@ -45,7 +40,7 @@ namespace StrumentiMusicali.App.View
             _combo.Dock = DockStyle.Fill;
             this.panel1.Controls.Add(_combo);
             _combo.Controllo.EditValueChanged += Controllo_EditValueChanged;
-            
+
         }
 
         private void Controllo_EditValueChanged(object sender, EventArgs e)

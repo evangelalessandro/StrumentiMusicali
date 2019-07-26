@@ -82,9 +82,9 @@ namespace StrumentiMusicali.App.View.BaseControl
                 string titolo = UtilityView.GetTextSplitted(item.Name);
                 titolo = prefixText + titolo;
 
-                if (widthAttr!=null)
+                if (widthAttr != null)
                 {
-                    if (widthAttr.Titolo.Length>0)
+                    if (widthAttr.Titolo.Length > 0)
                     {
                         titolo = widthAttr.Titolo;
                     }
@@ -129,7 +129,7 @@ namespace StrumentiMusicali.App.View.BaseControl
                         ))
                     {
                         string gruppo = "[" + titolo + "]  ";
-                        if (widthAttr != null && widthAttr.ShowGroupName==false)
+                        if (widthAttr != null && widthAttr.ShowGroupName == false)
                         {
                             gruppo = "";
                         }
@@ -149,7 +149,7 @@ namespace StrumentiMusicali.App.View.BaseControl
             {
                 this.DoubleBuffered = true;
                 flowLayoutPanel1.ResumeLayout();
-             
+
                 this.ResumeLayout();
             }
         }
@@ -178,7 +178,7 @@ namespace StrumentiMusicali.App.View.BaseControl
                     case TipoDatiCollegati.Articoli:
                         {
                             var list = uof.ArticoliRepository.Find(a => true).Select(a => new { a.ID, a.Titolo, a.Prezzo }).ToList()
-                                .Select(a => new { a.ID, Descrizione = a.Titolo , Prezzo= a.Prezzo }).ToList();
+                                .Select(a => new { a.ID, Descrizione = a.Titolo, Prezzo = a.Prezzo }).ToList();
 
                             artCNT.SetList(list);
                         }
@@ -216,10 +216,10 @@ namespace StrumentiMusicali.App.View.BaseControl
             }
             var hideAttr = (CustomHideUIAttribute)item.GetCustomAttributes(typeof(CustomHideUIAttribute), true).FirstOrDefault();
 
-            if ((attribute!=null && attribute.Enable==false
+            if ((attribute != null && attribute.Enable == false
                 )
                 ||
-                hideAttr!=null 
+                hideAttr != null
                 )
             {
                 controlBase.Enabled = false;

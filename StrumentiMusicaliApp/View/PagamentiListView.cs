@@ -7,27 +7,27 @@ using StrumentiMusicali.Library.Entity;
 namespace StrumentiMusicali.App.View
 {
     public partial class PagamentiListView :
-		BaseGridViewGeneric<PagamentoItem, ControllerPagamenti, Pagamento>
-	{
-		private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+        BaseGridViewGeneric<PagamentoItem, ControllerPagamenti, Pagamento>
+    {
+        private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
-	 
-		public PagamentiListView(ControllerPagamenti controller)
-			: base(controller)
-		{
+
+        public PagamentiListView(ControllerPagamenti controller)
+            : base(controller)
+        {
 
             onEditItemShowView += ((a, b) =>
             { b.Cancel = false; });
 
         }
 
-		  
-
-		public override void FormatGrid()
-		{
-			
-		}
 
 
-	}
+        public override void FormatGrid()
+        {
+
+        }
+
+
+    }
 }

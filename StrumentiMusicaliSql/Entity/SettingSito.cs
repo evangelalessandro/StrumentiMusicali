@@ -5,10 +5,9 @@ using System.IO;
 
 namespace StrumentiMusicali.Library.Entity
 {
-	public class SettingSito
-	{
-		[Key]
-		public int ID { get; set; } = 1;
+	public class SettingSito : Base.BaseEntity
+    {
+		 
         [MaxLength(200)]
 
         public string UrlSito { get; set; }

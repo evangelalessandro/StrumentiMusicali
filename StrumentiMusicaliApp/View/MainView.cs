@@ -119,6 +119,12 @@ namespace StrumentiMusicali.App
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.DepositoList));
             };
 
+            var rib5 = panel1.Add("Backup ftp", Properties.Resources.Settings);
+            rib5.Click += (s, e) =>
+            {
+                EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingFtpBackup));
+            };
+
         }
         private void AggiungiTabLog()
         {

@@ -481,14 +481,19 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
                 case enAmbiente.SettingSito:
                     return "Impostazioni sito";
+
                 case enAmbiente.SettingDocPagamenti:
                     return "Impostazioni documenti pagamenti";
+
+                case enAmbiente.SettingFtpBackup:
+                    return "Impostazioni ftp backup";
 
                 case enAmbiente.ScaricoMagazzino:
                     return "Scarico Magazzino";
 
                 case enAmbiente.LogViewList:
                     return "Visualizzatore dei log";
+
                 case enAmbiente.SettingStampa:
                     return "Settaggi di stampa fattura";
 
@@ -562,6 +567,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                     frm.Icon = UtilityView.GetIco(Properties.Resources.UnloadWareHouse);
                     break;
                 case enAmbiente.SettingFatture:
+                    frm.Icon = UtilityView.GetIco(Properties.Resources.Settings);
+                    break;
+                case enAmbiente.SettingFtpBackup:
                     frm.Icon = UtilityView.GetIco(Properties.Resources.Settings);
                     break;
                 case enAmbiente.SettingDocPagamenti:

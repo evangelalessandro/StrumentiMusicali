@@ -214,6 +214,10 @@
     <Compile Include="Migrations\201907261541517_PagamentiDocSettingName.Designer.cs">
       <DependentUpon>201907261541517_PagamentiDocSettingName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907291551459_BackupFtpSetting.cs" />
+    <Compile Include="Migrations\201907291551459_BackupFtpSetting.Designer.cs">
+      <DependentUpon>201907291551459_BackupFtpSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Repo\IRepository.cs" />
@@ -275,6 +279,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907261541517_PagamentiDocSettingName.resx">
       <DependentUpon>201907261541517_PagamentiDocSettingName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907291551459_BackupFtpSetting.resx">
+      <DependentUpon>201907291551459_BackupFtpSetting.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

@@ -214,6 +214,10 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                     ApriSettingMittenteFattura();
                     break;
+                case enAmbiente.SettingFtpBackup:
+
+                    ApriSettingFtpBackup();
+                    break;
                 case enAmbiente.SettingSito:
 
                     ApriSettingSito();
@@ -244,6 +248,33 @@ namespace StrumentiMusicali.App.Core.Controllers
                     break;
             }
 
+        }
+
+        private void ApriSettingFtpBackup()
+        {
+            using (UnitOfWork unitOfWork = new UnitOfWork())
+            {
+                
+                var setItem = SettingBackupFtpValidator.ReadSetting();
+                 
+
+                var view = new GenericSettingView(setItem);
+                {
+                    view.OnSave += (a, b) =>
+                    {
+                        using (var cur = new CursorManager())
+                        {
+                            view.Validate();
+                            using (var save = new SaveEntityManager())
+                            {
+                                save.UnitOfWork.SettingBackupFtpRepository.Update(setItem);
+                                save.SaveEntity(enSaveOperation.OpSave);
+                            }
+                        }
+                    };
+                    this.ShowView(view, enAmbiente.SettingFtpBackup);
+                }
+            }
         }
 
         private void ApriSettingDocPagamenti()

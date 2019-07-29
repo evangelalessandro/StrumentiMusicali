@@ -5,10 +5,9 @@ using System.IO;
 
 namespace StrumentiMusicali.Library.Entity
 {
-	public class SettingDocumentiPagamenti
+	public class SettingDocumentiPagamenti : Base.BaseEntity
     {
-		[Key]
-		public int ID { get; set; } = 1;
+		 
         [MaxLength(200)]
  
         public string CartellaReteDocumentiPagamenti { get; set; }

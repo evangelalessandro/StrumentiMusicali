@@ -54,9 +54,10 @@ namespace StrumentiMusicali.Library.View.Enums
 		[UIAmbienteAttribute(false)]
 		UtentiList = 21,
 
+        [UIAmbienteAttribute(false)]
+        SettingFtpBackup = 40,
 
-
-		NonSpecificato = 100,
+        NonSpecificato = 100,
         [UIAmbienteAttribute(false)]
         PagamentiList = 701,
         [UIAmbienteAttribute(true)]

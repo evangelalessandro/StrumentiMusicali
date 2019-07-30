@@ -1,0 +1,13 @@
+﻿SET XACT_ABORT ON
+declare @name nvarchar(50) ='BACKUP_NegozioSM'
+
+  
+BACKUP DATABASE [NegozioSM] TO [BACKUP_NegozioSM] WITH  INIT ,  NOUNLOAD ,  
+NAME = N'Backup di NegozioSM',  SKIP ,  STATS = 10,  NOFORMAT 
+
+DECLARE @i INT
+select @i = position from msdb..backupset 
+where database_name='NegozioSM'and type!='F' 
+and backup_set_id=(select max(backup_set_id) from msdb..backupset where database_name='NegozioSM')
+RESTORE VERIFYONLY FROM  [BACKUP_NegozioSM]  WITH FILE = @i
+	

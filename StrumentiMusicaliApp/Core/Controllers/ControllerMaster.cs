@@ -16,6 +16,7 @@ using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using StrumentiMusicali.Library.View.Enums;
 using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
@@ -103,8 +104,66 @@ namespace StrumentiMusicali.App.Core.Controllers
             }
             using (var mainView = new MainView(this))
             {
+                mainView.Load += MainView_Load;
+                mainView.Disposed += MainView_Disposed;
+
                 this.ShowView(mainView, enAmbiente.Main);
+
+
             }
+        }
+
+        private void MainView_Disposed(object sender, EventArgs e)
+        {
+            if ((sender as UserControl).IsDisposed)
+            {
+                return;
+            }
+            if (!SettingBackupFtpValidator.ScadutoTempoBackup())
+            {
+                return;
+            }
+            var res = MessageManager.QuestionMessage("Vuoi effettuare il backup del database?");
+            if (res)
+            {
+                try
+                {
+                    using (var uof = new UnitOfWork())
+                    {
+                        uof.EseguiBackup();
+
+                        using (var ftpManager = new ftpBackup.Backup.BackupManager())
+                        {
+                            ftpManager.Manage();
+
+                            MessageBox.Show("Backup Effettuato correttamente", "Info", MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageManager.NotificaError("Errore nella fase backup in chiusura", ex);
+
+                }
+            }
+        }
+
+        private void MainView_Load(object sender, EventArgs e)
+        {
+            /*controlla se è stato fatto il backup*/
+            CheckBackup();
+        }
+
+        private void CheckBackup()
+        {
+            
+            if (SettingBackupFtpValidator.ScadutoTempoBackup())
+            {
+                MessageManager.NotificaWarnig("Non sono stati effettuati backup successivi all'ultimo del " + setting.UltimoBackup.ToString());
+            }
+
         }
 
         private void InvioArCSV(InvioArticoliCSV obj)
@@ -254,9 +313,9 @@ namespace StrumentiMusicali.App.Core.Controllers
         {
             using (UnitOfWork unitOfWork = new UnitOfWork())
             {
-                
+
                 var setItem = SettingBackupFtpValidator.ReadSetting();
-                 
+
 
                 var view = new GenericSettingView(setItem);
                 {

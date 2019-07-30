@@ -2,6 +2,7 @@
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Model;
 using System;
+using System.Data.SqlClient;
 using System.Linq;
 
 namespace StrumentiMusicali.Library.Repo
@@ -9,12 +10,12 @@ namespace StrumentiMusicali.Library.Repo
 	public class UnitOfWork : IDisposable
 	{
 		//Our database context
-		private ModelSm dbContext = new ModelSm();
+		public ModelSm dbContext = new ModelSm();
 
 		//Private members corresponding to each concrete repository
 		private Repository<Categoria> _CategorieRepository;
-
-		public IRepository<Categoria> CategorieRepository {
+        
+        public IRepository<Categoria> CategorieRepository {
 			get {
 				if (_CategorieRepository == null)
 				{
@@ -34,7 +35,19 @@ namespace StrumentiMusicali.Library.Repo
 				return _DatiMittenteRepository;
 			}
 		}
+        public void EseguiBackup()
+        {
+            using (var connection = new SqlConnection(this.dbContext.Database.Connection.ConnectionString))
+            {
+                var command = new SqlCommand("dbo.sp_Backup", connection);
 
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                connection.Open();
+
+                command.ExecuteNonQuery();
+            }
+        }
 		private Repository<DatiIntestazioneStampaFattura> _DatiIntestazioneStampaFatturaRepository;
 
 		public IRepository<DatiIntestazioneStampaFattura> DatiIntestazioneStampaFatturaRepository {
@@ -277,7 +290,10 @@ namespace StrumentiMusicali.Library.Repo
 				throw new Exception(ex.InnerException.ToString());
 			}
 		}
-
+        public void ChiamaSp()
+        {
+            
+        }
 		//IDisposible implementation
 		private bool disposed = false;
 

@@ -24,6 +24,18 @@ namespace StrumentiMusicali.App.Settings
                 return setting;
             }
         }
+        public static bool ScadutoTempoBackup()
+        {
+            var setting = SettingBackupFtpValidator.ReadSetting();
+            if (setting.ControllaEsecuzioneBackup > 0)
+            {
+                if (setting.UltimoBackup.Date < DateTime.Now.AddDays(-setting.ControllaEsecuzioneBackup).Date)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
     }
 }

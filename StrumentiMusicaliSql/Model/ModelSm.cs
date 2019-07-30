@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
+using System.Data.SqlClient;
 using System.Linq;
 
 namespace StrumentiMusicali.Library.Model
@@ -56,7 +57,7 @@ namespace StrumentiMusicali.Library.Model
                 var articolo = entityEntry.Entity as Articolo;
                 if (articolo.ID == 0)
                 {
-                    articolo.UpdateTitolo="";
+                    articolo.UpdateTitolo = "";
                 }
                 if (articolo.CategoriaID == 0)
                 {
@@ -64,6 +65,23 @@ namespace StrumentiMusicali.Library.Model
                               new System.Data.Entity.Validation.DbValidationError(
                                   "Categoria",
                               "Occorre specificare la categoria "));
+                }
+            }
+            else if (entityEntry.Entity is SettingBackupFtp)
+            {
+                if (entityEntry.State == EntityState.Modified)
+                {
+                    var newValue = entityEntry.Entity as SettingBackupFtp;
+
+                    var old = Core.Settings.SettingBackupFtpValidator.ReadSetting();
+                    /*se è cambiato il percorso locale del backup lo salvo nei device del db*/
+                    if (old != null
+                        && newValue.BackupSetting.FolderLocalServer != null
+                        && old.BackupSetting.FolderLocalServer != newValue.BackupSetting.FolderLocalServer
+                        && newValue.BackupSetting.FolderLocalServer.Length > 0)
+                    {
+                        AddDeviceBackup(this.Database.Connection.ConnectionString, newValue);
+                    }
                 }
             }
             if (result.ValidationErrors.Count > 0)
@@ -75,7 +93,43 @@ namespace StrumentiMusicali.Library.Model
                 return base.ValidateEntity(entityEntry, items);
             }
         }
+        private static void AddDeviceBackup(string connectionString, SettingBackupFtp a)
+        {
 
+            /*se è cambiata la cartella locale per il backup aggiorno il device backup*/
+
+            if (a.BackupSetting.FolderLocalServer.Length > 0)
+            {
+                if (!a.BackupSetting.FolderLocalServer.EndsWith(@"\"))
+                {
+                    a.BackupSetting.FolderLocalServer += @"\";
+                }
+                 
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    var command = new SqlCommand(Properties.Resource1.AddDeviceBackup, connection);
+                    command.Parameters.AddWithValue("@p0", "BACKUP_NegozioSM");
+                    command.Parameters.AddWithValue("@p1", a.BackupSetting.FolderLocalServer);
+                    connection.Open();
+
+                    command.ExecuteNonQuery();
+
+                    var command1 = new SqlCommand(Properties.Resource1.SpCheckExists, connection);
+                    if ((int)command1.ExecuteScalar()==0)
+                    {
+                        var command2 = new SqlCommand(Properties.Resource1.SpBackup, connection);
+                        command2.CommandType = System.Data.CommandType.Text;
+                        command2.ExecuteNonQuery();
+                    }
+
+                }
+
+                
+
+            }
+
+
+        }
         public static List<DbValidationError> CheckUtenti(Utente utente, EntityState state)
         {
             var list = new List<DbValidationError>();
@@ -143,7 +197,7 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<Articolo>().ToTable("Articoli");
             modelBuilder.Entity<Categoria>().ToTable("Categorie");
 
-           
+
             modelBuilder.Entity<FotoArticolo>().ToTable("FotoArticoli");
 
             modelBuilder.Entity<Fattura>().ToTable("Fatture");
@@ -152,7 +206,7 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<Utente>().ToTable("Utenti");
             //modelBuilder.Entity<SettingSito>().ToTable("SettingSito");
             modelBuilder.Entity<SettingBackupFtp>().ToTable("SettingBackupFtp");
-            
+
 
 
             modelBuilder.Entity<Cliente>().ToTable("Clienti");
@@ -165,7 +219,7 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<Articolo>().Property(e => e.PrezzoBarrato).HasPrecision(19, 2);
 
             modelBuilder.Entity<Categoria>()
-           .HasIndex(b => new { b.Nome,b.Codice,b.Reparto})
+           .HasIndex(b => new { b.Nome, b.Codice, b.Reparto })
            .IsUnique();
         }
 
@@ -181,7 +235,7 @@ namespace StrumentiMusicali.Library.Model
         public virtual DbSet<FattureGenerateInvio> FattureGenerate { get; set; }
         public virtual DbSet<SettingBackupFtp> SettingBackupFtp { get; set; }
 
-        
+
         public virtual DbSet<Cliente> Clienti { get; set; }
 
         public virtual DbSet<Utente> Utenti { get; set; }

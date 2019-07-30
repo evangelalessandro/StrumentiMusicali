@@ -158,7 +158,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private void CheckBackup()
         {
-            
+            var setting = SettingBackupFtpValidator.ReadSetting();
             if (SettingBackupFtpValidator.ScadutoTempoBackup())
             {
                 MessageManager.NotificaWarnig("Non sono stati effettuati backup successivi all'ultimo del " + setting.UltimoBackup.ToString());

@@ -20,7 +20,7 @@ namespace testConsole
             var back = new BackupManager();
             back.Manage();
             var obj = new StrumentiMusicali.Library.Model.ModelSm();
-            obj.sql
+            //obj.sql
         }
     }
 }

@@ -139,7 +139,7 @@ declare @name nvarchar(50) ='BACKUP_NegozioSM'
 
 
 BACKUP DATABASE [NegozioSM] TO [BACKUP_NegozioSM] WITH  INIT ,  NOUNLOAD ,  
-NAME = N'Backup di NegozioSM',  SKIP ,  STATS = 10,  NOFORMAT 
+NAME = N'Backup di NegozioSM',  SKIP ,  STATS = 10,COMPRESSION,  NOFORMAT 
 
 DECLARE @i INT
 select @i = position from msdb..backupset 

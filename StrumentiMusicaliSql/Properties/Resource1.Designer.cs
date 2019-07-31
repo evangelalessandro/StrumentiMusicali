@@ -88,13 +88,13 @@ namespace StrumentiMusicali.Library.Properties {
         ///
         ///
         ///BACKUP DATABASE [NegozioSM] TO [BACKUP_NegozioSM] WITH  INIT ,  NOUNLOAD ,  
-        ///NAME = N&apos;Backup di NegozioSM&apos;,  SKIP ,  STATS = 10,  NOFORMAT 
+        ///NAME = N&apos;Backup di NegozioSM&apos;,  SKIP ,  STATS = 10,COMPRESSION,  NOFORMAT 
         ///
         ///DECLARE @i INT
         ///select @i = position from msdb..backupset 
         ///where database_name=&apos;NegozioSM&apos;and type!=&apos;F&apos; 
         ///and backup_set_id=(select max(backup_set_id) from msdb..backupset where database_name=&apos;NegozioSM&apos;)
-        ///RESTORE VERIFYONLY FROM  [BACKUP_NegozioSM]  W [stringa troncata]&quot;;.
+        ///RESTORE VERIFYONLY FROM  [BACKUP_N [stringa troncata]&quot;;.
         /// </summary>
         internal static string SpBackup {
             get {

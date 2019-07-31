@@ -23,7 +23,14 @@ namespace StrumentiMusicali.App.View.BaseControl.ElementiDettaglio
             ControlToBind.Dock = DockStyle.Fill;
             ControlToBind.BringToFront();
         }
+        public void ModalitaLibera()
+        {
+            cboClienteID.Properties.ValueMember = "";
+            cboClienteID.Properties.DisplayMember = "";
+            cboClienteID.Properties.AcceptEditorTextAsNewValue = DevExpress.Utils.DefaultBoolean.True;
+            cboClienteID.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
 
+        }
         public void SetList(object list)
         {
             cboClienteID.Properties.DataSource = list;

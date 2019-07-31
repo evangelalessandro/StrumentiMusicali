@@ -9,6 +9,9 @@ namespace StrumentiMusicali.Library.Migrations
         {
             AddColumn("dbo.SettingBackupFtp", "Porta", c => c.Int(nullable: false));
             AlterColumn("dbo.SettingBackupFtp", "BaseFolder", c => c.String());
+            Sql("update Articoli   set Strumento_Nome ='' WHERE (Strumento_Nome IS NULL) ");
+            Sql("update Articoli   set Strumento_Rivenditore = LTRIM(rtrim(Strumento_Rivenditore))" +
+                " where Strumento_Rivenditore<> LTRIM(rtrim(Strumento_Rivenditore)) ");
         }
         
         public override void Down()

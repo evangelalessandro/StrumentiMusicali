@@ -190,6 +190,7 @@ namespace StrumentiMusicali.Library.Entity
         [MaxLength(100)]
         public string TitoloDelLibro { get; set; }
         [MaxLength(20)]
+        [CustomUIViewAttribute( Combo = TipoDatiCollegati.LibroAutore, ComboLibera = true)]
         public string Autore { get; set; }
         [MaxLength(20)]
         public string Edizione { get; set; }
@@ -206,11 +207,11 @@ namespace StrumentiMusicali.Library.Entity
 
     public class StrumentoAcc : INotifyPropertyChanged
     {
-        [CustomUIViewAttribute(Width = 150, Ordine = 20)]
+        [CustomUIViewAttribute(Width = 150, Ordine = 20,Combo =TipoDatiCollegati.Marca,ComboLibera =true)]
         [MaxLength(100)]
         public string Marca { get; set; } = "";
 
-        [CustomUIViewAttribute(Width = 150, Ordine = 30)]
+        [CustomUIViewAttribute(Width = 150, Ordine = 30, Combo = TipoDatiCollegati.Modello, ComboLibera = true)]
         [MaxLength(100)]
         public string Modello { get; set; } = "";
 
@@ -218,16 +219,16 @@ namespace StrumentiMusicali.Library.Entity
         [MaxLength(100)]
         public string CodiceOrdine { get; set; } = "";
 
-        [CustomUIViewAttribute(Ordine = 50)]
+        [CustomUIViewAttribute(Ordine = 50, Combo = TipoDatiCollegati.Rivenditore, ComboLibera = true)]
         [MaxLength(100)]
         public string Rivenditore { get; set; } = "";
 
-        [CustomUIViewAttribute(Ordine = 60)]
+        [CustomUIViewAttribute(Ordine = 60, Combo = TipoDatiCollegati.Colore, ComboLibera = true)]
         [MaxLength(50)]
         public string Colore { get; set; } = "";
 
 
-        [CustomUIViewAttribute(Ordine = 70,Titolo ="Nome strumento")]
+        [CustomUIViewAttribute(Ordine = 70,Titolo ="Nome strumento", Combo = TipoDatiCollegati.NomeStrumento, ComboLibera = true)]
         [MaxLength(50)]
         public string Nome { get; set; } = "";
 

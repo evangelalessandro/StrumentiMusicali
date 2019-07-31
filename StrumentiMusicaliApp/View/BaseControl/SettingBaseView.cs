@@ -170,7 +170,49 @@ namespace StrumentiMusicali.App.View.BaseControl
                         break;
                     case TipoDatiCollegati.Categorie:
                         {
-                            var list = uof.CategorieRepository.Find(a => true).Select(a => new { a.ID, Descrizione = a.Reparto + " - " + a.Nome + " - " + a.Codice }).ToList();
+                            var list = uof.CategorieRepository.Find(a => true).Select(a => new { a.ID, Descrizione = a.Reparto + " - " + a.Nome + " - " + a.Codice }).OrderBy(a => a.Descrizione).ToList();
+
+                            artCNT.SetList(list);
+                        }
+                        break;
+                    case TipoDatiCollegati.Marca:
+                        {
+                            var list = uof.ArticoliRepository.Find(a => true).Select(a => a.Strumento.Marca ).Distinct().OrderBy(a=>a).ToList();
+
+                            artCNT.SetList(list);
+                        }
+                        break;
+                    case TipoDatiCollegati.NomeStrumento:
+                        {
+                            var list = uof.ArticoliRepository.Find(a => true).Select(a => a.Strumento.Nome).Distinct().OrderBy(a => a).ToList();
+
+                            artCNT.SetList(list);
+                        }
+                        break;
+                    case TipoDatiCollegati.LibroAutore:
+                        {
+                            var list = uof.ArticoliRepository.Find(a => true).Select(a => a.Libro.Autore).Distinct().OrderBy(a => a).ToList();
+
+                            artCNT.SetList(list);
+                        }
+                        break;
+                    case TipoDatiCollegati.Rivenditore:
+                        {
+                            var list = uof.ArticoliRepository.Find(a => true).Select(a => a.Strumento.Rivenditore.Trim()).Distinct().OrderBy(a => a).ToList();
+
+                            artCNT.SetList(list);
+                        }
+                        break;
+                    case TipoDatiCollegati.Colore:
+                        {
+                            var list = uof.ArticoliRepository.Find(a => true).Select(a => a.Strumento.Colore.Trim()).Distinct().OrderBy(a => a).ToList();
+
+                            artCNT.SetList(list);
+                        }
+                        break;
+                    case TipoDatiCollegati.Modello:
+                        {
+                            var list = uof.ArticoliRepository.Find(a => true).Select(a => a.Strumento.Modello).Distinct().OrderBy(a => a).ToList();
 
                             artCNT.SetList(list);
                         }
@@ -178,7 +220,7 @@ namespace StrumentiMusicali.App.View.BaseControl
                     case TipoDatiCollegati.Articoli:
                         {
                             var list = uof.ArticoliRepository.Find(a => true).Select(a => new { a.ID, a.Titolo, a.Prezzo }).ToList()
-                                .Select(a => new { a.ID, Descrizione = a.Titolo, Prezzo = a.Prezzo }).ToList();
+                                .Select(a => new { a.ID, Descrizione = a.Titolo, Prezzo = a.Prezzo }).OrderBy(a => a.Descrizione).ToList();
 
                             artCNT.SetList(list);
                         }
@@ -195,6 +237,10 @@ namespace StrumentiMusicali.App.View.BaseControl
                         break;
                 }
                 artCNT.Titolo = titolo;
+                if (widthAttr.ComboLibera)
+                {
+                    artCNT.ModalitaLibera();
+                }
                 flowLayoutPanel1.Controls.Add(artCNT);
 
                 newControl = artCNT;

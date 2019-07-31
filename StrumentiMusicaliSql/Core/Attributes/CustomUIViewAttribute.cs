@@ -26,6 +26,8 @@ namespace StrumentiMusicali.Library.Core
 
 		public TipoDatiCollegati Combo { get; set; } = TipoDatiCollegati.Nessuno;
 
+        public bool ComboLibera { get; set; } = false;
+
         public bool Enable { get; set; } = true;
 
         public string Titolo { get; set; } = "";
@@ -39,8 +41,14 @@ namespace StrumentiMusicali.Library.Core
 		Clienti,
 		Categorie,
 		Condizione,
-        Articoli
-	}
+        Articoli,
+        Marca,
+        Modello,
+        Rivenditore,
+        Colore,
+        NomeStrumento,
+        LibroAutore
+    }
 	 
 
 }

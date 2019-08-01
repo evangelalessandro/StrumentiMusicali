@@ -11,7 +11,8 @@ namespace StrumentiMusicali.Library.Core
 
 		public int Width { get; set; } = 200;
 
-		public int MultiLine { get; set; } = 0;
+        public bool Money { get; set; } = false;
+        public int MultiLine { get; set; } = 0;
 
 		/// <summary>
 		/// ordine di visualizzazione nella form
@@ -33,6 +34,8 @@ namespace StrumentiMusicali.Library.Core
         public string Titolo { get; set; } = "";
 
         public bool ShowGroupName { get; set; } = true;
+
+        public string Category { get; set; } = "Generale";
 
     }
     public enum TipoDatiCollegati

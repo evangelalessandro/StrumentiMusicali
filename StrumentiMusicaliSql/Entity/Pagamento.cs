@@ -74,12 +74,12 @@ namespace StrumentiMusicali.Library.Entity
         //public event PropertyChangedEventHandler PropertyChanged;
 
         [Required]
-        [CustomUIViewAttribute(Width = 100, Ordine = 60)]
+        [CustomUIViewAttribute(Width = 100, Ordine = 60,Money =true, Category = "Importi")]
         public decimal ImportoTotale { get; set; }
 
 
         [Required]
-        [CustomUIViewAttribute(Width = 100, Ordine = 65, Titolo = "Data Inizio")]
+        [CustomUIViewAttribute(Width = 100, Ordine = 65, DateView =true, Titolo = "Data Inizio", Category = "Date")]
         public DateTime DataInizio { get; set; } = DateTime.Now;
 
         [NotMapped]
@@ -107,14 +107,14 @@ namespace StrumentiMusicali.Library.Entity
         public Boolean ShowImportoResiduo { get { return ShowImportoRata; } }
 
         [Required]
-        [CustomUIViewAttribute(Width = 100, Ordine = 70)]
+        [CustomUIViewAttribute(Width = 100, Ordine = 70, Money = true,Category ="Importi")]
         public decimal ImportoRata { get; set; }
         [Required]
-        [CustomUIViewAttribute(Width = 100, Ordine = 75, Titolo = "Data pagamento rata")]
+        [CustomUIViewAttribute(Width = 100, Ordine = 75,  DateView = true, Titolo = "Data pagamento rata", Category = "Date")]
         public DateTime DataRata { get; set; } = DateTime.Now;
 
         [Required]
-        [CustomUIViewAttribute(Width = 100, Ordine = 80)]
+        [CustomUIViewAttribute(Width = 100, Ordine = 80, Money = true, Category = "Importi")]
         public decimal ImportoResiduo { get; set; }
 
         [Required]

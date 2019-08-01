@@ -2,7 +2,7 @@
 
 namespace StrumentiMusicali.App.View.Settings
 {
-    public class GenericSettingView : SettingBaseView
+    public class GenericSettingView : SettingBaseViewVgrid
     {
         object _itemToBind;
         public GenericSettingView(object itemToBind)

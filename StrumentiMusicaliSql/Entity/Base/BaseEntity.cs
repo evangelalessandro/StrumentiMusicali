@@ -1,11 +1,14 @@
-﻿using StrumentiMusicali.Library.Core;
+﻿using PropertyChanged;
+using StrumentiMusicali.Library.Core;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StrumentiMusicali.Library.Entity.Base
 {
-	public class BaseEntity 
+
+    [AddINotifyPropertyChangedInterface]
+    public class BaseEntity 
     {
         public BaseEntity()
         {
@@ -15,9 +18,9 @@ namespace StrumentiMusicali.Library.Entity.Base
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int ID { get; set; }
-		[CustomUIViewAttribute(DateTimeView =true,Width =200,Enable =false)]
-		public DateTime DataCreazione { get; set; } = DateTime.Now;
-		[CustomUIViewAttribute(DateTimeView = true, Width = 200,Enable =false)]
+		[CustomUIViewAttribute(DateTimeView =true,Width =200,Enable =false,Category ="Info record")]
+        public DateTime DataCreazione { get; set; } = DateTime.Now;
+		[CustomUIViewAttribute(DateTimeView = true, Width = 200,Enable =false, Category = "Info record")]
 		public DateTime DataUltimaModifica { get; set; } = DateTime.Now;
 
         

@@ -31,12 +31,12 @@ namespace StrumentiMusicali.Library.Entity
 
         }
 
-        [CustomUIViewAttribute(Ordine = 6)]
+        [CustomUIViewAttribute(Ordine = 6, Category = "Online")]
         public bool BoxProposte { get; set; }
 
-        [CustomUIViewAttribute(Ordine = 7,Titolo = "Carica in ECommerce")]
+        [CustomUIViewAttribute(Ordine = 7,Titolo = "Carica in E-Commerce",Category ="Online")]
         public bool CaricainECommerce { get; set; } = true;
-        [CustomUIViewAttribute(Ordine = 8, Titolo = "Carica in Mercatino")]
+        [CustomUIViewAttribute(Ordine = 8, Titolo = "Carica in Mercatino", Category = "Online")]
         public bool CaricaInMercatino { get; set; } = true;
 
         [CustomUIViewAttribute(Width = 350, Ordine = 1, Combo = TipoDatiCollegati.Categorie,Titolo ="Categoria")]
@@ -61,25 +61,25 @@ namespace StrumentiMusicali.Library.Entity
         [CustomHideUIAttribute]
         public bool Pinned { get; set; }
 
-        [CustomUIViewAttribute(Width = 80, Ordine = 39)]
+        [CustomUIViewAttribute(Width = 80, Ordine = 39, Category = "Prezzo",Money =true)]
         [Required]
         public decimal Prezzo { get; set; } = 0;
 
-        [CustomUIViewAttribute(Width = 80, Ordine = 41)]
+        [CustomUIViewAttribute(Width = 80, Ordine = 41, Category = "Prezzo", Money = true)]
         [Required]
         public bool NonImponibile { get; set; } = false;
 
-        [CustomUIViewAttribute(Width = 60, Ordine = 44)]
+        [CustomUIViewAttribute(Width = 60, Ordine = 44, Category = "Prezzo", Money = true)]
         public bool PrezzoARichiesta { get; set; } = false;
 
-        [CustomUIViewAttribute(Width = 60, Ordine = 45)]
+        [CustomUIViewAttribute(Width = 60, Ordine = 45, Category = "Prezzo", Money = true)]
         public decimal PrezzoBarrato { get; set; } = 0;
 
-        [CustomUIViewAttribute(Width = 80, Ordine = 40)]
+        [CustomUIViewAttribute(Width = 80, Ordine = 40,Category ="Prezzo", Money = true)]
         public decimal PrezzoAcquisto { get; set; } = 0;
 
         [MaxLength(2000)]
-        [CustomUIViewAttribute(Width = 500, Ordine = 111, MultiLine = 4,Titolo ="Testo annuncio")]
+        [CustomUIViewAttribute(Width = 500, Ordine = 111, MultiLine = 4,Titolo ="Testo annuncio", Category = "Online")]
         public string Testo { get; set; }
 
         [CustomUIViewAttribute(Width = 500, Ordine = 3,Titolo ="Titolo annuncio")]
@@ -89,10 +89,10 @@ namespace StrumentiMusicali.Library.Entity
             set;
         }
 
-        [CustomUIViewAttribute(Ordine = 5)]
+        [CustomUIViewAttribute(Ordine = 5, Category = "Online")]
         public bool UsaAnnuncioTurbo { get; set; }
 
-        [CustomUIViewAttribute(Ordine = 20)]
+        [CustomUIViewAttribute(Ordine = 20, Category = "Note")]
         [MaxLength(100)]
         [AlsoNotifyFor("UpdateTitolo")]
         public string Note1 {
@@ -100,11 +100,11 @@ namespace StrumentiMusicali.Library.Entity
             set;
         }
 
-        [CustomUIViewAttribute(Ordine = 21)]
+        [CustomUIViewAttribute(Ordine = 21, Category = "Note")]
         [MaxLength(100)]
         public string Note2 { get; set; } = "";
 
-        [CustomUIViewAttribute(Ordine = 22)]
+        [CustomUIViewAttribute(Ordine = 22, Category = "Note")]
         [MaxLength(100)]
         public string Note3 { get; set; } = "";
         
@@ -136,7 +136,7 @@ namespace StrumentiMusicali.Library.Entity
         }
 
         [NotMapped]
-        [CustomUIViewAttribute(Width = 80, Ordine = 50, Enable = false)]
+        [CustomUIViewAttribute(Width = 80, Ordine = 50, Enable = false, Category = "Magazzino",Titolo ="Quantità in negozio")]
         public int QtaNegozio { get; set; } = 0;
         [NotMapped]
         [AlsoNotifyFor("Titolo")]

@@ -112,6 +112,10 @@
     </Reference>
     <Reference Include="DevExpress.XtraEditors.v18.1.Design">
     </Reference>
+    <Reference Include="DevExpress.XtraVerticalGrid.v18.1, Version=18.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\DevExpress_18\DevExpress.XtraVerticalGrid.v18.1.dll</HintPath>
+    </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
@@ -277,6 +281,9 @@
     <Compile Include="Settings\SettingBackupFtpValidator.cs" />
     <Compile Include="Settings\SettingDocumentiPagamentiValidator.cs" />
     <Compile Include="View\Articoli\RicercaArticoliStyleView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\BaseControl\SettingBaseViewVgrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\EditorListImmagini.cs">

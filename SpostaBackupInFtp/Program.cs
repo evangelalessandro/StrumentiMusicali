@@ -18,8 +18,22 @@ namespace SpostaBackupInFtp
            
             ConfigureNLog();
 
+            
             _logger.Warn("Avvio del processo di spostamento backup");
 
+            if (Environment.GetCommandLineArgs().Where(a => a == "NoBackup").Count() == 0)
+            {
+                try
+                {
+                    EseguiBackup();
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error(ex,"Generazione backup", null);
+                    return (int)ExitCode.Error;
+                }
+                
+            }
             using (var back = new BackupManager())
             {
                 if (back.Manage())
@@ -27,6 +41,14 @@ namespace SpostaBackupInFtp
                     return (int)ExitCode.Success;
                 }
                 return (int)ExitCode.Error;
+            }
+        }
+        private static void EseguiBackup()
+        {
+            using (var uof = new UnitOfWork())
+            {
+                uof.EseguiBackup();
+               
             }
         }
         enum ExitCode : int

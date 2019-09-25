@@ -7,7 +7,15 @@ namespace StrumentiMusicali.Library.Migrations
     {
         public override void Up()
         {
-            RenameTable(name: "dbo.SettingSito", newName: "SettingSitoes");
+            Sql(
+                "IF object_id('[dbo.SettingSitoes]') IS NOT NULL BEGIN " +
+
+    " EXECUTE sp_rename @objname = N'dbo.SettingSito', " +
+   " @newname = N'SettingSitoes' " +
+" end "+
+"IF object_id('[PK_dbo.SettingSito]') IS NOT NULL BEGIN " +
+"    EXECUTE sp_rename @objname = N'[PK_dbo.SettingSito]', @newname = N'PK_dbo.SettingSitoes' " +
+"END");
         }
         
         public override void Down()

@@ -1,4 +1,5 @@
-﻿using StrumentiMusicali.Library.Entity;
+﻿using ClosedXML.Excel;
+using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,15 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
 {
     public class StampaPagamento : IDisposable
     {
-        private ClosedXML.Excel.XLWorkbook _excel;
+        private ClosedXML.Excel.XLWorkbook _wb;
+        private ClosedXML.Excel.IXLWorksheet _ws;
         public StampaPagamento()
         {
 
-            _excel = new ClosedXML.Excel.XLWorkbook(Path.Combine(Application.StartupPath
+            _wb = new ClosedXML.Excel.XLWorkbook(Path.Combine(Application.StartupPath
                 , @"TemplateExcel\ProtoPagamento.xlsx"));
+            _ws = _wb.Worksheet(1);
+
         }
         public void Stampa(Pagamento pagamentoSel)
         {
@@ -37,19 +41,19 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
 
             var newfile = Path.Combine(System.IO.Path.GetTempPath(),
                 DateTime.Now.Ticks.ToString() + "_Pag.xlsx");
-            _excel.SaveAs(newfile);
+            _wb.SaveAs(newfile);
             Process.Start(newfile);
         }
 
 
         private void ImpostaCampiTestata(Pagamento pagamento)
         {
-            _excel.Range("Nome").Value = pagamento.Nome + " " + pagamento.Cognome;
+            _wb.Range("Nome").Value = pagamento.Nome + " " + pagamento.Cognome;
 
-            _excel.Range("Articolo").Value = pagamento.ArticoloAcq;
-            _excel.Range("ImportoRata").Value = pagamento.ImportoRata;
-            _excel.Range("ImportoResiduo").Value = pagamento.ImportoResiduo;
-            _excel.Range("ImportoTotale").Value = pagamento.ImportoTotale;
+            _wb.Range("Articolo").Value = pagamento.ArticoloAcq;
+            _wb.Range("ImportoRata").Value = pagamento.ImportoRata;
+            _wb.Range("ImportoResiduo").Value = pagamento.ImportoResiduo;
+            _wb.Range("ImportoTotale").Value = pagamento.ImportoTotale;
 
         }
 
@@ -72,21 +76,28 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
                 ImpostaValoreRiga(rigaIniziale, colImportoResiduo, item.ImportoResiduo.ToString("C2"));
 
                 rigaIniziale++;
+               
             }
         }
 
         private void ImpostaValoreRiga(
             int riga, int colonna, object valore)
         {
-            _excel.Range("Righe").Range(riga, colonna, riga, colonna).Value = valore;
+            if (_wb.Range("Righe").LastRow().RowNumber()-_wb.Range("Righe").FirstRow().RowNumber() == riga)
+            {
+                IXLRow row1 = _ws.Row(riga+ _wb.Range("Righe").FirstRow().RowNumber()); 
+                row1.InsertRowsAbove(1);
+            }
+            _wb.Range("Righe").Range(riga, colonna, riga, colonna).Value = valore;
+            
         }
 
 
         public void Dispose()
         {
-            if (_excel != null)
-                _excel.Dispose();
-            _excel = null;
+            if (_wb != null)
+                _wb.Dispose();
+            _wb = null;
         }
     }
 }

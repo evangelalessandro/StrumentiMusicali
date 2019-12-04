@@ -19,7 +19,11 @@ namespace StrumentiMusicali.Library.Core.Item
 			 
 			PIVA= item.PIVA;
 			RagioneSociale= item.RagioneSociale;
-			Via= item.Indirizzo.IndirizzoConCivico;
+			if (RagioneSociale.Length==0)
+            {
+                RagioneSociale = item.Cognome + " " + item.Nome;
+            }
+            Via = item.Indirizzo.IndirizzoConCivico;
 			DataCreazione = item.DataCreazione;
 			Citta= item.Indirizzo.Citta;
 			Telefono= item.Telefono;

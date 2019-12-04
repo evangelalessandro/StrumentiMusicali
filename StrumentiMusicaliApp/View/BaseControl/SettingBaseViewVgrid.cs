@@ -251,6 +251,8 @@ namespace StrumentiMusicali.App.View.BaseControl
                 num.Mask.UseMaskAsDisplayFormat = true;
                 num.Mask.EditMask = "D";
                 row.Properties.RowEdit = num;
+                num.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
+                num.AppearanceDisabled.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
 
             }
             else if (item.PropertyType.FullName.Contains("DateTime"))

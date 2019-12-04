@@ -107,7 +107,22 @@ namespace StrumentiMusicali.App.View
 
         private void FillCliente(UnitOfWork uof)
         {
-            cboClienteID.Properties.DataSource = uof.ClientiRepository.Find(a => true).Select(a => new { a.ID, RagioneSociale = a.RagioneSociale + " " + a.PIVA }).Distinct().ToList().ToArray();
+            var clienti= uof.ClientiRepository.Find(a => true).Select(a => new { a.ID, 
+                RagioneSociale = a.RagioneSociale ,a.PIVA,
+                a.CodiceFiscale, a.Nome, a.Cognome })
+                .Distinct().ToList().ToArray();
+            var clientiDati = clienti.Select(a => new
+            {
+                a.ID,
+                RagioneSociale = 
+                (!string.IsNullOrEmpty( a.RagioneSociale) && a.RagioneSociale.Length>0 
+                        ?   a.RagioneSociale + "  " :  
+                            a.Cognome + " " + a.Nome + "  ")
+                 + (!string.IsNullOrEmpty( a.PIVA) 
+                 && a.PIVA.Length>0 
+                        ? a.PIVA :a.CodiceFiscale)
+            }).ToList();
+            cboClienteID.Properties.DataSource = clientiDati;
             cboClienteID.Properties.ValueMember = "ID";
             cboClienteID.Properties.DisplayMember = "RagioneSociale";
             cboClienteID.Properties.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.AutoFilter;
@@ -221,20 +236,51 @@ namespace StrumentiMusicali.App.View
                 ord.OrderTab(pnl3Basso);
             }
         }
-
+        int prevCliente = -1;
         private void CboClienteID_EditValueChanged(object sender, EventArgs e)
         {
             var valCli = (int)cboClienteID.EditValue;
-            using (var uof = new UnitOfWork())
+            if (valCli == 0)
+                return;
+            if (prevCliente == valCli)
+                return;
+            try
             {
-                var cliente = uof.ClientiRepository.Find(a => a.ID == valCli).FirstOrDefault();
+                cboClienteID.EditValueChanged -= CboClienteID_EditValueChanged;
 
-                var item = (_controllerFatturazione.EditItem);
-                item.RagioneSociale = cliente.RagioneSociale;
-                item.PIVA = cliente.PIVA;
+                prevCliente = valCli;
 
-                Debug.WriteLine(cliente.RagioneSociale);
-                this.Validate();
+                using (var uof = new UnitOfWork())
+                {
+                    var cliente = uof.ClientiRepository.Find(a => a.ID == valCli).FirstOrDefault();
+
+                    var item = (_controllerFatturazione.EditItem);
+
+                    item.RagioneSociale = cliente.RagioneSociale;
+
+                    if (string.IsNullOrEmpty( cliente.RagioneSociale))
+                    { 
+                        item.RagioneSociale = cliente.Cognome + " " + cliente.Nome;
+                    }
+                    item.PIVA = cliente.PIVA;
+                    if (string.IsNullOrEmpty(cliente.PIVA))
+                    {
+                        item.PIVA = cliente.CodiceFiscale;
+                    }
+                    Debug.WriteLine(item.RagioneSociale);
+                    this.Validate();
+                    cboClienteID.EditValue=valCli;
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                _controllerFatturazione._logger.Error(ex, "Combo cliente fattura");
+            }
+            finally
+            {
+                cboClienteID.EditValueChanged += CboClienteID_EditValueChanged;
+
             }
         }
 

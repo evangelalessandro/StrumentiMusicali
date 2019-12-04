@@ -18,7 +18,7 @@ namespace StrumentiMusicali.Library.Entity
 		public decimal Importo { get { return PrezzoUnitario * Qta; } set { } }
 
 		[Required]
-		[CustomUIViewAttribute(Width = 100,Ordine =4)]
+		[CustomUIViewAttribute(Width = 100,Ordine =4,Money =true)]
 		public decimal PrezzoUnitario { get; set; }
 		[CustomUIViewAttribute(Width = 40, Ordine = 5)]
 		public string IvaApplicata { get; set; }

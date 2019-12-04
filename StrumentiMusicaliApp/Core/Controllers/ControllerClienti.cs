@@ -93,6 +93,10 @@ namespace StrumentiMusicali.App.Core.Controllers
                     list = uof.ClientiRepository.Find(a =>
                     a.RagioneSociale.Contains(TestoRicerca)
                         ||
+                    a.Nome.Contains(TestoRicerca)
+                    ||
+                    a.Cognome.Contains(TestoRicerca)
+                    ||
                     a.PIVA.Contains(TestoRicerca)
                         ||
                         a.Telefono.Contains(TestoRicerca)

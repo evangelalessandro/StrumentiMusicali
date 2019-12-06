@@ -14,8 +14,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StrumentiMusicali.App.View.BaseControl
 {
@@ -115,7 +113,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 
             vGrid.RowHeaderWidth = maxRowHeaderWidth;
             //vGrid.RecordWidth = maxRecordWidth;
-             
+
         }
 
         public int CalcBestRecordWidth(VGridControl vertGrid)

@@ -2,7 +2,7 @@
 
 namespace StrumentiMusicali.Library.Core.Events.Generics
 {
-	public class ValidateViewEvent<TEntity> where TEntity : BaseEntity
-	{
-	}
+    public class ValidateViewEvent<TEntity> where TEntity : BaseEntity
+    {
+    }
 }

@@ -132,7 +132,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             using (var uof = new UnitOfWork())
             {
                 var setting = SettingDocumentiPagamentiValidator.ReadSetting();
-                
+
 
                 var imageList = uof.PagamentoDocumentiRepository.Find(a => a.IDPagamentoMaster == _IDPagamentoMaster)
                     .OrderBy(a => a.Ordine).ToList();

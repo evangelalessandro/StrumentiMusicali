@@ -1,6 +1,4 @@
-﻿
-using FatturaElettronica;
-using FatturaElettronica.Defaults;
+﻿using FatturaElettronica.Defaults;
 using FatturaElettronica.Ordinaria;
 using FatturaElettronica.Ordinaria.FatturaElettronicaBody;
 using FatturaElettronica.Validators;

@@ -1,6 +1,6 @@
 ﻿namespace StrumentiMusicali.Library.Core.Events.Articoli
 {
-	public class ImportArticoliCSVMercatino
-	{
-	}
+    public class ImportArticoliCSVMercatino
+    {
+    }
 }

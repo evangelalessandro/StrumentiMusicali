@@ -2,7 +2,6 @@
 using StrumentiMusicali.App.View.BaseControl.ElementiDettaglio;
 using StrumentiMusicali.Library.Repo;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -21,7 +20,7 @@ namespace StrumentiMusicali.App.View
             _combo.Titolo = "Marca";
             _combo.Controllo.Properties.Appearance.Font = this.Font;
             _combo.Controllo.Properties.NullText = "Selezionare un elemento";
-          
+
             _combo.Controllo.EditValueChanged += LookUpEdit1_EditValueChanged;
             using (var uof = new UnitOfWork())
             {
@@ -39,8 +38,8 @@ namespace StrumentiMusicali.App.View
             this.button1.Click += Button1_Click;
         }
 
-    
-        
+
+
 
         private void LookUpEdit1_EditValueChanged(object sender, EventArgs e)
         {
@@ -70,7 +69,7 @@ namespace StrumentiMusicali.App.View
         private void Controllo_EditValueChanged(object sender, EventArgs e)
         {
             button1.Enabled = true;
-            if (_combo.Controllo.EditValue!=null)
+            if (_combo.Controllo.EditValue != null)
                 Marca = _combo.Controllo.EditValue.ToString();
             this.Text = "Marca seleziona: " + Marca;
         }

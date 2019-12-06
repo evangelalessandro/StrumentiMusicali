@@ -1,7 +1,6 @@
 ﻿using StrumentiMusicali.Library.Core;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
 
 namespace StrumentiMusicali.Library.Entity
 {
@@ -23,18 +22,18 @@ namespace StrumentiMusicali.Library.Entity
         [CustomUIView(Ordine = 20)]
         public string BaseFolder { get; set; } = "/Backup";
 
-        [CustomUIView(Ordine = 21,Titolo ="Numero massimo Megabyte in ftp")]
+        [CustomUIView(Ordine = 21, Titolo = "Numero massimo Megabyte in ftp")]
         public int MaxMbFileInFtp { get; set; } = 200;
         public BackupSetting BackupSetting { get; set; } = new BackupSetting();
-        [CustomUIView(DateTimeView   =true,Enable =false,Ordine =40)]
-        public DateTime UltimoBackup { get; set; } = new DateTime(1900,1,1);
+        [CustomUIView(DateTimeView = true, Enable = false, Ordine = 40)]
+        public DateTime UltimoBackup { get; set; } = new DateTime(1900, 1, 1);
         [CustomUIView(DateTimeView = true, Enable = false, Ordine = 41)]
         public DateTime UltimaCancellazioneBackup { get; set; } = new DateTime(1900, 1, 1);
 
         [CustomUIView(Ordine = 50, Titolo = "Controlla se non è stato effettuato il backup dopo x giorni (0 = mai)")]
         public int ControllaEsecuzioneBackup { get; set; } = 0;
 
-        
+
     }
 
     public class BackupSetting

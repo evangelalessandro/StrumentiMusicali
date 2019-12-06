@@ -1,13 +1,10 @@
-﻿using StrumentiMusicali.Library.Core;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace StrumentiMusicali.Library.Entity
 {
-	public class SettingSito : Base.BaseEntity
+    public class SettingSito : Base.BaseEntity
     {
-		 
+
         [MaxLength(200)]
 
         public string UrlSito { get; set; }
@@ -17,7 +14,7 @@ namespace StrumentiMusicali.Library.Entity
         [MaxLength(200)]
 
         public string CartellaLocaleImmagini { get; set; }
-        
+
         [MaxLength(200)]
 
         public string SoloNomeFileMercatino { get; set; }
@@ -30,6 +27,6 @@ namespace StrumentiMusicali.Library.Entity
         [MaxLength(200)]
         public string UrlCompletoFileEcommerce { get; set; }
 
-		 
-	}
+
+    }
 }

@@ -5,12 +5,12 @@ namespace StrumentiMusicali.Library.Core.Events.Image
 {
     public class ImageArticoloRemove : FilterControllerEvent
     {
-		public ImageArticoloRemove(FotoArticolo fotoArticolo, interfaces.IKeyController controller)
+        public ImageArticoloRemove(FotoArticolo fotoArticolo, interfaces.IKeyController controller)
             : base(controller)
         {
             FotoArticolo = fotoArticolo;
-		}
+        }
 
-		public FotoArticolo FotoArticolo { get; private set; }
-	}
+        public FotoArticolo FotoArticolo { get; private set; }
+    }
 }

@@ -2,8 +2,8 @@
 
 namespace StrumentiMusicali.Library.Core.Events.Magazzino
 {
-	public class MagazzinoSelezionaArticolo
-	{
-		public Articolo Articolo { get; set; }
-	}
+    public class MagazzinoSelezionaArticolo
+    {
+        public Articolo Articolo { get; set; }
+    }
 }

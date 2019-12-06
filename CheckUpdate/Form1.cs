@@ -17,7 +17,7 @@ namespace CheckUpdate
             CartellaLocale = CheckUpdate.Properties.Settings.Default.CartellaLocale;
             TipoFile = CheckUpdate.Properties.Settings.Default.tipoFile;
             FileDaAprireAlTermine = CheckUpdate.Properties.Settings.Default.ApplicazioneDaAprire;
-            CartelleDaIncludere= CheckUpdate.Properties.Settings.Default.SottoCartelle;
+            CartelleDaIncludere = CheckUpdate.Properties.Settings.Default.SottoCartelle;
 
         }
         public string TipoFile { get; set; }
@@ -71,7 +71,7 @@ namespace CheckUpdate
         private void _background_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
 
-            var start= Process.Start(Path.Combine(CartellaLocale
+            var start = Process.Start(Path.Combine(CartellaLocale
                 , FileDaAprireAlTermine));
             MessageBox.Show("Attendere l'apertura dell'applicazione STRUMENTI MUSICALI!", "Attenzione", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             this.Hide();
@@ -87,7 +87,7 @@ namespace CheckUpdate
         {
             GetFiles(ServerRemoto);
             foreach (var item in Directory.GetDirectories(
-               ServerRemoto + @"\",this.CartelleDaIncludere,SearchOption.AllDirectories))
+               ServerRemoto + @"\", this.CartelleDaIncludere, SearchOption.AllDirectories))
             {
                 GetFiles(item);
             }

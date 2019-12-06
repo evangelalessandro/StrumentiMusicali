@@ -107,20 +107,26 @@ namespace StrumentiMusicali.App.View
 
         private void FillCliente(UnitOfWork uof)
         {
-            var clienti= uof.ClientiRepository.Find(a => true).Select(a => new { a.ID, 
-                RagioneSociale = a.RagioneSociale ,a.PIVA,
-                a.CodiceFiscale, a.Nome, a.Cognome })
+            var clienti = uof.ClientiRepository.Find(a => true).Select(a => new
+            {
+                a.ID,
+                RagioneSociale = a.RagioneSociale,
+                a.PIVA,
+                a.CodiceFiscale,
+                a.Nome,
+                a.Cognome
+            })
                 .Distinct().ToList().ToArray();
             var clientiDati = clienti.Select(a => new
             {
                 a.ID,
-                RagioneSociale = 
-                (!string.IsNullOrEmpty( a.RagioneSociale) && a.RagioneSociale.Length>0 
-                        ?   a.RagioneSociale + "  " :  
+                RagioneSociale =
+                (!string.IsNullOrEmpty(a.RagioneSociale) && a.RagioneSociale.Length > 0
+                        ? a.RagioneSociale + "  " :
                             a.Cognome + " " + a.Nome + "  ")
-                 + (!string.IsNullOrEmpty( a.PIVA) 
-                 && a.PIVA.Length>0 
-                        ? a.PIVA :a.CodiceFiscale)
+                 + (!string.IsNullOrEmpty(a.PIVA)
+                 && a.PIVA.Length > 0
+                        ? a.PIVA : a.CodiceFiscale)
             }).ToList();
             cboClienteID.Properties.DataSource = clientiDati;
             cboClienteID.Properties.ValueMember = "ID";
@@ -258,8 +264,8 @@ namespace StrumentiMusicali.App.View
 
                     item.RagioneSociale = cliente.RagioneSociale;
 
-                    if (string.IsNullOrEmpty( cliente.RagioneSociale))
-                    { 
+                    if (string.IsNullOrEmpty(cliente.RagioneSociale))
+                    {
                         item.RagioneSociale = cliente.Cognome + " " + cliente.Nome;
                     }
                     item.PIVA = cliente.PIVA;
@@ -269,8 +275,8 @@ namespace StrumentiMusicali.App.View
                     }
                     Debug.WriteLine(item.RagioneSociale);
                     this.Validate();
-                    cboClienteID.EditValue=valCli;
-                    
+                    cboClienteID.EditValue = valCli;
+
                 }
             }
             catch (Exception ex)

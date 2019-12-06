@@ -36,8 +36,8 @@ namespace StrumentiMusicali.App.Settings
             }
             return true;
         }
-      
-      
+
+
         public static SettingSito ReadSetting()
         {
             using (var uof = new UnitOfWork())

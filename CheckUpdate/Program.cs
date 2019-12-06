@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CheckUpdate
@@ -17,7 +14,7 @@ namespace CheckUpdate
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MessageBox.Show("Controllo aggiornamenti, premere ok e attendere!", "Attenzione", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            
+
             Application.Run(new Form1());
         }
     }

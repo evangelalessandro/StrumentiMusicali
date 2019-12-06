@@ -1,6 +1,6 @@
 ﻿namespace StrumentiMusicali.Library.Core.Events.Magazzino
 {
-	public class MovimentiUpdate
-	{
-	}
+    public class MovimentiUpdate
+    {
+    }
 }

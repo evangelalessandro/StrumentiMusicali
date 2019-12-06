@@ -1,6 +1,6 @@
 ﻿namespace StrumentiMusicali.Library.Core.Events.Magazzino
 {
-	public class CaricaQtaMagazzino : MovimentoMagazzino
-	{
-	}
+    public class CaricaQtaMagazzino : MovimentoMagazzino
+    {
+    }
 }

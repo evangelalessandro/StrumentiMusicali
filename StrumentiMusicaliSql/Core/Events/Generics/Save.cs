@@ -4,9 +4,9 @@ using StrumentiMusicali.Library.Entity.Base;
 
 namespace StrumentiMusicali.Library.Core.Events.Generics
 {
-    public class Save<TEntity> : FilterControllerEvent 
+    public class Save<TEntity> : FilterControllerEvent
         where TEntity : BaseEntity
-	{
+    {
         public Save(IKeyController controller)
          : base(controller)
         {

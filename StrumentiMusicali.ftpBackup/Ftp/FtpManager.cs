@@ -1,11 +1,9 @@
-﻿using System;
+﻿using FluentFTP;
+using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using FluentFTP;
-using NLog;
 
 namespace StrumentiMusicali.ftpBackup.Ftp
 {
@@ -34,12 +32,12 @@ namespace StrumentiMusicali.ftpBackup.Ftp
                     _logger.Error("Upload non riuscito del file : [" + fileLocal + "]  in [" + dest + "]");
                     operazione = false;
                 }
-                 
+
                 return operazione;
             }
             return false;
         }
-        private FtpClient _client =null;
+        private FtpClient _client = null;
         public bool Delete(string remoteFileName)
         {
             FtpClient client = Connetti();
@@ -47,7 +45,7 @@ namespace StrumentiMusicali.ftpBackup.Ftp
             {
                 client.DeleteFile(remoteFileName);
 
-                 
+
                 return true;
             }
             return false;
@@ -68,7 +66,7 @@ namespace StrumentiMusicali.ftpBackup.Ftp
                     retList.AddRange(ConvertiListe(listFile));
                 }
                 // disconnect! good bye!
-                 
+
                 return retList;
             }
             return null;
@@ -107,7 +105,7 @@ namespace StrumentiMusicali.ftpBackup.Ftp
         {
             FtpClient client = Connetti();
             if (client != null)
-            { 
+            {
                 return true;
             }
             return false;
@@ -147,8 +145,8 @@ namespace StrumentiMusicali.ftpBackup.Ftp
 
         public void Dispose()
         {
-            if (_client!=null)
-            { 
+            if (_client != null)
+            {
                 if (_client.IsConnected)
                     _client.Disconnect();
                 _client.Dispose();

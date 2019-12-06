@@ -1,7 +1,6 @@
 ﻿using StrumentiMusicali.Library.Core.Item.Base;
 
 using StrumentiMusicali.Library.Entity;
-using System;
 
 namespace StrumentiMusicali.Library.Core
 {
@@ -14,27 +13,27 @@ namespace StrumentiMusicali.Library.Core
         public ArticoloItem(Articolo articolo)
         {
             Titolo = articolo.Titolo;
-            Marca = articolo.Strumento!=null && articolo.Strumento.Marca!=null? articolo.Strumento.Marca :"";
+            Marca = articolo.Strumento != null && articolo.Strumento.Marca != null ? articolo.Strumento.Marca : "";
             CodiceABarre = articolo.CodiceABarre;
             //CaricaInEcommerce = articolo.CaricainECommerce;
             //CaricaInMercatino = articolo.CaricaInMercatino;
             Categoria = articolo.Categoria.Nome;
-            Reparto= articolo.Categoria.Reparto;
+            Reparto = articolo.Categoria.Reparto;
             ID = articolo.ID;
             Entity = articolo;
             //TagImport = articolo.TagImport;
             PrezzoAcquisto = articolo.PrezzoAcquisto.ToString("C2");
             Prezzo = articolo.Prezzo.ToString("C2");
-            CodiceOrdine = articolo.Libro!=null && articolo.Libro.Ordine != null ? articolo.Libro.Ordine : 
-                articolo.Strumento!=null && articolo.Strumento.CodiceOrdine!=null ? articolo.Strumento.CodiceOrdine : "";
+            CodiceOrdine = articolo.Libro != null && articolo.Libro.Ordine != null ? articolo.Libro.Ordine :
+                articolo.Strumento != null && articolo.Strumento.CodiceOrdine != null ? articolo.Strumento.CodiceOrdine : "";
 
-            Settore = articolo.Libro != null && articolo.Libro.Settore!=null 
-                ? articolo.Libro.Settore :"";
+            Settore = articolo.Libro != null && articolo.Libro.Settore != null
+                ? articolo.Libro.Settore : "";
 
             //DataCreazione = articolo.DataCreazione;
             //DataModifica = articolo.DataUltimaModifica;
         }
-        
+
         public string Reparto { get; set; }
         public string Categoria { get; set; }
         public string Titolo { get; set; }
@@ -47,6 +46,6 @@ namespace StrumentiMusicali.Library.Core
         public string PrezzoAcquisto { get; set; }
         public int QuantitaNegozio { get; set; }
         public int QuantitaTotale { get; set; }
-         
+
     }
 }

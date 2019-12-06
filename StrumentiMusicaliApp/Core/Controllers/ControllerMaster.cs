@@ -16,7 +16,6 @@ using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using StrumentiMusicali.Library.View.Enums;
 using System;
-using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;

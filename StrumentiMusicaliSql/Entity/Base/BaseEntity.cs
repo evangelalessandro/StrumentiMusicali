@@ -8,22 +8,22 @@ namespace StrumentiMusicali.Library.Entity.Base
 {
 
     [AddINotifyPropertyChangedInterface]
-    public class BaseEntity 
+    public class BaseEntity
     {
         public BaseEntity()
         {
         }
 
         [CustomHideUIAttribute]
-		[Key]
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int ID { get; set; }
-		[CustomUIViewAttribute(DateTimeView =true,Width =200,Enable =false,Category ="Info record")]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+        [CustomUIViewAttribute(DateTimeView = true, Width = 200, Enable = false, Category = "Info record")]
         public DateTime DataCreazione { get; set; } = DateTime.Now;
-		[CustomUIViewAttribute(DateTimeView = true, Width = 200,Enable =false, Category = "Info record")]
-		public DateTime DataUltimaModifica { get; set; } = DateTime.Now;
+        [CustomUIViewAttribute(DateTimeView = true, Width = 200, Enable = false, Category = "Info record")]
+        public DateTime DataUltimaModifica { get; set; } = DateTime.Now;
 
-        
-         
+
+
     }
 }

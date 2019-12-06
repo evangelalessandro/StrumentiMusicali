@@ -177,7 +177,7 @@ namespace StrumentiMusicali.App.View.BaseControl
                         break;
                     case TipoDatiCollegati.Marca:
                         {
-                            var list = uof.ArticoliRepository.Find(a => true).Select(a => a.Strumento.Marca ).Distinct().OrderBy(a=>a).ToList();
+                            var list = uof.ArticoliRepository.Find(a => true).Select(a => a.Strumento.Marca).Distinct().OrderBy(a => a).ToList();
 
                             artCNT.SetList(list);
                         }

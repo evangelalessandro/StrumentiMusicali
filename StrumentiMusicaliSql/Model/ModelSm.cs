@@ -104,7 +104,7 @@ namespace StrumentiMusicali.Library.Model
                 {
                     a.BackupSetting.FolderLocalServer += @"\";
                 }
-                 
+
                 using (var connection = new SqlConnection(connectionString))
                 {
                     var command = new SqlCommand(Properties.Resource1.AddDeviceBackup, connection);
@@ -115,7 +115,7 @@ namespace StrumentiMusicali.Library.Model
                     command.ExecuteNonQuery();
 
                     var command1 = new SqlCommand(Properties.Resource1.SpCheckExists, connection);
-                    if ((int)command1.ExecuteScalar()==0)
+                    if ((int)command1.ExecuteScalar() == 0)
                     {
                         var command2 = new SqlCommand(Properties.Resource1.SpBackup, connection);
                         command2.CommandType = System.Data.CommandType.Text;
@@ -124,7 +124,7 @@ namespace StrumentiMusicali.Library.Model
 
                 }
 
-                
+
 
             }
 

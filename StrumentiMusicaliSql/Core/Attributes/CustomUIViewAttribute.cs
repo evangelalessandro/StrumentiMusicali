@@ -1,31 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace StrumentiMusicali.Library.Core
 {
-	public class CustomUIViewAttribute : Attribute
-	{
-		public CustomUIViewAttribute()
-		{
-		}
+    public class CustomUIViewAttribute : Attribute
+    {
+        public CustomUIViewAttribute()
+        {
+        }
 
-		public int Width { get; set; } = 200;
+        public int Width { get; set; } = 200;
 
         public bool Money { get; set; } = false;
         public int MultiLine { get; set; } = 0;
 
-		/// <summary>
-		/// ordine di visualizzazione nella form
-		/// </summary>
-		public int Ordine { get; set; }
+        /// <summary>
+        /// ordine di visualizzazione nella form
+        /// </summary>
+        public int Ordine { get; set; }
 
-		public bool DateView { get; set; }
+        public bool DateView { get; set; }
 
-		public bool TimeView { get; set; }
+        public bool TimeView { get; set; }
 
-		public bool DateTimeView { get; set; }
+        public bool DateTimeView { get; set; }
 
-		public TipoDatiCollegati Combo { get; set; } = TipoDatiCollegati.Nessuno;
+        public TipoDatiCollegati Combo { get; set; } = TipoDatiCollegati.Nessuno;
 
         public bool ComboLibera { get; set; } = false;
 
@@ -39,11 +38,11 @@ namespace StrumentiMusicali.Library.Core
 
     }
     public enum TipoDatiCollegati
-	{
-		Nessuno,
-		Clienti,
-		Categorie,
-		Condizione,
+    {
+        Nessuno,
+        Clienti,
+        Categorie,
+        Condizione,
         Articoli,
         Marca,
         Modello,
@@ -52,6 +51,6 @@ namespace StrumentiMusicali.Library.Core
         NomeStrumento,
         LibroAutore
     }
-	 
+
 
 }

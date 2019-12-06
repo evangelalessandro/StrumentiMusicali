@@ -76,20 +76,20 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
                 ImpostaValoreRiga(rigaIniziale, colImportoResiduo, item.ImportoResiduo.ToString("C2"));
 
                 rigaIniziale++;
-               
+
             }
         }
 
         private void ImpostaValoreRiga(
             int riga, int colonna, object valore)
         {
-            if (_wb.Range("Righe").LastRow().RowNumber()-_wb.Range("Righe").FirstRow().RowNumber() == riga)
+            if (_wb.Range("Righe").LastRow().RowNumber() - _wb.Range("Righe").FirstRow().RowNumber() == riga)
             {
-                IXLRow row1 = _ws.Row(riga+ _wb.Range("Righe").FirstRow().RowNumber()); 
+                IXLRow row1 = _ws.Row(riga + _wb.Range("Righe").FirstRow().RowNumber());
                 row1.InsertRowsAbove(1);
             }
             _wb.Range("Righe").Range(riga, colonna, riga, colonna).Value = valore;
-            
+
         }
 
 

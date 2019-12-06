@@ -3,10 +3,7 @@ using NLog.Targets;
 using StrumentiMusicali.ftpBackup.Backup;
 using StrumentiMusicali.Library.Repo;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpostaBackupInFtp
 {
@@ -15,10 +12,10 @@ namespace SpostaBackupInFtp
         internal static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
         static int Main(string[] args)
         {
-           
+
             ConfigureNLog();
 
-            
+
             _logger.Warn("Avvio del processo di spostamento backup");
 
             if (Environment.GetCommandLineArgs().Where(a => a == "NoBackup").Count() == 0)
@@ -29,10 +26,10 @@ namespace SpostaBackupInFtp
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error(ex,"Generazione backup", null);
+                    _logger.Error(ex, "Generazione backup", null);
                     return (int)ExitCode.Error;
                 }
-                
+
             }
             using (var back = new BackupManager())
             {
@@ -48,7 +45,7 @@ namespace SpostaBackupInFtp
             using (var uof = new UnitOfWork())
             {
                 uof.EseguiBackup();
-               
+
             }
         }
         enum ExitCode : int

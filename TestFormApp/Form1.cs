@@ -1,22 +1,17 @@
-﻿using DevExpress.XtraEditors.Repository;
+﻿using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraVerticalGrid.Rows;
-using System.ComponentModel.DataAnnotations;
-using StrumentiMusicali.App.View.BaseControl.ElementiDettaglio;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.XtraEditors;
 
 namespace TestFormApp
 {
@@ -25,14 +20,14 @@ namespace TestFormApp
         public Form1()
         {
             InitializeComponent();
-            
+
 
             vGrid.CellValueChanged += VGrid_CellValueChanged;
             this.vGrid.Rows.Clear();
-            
+
             using (var uof = new UnitOfWork())
             {
-               var _art = uof.ArticoliRepository.Find(a => 1 == 1).First();
+                var _art = uof.ArticoliRepository.Find(a => 1 == 1).First();
                 //var _art = new Articolo();
                 _art.ShowLibro =
                     _art.IsLibro();
@@ -101,7 +96,7 @@ namespace TestFormApp
 
 
                 row.Properties.Caption = titolo;
-                
+
                 ImpostaEditor(objToBind, item, row, widthAttr, titolo);
 
                 if (row.Properties.RowEdit != null)
@@ -171,7 +166,7 @@ namespace TestFormApp
                     //row.Height = row.Height * widthAttr.MultiLine;
                     if (maxLength != null)
                         editor.MaxLength = maxLength.Length;
-                    
+
                 }
                 else
                 {
@@ -203,11 +198,12 @@ namespace TestFormApp
                 num.Mask.UseMaskAsDisplayFormat = true;
                 num.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
                 num.AppearanceDisabled.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
-                num.Enter += (object sender, EventArgs e)  =>{
+                num.Enter += (object sender, EventArgs e) =>
+                {
                     var be = (BaseEdit)sender;
                     be.SelectAll();
                 };
-                if (widthAttr!=null && widthAttr.Money)
+                if (widthAttr != null && widthAttr.Money)
                 {
                     num.Mask.EditMask = "C2";
                 }
@@ -217,7 +213,7 @@ namespace TestFormApp
                 }
                 row.Properties.RowEdit = num;
                 row.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
-                 
+
             }
             else if (item.PropertyType.FullName.Contains("Int32"))
             {

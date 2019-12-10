@@ -29,6 +29,9 @@ namespace StrumentiMusicali.App.View
             dgvRighe.Columns["Entity"].Visible = false;
             dgvRighe.BestFitColumns(true);
             dgvRighe.Columns["ID"].VisibleIndex = 0;
+            
+            dgvRighe.Columns["RagioneSociale"].Caption= @"Ragione sociale\Nome Cognome";
+            dgvRighe.Columns["PIVA"].Caption = @"PIVA\Codice fiscale";
         }
 
 

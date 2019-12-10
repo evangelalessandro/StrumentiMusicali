@@ -33,7 +33,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
             _selectSub = EventAggregator.Instance().Subscribe<Add<Cliente>>((a) =>
             {
-                EditItem = new Cliente() { RagioneSociale = "Nuovo cliente" };
+                EditItem = new Cliente() { RagioneSociale = "" };
                 ShowEditView();
             });
             _subRemove = EventAggregator.Instance().Subscribe<Remove<Cliente>>((a) =>
@@ -98,7 +98,10 @@ namespace StrumentiMusicali.App.Core.Controllers
                     a.Cognome.Contains(TestoRicerca)
                     ||
                     a.PIVA.Contains(TestoRicerca)
-                        ||
+                    ||
+                    a.CodiceFiscale.Contains(TestoRicerca)
+
+                    ||
                         a.Telefono.Contains(TestoRicerca)
                         ||
                         a.Indirizzo.Citta.Contains(TestoRicerca)

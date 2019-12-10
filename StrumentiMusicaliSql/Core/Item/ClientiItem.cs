@@ -17,6 +17,10 @@ namespace StrumentiMusicali.Library.Core.Item
 
 
             PIVA = item.PIVA;
+            if (string.IsNullOrEmpty( PIVA))
+            {
+                PIVA= item.CodiceFiscale;
+            }
             RagioneSociale = item.RagioneSociale;
             if (RagioneSociale.Length == 0)
             {

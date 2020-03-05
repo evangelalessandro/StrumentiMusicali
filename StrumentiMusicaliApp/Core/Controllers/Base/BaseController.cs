@@ -441,7 +441,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
             form.Controls.Add(StatusStrip);
         }
-
+        public const string MainName = "Gestione magazzino e fatturazione";
         public string TestoAmbiente(enAmbiente ambiente)
         {
             switch (ambiente)
@@ -453,7 +453,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                     return "Cliente";
 
                 case enAmbiente.Main:
-                    return "Gestione magazzino e fatturazione";
+                    return MainName;
 
                 case enAmbiente.Fattura:
                     return "Fattura";
@@ -790,6 +790,18 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
         public void SaveSetting(UserSettings settings)
         {
+            foreach (var item in settings.Form)
+            {
+                if (item.form.Top<0)
+                {
+                    item.form.Top = 0;
+                }
+                if (item.form.Left < 0)
+                {
+                    item.form.Left= 0;
+                }
+
+            }
             File.WriteAllText(_PathSetting,
                 JsonConvert.SerializeObject(settings));
         }

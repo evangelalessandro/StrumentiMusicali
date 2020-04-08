@@ -139,7 +139,7 @@
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.6.6\lib\net45\NLog.dll</HintPath>
@@ -263,13 +263,8 @@
     <Compile Include="Core\Imports\ImportCavalloPazzoExcel.cs" />
     <Compile Include="Core\Imports\ImportMagazziniExcel.cs" />
     <Compile Include="Core\Item\LogItem.cs" />
-    <Compile Include="Core\Manager\SaveEntityManager.cs" />
     <Compile Include="Core\Controllers\Stampa\Fattura.cs" />
     <Compile Include="Core\Controllers\ControllerMaster.cs" />
-    <Compile Include="Core\Manager\CursorHandler.cs" />
-    <Compile Include="Core\Manager\ExceptionManager.cs" />
-    <Compile Include="Core\Manager\MessageManager.cs" />
-    <Compile Include="Core\Manager\ProgressManager.cs" />
     <Compile Include="Core\MenuRibbon\RibbonButton.cs" />
     <Compile Include="CustomComponents\DateTimePickerBinding.cs" />
     <Compile Include="CustomComponents\TabCustom.cs">
@@ -279,8 +274,7 @@
       <DependentUpon>TabCustom.cs</DependentUpon>
     </Compile>
     <Compile Include="Localization_it.cs" />
-    <Compile Include="Settings\SettingBackupFtpValidator.cs" />
-    <Compile Include="Settings\SettingDocumentiPagamentiValidator.cs" />
+    <Compile Include="Settings\UserSettings.cs" />
     <Compile Include="View\Articoli\RicercaArticoliStyleView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -341,12 +335,11 @@
     <Compile Include="View\LogViewList.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="View\Utility\UtilityView.cs" />
     <Compile Include="View\ViewFactory.cs" />
     <Content Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Compile Include="Settings\DatiIntestazioneStampaFatturaValidator.cs" />
-    <Compile Include="Settings\SettingSitoValidator.cs" />
     <Compile Include="View\BaseControl\ElementiDettaglio\EDDateTime.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -447,10 +440,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\GlobalAssemblyInfo.cs" />
-    <Compile Include="Settings\ISettingsReader.cs" />
-    <Compile Include="Settings\UserSettings.cs" />
     <Compile Include="View\Utility\MySortableBindingList.cs" />
-    <Compile Include="View\Utility\UtilityView.cs" />
     <Compile Include="View\Utility\OrdinaTab.cs" />
     <None Include="Resources\backGroudImageLogin1.jpg" />
     <Content Include="References\DevExpress_18\DevExpress.Charts.v18.1.Core.dll" />
@@ -766,6 +756,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\StrumentiMusicali.Core\StrumentiMusicali.Core.csproj">
+      <Project>{a1245fd2-f94b-4916-a0de-f192610f55c3}</Project>
+      <Name>StrumentiMusicali.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StrumentiMusicali.ftpBackup\StrumentiMusicali.ftpBackup.csproj">
       <Project>{0e29b767-416d-421e-98f6-a8eed7c7cb6f}</Project>
       <Name>StrumentiMusicali.ftpBackup</Name>
@@ -776,6 +770,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Core\Manager\" />
     <Folder Include="View\Attributes\" />
   </ItemGroup>
   <ItemGroup>

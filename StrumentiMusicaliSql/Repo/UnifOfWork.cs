@@ -1,5 +1,7 @@
 ﻿using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Entity.Articoli;
+using StrumentiMusicali.Library.Entity.Setting;
 using StrumentiMusicali.Library.Model;
 using System;
 using System.Data.SqlClient;

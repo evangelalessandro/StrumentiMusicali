@@ -20,6 +20,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpostaBackupInFtp", "Sposta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFormApp", "TestFormApp\TestFormApp.csproj", "{9BB26C16-1197-4955-AACE-0D1187883519}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.PrestaShopSyncro", "StrumentiMusicali.PrestaShopSyncro\StrumentiMusicali.PrestaShopSyncro.csproj", "{CA69F008-CD76-4097-8670-F939E1FEE8F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.Core", "StrumentiMusicali.Core\StrumentiMusicali.Core.csproj", "{A1245FD2-F94B-4916-A0DE-F192610F55C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +58,14 @@ Global
 		{9BB26C16-1197-4955-AACE-0D1187883519}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BB26C16-1197-4955-AACE-0D1187883519}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BB26C16-1197-4955-AACE-0D1187883519}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA69F008-CD76-4097-8670-F939E1FEE8F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA69F008-CD76-4097-8670-F939E1FEE8F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA69F008-CD76-4097-8670-F939E1FEE8F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA69F008-CD76-4097-8670-F939E1FEE8F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1245FD2-F94B-4916-A0DE-F192610F55C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1245FD2-F94B-4916-A0DE-F192610F55C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1245FD2-F94B-4916-A0DE-F192610F55C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1245FD2-F94B-4916-A0DE-F192610F55C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

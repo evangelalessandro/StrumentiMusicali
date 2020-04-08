@@ -1,7 +1,7 @@
 ﻿using PropertyChanged;
 using System.ComponentModel;
 
-namespace StrumentiMusicali.App.Core.Manager
+namespace StrumentiMusicali.Core.Manager
 {
     [AddINotifyPropertyChangedInterface]
     public class ProgressManager : INotifyPropertyChanged

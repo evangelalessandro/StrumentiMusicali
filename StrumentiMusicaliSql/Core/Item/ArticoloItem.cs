@@ -1,6 +1,5 @@
 ﻿using StrumentiMusicali.Library.Core.Item.Base;
-
-using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Entity.Articoli;
 
 namespace StrumentiMusicali.Library.Core
 {

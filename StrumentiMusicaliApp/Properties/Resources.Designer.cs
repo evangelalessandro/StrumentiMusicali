@@ -193,36 +193,6 @@ namespace StrumentiMusicali.App.Properties {
         /// <summary>
         ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Error {
-            get {
-                object obj = ResourceManager.GetObject("Error", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Error_24 {
-            get {
-                object obj = ResourceManager.GetObject("Error_24", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Error_64 {
-            get {
-                object obj = ResourceManager.GetObject("Error_64", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Excel_export {
             get {
                 object obj = ResourceManager.GetObject("Excel_export", resourceCulture);
@@ -286,36 +256,6 @@ namespace StrumentiMusicali.App.Properties {
         internal static System.Drawing.Bitmap ImportInvoice {
             get {
                 object obj = ResourceManager.GetObject("ImportInvoice", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Info_24 {
-            get {
-                object obj = ResourceManager.GetObject("Info_24", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap info_48 {
-            get {
-                object obj = ResourceManager.GetObject("info_48", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Info_64 {
-            get {
-                object obj = ResourceManager.GetObject("Info_64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -576,26 +516,6 @@ namespace StrumentiMusicali.App.Properties {
         internal static System.Drawing.Bitmap View_all_64 {
             get {
                 object obj = ResourceManager.GetObject("View_all_64", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Warning_24 {
-            get {
-                object obj = ResourceManager.GetObject("Warning_24", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap warning_64 {
-            get {
-                object obj = ResourceManager.GetObject("warning_64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

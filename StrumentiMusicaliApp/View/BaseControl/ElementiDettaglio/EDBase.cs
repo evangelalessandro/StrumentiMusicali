@@ -1,4 +1,6 @@
-﻿using StrumentiMusicali.Library.Core;
+﻿using StrumentiMusicali.App.View.Utility;
+using StrumentiMusicali.Core.Utility;
+using StrumentiMusicali.Library.Core;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -44,7 +46,7 @@ namespace StrumentiMusicali.App.View.BaseControl.ElementiDettaglio
         {
             ControlToBind.Tag = nomeProp;
 
-            Utility.UtilityView.SetDataBind(this, attribute, businessObject);
+            UtilityView.SetDataBind(this, attribute, businessObject);
         }
 
         public Control ControlToBind { get; set; }

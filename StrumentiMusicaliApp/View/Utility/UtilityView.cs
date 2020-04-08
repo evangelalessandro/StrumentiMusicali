@@ -3,6 +3,8 @@ using DevExpress.XtraGrid.Views.Grid;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.CustomComponents;
 using StrumentiMusicali.App.View.Interfaces;
+using StrumentiMusicali.App.View.Utility;
+using StrumentiMusicali.Core.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Item.Base;
 using System;
@@ -25,7 +27,7 @@ namespace StrumentiMusicali.App.View.Utility
             {
                 return (T)dataGrid.SelectedRows[0].DataBoundItem;
             }
-            return default(T);
+            return default;
         }
         public static T GetCurrentItemSelected<T>(this GridView dataGrid)
         {
@@ -34,7 +36,7 @@ namespace StrumentiMusicali.App.View.Utility
                 var current = dataGrid.GetRow(dataGrid.FocusedRowHandle);
                 return (T)current;
             }
-            return default(T);
+            return default;
         }
         public static string GetTextSplitted(string name)
         {
@@ -49,10 +51,7 @@ namespace StrumentiMusicali.App.View.Utility
         }
         public static Icon GetIco(Bitmap bitmap)
         {
-            Bitmap bm = new Bitmap(bitmap);
-
-            // Convert to an icon and use for the form's icon.
-            return Icon.FromHandle(bm.GetHicon());
+            return UtilityIco.GetIco(bitmap);
         }
         public static void AddButtonSaveAndClose(RibbonMenuPanel pnl, ICloseSave control, bool addSave = true)
         {
@@ -98,7 +97,7 @@ namespace StrumentiMusicali.App.View.Utility
                 return;
             for (int i = 0; i < dataGrid.RowCount; i++)
             {
-                if (((BaseItemID)(dataGrid.GetRow(i))).ID == idItem)
+                if (((BaseItemID)dataGrid.GetRow(i)).ID == idItem)
                 {
                     dataGrid.FocusedRowHandle = i;
                     //dataGrid.SelectCell(i, dataGrid.Columns[colVisible]);
@@ -121,7 +120,7 @@ namespace StrumentiMusicali.App.View.Utility
                 return;
             for (int i = 0; i < dataGrid.RowCount; i++)
             {
-                if (((BaseItemID)(dataGrid.Rows[i].DataBoundItem)).ID == idItem)
+                if (((BaseItemID)dataGrid.Rows[i].DataBoundItem).ID == idItem)
                 {
                     dataGrid.Rows[i].Selected = true;
                     dataGrid.CurrentCell = dataGrid.Rows[i].Cells[colVisible];
@@ -153,7 +152,7 @@ namespace StrumentiMusicali.App.View.Utility
             {
                 var listControlWithTag = FindControlByType<Control>(parentControl).Where(a => a.Tag != null && a.Tag.ToString().Length > 0);
 
-                foreach (var item in GetProperties(businessObject))
+                foreach (var item in UtilityProp.GetProperties(businessObject))
                 {
                     var listByTag = listControlWithTag.Where(a => a.Tag.ToString() == item.Name);
 
@@ -177,11 +176,11 @@ namespace StrumentiMusicali.App.View.Utility
                         {
                             cnt.DataBindings.Add("Checked", businessObject, item.Name);
                         }
-                        else if (cnt is System.Windows.Forms.ComboBox)
+                        else if (cnt is DevExpress.XtraEditors.ComboBox)
                         {
                             cnt.DataBindings.Add("SelectedValue", businessObject, item.Name);
                         }
-                        else if (cnt is System.Windows.Forms.ListBox)
+                        else if (cnt is ListBox)
                         {
                             cnt.DataBindings.Add("SelectedValue", businessObject, item.Name);
                         }
@@ -206,7 +205,7 @@ namespace StrumentiMusicali.App.View.Utility
             });
         }
 
-        private static void InitDate(DateEdit de, Library.Core.CustomUIViewAttribute attribute)
+        private static void InitDate(DateEdit de, CustomUIViewAttribute attribute)
         {
             de.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
 
@@ -249,11 +248,11 @@ namespace StrumentiMusicali.App.View.Utility
 
         public static void FixDateNull(object entity)
         {
-            var list = GetProperties(entity);
+            var list = UtilityProp.GetProperties(entity);
             foreach (var item in list.Where(a => a.PropertyType.ToString().Contains("DateTime")))
             {
                 var val = item.GetValue(entity);
-                if ((val == null))
+                if (val == null)
                 {
                     item.SetValue(entity, DateTime.MinValue);
                 }
@@ -280,19 +279,12 @@ namespace StrumentiMusicali.App.View.Utility
             dgvRighe.OptionsSelection.MultiSelect = false;
             dgvRighe.OptionsView.RowAutoHeight = true;
             dgvRighe.OptionsView.ColumnAutoWidth = true;
-            dgvRighe.OptionsView.BestFitMode = DevExpress.XtraGrid.Views.Grid.GridBestFitMode.Fast;
+            dgvRighe.OptionsView.BestFitMode = GridBestFitMode.Fast;
             dgvRighe.OptionsView.ShowFooter = true;
             dgvRighe.OptionsView.ShowGroupPanel = false;
 
         }
 
-        public static IEnumerable<PropertyInfo> GetProperties(Object obj)
-        {
-            Type t = obj.GetType();
-
-            return t.GetProperties()
-                .Where(p => (p.Name != "EntityKey" && p.Name != "EntityState"))
-                .Select(p => p).ToList();
-        }
+        
     }
 }

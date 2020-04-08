@@ -1,5 +1,5 @@
 ﻿using StrumentiMusicali.App.Core;
-using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Image;
 using StrumentiMusicali.Library.Core.interfaces;

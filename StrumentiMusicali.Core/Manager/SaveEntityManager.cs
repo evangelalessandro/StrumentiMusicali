@@ -1,17 +1,35 @@
-﻿using StrumentiMusicali.Library.Core;
+﻿using StrumentiMusicali.App.Core;
+using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Repo;
 using System;
 
-namespace StrumentiMusicali.App.Core.Manager
+namespace StrumentiMusicali.Core.Manager
 {
     public class SaveEntityManager : IDisposable
     {
-        private UnitOfWork uof = new UnitOfWork();
+        public SaveEntityManager():
+            this(true)
+        {
 
+        }
+
+        private bool _ShowMessage;
+        public SaveEntityManager(bool showMessage)
+        {
+            _ShowMessage = showMessage;
+        }
+
+        private UnitOfWork uof = new UnitOfWork();
+        protected virtual void Dispose(bool dispose)
+        {
+            if (uof != null)
+                uof.Dispose();
+
+            uof = null;
+        }
         public void Dispose()
         {
-            uof.Dispose();
-            uof = null;
+            Dispose(true);
         }
 
         public UnitOfWork UnitOfWork { get { return uof; } }

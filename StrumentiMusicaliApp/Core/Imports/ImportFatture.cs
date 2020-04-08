@@ -1,6 +1,6 @@
 ﻿using NLog;
 using StrumentiMusicali.App.Core.Controllers;
-using StrumentiMusicali.App.Core.Manager;
+using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;

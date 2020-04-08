@@ -1,7 +1,7 @@
 ﻿using StrumentiMusicali.Library.Entity.Base;
 using System.ComponentModel.DataAnnotations;
 
-namespace StrumentiMusicali.Library.Entity
+namespace StrumentiMusicali.Library.Entity.Articoli
 {
     public class Categoria : BaseEntity
     {

@@ -1,13 +1,15 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
-using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
+using StrumentiMusicali.Core.Manager;
+using StrumentiMusicali.Core.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Core.Events.Magazzino;
 using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Linq;

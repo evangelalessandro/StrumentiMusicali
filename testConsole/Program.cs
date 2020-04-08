@@ -1,4 +1,5 @@
 ﻿using StrumentiMusicali.ftpBackup.Backup;
+using StrumentiMusicali.PrestaShopSyncro;
 
 namespace testConsole
 {
@@ -11,10 +12,14 @@ namespace testConsole
             ////class1.Delete("Answers-to-Difficult-Bible-Passages.pdf");
             //var list =ftpTest.FileList();
 
-            var back = new BackupManager();
-            back.Manage();
-            var obj = new StrumentiMusicali.Library.Model.ModelSm();
-            //obj.sql
+            //var back = new BackupManager();
+            //back.Manage();
+            //var obj = new StrumentiMusicali.Library.Model.ModelSm();
+            ////obj.sql
+            ProductSyncro productSyncro = new ProductSyncro();
+            productSyncro.AggiornaWeb();
+
+
         }
     }
 }

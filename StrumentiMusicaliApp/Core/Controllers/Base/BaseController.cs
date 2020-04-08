@@ -2,11 +2,12 @@
 using Newtonsoft.Json;
 using NLog;
 using StrumentiMusicali.App.Core.Events.Tab;
-using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
+using StrumentiMusicali.Core.Manager;
+using StrumentiMusicali.Core.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Attributes;
 using StrumentiMusicali.Library.Core.Events.Generics;
@@ -61,7 +62,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
             }
             else
             {
-                using (var curs = new Manager.CursorManager())
+                using (var curs = new CursorManager())
                 {
                     AggiungiTab(view, ambiente, controller, disposeForm);
                 }

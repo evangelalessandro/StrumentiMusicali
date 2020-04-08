@@ -103,6 +103,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\StrumentiMusicali.Core\StrumentiMusicali.Core.csproj">
+      <Project>{a1245fd2-f94b-4916-a0de-f192610f55c3}</Project>
+      <Name>StrumentiMusicali.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StrumentiMusicaliApp\StrumentiMusicali.App.csproj">
       <Project>{e6a4d0f6-dc39-431e-a562-ac0c4465bea4}</Project>
       <Name>StrumentiMusicali.App</Name>

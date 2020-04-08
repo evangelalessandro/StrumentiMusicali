@@ -2,8 +2,9 @@
 using StrumentiMusicali.App.View.BaseControl.ElementiDettaglio;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
+using StrumentiMusicali.Core.Utility;
 using StrumentiMusicali.Library.Core;
-using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace StrumentiMusicali.App.View.BaseControl
                 this.SuspendLayout();
                 flowLayoutPanel1.SuspendLayout();
             }
-            var listProp = Utility.UtilityView.GetProperties(objToBind).OrderBy(a =>
+            var listProp = UtilityProp.GetProperties(objToBind).OrderBy(a =>
              {
                  var sel = (CustomUIViewAttribute)a.GetCustomAttributes(typeof(CustomUIViewAttribute), true).FirstOrDefault();
                  if (sel == null || sel.Ordine == 0)

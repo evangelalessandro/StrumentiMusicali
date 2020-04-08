@@ -2,8 +2,9 @@
 using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraVerticalGrid.Rows;
 using StrumentiMusicali.App.View.Utility;
+using StrumentiMusicali.Core.Utility;
 using StrumentiMusicali.Library.Core;
-using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
@@ -45,7 +46,7 @@ namespace TestFormApp
         public void BindProp(object objToBind, string prefixText)
         {
 
-            var listProp = UtilityView.GetProperties(objToBind).OrderBy(a =>
+            var listProp = UtilityProp.GetProperties(objToBind).OrderBy(a =>
             {
                 var sel = (CustomUIViewAttribute)a.GetCustomAttributes(typeof(CustomUIViewAttribute), true).FirstOrDefault();
                 if (sel == null || sel.Ordine == 0)

@@ -3,11 +3,12 @@ using NLog.Targets;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Exports;
 using StrumentiMusicali.App.Core.Imports;
-using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View;
 using StrumentiMusicali.App.View.Articoli;
 using StrumentiMusicali.App.View.Settings;
+using StrumentiMusicali.Core.Manager;
+using StrumentiMusicali.Core.Settings;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Articoli;
 using StrumentiMusicali.Library.Core.Events.Fatture;
@@ -50,7 +51,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private void ExportMag(ExportMagazzino obj)
         {
-            using (var mouseman = new Manager.CursorManager())
+            using (var mouseman = new CursorManager())
             {
                 using (var export = new ExportMagazzino())
                 {

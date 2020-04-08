@@ -1,8 +1,8 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
-using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Forms;
 using StrumentiMusicali.App.Settings;
+using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Library.Core;
 
 using StrumentiMusicali.Library.Core.Events.Articoli;
@@ -10,6 +10,7 @@ using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Core.Events.Image;
 using StrumentiMusicali.Library.Core.Events.Magazzino;
 using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Repo;
 using StrumentiMusicali.Library.View.Enums;
 using System;
@@ -425,7 +426,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                     var uof = saveEntity.UnitOfWork;
                     var itemCurrent = (SelectedItem);
                     var art =
-                    (new StrumentiMusicali.Library.Entity.Articolo()
+                    (new Articolo()
                     {
                         CategoriaID = itemCurrent.Categoria.ID,
                         Condizione = itemCurrent.Condizione,
@@ -551,7 +552,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                     prezzo = decimal.Parse(strPrezzo);
                 }
             }
-            var artNew = (new StrumentiMusicali.Library.Entity.Articolo()
+            var artNew = (new Articolo()
             {
                 CategoriaID = int.Parse(dat[1]),
                 Condizione = cond,
@@ -571,7 +572,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                 int ordine = 0;
                 foreach (var item in foto.Split(';'))
                 {
-                    var artFoto = new StrumentiMusicali.Library.Entity.FotoArticolo()
+                    var artFoto = new FotoArticolo()
                     {
                         Articolo = artNew,
                         UrlFoto = item,
@@ -696,7 +697,7 @@ namespace StrumentiMusicali.App.Core.Controllers
         {
             try
             {
-                using (Manager.CursorManager cursorManager = new CursorManager())
+                using (CursorManager cursorManager = new CursorManager())
                 {
                     var datoRicerca = TestoRicerca.Split(' ').ToList();
 

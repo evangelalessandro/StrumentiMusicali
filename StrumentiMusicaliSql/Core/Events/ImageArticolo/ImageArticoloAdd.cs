@@ -1,5 +1,5 @@
 ﻿using StrumentiMusicali.Library.Core.Events.Base;
-using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Entity.Articoli;
 
 namespace StrumentiMusicali.Library.Core.Events.Image
 {

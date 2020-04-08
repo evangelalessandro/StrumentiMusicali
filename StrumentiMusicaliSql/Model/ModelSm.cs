@@ -1,4 +1,6 @@
 using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Entity.Articoli;
+using StrumentiMusicali.Library.Entity.Setting;
 using StrumentiMusicali.Library.Repo;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -207,7 +209,7 @@ namespace StrumentiMusicali.Library.Model
             //modelBuilder.Entity<SettingSito>().ToTable("SettingSito");
             modelBuilder.Entity<SettingBackupFtp>().ToTable("SettingBackupFtp");
 
-
+             
 
             modelBuilder.Entity<Cliente>().ToTable("Clienti");
             modelBuilder.Entity<FattureGenerateInvio>().ToTable("FattureGenerate");

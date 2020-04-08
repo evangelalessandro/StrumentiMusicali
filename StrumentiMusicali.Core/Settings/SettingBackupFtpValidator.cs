@@ -1,4 +1,5 @@
 ﻿using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Entity.Setting;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Linq;

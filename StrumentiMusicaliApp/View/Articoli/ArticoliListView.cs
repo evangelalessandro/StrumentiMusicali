@@ -3,7 +3,7 @@ using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.CustomComponents;
 using StrumentiMusicali.App.View.BaseControl;
 using StrumentiMusicali.Library.Core;
-using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Entity.Articoli;
 
 namespace StrumentiMusicali.App.View
 {

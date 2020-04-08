@@ -1,5 +1,5 @@
 ﻿using StrumentiMusicali.App.Core;
-using StrumentiMusicali.App.View.Utility;
+using StrumentiMusicali.Core.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Entity;
@@ -8,16 +8,14 @@ using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Linq;
 
-namespace StrumentiMusicali.App.Settings
+namespace StrumentiMusicali.Core.Settings
 {
     public class DatiIntestazioneStampaFatturaValidator
     {
-
-
         public static bool Validate()
         {
             var datiIntestazioneStampaFattura = ReadSetting();
-            var list = UtilityView.GetProperties(datiIntestazioneStampaFattura);
+            var list = UtilityProp.GetProperties(datiIntestazioneStampaFattura);
             foreach (var item in list)
             {
                 if (item.GetValue(datiIntestazioneStampaFattura) == null || string.IsNullOrEmpty((string)item.GetValue(datiIntestazioneStampaFattura).ToString()))

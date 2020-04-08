@@ -1,5 +1,5 @@
 ﻿using StrumentiMusicali.Library.Core.Events.Base;
-using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Entity.Articoli;
 using System.Collections.Generic;
 
 namespace StrumentiMusicali.Library.Core.Events.Image
@@ -12,6 +12,7 @@ namespace StrumentiMusicali.Library.Core.Events.Image
             Articolo = articolo;
             Files = files;
         }
+         
 
         public Articolo Articolo { get; private set; }
         public List<string> Files { get; private set; }

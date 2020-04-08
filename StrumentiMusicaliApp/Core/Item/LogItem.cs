@@ -1,4 +1,5 @@
-﻿using StrumentiMusicali.Library.Core.Item.Base;
+﻿using StrumentiMusicali.Core.Properties;
+using StrumentiMusicali.Library.Core.Item.Base;
 using StrumentiMusicali.Library.Entity;
 using System;
 using System.Drawing;
@@ -18,15 +19,15 @@ namespace StrumentiMusicali.App.Core.Item
 
             if (eventLog.TipoEvento == "Error")
             {
-                TipoEvento = Properties.Resources.Error_24;
+                TipoEvento = ImageIcons.Error_24;
             }
             else if (eventLog.TipoEvento.ToLowerInvariant().Contains("Warn".ToLowerInvariant()))
             {
-                TipoEvento = Properties.Resources.Warning_24;
+                TipoEvento = ImageIcons.Warning_24;
             }
             else
             {
-                TipoEvento = Properties.Resources.Info_24;
+                TipoEvento = ImageIcons.Info_24;
             }
             Evento = eventLog.Evento;
             Errore = eventLog.Errore;

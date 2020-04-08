@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace StrumentiMusicali.Library.Entity
+namespace StrumentiMusicali.Library.Entity.Setting
 {
     public class SettingBackupFtp : Base.BaseEntity
     {

@@ -1,8 +1,8 @@
 ﻿using StrumentiMusicali.App.Core.Controllers;
-using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.View.BaseControl;
 using StrumentiMusicali.App.View.BaseControl.ElementiDettaglio;
 using StrumentiMusicali.App.View.Utility;
+using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Core.Events.Magazzino;

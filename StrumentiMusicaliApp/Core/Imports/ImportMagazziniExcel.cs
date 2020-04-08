@@ -1,6 +1,7 @@
-﻿using StrumentiMusicali.App.Core.Manager;
+﻿using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Data;

@@ -1,5 +1,6 @@
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Articoli;
+using StrumentiMusicali.Library.Entity.Ecomm;
 using StrumentiMusicali.Library.Entity.Setting;
 using StrumentiMusicali.Library.Repo;
 using System.Collections.Generic;
@@ -224,6 +225,8 @@ namespace StrumentiMusicali.Library.Model
            .HasIndex(b => new { b.Nome, b.Codice, b.Reparto })
            .IsUnique();
         }
+        public virtual DbSet<RepartoWeb> RepartoWeb { get; set; }
+        public virtual DbSet<CategoriaWeb> CategoriaWeb { get; set; }
 
         public virtual DbSet<Deposito> Depositi { get; set; }
         public virtual DbSet<Magazzino> Magazzino { get; set; }

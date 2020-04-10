@@ -141,6 +141,8 @@
     <Compile Include="Entity\Base\RigaDoc.cs" />
     <Compile Include="Entity\DatiIntestazioneFattura.cs" />
     <Compile Include="Entity\DatiMittente.cs" />
+    <Compile Include="Entity\Ecomm\CategoriaWeb.cs" />
+    <Compile Include="Entity\Ecomm\RepartoWeb.cs" />
     <Compile Include="Entity\Pagamento.cs" />
     <Compile Include="Entity\FattureGenerateInvio.cs" />
     <Compile Include="Entity\Fatture\Cliente.cs" />

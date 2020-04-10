@@ -1,6 +1,7 @@
 ﻿using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Articoli;
+using StrumentiMusicali.Library.Entity.Ecomm;
 using StrumentiMusicali.Library.Entity.Setting;
 using StrumentiMusicali.Library.Model;
 using System;
@@ -24,6 +25,27 @@ namespace StrumentiMusicali.Library.Repo
                     _CategorieRepository = new Repository<Categoria>(dbContext);
                 }
                 return _CategorieRepository;
+            }
+        }
+        private Repository<CategoriaWeb> _CategorieWebRepository;
+
+        public IRepository<CategoriaWeb> CategorieWebRepository {
+            get {
+                if (_CategorieWebRepository == null)
+                {
+                    _CategorieWebRepository = new Repository<CategoriaWeb>(dbContext);
+                }
+                return _CategorieWebRepository;
+            }
+        }
+        private Repository<RepartoWeb> _RepartoWebRepository;
+        public IRepository<RepartoWeb> RepartoWebRepository {
+            get {
+                if (_RepartoWebRepository == null)
+                {
+                    _RepartoWebRepository = new Repository<RepartoWeb>(dbContext);
+                }
+                return _RepartoWebRepository;
             }
         }
         private Repository<DatiMittente> _DatiMittenteRepository;

@@ -176,7 +176,7 @@ namespace StrumentiMusicali.App.View.Utility
                         {
                             cnt.DataBindings.Add("Checked", businessObject, item.Name);
                         }
-                        else if (cnt is DevExpress.XtraEditors.ComboBox)
+                        else if (cnt is System.Windows.Forms.ComboBox)
                         {
                             cnt.DataBindings.Add("SelectedValue", businessObject, item.Name);
                         }
@@ -199,6 +199,10 @@ namespace StrumentiMusicali.App.View.Utility
                         else if (cnt is LookUpEdit)
                         {
                             cnt.DataBindings.Add("EditValue", businessObject, item.Name);
+                        }
+                        else
+                        {
+                            throw new Exception("Bind non gestito");
                         }
                     }
                 }

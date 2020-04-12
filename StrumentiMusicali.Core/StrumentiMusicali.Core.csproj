@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentScheduler, Version=5.3.0.0, Culture=neutral, PublicKeyToken=b76503528a14ebd1, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentScheduler.5.3.0\lib\net40\FluentScheduler.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -71,7 +74,7 @@
   <ItemGroup>
     <Compile Include="Manager\CursorHandler.cs" />
     <Compile Include="Manager\ExceptionManager.cs" />
-    <Compile Include="Manager\LogManager.cs" />
+    <Compile Include="Manager\ManagerLog.cs" />
     <Compile Include="Manager\MessageManager.cs" />
     <Compile Include="Manager\ProgressManager.cs" />
     <Compile Include="Manager\SaveEntityManager.cs" />
@@ -81,6 +84,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ImageIcons.resx</DependentUpon>
     </Compile>
+    <Compile Include="Scheduler\BackupJob.cs" />
+    <Compile Include="Scheduler\SchedulerTask.cs" />
     <Compile Include="Settings\DatiIntestazioneStampaFatturaValidator.cs" />
     <Compile Include="Settings\ISettingsReader.cs" />
     <Compile Include="Settings\SettingBackupFtpValidator.cs" />
@@ -91,6 +96,10 @@
     <Compile Include="Utility\UtilityProp.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\StrumentiMusicali.ftpBackup\StrumentiMusicali.ftpBackup.csproj">
+      <Project>{0e29b767-416d-421e-98f6-a8eed7c7cb6f}</Project>
+      <Name>StrumentiMusicali.ftpBackup</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StrumentiMusicaliSql\StrumentiMusicali.Library.csproj">
       <Project>{114b9db5-6a31-4d89-bbb8-7ae7dd1a25c6}</Project>
       <Name>StrumentiMusicali.Library</Name>

@@ -5,6 +5,7 @@ using StrumentiMusicali.Library.Entity.Ecomm;
 using StrumentiMusicali.Library.Entity.Setting;
 using StrumentiMusicali.Library.Model;
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 
@@ -18,6 +19,17 @@ namespace StrumentiMusicali.Library.Repo
         //Private members corresponding to each concrete repository
         private Repository<Categoria> _CategorieRepository;
 
+        public string ServerName()
+        {
+            object[] parameters = new List<object>().ToArray();
+            var dato= this.dbContext.Database.SqlQuery<string>("select @@SERVERNAME", parameters);
+            var serverName= dato.First();
+            if (serverName.Contains(@"\"))
+            {
+                serverName = serverName.Split(@"\".ToCharArray()).First();
+            }
+            return serverName;
+        }
         public IRepository<Categoria> CategorieRepository {
             get {
                 if (_CategorieRepository == null)

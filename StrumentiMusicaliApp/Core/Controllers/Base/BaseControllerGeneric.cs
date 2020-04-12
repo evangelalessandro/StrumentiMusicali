@@ -66,7 +66,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
         public enAmbiente AmbienteDettaglio { get; private set; }
 
         public string TestoRicerca { get; set; } = "";
-        public virtual void RefreshList(UpdateList<TEntity> obj)
+        public virtual void RefreshList(UpdateList<TEntity> itemobj)
         {
             if (ClearRicerca)
             {

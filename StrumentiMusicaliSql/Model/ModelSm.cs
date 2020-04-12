@@ -220,6 +220,7 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<Pagamento>().Property(e => e.ImportoTotale).HasPrecision(19, 2);
             modelBuilder.Entity<Articolo>().Property(e => e.Prezzo).HasPrecision(19, 2);
             modelBuilder.Entity<Articolo>().Property(e => e.PrezzoBarrato).HasPrecision(19, 2);
+ 
 
             modelBuilder.Entity<Categoria>()
            .HasIndex(b => new { b.Nome, b.Codice, b.Reparto })

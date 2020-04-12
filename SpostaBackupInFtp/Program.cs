@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace SpostaBackupInFtp
 {
-    class Program
+    public static class Program
     {
         internal static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
         static int Main(string[] args)

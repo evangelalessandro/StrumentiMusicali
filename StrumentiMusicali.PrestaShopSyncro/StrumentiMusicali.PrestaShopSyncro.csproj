@@ -57,7 +57,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseClass\SyncroBase.cs" />
+    <Compile Include="CategorySync.cs" />
     <Compile Include="ProductSyncro.cs" />
+    <Compile Include="Products\ReadProductsFormSite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +75,9 @@
       <Project>{114b9db5-6a31-4d89-bbb8-7ae7dd1a25c6}</Project>
       <Name>StrumentiMusicali.Library</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Base\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

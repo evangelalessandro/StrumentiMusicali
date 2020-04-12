@@ -3,6 +3,7 @@ using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Articoli;
+using StrumentiMusicali.Library.Repo;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -27,6 +28,13 @@ namespace StrumentiMusicali.App
                 {
                     if (createdNew)
                     {
+                        using (var uof=new UnitOfWork())
+                        {
+                            if (uof.ServerName()==Environment.MachineName)
+                            {
+                                AttivaSchedulatore();
+                            }
+                        }
                         using (var controller = new ControllerMaster())
                         {
                             controller.ShowMainView();
@@ -41,6 +49,7 @@ namespace StrumentiMusicali.App
             }
             else
             {
+                /*invio articoli csv*/
                 if (args[0] == "INVIO")
                 {
                     using (var controller = new ControllerMaster())
@@ -49,6 +58,12 @@ namespace StrumentiMusicali.App
                     }
                 }
             }
+        }
+
+        private static void AttivaSchedulatore()
+        {
+            StrumentiMusicali.Core.Scheduler.SchedulerTask scheduler = new StrumentiMusicali.Core.Scheduler.SchedulerTask();
+            scheduler.Init();
         }
     }
     public static class ProcessUtils

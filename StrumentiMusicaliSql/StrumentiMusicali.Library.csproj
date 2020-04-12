@@ -227,6 +227,10 @@
     <Compile Include="Migrations\201907301039307_BackupFtpSetting1.Designer.cs">
       <DependentUpon>201907301039307_BackupFtpSetting1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004101604043_GestioneWeb_001.cs" />
+    <Compile Include="Migrations\202004101604043_GestioneWeb_001.Designer.cs">
+      <DependentUpon>202004101604043_GestioneWeb_001.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
@@ -300,9 +304,13 @@
     <EmbeddedResource Include="Migrations\201907301039307_BackupFtpSetting1.resx">
       <DependentUpon>201907301039307_BackupFtpSetting1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004101604043_GestioneWeb_001.resx">
+      <DependentUpon>202004101604043_GestioneWeb_001.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resource1.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

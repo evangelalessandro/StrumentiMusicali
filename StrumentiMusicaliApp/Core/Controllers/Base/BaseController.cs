@@ -49,6 +49,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
         public const bool ModalitàAForm = false;
         public static T GetAttribute<T>(Enum enumValue) where T : Attribute
         {
+            if (enumValue == null)
+            {
+                throw new ArgumentNullException();
+            }
             var member = enumValue.GetType().GetMember(enumValue.ToString()).FirstOrDefault();
             return (T)member?.GetCustomAttributes(typeof(T), false).FirstOrDefault();
         }
@@ -225,7 +229,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
             //ribbonMaster.ActiveTab = ribbonMaster.PreviousTab;
         }
 
-        private void RemoveMenu(MenuTab menu, Ribbon ribbon)
+        private static void RemoveMenu(MenuTab menu, Ribbon ribbon)
         {
 
 
@@ -396,7 +400,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
         }
 
-        private void AddStatusBarProgress(Form form)
+        private static void AddStatusBarProgress(Form form)
         {
             // StatusBar
             // 

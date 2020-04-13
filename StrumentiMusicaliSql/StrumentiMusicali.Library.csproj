@@ -236,6 +236,10 @@
     <Compile Include="Migrations\202004131603059_AllineamentoWeb_2.Designer.cs">
       <DependentUpon>202004131603059_AllineamentoWeb_2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004132024540_AllineamentoWeb_4.cs" />
+    <Compile Include="Migrations\202004132024540_AllineamentoWeb_4.Designer.cs">
+      <DependentUpon>202004132024540_AllineamentoWeb_4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
@@ -314,6 +318,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004131603059_AllineamentoWeb_2.resx">
       <DependentUpon>202004131603059_AllineamentoWeb_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004132024540_AllineamentoWeb_4.resx">
+      <DependentUpon>202004132024540_AllineamentoWeb_4.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resource1.resx">
       <Generator>ResXFileCodeGenerator</Generator>

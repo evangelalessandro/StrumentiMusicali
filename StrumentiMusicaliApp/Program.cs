@@ -1,10 +1,15 @@
 ﻿using DevExpress.XtraGrid.Localization;
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Controllers.Base;
+using StrumentiMusicali.Core.Scheduler;
+using StrumentiMusicali.Core.Scheduler.Jobs.Interface;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Articoli;
 using StrumentiMusicali.Library.Repo;
+using StrumentiMusicali.PrestaShopSyncro.Scheduler;
 using System;
+using System.Collections.Generic;
+
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -61,10 +66,14 @@ namespace StrumentiMusicali.App
         }
 
         private static void AttivaSchedulatore()
-        {
-            StrumentiMusicali.Core.Scheduler.SchedulerTask scheduler = new StrumentiMusicali.Core.Scheduler.SchedulerTask();
+        { 
+
+            var scheduler = new SchedulerTask();
             scheduler.Init();
+
+            
         }
+         
     }
     public static class ProcessUtils
     {

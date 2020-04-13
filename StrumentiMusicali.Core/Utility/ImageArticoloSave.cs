@@ -59,14 +59,7 @@ namespace StrumentiMusicali.Core.Utility
                             });
                         maxOrdine++;
                     }
-                    var articolo = uof.ArticoliRepository
-                        .Find(a => a.ID == args.Articolo.ID).First();
-                    /*se cambio immagini devo aggiornare le immagini su, quindi aggiorno il flag*/
-                    if (!articolo.ImmaginiDaCaricare)
-                    {
-                        articolo.ImmaginiDaCaricare = true;
-                        uof.ArticoliRepository.Update(articolo);
-                    }
+                    
                     if (save.SaveEntity(string.Format(@"{0} Immagine\i aggiunta\e", args.Files.Count())))
                     {
                         EventAggregator.Instance().Publish<ImageListUpdate>(new ImageListUpdate());

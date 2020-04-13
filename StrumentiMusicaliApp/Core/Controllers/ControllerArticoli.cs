@@ -618,7 +618,15 @@ namespace StrumentiMusicali.App.Core.Controllers
                         {
                             save.UnitOfWork.MagazzinoRepository.Delete(itemMg);
                         }
+                        foreach (var itemAgg in save.UnitOfWork.AggiornamentoWebArticoloRepository.Find(a => a.ArticoloID == item.ID))
+                        {
+                            save.UnitOfWork.AggiornamentoWebArticoloRepository.Delete(itemAgg);
+
+                        }
+
                         save.UnitOfWork.ArticoliRepository.Delete(item);
+
+                        
                         if (save.SaveEntity(enSaveOperation.OpDelete))
                         {
                             EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>(this));

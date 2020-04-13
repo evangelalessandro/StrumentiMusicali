@@ -13,7 +13,8 @@ namespace StrumentiMusicali.Library.Entity.Articoli
 {
 
     public class ArticoloWeb : INotifyPropertyChanged
-    {
+    { 
+
         [CustomUIView(Ordine = 2, Category = "HTML", MultiLine = 6)]
         [MaxLength(4000)]
         public string DescrizioneHtml { get; set; } = "";
@@ -26,7 +27,7 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         public string CodiceArticoloEcommerce { get; set; } = "";
 
         [CustomUIView(Ordine = 20, Enable = false, DateTimeView = true, Category = "Allineamento")]
-        public DateTime DataUltimoAggiornamentoWeb { get; set; } = DateTime.MinValue;
+        public DateTime DataUltimoAggiornamentoWeb { get; set; } = new DateTime(1900, 1, 1);
 
 
         [CustomUIView(Width = 80, Titolo = "Prezzo per il web", Ordine = 30, Category = "Prezzo", Money = true)]

@@ -4,7 +4,7 @@ using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Library.Repo;
 using System;
 
-namespace StrumentiMusicali.Core.Scheduler
+namespace StrumentiMusicali.Core.Scheduler.Jobs
 {
     public class BackupJob : IJob
     {

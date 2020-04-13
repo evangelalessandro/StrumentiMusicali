@@ -90,11 +90,7 @@ namespace StrumentiMusicali.App.Core.Exports
 
                         var artToUpdate = _fotoToUpload.Select(a => a.ArticoloID).Distinct().ToList();
 
-                        foreach (var item in uof.ArticoliRepository.Find(a => artToUpdate.Contains(a.ID)).ToList())
-                        {
-                            item.ImmaginiDaCaricare = false;
-                            uof.ArticoliRepository.Update(item);
-                        }
+                         
 
                         UploadEndRetray(fileMercatino, _settingSito.UrlCompletoFileMercatino);
                         UploadEndRetray(fileEcommerce, _settingSito.UrlCompletoFileEcommerce);
@@ -151,7 +147,7 @@ namespace StrumentiMusicali.App.Core.Exports
 
         private void ExportLineBase(SettingSito settingSito, List<FotoArticolo> fotoList, StringBuilder sb, Articolo art)
         {
-            var fotoOrdinate = fotoList.Where(b => b.Articolo.ImmaginiDaCaricare && b.ArticoloID == art.ID).OrderBy(b => b.Ordine).ToList();
+            var fotoOrdinate = fotoList.Where(b =>b.ArticoloID == art.ID).OrderBy(b => b.Ordine).ToList();
 
             foreach (var item in fotoOrdinate)
             {

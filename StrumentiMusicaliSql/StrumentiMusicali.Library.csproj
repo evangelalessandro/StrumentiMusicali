@@ -141,6 +141,7 @@
     <Compile Include="Entity\Base\RigaDoc.cs" />
     <Compile Include="Entity\DatiIntestazioneFattura.cs" />
     <Compile Include="Entity\DatiMittente.cs" />
+    <Compile Include="Entity\Ecomm\AggiornamentoWebArticolo.cs" />
     <Compile Include="Entity\Ecomm\CategoriaWeb.cs" />
     <Compile Include="Entity\Ecomm\RepartoWeb.cs" />
     <Compile Include="Entity\Pagamento.cs" />
@@ -231,6 +232,10 @@
     <Compile Include="Migrations\202004101604043_GestioneWeb_001.Designer.cs">
       <DependentUpon>202004101604043_GestioneWeb_001.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004131603059_AllineamentoWeb_2.cs" />
+    <Compile Include="Migrations\202004131603059_AllineamentoWeb_2.Designer.cs">
+      <DependentUpon>202004131603059_AllineamentoWeb_2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
@@ -306,6 +311,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004101604043_GestioneWeb_001.resx">
       <DependentUpon>202004101604043_GestioneWeb_001.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004131603059_AllineamentoWeb_2.resx">
+      <DependentUpon>202004131603059_AllineamentoWeb_2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resource1.resx">
       <Generator>ResXFileCodeGenerator</Generator>

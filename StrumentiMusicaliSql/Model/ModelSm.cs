@@ -61,6 +61,7 @@ namespace StrumentiMusicali.Library.Model
                 if (articolo.ID == 0)
                 {
                     articolo.UpdateTitolo = "";
+
                 }
                 if (articolo.CategoriaID == 0)
                 {
@@ -225,9 +226,16 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<Categoria>()
            .HasIndex(b => new { b.Nome, b.Codice, b.Reparto })
            .IsUnique();
+
+            modelBuilder.Entity<AggiornamentoWebArticolo>()
+                .HasIndex(b => new { b.ArticoloID})
+                .IsUnique();
+
         }
         public virtual DbSet<RepartoWeb> RepartoWeb { get; set; }
         public virtual DbSet<CategoriaWeb> CategoriaWeb { get; set; }
+
+        public virtual DbSet<AggiornamentoWebArticolo> AggiornamentoWebs { get; set; }
 
         public virtual DbSet<Deposito> Depositi { get; set; }
         public virtual DbSet<Magazzino> Magazzino { get; set; }

@@ -1,6 +1,7 @@
 ﻿using PropertyChanged;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Base;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -52,14 +53,6 @@ namespace StrumentiMusicali.Library.Entity.Articoli
 
         [CustomUIView(Ordine = 4, Combo = TipoDatiCollegati.Condizione)]
         public enCondizioneArticolo Condizione { get; set; } = enCondizioneArticolo.Nuovo;
-
-        [CustomHideUI]
-        public bool ImmaginiDaCaricare { get; set; } = true;
-
-
-
-        [CustomHideUI]
-        public bool Pinned { get; set; }
 
         [CustomUIView(Width = 80, Ordine = 39, Category = "Prezzo", Money = true)]
         [Required]

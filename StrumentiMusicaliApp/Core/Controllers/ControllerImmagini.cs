@@ -75,14 +75,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                             return;
                         }
                         RimuoviItemDaRepo(folderFoto, listFileToDelete, uof, item);
-                        var articolo = uof.ArticoliRepository
-                                .Find(a => a.ID == obj.FotoArticolo.ArticoloID).First();
-                        /*se cambio immagini devo aggiornare le immagini su, quindi aggiorno il flag*/
-                        if (!articolo.ImmaginiDaCaricare)
-                        {
-                            articolo.ImmaginiDaCaricare = true;
-                            uof.ArticoliRepository.Update(articolo);
-                        }
+                         
                         uof.Commit();
                     }
                 }

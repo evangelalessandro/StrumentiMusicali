@@ -204,6 +204,17 @@ namespace StrumentiMusicali.Library.Repo
             }
         }
 
+        private Repository<AggiornamentoWebArticolo> _AggiornamentoWebArticoloRepository;
+
+        public IRepository<AggiornamentoWebArticolo> AggiornamentoWebArticoloRepository {
+            get {
+                if (_AggiornamentoWebArticoloRepository == null)
+                {
+                    _AggiornamentoWebArticoloRepository = new Repository<AggiornamentoWebArticolo>(dbContext);
+                }
+                return _AggiornamentoWebArticoloRepository;
+            }
+        }
         private Repository<Articolo> _ArticoliRepository;
 
         public IRepository<Articolo> ArticoliRepository {

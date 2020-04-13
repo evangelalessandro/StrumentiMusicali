@@ -9,12 +9,16 @@ namespace StrumentiMusicali.PrestaShopSyncro
 {
     public class CategorySync : BaseClass.SyncroBase
     {
+        static bool Allineati = false;
         public void AllineaCategorieReparti()
         {
+            if (Allineati)
+                return;
             ManagerLog.AddLogMessage("Avviato allineamento categorie reparti");
             List<category> listCateg = AllineaReparti();
             AllineaCategorie(listCateg);
             ManagerLog.AddLogMessage("Terminato allineamento categorie reparti");
+            Allineati = true;
         }
 
         private void AllineaCategorie(List<category> listCategories)

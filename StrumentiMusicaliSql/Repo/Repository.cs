@@ -1,6 +1,8 @@
 ﻿using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Entity.Base;
+using StrumentiMusicali.Library.Entity.Ecomm;
 using StrumentiMusicali.Library.Model;
 using System;
 using System.Collections.Generic;
@@ -50,11 +52,28 @@ namespace StrumentiMusicali.Library.Repo
                 var item = (entity as BaseEntity);
                 item.DataUltimaModifica = DateTime.Now;
                 item.DataCreazione = DateTime.Now;
+
             }
 
             FixDateNull(entity);
 
+            //if (entity is Entity.Articoli.Articolo)
+            //{
+            //    var dat = (entity as Entity.Articoli.Articolo);
+            //    if (dat.ArticoloWeb.DataUltimoAggiornamentoWeb.Year < 1900)
+            //    {
+            //        dat.ArticoloWeb.DataUltimoAggiornamentoWeb = new DateTime(1900,1,1);
+            //    }
+            //}
+
             dbSet.Add(entity);
+
+            if (entity is Entity.Articoli.Articolo)
+            {
+                new Repository<AggiornamentoWebArticolo>(dbContext).Add(new AggiornamentoWebArticolo() { Articolo = entity as Articolo });
+
+            }
+
         }
 
         public virtual T GetById(Guid id)

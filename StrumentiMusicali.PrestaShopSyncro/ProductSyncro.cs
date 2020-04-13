@@ -6,6 +6,7 @@ using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Image;
 using StrumentiMusicali.Library.Core.interfaces;
 using StrumentiMusicali.Library.Entity.Articoli;
+using StrumentiMusicali.Library.Entity.Ecomm;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
@@ -23,24 +24,89 @@ namespace StrumentiMusicali.PrestaShopSyncro
         {
             using (var uof = new UnitOfWork())
             {
-                var groupsync = new CategorySync();
-                groupsync.AllineaCategorieReparti();
-                DateTime dataLettura = DateTime.Now;
-                var listaArt = uof.ArticoliRepository.Find(a => a.CaricainECommerce
-                    && (a.ArticoloWeb.DataUltimoAggiornamentoWeb < a.DataUltimaModifica
-                  || a.ImmaginiDaCaricare) && a.Categoria.Codice >= 0
-                  && a.ArticoloWeb.PrezzoWeb > 0);
-                foreach (var item in listaArt)
+                using (var groupsync = new CategorySync())
                 {
-                    CaricaArticolo(item, dataLettura);
-                    return;
+                    groupsync.AllineaCategorieReparti();
+                }
+                UpdateProducts(uof);
+
+                UpdateStock(uof);
+
+                UpdateImages(uof);
+            }
+        }
+
+        private void UpdateImages(UnitOfWork uof)
+        {
+            var aggiornamentoWebs = uof.AggiornamentoWebArticoloRepository.Find(a => a.Articolo.CaricainECommerce
+
+                               && a.Articolo.Categoria.Codice >= 0
+                              && a.Articolo.ArticoloWeb.PrezzoWeb > 0).
+                              Select(a => new
+                              {
+                                  CodiceArticoloEcommerce =
+                              a.Articolo.ArticoloWeb.CodiceArticoloEcommerce,
+                                  ID = a.Articolo.ID,
+                                  Aggiornamento = a
+                              }).ToList()
+                                .Where(a => Math.Abs((a.Aggiornamento.DataUltimoAggFoto - a.Aggiornamento.DataUltimoAggFotoWeb)
+                                .TotalSeconds) > 10)
+                                .ToList();
+            foreach (var item in aggiornamentoWebs)
+            {
+                var artDb = new ArticoloBase { ID = item.ID, CodiceArticoloEcommerce = item.CodiceArticoloEcommerce };
+                if (string.IsNullOrEmpty(artDb.CodiceArticoloEcommerce))
+                {
+                    product artWeb = GetProdWebFromCodartEcommerce(artDb);
+
+                    UpdateImage(artDb, artWeb, uof);
+
                 }
             }
         }
 
+        private void UpdateStock(UnitOfWork uof)
+        {
+            var aggiornamentoWebs = uof.AggiornamentoWebArticoloRepository.Find(a => a.Articolo.CaricainECommerce
 
-       
-        private int CalcolaStock(Articolo artDb)
+                               && a.Articolo.Categoria.Codice >= 0
+                              && a.Articolo.ArticoloWeb.PrezzoWeb > 0).
+                              Select(a => new
+                              {
+                                  CodiceArticoloEcommerce =
+                              a.Articolo.ArticoloWeb.CodiceArticoloEcommerce,
+                                  ID = a.Articolo.ID,
+                                  Aggiornamento = a
+                              }).ToList()
+                                .Where(a => Math.Abs((a.Aggiornamento.DataUltimoAggMagazzino - a.Aggiornamento.DataUltimoAggMagazzinoWeb)
+                                .TotalSeconds) > 10)
+                                .ToList();
+            foreach (var item in aggiornamentoWebs)
+            {
+                UpdateStockArt(new ArticoloBase { ID = item.ID, CodiceArticoloEcommerce = item.CodiceArticoloEcommerce }
+                , uof);
+            }
+        }
+
+        private void UpdateProducts(UnitOfWork uof)
+        {
+            DateTime dataLettura = DateTime.Now;
+            var listaArt = uof.ArticoliRepository.Find(a => a.CaricainECommerce
+                && (a.ArticoloWeb.DataUltimoAggiornamentoWeb < a.DataUltimaModifica
+
+              ) && a.Categoria.Codice >= 0
+              && a.ArticoloWeb.PrezzoWeb > 0).ToList()
+              .Where(a => Math.Abs((a.ArticoloWeb.DataUltimoAggiornamentoWeb - a.DataUltimaModifica).TotalSeconds) > 10)
+              .ToList();
+            foreach (var item in listaArt.Take(10))
+            {
+
+                UpdateProduct(item, dataLettura);
+
+            }
+        }
+
+        private int CalcolaStock(ArticoloBase artDb)
         {
             using (var uof = new UnitOfWork())
             {
@@ -57,12 +123,35 @@ namespace StrumentiMusicali.PrestaShopSyncro
                 //item.QuantitaTotale = val.Sum(a => a.Sum);
             }
         }
+        private void UpdateStockArt(ArticoloBase artDb, UnitOfWork uof)
+        {
+            if (string.IsNullOrEmpty(artDb.CodiceArticoloEcommerce))
+            {
+                product artWeb = GetProdWebFromCodartEcommerce(artDb);
 
-        private void CaricaArticolo(Articolo artDb, DateTime dataLettura)
+                UpdateStockArt(artWeb, artDb, uof);
+            }
+        }
+
+        private product GetProdWebFromCodartEcommerce(ArticoloBase artDb)
+        {
+            return _productFactory.Get(long.Parse(artDb.CodiceArticoloEcommerce));
+        }
+
+        private class ArticoloBase
+        {
+            public int ID { get; set; }
+            public string CodiceArticoloEcommerce { get; set; }
+        }
+        private void UpdateProduct(Articolo artDb, DateTime dataLettura)
         {
             using (var uof = new UnitOfWork())
             {
                 product artWeb = new product();
+                if (string.IsNullOrEmpty(artDb.ArticoloWeb.CodiceArticoloEcommerce))
+                {
+                    artWeb = _productFactory.Get(long.Parse(artDb.ArticoloWeb.CodiceArticoloEcommerce));
+                }
                 artWeb.price = Math.Round(artDb.ArticoloWeb.PrezzoWeb * 100 / (100 + artDb.ArticoloWeb.Iva), 6, MidpointRounding.ToEven);
                 ManagerLog.AddLogMessage("Caricamento in corso dell'articolo '" + artDb.Titolo + "' ID=" + artDb.ID + "  nel web");
 
@@ -137,10 +226,13 @@ namespace StrumentiMusicali.PrestaShopSyncro
 
                     artDb.ArticoloWeb.DataUltimoAggiornamentoWeb = dataLettura;
                     artDb.ArticoloWeb.CodiceArticoloEcommerce = artWeb.id.Value.ToString();
+                    uof.ArticoliRepository.Update(artDb);
+                    uof.Commit();
+                    var artBase = new ArticoloBase { ID = artDb.ID, CodiceArticoloEcommerce = artDb.ArticoloWeb.CodiceArticoloEcommerce };
 
-                    UploadImage(artDb, artWeb, uof);
+                    UpdateImage(artBase, artWeb, uof);
 
-                    UpdateStockArt(artWeb, artDb);
+                    UpdateStockArt(artWeb, artBase, uof);
                 }
                 catch (Exception ex)
                 {
@@ -149,8 +241,9 @@ namespace StrumentiMusicali.PrestaShopSyncro
             }
         }
 
-        private void UploadImage(Articolo artDb, product artWeb, UnitOfWork uof)
+        private void UpdateImage(ArticoloBase artDb, product artWeb, UnitOfWork uof)
         {
+            DateTime date = DateTime.Now;
             /*cancello le immagini e le sovrascrivo*/
             foreach (var item in artWeb.associations.images)
             {
@@ -168,26 +261,56 @@ namespace StrumentiMusicali.PrestaShopSyncro
             {
                 _imageFactory.AddProductImage(artWeb.id.Value, item.File);
             }
-
+            var aggiornamento = CercaAggiornamento(artDb, uof);
+            aggiornamento.DataUltimoAggFotoWeb = date;
+            SalvaAggiornamento(uof, aggiornamento);
         }
 
-        
+
 
         /// <summary>
         /// Aggiorna il magazzino del articolo nel web
         /// </summary>
         /// <param name="newArtWeb"></param>
         /// <param name="artDb"></param>
-        private void UpdateStockArt(product newArtWeb, Articolo artDb)
+        private void UpdateStockArt(product newArtWeb, ArticoloBase artDb, UnitOfWork uof)
         {
             var stock = _StockAvailableFactory.Get(newArtWeb.associations.stock_availables.First().id);
-
+            DateTime date = DateTime.Now;
             stock.quantity = CalcolaStock(artDb);
             _StockAvailableFactory.Update(stock);
+            var aggiornamento = CercaAggiornamento(artDb, uof);
+            aggiornamento.DataUltimoAggMagazzinoWeb = date;
+            SalvaAggiornamento(uof, aggiornamento);
+        }
+
+        private static void SalvaAggiornamento(UnitOfWork uof, AggiornamentoWebArticolo aggiornamento)
+        {
+            if (aggiornamento.ID == 0)
+            {
+                uof.AggiornamentoWebArticoloRepository.Add(aggiornamento);
+            }
+            else
+            {
+                uof.AggiornamentoWebArticoloRepository.Update(aggiornamento);
+            }
+            uof.Commit();
+        }
+
+        private static AggiornamentoWebArticolo CercaAggiornamento(ArticoloBase artDb, UnitOfWork uof)
+        {
+            Library.Entity.Ecomm.AggiornamentoWebArticolo aggiornamento =
+                uof.AggiornamentoWebArticoloRepository.Find(a => a.ArticoloID == artDb.ID).FirstOrDefault();
+            if (aggiornamento == null)
+            {
+                aggiornamento = new Library.Entity.Ecomm.AggiornamentoWebArticolo();
+            }
+
+            return aggiornamento;
         }
 
         /*leggo i prodotti che sono da aggiornare */
 
-        
+
     }
 }

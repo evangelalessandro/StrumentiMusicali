@@ -3,7 +3,6 @@ using DevExpress.XtraGrid.Views.Grid;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.CustomComponents;
 using StrumentiMusicali.App.View.Interfaces;
-using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Core.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Item.Base;
@@ -12,7 +11,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -29,6 +27,7 @@ namespace StrumentiMusicali.App.View.Utility
             }
             return default;
         }
+
         public static T GetCurrentItemSelected<T>(this GridView dataGrid)
         {
             if (dataGrid.FocusedRowHandle >= 0)
@@ -38,6 +37,7 @@ namespace StrumentiMusicali.App.View.Utility
             }
             return default;
         }
+
         public static string GetTextSplitted(string name)
         {
             var titolo = string.Join(" ", Regex.Split(name, @"(?<!^)(?=[A-Z])"));
@@ -49,10 +49,12 @@ namespace StrumentiMusicali.App.View.Utility
 
             return titolo;
         }
+
         public static Icon GetIco(Bitmap bitmap)
         {
             return UtilityIco.GetIco(bitmap);
         }
+
         public static void AddButtonSaveAndClose(RibbonMenuPanel pnl, ICloseSave control, bool addSave = true)
         {
             var rib3 = pnl.Add("Chiudi", Properties.Resources.Close_48);
@@ -78,10 +80,9 @@ namespace StrumentiMusicali.App.View.Utility
                 {
                     control.RaiseSave();
                 };
-
             }
-
         }
+
         public static void SelezionaRiga(this GridView dataGrid, int idItem)
         {
             var colVisible = -1;
@@ -105,6 +106,7 @@ namespace StrumentiMusicali.App.View.Utility
                 }
             }
         }
+
         public static async Task SelezionaRiga(this DataGridView dataGrid, int idItem)
         {
             var colVisible = -1;
@@ -218,7 +220,6 @@ namespace StrumentiMusicali.App.View.Utility
             de.Properties.NullText = "<Vuoto>";
             if (attribute != null)
             {
-
                 if (attribute.DateTimeView)
                 {
                     string sDateTimeFormat = "dd.MM.yyyy HH:mm:ss";
@@ -237,7 +238,6 @@ namespace StrumentiMusicali.App.View.Utility
                     SetDateFormat(de, sDateTimeFormat);
                 }
             }
-
         }
 
         private static void SetDateFormat(DateEdit de, string DatasDateTimeFormat)
@@ -286,9 +286,6 @@ namespace StrumentiMusicali.App.View.Utility
             dgvRighe.OptionsView.BestFitMode = GridBestFitMode.Fast;
             dgvRighe.OptionsView.ShowFooter = true;
             dgvRighe.OptionsView.ShowGroupPanel = false;
-
         }
-
-        
     }
 }

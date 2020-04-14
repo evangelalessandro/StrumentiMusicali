@@ -9,13 +9,12 @@ namespace StrumentiMusicali.App.View
 {
     public class UtentiListView : BaseGridViewGeneric<UtentiItem, ControllerUtenti, Utente>, IMenu, IDisposable
     {
-
         public UtentiListView(ControllerUtenti controller)
             : base(controller)
         {
             this.Load += control_Load;
-
         }
+
         private void control_Load(object sender, System.EventArgs e)
         {
             //dgvRighe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
@@ -28,11 +27,9 @@ namespace StrumentiMusicali.App.View
             dgvRighe.Columns["ID"].VisibleIndex = 0;
         }
 
-
         public new void Dispose()
         {
             base.Dispose();
         }
     }
-
 }

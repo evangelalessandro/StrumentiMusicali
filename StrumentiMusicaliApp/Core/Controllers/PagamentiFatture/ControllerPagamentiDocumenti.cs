@@ -19,7 +19,8 @@ namespace StrumentiMusicali.App.Core.Controllers
     public class ControllerPagamentiDocumenti : BaseControllerGeneric<Pagamento, PagamentoItem>,
         IDisposable
     {
-        Guid _IDPagamentoMaster;
+        private Guid _IDPagamentoMaster;
+
         public ControllerPagamentiDocumenti(enAmbiente ambiente,
             enAmbiente ambienteDettaglio, Guid IDPagamentoMaster)
             : base(ambiente, ambienteDettaglio)
@@ -28,20 +29,20 @@ namespace StrumentiMusicali.App.Core.Controllers
 
             _IDPagamentoMaster = IDPagamentoMaster;
             AggiungiComandiMenu();
-
         }
+
         public void UpdateButton()
         {
             _ribRemove.Enabled = true;
             _ribRemove.Enabled = FotoSelezionata() != null;
-
         }
-        RibbonMenuButton _ribRemove;
+
+        private RibbonMenuButton _ribRemove;
+
         private void AggiungiComandiMenu()
         {
             var tabFirst = GetMenu().Tabs[0];
             var pnl = tabFirst.Pannelli.First();
-
 
             pnl.Pulsanti.RemoveAll(a => a.Tag == MenuTab.TagAdd
             || a.Tag == MenuTab.TagRemove || a.Tag == MenuTab.TagCerca
@@ -82,7 +83,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                 catch (Exception ex)
                 {
                     ExceptionManager.ManageError(ex);
-
                 }
             };
 
@@ -101,7 +101,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                     foto.FileName, foto),
                     this._INSTANCE_KEY));
             };
-
         }
 
         private void SetKeyImageListUI()
@@ -121,8 +120,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 
             EventAggregator.Instance()
                 .Subscribe<ImageSelected<PagamentoDocumenti>>(ImmagineSelezionata);
-
         }
+
         internal List<ImmaginiFile<PagamentoDocumenti>> RefreshImageListData()
         {
             if (!SettingDocumentiPagamentiValidator.CheckFolderPdfPagamenti())
@@ -133,7 +132,6 @@ namespace StrumentiMusicali.App.Core.Controllers
             {
                 var setting = SettingDocumentiPagamentiValidator.ReadSetting();
 
-
                 var imageList = uof.PagamentoDocumentiRepository.Find(a => a.IDPagamentoMaster == _IDPagamentoMaster)
                     .OrderBy(a => a.Ordine).ToList();
 
@@ -143,8 +141,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                                  , a.FileName, a)).ToList();
 
                 return (_listFotoArticolo.ToList());
-
-
             }
         }
 
@@ -152,12 +148,10 @@ namespace StrumentiMusicali.App.Core.Controllers
         {
             if (obj.GuidKey == this._INSTANCE_KEY)
             {
-
                 if (!SettingDocumentiPagamentiValidator.CheckFolderPdfPagamenti())
                     return;
 
                 var folderPagamenti = SettingDocumentiPagamentiValidator.ReadSetting().CartellaReteDocumentiPagamenti;
-
 
                 using (var saveManager = new SaveEntityManager())
                 {
@@ -183,10 +177,9 @@ namespace StrumentiMusicali.App.Core.Controllers
         {
             if (obj.GuidKey == this._INSTANCE_KEY)
             {
-
             }
-
         }
+
         private void AddImageFiles(ImageAddFiles obj)
         {
             if (obj.GuidKey == this._INSTANCE_KEY)
@@ -196,13 +189,11 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                 var folderPagamenti = SettingDocumentiPagamentiValidator.ReadSetting().CartellaReteDocumentiPagamenti;
 
-
                 using (var saveManager = new SaveEntityManager())
                 {
                     var repo = saveManager.UnitOfWork.PagamentoDocumentiRepository;
                     foreach (var item in obj.Files)
                     {
-
                         var filePdf = item;
 
                         var info = new FileInfo(filePdf);
@@ -219,9 +210,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                             Ordine = 0,
                             PathFile = Path.Combine(this._IDPagamentoMaster.ToString(), nomeFile),
                         });
-
                     }
-
 
                     saveManager.SaveEntity("Immagini aggiunte correttamente");
 
@@ -229,11 +218,13 @@ namespace StrumentiMusicali.App.Core.Controllers
                 }
             }
         }
-        Subscription<ImageAddFiles> _subAddImage;
-        Subscription<ImageOrderSet<PagamentoDocumenti>> _orderImage;
-        Subscription<ImageRemove<PagamentoDocumenti>> _imageRemove;
 
-        PagamentoDocumenti _fileFotoSelezionato = null;
+        private Subscription<ImageAddFiles> _subAddImage;
+        private Subscription<ImageOrderSet<PagamentoDocumenti>> _orderImage;
+        private Subscription<ImageRemove<PagamentoDocumenti>> _imageRemove;
+
+        private PagamentoDocumenti _fileFotoSelezionato = null;
+
         private void ImmagineSelezionata(ImageSelected<PagamentoDocumenti> obj)
         {
             if (obj.File != null)
@@ -243,12 +234,15 @@ namespace StrumentiMusicali.App.Core.Controllers
                 _fileFotoSelezionato = null;
             }
         }
-        List<ImmaginiFile<PagamentoDocumenti>> _listFotoArticolo
+
+        private List<ImmaginiFile<PagamentoDocumenti>> _listFotoArticolo
             = new List<ImmaginiFile<PagamentoDocumenti>>();
+
         public PagamentoDocumenti FotoSelezionata()
         {
             return FotoSelezionata(_fileFotoSelezionato);
         }
+
         private PagamentoDocumenti FotoSelezionata(PagamentoDocumenti file)
         {
             if (file == null)

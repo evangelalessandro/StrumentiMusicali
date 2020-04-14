@@ -18,7 +18,8 @@ namespace StrumentiMusicali.App.Core.Controllers
     //[AddINotifyPropertyChangedInterface]
     public class ControllerLog : BaseControllerGeneric<EventLog, LogItem>, IMenu
     {
-        Subscription<Remove<EventLog>> sub1;
+        private Subscription<Remove<EventLog>> sub1;
+
         public ControllerLog()
             : base(enAmbiente.LogViewList, enAmbiente.LogViewList)
         {
@@ -39,14 +40,12 @@ namespace StrumentiMusicali.App.Core.Controllers
                         if (saveEntity.SaveEntity(operation: enSaveOperation.OpDelete))
                         {
                             EventAggregator.Instance().Publish<UpdateList<EventLog>>(new UpdateList<EventLog>(this));
-
                         }
-
                     }
                 }
             );
-
         }
+
         public override MenuTab GetMenu()
         {
             base.GetMenu().ItemByTag(MenuTab.TagAdd).ForEach(a => a.Visible = false);
@@ -56,11 +55,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         protected override void Dispose(bool disposing)
         {
-
             if (disposing)
             {
                 EventAggregator.Instance().UnSbscribe(sub1);
-
                 //
             }
 
@@ -70,6 +67,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             // Call base class implementation.
             base.Dispose(disposing);
         }
+
         public override void RefreshList(UpdateList<EventLog> obj)
         {
             try
@@ -87,9 +85,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                     ).OrderByDescending(a => a.DataCreazione).Take(ViewAllItem ? 100000 : 300).ToList().Select(a => new LogItem(a)
                     {
-
                         Entity = a,
-
                     }).ToList();
                 }
 

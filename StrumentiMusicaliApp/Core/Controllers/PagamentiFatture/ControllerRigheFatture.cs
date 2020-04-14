@@ -37,14 +37,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 
             EventAggregator.Instance().Subscribe<Save<FatturaRiga>>((a) =>
             {
-
             });
             _selectSub = EventAggregator.Instance().Subscribe<Add<FatturaRiga>>((a) =>
         {
             EditItem = new FatturaRiga() { IvaApplicata = "22" };
 
             ShowEditView();
-
         });
             _subRemove = EventAggregator.Instance().Subscribe<Remove<FatturaRiga>>((a) =>
             {
@@ -74,10 +72,11 @@ namespace StrumentiMusicali.App.Core.Controllers
                Save(null);
            });
         }
+
         public const string KEYEXISTsRiga = "FatturaRIGA";
+
         private void AggiornaTotaliFattura()
         {
-
             var item = ControllerFatturazione.CalcolaTotali(
                     _controllerFatturazione.EditItem);
 
@@ -85,7 +84,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 
             EventAggregator.Instance().Publish(new RebindItemUpdated<Fattura>(_controllerFatturazione));
             EventAggregator.Instance().Publish(new Save<Fattura>(_controllerFatturazione));
-
         }
 
         // NOTE: Leave out the finalizer altogether if this class doesn't
@@ -218,7 +216,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                 }
             }
         }
-
 
         private void Save(Save<FatturaRiga> obj)
         {

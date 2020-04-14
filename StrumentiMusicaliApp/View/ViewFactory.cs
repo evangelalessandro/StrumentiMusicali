@@ -6,13 +6,12 @@ using System.Linq;
 
 namespace StrumentiMusicali.App.View
 {
-    static class ViewFactory
+    internal static class ViewFactory
     {
         private static ObservableCollection<Tuple<enAmbiente, GenericSettingView>> _windows = new ObservableCollection<Tuple<enAmbiente, GenericSettingView>>();
 
         public static GenericSettingView GetView(enAmbiente ambiente)
         {
-
             return _windows.Where(a => a.Item1 == ambiente).Select(a => a.Item2).DefaultIfEmpty(null).FirstOrDefault();
         }
 

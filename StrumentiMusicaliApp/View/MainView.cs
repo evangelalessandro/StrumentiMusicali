@@ -24,6 +24,7 @@ namespace StrumentiMusicali.App
 
         private MenuTab _menuTab = null;
         private DevExpress.XtraTab.XtraTabControl tab;
+
         public MainView(BaseController baseController)
         {
             _baseController = baseController;
@@ -40,14 +41,9 @@ namespace StrumentiMusicali.App
             tab.CloseButtonClick += Tab_CloseButtonClick;
             this.Controls.Add(tab);
 
-
             EventAggregator.Instance().Subscribe<GetNewTab>(TakeNewTab);
             EventAggregator.Instance().Subscribe<RemoveNewTab>(RemoveTab);
-
-
         }
-
-
 
         private void Tab_CloseButtonClick(object sender, System.EventArgs e)
         {
@@ -57,7 +53,6 @@ namespace StrumentiMusicali.App
             tab.TabPages.Remove(page);
             page.Dispose();
             GC.SuppressFinalize(page);
-
         }
 
         private void RemoveTab(RemoveNewTab obj)
@@ -70,7 +65,6 @@ namespace StrumentiMusicali.App
             obj.Tab = tab.TabPages.Add(obj.Text);
 
             obj.Tab.Tag = obj.Ambiente;
-
         }
 
         public MenuTab GetMenu()
@@ -86,7 +80,6 @@ namespace StrumentiMusicali.App
                 AggiungiTabLog();
 
                 AggiungiComandiImportExport();
-
             }
             return _menuTab;
         }
@@ -112,7 +105,6 @@ namespace StrumentiMusicali.App
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingStampa));
             };
 
-
             var rib4 = panel1.Add("Depositi", Properties.Resources.Settings);
             rib4.Click += (s, e) =>
             {
@@ -124,8 +116,13 @@ namespace StrumentiMusicali.App
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingFtpBackup));
             };
-
+            var rib6 = panel1.Add("Scheduler", Properties.Resources.Settings);
+            rib6.Click += (s, e) =>
+            {
+                EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.Scheduler));
+            };
         }
+
         private void AggiungiTabLog()
         {
             var tabImportExport = _menuTab.Add(@"Log");
@@ -135,9 +132,7 @@ namespace StrumentiMusicali.App
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.LogViewList));
             };
-
         }
-
 
         private void AggiungiComandiImportExport()
         {
@@ -164,7 +159,6 @@ namespace StrumentiMusicali.App
             {
                 EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp = ExportMagazzino.TipoExport.PerMarca });
             };
-
 
             var pnlImport = tabImportExport.Add("Import");
             var ribImportCsv = pnlImport.Add("Import csv mercatino", Properties.Resources.ImportCsv);
@@ -241,7 +235,6 @@ namespace StrumentiMusicali.App
 
             if (LoginData.utenteLogin.AdminUtenti)
             {
-
                 var panel3 = tabImportExport.Add("Utenti");
                 var ribUtenti = panel3.Add("Utenti Login", Properties.Resources.Utenti);
                 ribUtenti.Click += (s, e) =>
@@ -250,7 +243,5 @@ namespace StrumentiMusicali.App
                 };
             }
         }
-
-
     }
 }

@@ -99,6 +99,7 @@
       <DependentUpon>ImageIcons.resx</DependentUpon>
     </Compile>
     <Compile Include="Scheduler\Jobs\AllineaEcommerce.cs" />
+    <Compile Include="Scheduler\Jobs\UpdateWebJob.cs" />
     <Compile Include="Scheduler\Jobs\BackupJob.cs" />
     <Compile Include="Scheduler\Jobs\Interface\IUpdateEcommerce.cs" />
     <Compile Include="Scheduler\SchedulerTask.cs" />

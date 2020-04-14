@@ -26,11 +26,9 @@ namespace StrumentiMusicali.App.Core.Fatture
                     connection.Open();
                     try
                     {
-
                         ProgressManager.Instance().Visible = true;
                         using (var uof = new UnitOfWork())
                         {
-
                             ProgressManager.Instance().Value = 0;
                             var clientiList = ImportClienti(connection, uof);
                             var fattureList = ImportFattureTestate(connection, uof, clientiList);
@@ -107,8 +105,6 @@ namespace StrumentiMusicali.App.Core.Fatture
             {
                 try
                 {
-
-
                     uof.FatturaRepository.Update(
                     ControllerFatturazione.CalcolaTotali(item)
                     );
@@ -116,7 +112,6 @@ namespace StrumentiMusicali.App.Core.Fatture
                 }
                 catch (Exception ex)
                 {
-
                     throw ex;
                 }
             }
@@ -151,7 +146,6 @@ namespace StrumentiMusicali.App.Core.Fatture
             ProgressManager.Instance().Value = 0;
             ProgressManager.Instance().Max = fattureList.Count();
 
-
             foreach (var item in fattureList)
             {
                 uof.FatturaRepository.Add(item);
@@ -172,14 +166,12 @@ namespace StrumentiMusicali.App.Core.Fatture
             {
                 uof.ClientiRepository.Add(item);
                 ProgressManager.Instance().Value++;
-
             }
             uof.Commit();
 
             ProgressManager.Instance().Messaggio = ("clienti finiti");
             return clientiList;
         }
-
 
         private static void OrdinaRighe(List<FatturaRiga> righeFatturaList)
         {
@@ -290,7 +282,6 @@ namespace StrumentiMusicali.App.Core.Fatture
                 {
                     var fattura = new Fattura()
                     {
-
                         Codice = (a["# documento"].ToString()),
                         AspettoEsterno = (a["Aspetto esteriore beni"].ToString()),
                         CausaleTrasporto = (a["Casuale Trasporto"].ToString()),
@@ -466,7 +457,6 @@ namespace StrumentiMusicali.App.Core.Fatture
                         PIVA = (a["P_IVA -  Cod_Fisc"].ToString()),
                         RagioneSociale = (a["Ragione sociale - Nome Cognome"].ToString()),
                         Telefono = (a["Telefono"].ToString()),
-
                     };
                     if (cliente.PIVA.Length == 16 && !cliente.PIVA.Contains("."))
                     {
@@ -501,7 +491,6 @@ namespace StrumentiMusicali.App.Core.Fatture
 
                         cliente.Indirizzo.Cap = datoR;
                     }
-
 
                     listaClienti.Add(
                          cliente

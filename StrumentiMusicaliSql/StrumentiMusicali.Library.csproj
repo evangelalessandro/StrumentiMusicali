@@ -135,31 +135,32 @@
     <Compile Include="Core\LoginData.cs" />
     <Compile Include="Core\MessageException.cs" />
     <Compile Include="Core\Settings\SettingBackupFtpValidator.cs" />
+    <Compile Include="Entity\Altro\SchedulerJob.cs" />
     <Compile Include="Entity\Articoli\Articolo.cs" />
     <Compile Include="Entity\Articoli\ArticoloWeb.cs" />
     <Compile Include="Entity\Base\BaseEntity.cs" />
     <Compile Include="Entity\Base\RigaDoc.cs" />
-    <Compile Include="Entity\DatiIntestazioneFattura.cs" />
-    <Compile Include="Entity\DatiMittente.cs" />
+    <Compile Include="Entity\Fatture\DatiIntestazioneFattura.cs" />
+    <Compile Include="Entity\Fatture\DatiMittente.cs" />
     <Compile Include="Entity\Ecomm\AggiornamentoWebArticolo.cs" />
     <Compile Include="Entity\Ecomm\CategoriaWeb.cs" />
     <Compile Include="Entity\Ecomm\RepartoWeb.cs" />
-    <Compile Include="Entity\Pagamento.cs" />
-    <Compile Include="Entity\FattureGenerateInvio.cs" />
+    <Compile Include="Entity\Fatture\Pagamento.cs" />
+    <Compile Include="Entity\Fatture\FattureGenerateInvio.cs" />
     <Compile Include="Entity\Fatture\Cliente.cs" />
-    <Compile Include="Entity\Deposito.cs" />
+    <Compile Include="Entity\Articoli\Deposito.cs" />
     <Compile Include="Entity\Articoli\Categorie.cs" />
-    <Compile Include="Entity\EventLog.cs" />
+    <Compile Include="Entity\Altro\EventLog.cs" />
     <Compile Include="Entity\Base\DocumentoFiscaleBase.cs" />
     <Compile Include="Entity\Fatture\EnTipoDocumento.cs" />
     <Compile Include="Entity\Fatture\Fattura.cs" />
     <Compile Include="Entity\Articoli\FotoArticolo.cs" />
-    <Compile Include="Entity\Magazzino.cs" />
+    <Compile Include="Entity\Articoli\Magazzino.cs" />
     <Compile Include="Entity\Fatture\FatturaRiga.cs" />
     <Compile Include="Entity\Setting\SettingBackupFtp.cs" />
     <Compile Include="Entity\Setting\SettingDocumentiFatture.cs" />
     <Compile Include="Entity\Setting\SettingSito.cs" />
-    <Compile Include="Entity\Utente.cs" />
+    <Compile Include="Entity\Altro\Utente.cs" />
     <Compile Include="Migrations\201812261605085_Init.cs" />
     <Compile Include="Migrations\201812261605085_Init.Designer.cs">
       <DependentUpon>201812261605085_Init.cs</DependentUpon>
@@ -239,6 +240,10 @@
     <Compile Include="Migrations\202004132024540_AllineamentoWeb_4.cs" />
     <Compile Include="Migrations\202004132024540_AllineamentoWeb_4.Designer.cs">
       <DependentUpon>202004132024540_AllineamentoWeb_4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004142002192_AggiornamentoWeb.cs" />
+    <Compile Include="Migrations\202004142002192_AggiornamentoWeb.Designer.cs">
+      <DependentUpon>202004142002192_AggiornamentoWeb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
@@ -321,6 +326,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004132024540_AllineamentoWeb_4.resx">
       <DependentUpon>202004132024540_AllineamentoWeb_4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004142002192_AggiornamentoWeb.resx">
+      <DependentUpon>202004142002192_AggiornamentoWeb.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resource1.resx">
       <Generator>ResXFileCodeGenerator</Generator>

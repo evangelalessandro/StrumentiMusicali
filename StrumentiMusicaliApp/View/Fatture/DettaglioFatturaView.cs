@@ -2,7 +2,6 @@
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
-using StrumentiMusicali.Core.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Fatture;
 using StrumentiMusicali.Library.Core.Events.Generics;
@@ -26,6 +25,7 @@ namespace StrumentiMusicali.App.View
         private ControllerRigheFatture _controllerRighe;
         private Subscription<RebindItemUpdated<Fattura>> _bindSub;
         private Subscription<FatturaCambiaTipoDoc> _cambioTipo;
+
         public DettaglioFatturaView(ControllerFatturazione controllerFatturazione)
             : base()
         {
@@ -54,7 +54,6 @@ namespace StrumentiMusicali.App.View
             pnl3Basso.Visible = (_controllerFatturazione.EditItem.TipoDocumento != EnTipoDocumento.DDT);
             lblPagamento.Visible = (_controllerFatturazione.EditItem.TipoDocumento != EnTipoDocumento.DDT);
             cboPagamento.Visible = (_controllerFatturazione.EditItem.TipoDocumento != EnTipoDocumento.DDT);
-
         }
 
         /// <summary>
@@ -214,8 +213,6 @@ namespace StrumentiMusicali.App.View
                     }
                     catch (Exception)
                     {
-
-
                     }
 
                     this.Validate();
@@ -227,7 +224,6 @@ namespace StrumentiMusicali.App.View
                         _controllerFatturazione.EditItem.Codice = codice;
 
                         txtCodice.Text = codice;
-
                     }
                 };
             }
@@ -243,7 +239,9 @@ namespace StrumentiMusicali.App.View
                 ord.OrderTab(pnl3Basso);
             }
         }
-        int prevCliente = -1;
+
+        private int prevCliente = -1;
+
         private void CboClienteID_EditValueChanged(object sender, EventArgs e)
         {
             var valCli = (int)cboClienteID.EditValue;
@@ -277,7 +275,6 @@ namespace StrumentiMusicali.App.View
                     Debug.WriteLine(item.RagioneSociale);
                     this.Validate();
                     cboClienteID.EditValue = valCli;
-
                 }
             }
             catch (Exception ex)
@@ -287,7 +284,6 @@ namespace StrumentiMusicali.App.View
             finally
             {
                 cboClienteID.EditValueChanged += CboClienteID_EditValueChanged;
-
             }
         }
 
@@ -301,7 +297,6 @@ namespace StrumentiMusicali.App.View
                 controlFattRigheList.Height = 200;
                 controlFattRigheList.Dock = DockStyle.Fill;
                 tabPage2.Controls.Add(controlFattRigheList);
-
             });
         }
 
@@ -342,7 +337,6 @@ namespace StrumentiMusicali.App.View
                     item.Enabled =
                     enableRowSpecific;
                 }
-
             }
             this.UpdateViewByTipoDocumento();
         }
@@ -351,6 +345,7 @@ namespace StrumentiMusicali.App.View
         private RibbonMenuPanel ribPannelRighe = null;
 
         public event EventHandler<EventArgs> OnSave;
+
         public event EventHandler<EventArgs> OnClose;
 
         public void RaiseSave()
@@ -423,7 +418,6 @@ namespace StrumentiMusicali.App.View
                 rib01.Click += (a, e) =>
                 {
                     RebindEditItem();
-
                 };
             }
             return _menuTab;

@@ -12,20 +12,13 @@ namespace StrumentiMusicali.App.View
     {
         private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
-
-
-
         public LogViewList(ControllerLog baseController)
             : base(baseController)
         {
-
-
             _logger.Debug(this.Name + " init");
 
             onEditItemShowView += (a, b) => { b.Cancel = true; };
-
         }
-
 
         public override void FormatGrid()
         {
@@ -60,9 +53,5 @@ namespace StrumentiMusicali.App.View
                 }
             }
         }
-
-
-
-
     }
 }

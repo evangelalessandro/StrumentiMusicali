@@ -1,4 +1,5 @@
 using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Entity.Altro;
 using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Entity.Ecomm;
 using StrumentiMusicali.Library.Entity.Setting;
@@ -20,7 +21,6 @@ namespace StrumentiMusicali.Library.Model
             this.Configuration.LazyLoadingEnabled = true;
             this.Configuration.ProxyCreationEnabled = false;
             Database.SetInitializer<ModelSm>(new MigrateDatabaseToLatestVersion<ModelSm, Migrations.Configuration>());
-
         }
 
         protected override DbEntityValidationResult ValidateEntity(
@@ -61,7 +61,6 @@ namespace StrumentiMusicali.Library.Model
                 if (articolo.ID == 0)
                 {
                     articolo.UpdateTitolo = "";
-
                 }
                 if (articolo.CategoriaID == 0)
                 {
@@ -97,9 +96,9 @@ namespace StrumentiMusicali.Library.Model
                 return base.ValidateEntity(entityEntry, items);
             }
         }
+
         private static void AddDeviceBackup(string connectionString, SettingBackupFtp a)
         {
-
             /*se è cambiata la cartella locale per il backup aggiorno il device backup*/
 
             if (a.BackupSetting.FolderLocalServer.Length > 0)
@@ -125,15 +124,10 @@ namespace StrumentiMusicali.Library.Model
                         command2.CommandType = System.Data.CommandType.Text;
                         command2.ExecuteNonQuery();
                     }
-
                 }
-
-
-
             }
-
-
         }
+
         public static List<DbValidationError> CheckUtenti(Utente utente, EntityState state)
         {
             var list = new List<DbValidationError>();
@@ -149,7 +143,6 @@ namespace StrumentiMusicali.Library.Model
                     list.Add(
                            new System.Data.Entity.Validation.DbValidationError("NomeUtente",
                            "Deve essere univoco il 'nome utente'. Questo Nome è già usato "));
-
                 }
 
                 count = uof.UtentiRepository.Find(a => a.ID != utente.ID && a.AdminUtenti == true).Count();
@@ -191,6 +184,7 @@ namespace StrumentiMusicali.Library.Model
                 }
             }
         }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
@@ -201,7 +195,6 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<Articolo>().ToTable("Articoli");
             modelBuilder.Entity<Categoria>().ToTable("Categorie");
 
-
             modelBuilder.Entity<FotoArticolo>().ToTable("FotoArticoli");
 
             modelBuilder.Entity<Fattura>().ToTable("Fatture");
@@ -211,8 +204,6 @@ namespace StrumentiMusicali.Library.Model
             //modelBuilder.Entity<SettingSito>().ToTable("SettingSito");
             modelBuilder.Entity<SettingBackupFtp>().ToTable("SettingBackupFtp");
 
-             
-
             modelBuilder.Entity<Cliente>().ToTable("Clienti");
             modelBuilder.Entity<FattureGenerateInvio>().ToTable("FattureGenerate");
             modelBuilder.Entity<SettingDocumentiPagamenti>().ToTable("SettingDocumentiPagamenti");
@@ -221,19 +212,19 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<Pagamento>().Property(e => e.ImportoTotale).HasPrecision(19, 2);
             modelBuilder.Entity<Articolo>().Property(e => e.Prezzo).HasPrecision(19, 2);
             modelBuilder.Entity<Articolo>().Property(e => e.PrezzoBarrato).HasPrecision(19, 2);
- 
 
             modelBuilder.Entity<Categoria>()
            .HasIndex(b => new { b.Nome, b.Codice, b.Reparto })
            .IsUnique();
 
             modelBuilder.Entity<AggiornamentoWebArticolo>()
-                .HasIndex(b => new { b.ArticoloID})
+                .HasIndex(b => new { b.ArticoloID })
                 .IsUnique();
-
         }
+
         public virtual DbSet<RepartoWeb> RepartoWeb { get; set; }
         public virtual DbSet<CategoriaWeb> CategoriaWeb { get; set; }
+        public virtual DbSet<SchedulerJob> SchedulerJob { get; set; }
 
         public virtual DbSet<AggiornamentoWebArticolo> AggiornamentoWebs { get; set; }
 
@@ -247,8 +238,8 @@ namespace StrumentiMusicali.Library.Model
         //public virtual DbSet<DDt> DDT { get; set; }
         //public virtual DbSet<DDTRiga> DDTRighe { get; set; }
         public virtual DbSet<FattureGenerateInvio> FattureGenerate { get; set; }
-        public virtual DbSet<SettingBackupFtp> SettingBackupFtp { get; set; }
 
+        public virtual DbSet<SettingBackupFtp> SettingBackupFtp { get; set; }
 
         public virtual DbSet<Cliente> Clienti { get; set; }
 
@@ -262,6 +253,7 @@ namespace StrumentiMusicali.Library.Model
         public virtual DbSet<FotoArticolo> FotoArticoli { get; set; }
 
         public virtual DbSet<PagamentoDocumenti> PagamentoDocumenti { get; set; }
+
         public void FixEfProviderServicesProblem()
         {
             //The Entity Framework provider type 'System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer'

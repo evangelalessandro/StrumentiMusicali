@@ -22,7 +22,6 @@ namespace TestFormApp
         {
             InitializeComponent();
 
-
             vGrid.CellValueChanged += VGrid_CellValueChanged;
             this.vGrid.Rows.Clear();
 
@@ -39,13 +38,10 @@ namespace TestFormApp
                 //vGrid.Update();
                 BindProp(_art, "");
             }
-
         }
-
 
         public void BindProp(object objToBind, string prefixText)
         {
-
             var listProp = UtilityProp.GetProperties(objToBind).OrderBy(a =>
             {
                 var sel = (CustomUIViewAttribute)a.GetCustomAttributes(typeof(CustomUIViewAttribute), true).FirstOrDefault();
@@ -82,7 +78,6 @@ namespace TestFormApp
                 row.Properties.FieldName = item.Name;
                 row.Properties.Value = item.GetValue(objToBind);
 
-
                 var widthAttr = (CustomUIViewAttribute)item.GetCustomAttributes(typeof(CustomUIViewAttribute), true).FirstOrDefault();
 
                 string titolo = UtilityView.GetTextSplitted(item.Name);
@@ -95,7 +90,6 @@ namespace TestFormApp
                     }
                 }
 
-
                 row.Properties.Caption = titolo;
 
                 ImpostaEditor(objToBind, item, row, widthAttr, titolo);
@@ -106,7 +100,6 @@ namespace TestFormApp
                     BindObj(item, row, objToBind, widthAttr);
                 }
             }
-
         }
 
         private string AggingiRigaECategoria(string prefixText, EditorRow row, CustomUIViewAttribute widthAttr)
@@ -117,7 +110,6 @@ namespace TestFormApp
                 {
                     prefixText = widthAttr.Category;
                 }
-
             }
             if (prefixText.Length > 0)
             {
@@ -134,7 +126,6 @@ namespace TestFormApp
                     category.Appearance.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
                     this.vGrid.Appearance.Category.Font = new Font(category.Appearance.Font.FontFamily, category.Appearance.Font.Size, FontStyle.Bold);
                     categoryContained = category;
-
                 }
                 categoryContained.ChildRows.Add(row);
             }
@@ -155,23 +146,19 @@ namespace TestFormApp
             }
             else if (item.PropertyType.FullName.Contains("String"))
             {
-
                 var maxLength = (MaxLengthAttribute)item.GetCustomAttributes(typeof(MaxLengthAttribute), true).FirstOrDefault();
 
                 if (widthAttr != null && widthAttr.MultiLine > 0)
                 {
-
                     var editor = new RepositoryItemMemoEdit();
                     row.Properties.RowEdit = editor;
                     editor.AutoHeight = true;
                     //row.Height = row.Height * widthAttr.MultiLine;
                     if (maxLength != null)
                         editor.MaxLength = maxLength.Length;
-
                 }
                 else
                 {
-
                     var editor = new RepositoryItemTextEdit();
                     row.Properties.RowEdit = editor;
                     if (maxLength != null)
@@ -180,9 +167,7 @@ namespace TestFormApp
                     //editor.AppearanceFocused.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
                     vGrid.Appearance.SelectedCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
                     vGrid.Appearance.FocusedRow.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-
                 }
-
             }
             else if (item.PropertyType.FullName.Contains("Boolean"))
             {
@@ -190,7 +175,6 @@ namespace TestFormApp
                 check.ValueChecked = true;
                 check.ValueUnchecked = false;
                 row.Properties.RowEdit = check;
-
             }
             else if (item.PropertyType.FullName.Contains("Decimal"))
             {
@@ -214,7 +198,6 @@ namespace TestFormApp
                 }
                 row.Properties.RowEdit = num;
                 row.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
-
             }
             else if (item.PropertyType.FullName.Contains("Int32"))
             {
@@ -223,7 +206,6 @@ namespace TestFormApp
                 num.Mask.UseMaskAsDisplayFormat = true;
                 num.Mask.EditMask = "D";
                 row.Properties.RowEdit = num;
-
             }
             else if (item.PropertyType.FullName.Contains("DateTime"))
             {
@@ -239,13 +221,10 @@ namespace TestFormApp
                     num.Mask.EditMask = "dd/MM/yyyy";
                 }
 
-
                 row.Properties.RowEdit = num;
-
             }
             else
             {
-
                 if (item != null && (!item.PropertyType.Name.StartsWith("System.")
                     ))
                 {
@@ -258,7 +237,6 @@ namespace TestFormApp
                 }
                 else
                 {
-
                 }
             }
         }
@@ -269,14 +247,14 @@ namespace TestFormApp
             newControl.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             using (var uof = new UnitOfWork())
             {
-
-
                 switch (widthAttr.Combo)
                 {
                     case TipoDatiCollegati.Nessuno:
                         break;
+
                     case TipoDatiCollegati.Clienti:
                         break;
+
                     case TipoDatiCollegati.Categorie:
                         {
                             var list = uof.CategorieRepository.Find(a => true).Select(a => new { a.ID, Descrizione = a.Reparto + " - " + a.Nome + " - " + a.Codice }).OrderBy(a => a.Descrizione).ToList();
@@ -284,9 +262,9 @@ namespace TestFormApp
                             newControl.DisplayMember = "Descrizione";
                             newControl.DataSource = (list);
                             newControl.PopulateColumns();
-
                         }
                         break;
+
                     case TipoDatiCollegati.Marca:
                         {
                             var list = uof.ArticoliRepository.Find(a => true).Select(a => a.Strumento.Marca).Distinct().OrderBy(a => a).ToList();
@@ -295,6 +273,7 @@ namespace TestFormApp
                             newControl.PopulateColumns();
                         }
                         break;
+
                     case TipoDatiCollegati.NomeStrumento:
                         {
                             var list = uof.ArticoliRepository.Find(a => true).Select(a => a.Strumento.Nome).Distinct().OrderBy(a => a).ToList();
@@ -303,6 +282,7 @@ namespace TestFormApp
                             newControl.PopulateColumns();
                         }
                         break;
+
                     case TipoDatiCollegati.LibroAutore:
                         {
                             var list = uof.ArticoliRepository.Find(a => true).Select(a => a.Libro.Autore).Distinct().OrderBy(a => a).ToList();
@@ -311,6 +291,7 @@ namespace TestFormApp
                             newControl.PopulateColumns();
                         }
                         break;
+
                     case TipoDatiCollegati.Rivenditore:
                         {
                             var list = uof.ArticoliRepository.Find(a => true).Select(a => a.Strumento.Rivenditore.Trim()).Distinct().OrderBy(a => a).ToList();
@@ -319,6 +300,7 @@ namespace TestFormApp
                             newControl.PopulateColumns();
                         }
                         break;
+
                     case TipoDatiCollegati.Colore:
                         {
                             var list = uof.ArticoliRepository.Find(a => true).Select(a => a.Strumento.Colore.Trim()).Distinct().OrderBy(a => a).ToList();
@@ -327,6 +309,7 @@ namespace TestFormApp
                             //newControl.PopulateColumns();
                         }
                         break;
+
                     case TipoDatiCollegati.Modello:
                         {
                             var list = uof.ArticoliRepository.Find(a => true).Select(a => a.Strumento.Modello).Distinct().OrderBy(a => a).ToList();
@@ -335,6 +318,7 @@ namespace TestFormApp
                             newControl.PopulateColumns();
                         }
                         break;
+
                     case TipoDatiCollegati.Articoli:
                         {
                             var list = uof.ArticoliRepository.Find(a => true).Select(a => new { a.ID, a.Titolo, a.Prezzo }).ToList()
@@ -344,6 +328,7 @@ namespace TestFormApp
                             newControl.PopulateColumns();
                         }
                         break;
+
                     case TipoDatiCollegati.Condizione:
                         {
                             var list = Enum.GetNames(typeof(enCondizioneArticolo)).Select(a =>
@@ -359,6 +344,7 @@ namespace TestFormApp
                             newControl.PopulateColumns();
                         }
                         break;
+
                     default:
                         break;
                 }
@@ -371,7 +357,9 @@ namespace TestFormApp
 
             return newControl;
         }
-        List<CopyProp> _listProp = new List<CopyProp>();
+
+        private List<CopyProp> _listProp = new List<CopyProp>();
+
         private void BindObj(System.Reflection.PropertyInfo item, EditorRow editorRow,
             object objToBind, CustomUIViewAttribute attribute)
         {
@@ -394,9 +382,9 @@ namespace TestFormApp
             {
                 editorRow.Enabled = false;
             }
-
         }
-        class CopyProp
+
+        private class CopyProp
         {
             public System.Reflection.PropertyInfo Prop { get; set; }
             public object ObjectItem { get; set; }
@@ -407,11 +395,13 @@ namespace TestFormApp
             {
                 Prop.SetValue(ObjectItem, val);
             }
+
             public Object GetValue()
             {
                 return Prop.GetValue(ObjectItem);
             }
         }
+
         private void VGrid_CellValueChanged(object sender, DevExpress.XtraVerticalGrid.Events.CellValueChangedEventArgs e)
         {
             var tag = (CopyProp)e.Row.Tag;

@@ -23,7 +23,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 {
     public class ControllerFatturazione : BaseControllerGeneric<Fattura, FatturaItem>, IDisposable
     {
-
         public ControllerFatturazione() :
             base(enAmbiente.FattureList, enAmbiente.Fattura)
         {
@@ -51,6 +50,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
         private void Save(Save<Fattura> obj)
         {
             using (var saveManager = new SaveEntityManager())
@@ -78,27 +78,30 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         ~ControllerFatturazione()
         {
-
         }
+
         public string CalcolaCodice()
         {
-
             var fattura = EditItem;
             var prefix = "";
             switch (fattura.TipoDocumento)
             {
                 case EnTipoDocumento.NonSpecificato:
                     return "";
+
                 case EnTipoDocumento.FatturaDiCortesia:
                 case EnTipoDocumento.RicevutaFiscale:
                     prefix = "F";
                     break;
+
                 case EnTipoDocumento.NotaDiCredito:
                     prefix = "NC";
                     break;
+
                 case EnTipoDocumento.DDT:
                     prefix = "D";
                     break;
+
                 default:
                     break;
             }
@@ -134,11 +137,10 @@ namespace StrumentiMusicali.App.Core.Controllers
                     }
                 }
 
-
-
                 return prefix + valore.ToString("000") + "/" + fattura.Data.ToString("yy");
             }
         }
+
         private void DelFattura(Remove<Fattura> obj)
         {
             try
@@ -195,7 +197,6 @@ namespace StrumentiMusicali.App.Core.Controllers
             ShowDettaglio();
         }
 
-
         public void ImportaFatture(ImportaFattureAccess obj)
         {
             try
@@ -243,18 +244,16 @@ namespace StrumentiMusicali.App.Core.Controllers
                                         setting,
                                         fattura);
                             _logger.Info("Stampa completata correttamente.");
-
                         }
-
                     }
                 }
-
             }
             catch (Exception ex)
             {
                 ExceptionManager.ManageError(ex);
             }
         }
+
         public static Fattura CalcolaTotali(Fattura fattura)
         {
             using (var uof = new UnitOfWork())
@@ -284,10 +283,11 @@ namespace StrumentiMusicali.App.Core.Controllers
                 return fattura;
             }
         }
+
         private void ImpostaQuadroIVa()
         {
-
         }
+
         private void GeneraFatturaXml(Fattura selectedItem)
         {
             _logger.Info("Avvio stampa");
@@ -297,7 +297,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                 {
                     using (var stampa = new FattElettronica())
                     {
-
                         using (var uof = new UnitOfWork())
                         {
                             uof.DatiMittenteRepository.Find(a => 1 == 1).FirstOrDefault();
@@ -317,7 +316,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                                     PrezzoUnitario = a.PrezzoUnitario,
                                     PrezzoTotale = a.Importo,
                                     AliquotaIVA = Iva(a.IvaApplicata)
-
                                 }
                             ).ToList();
                             header.Numero = fatt.Fattura.Codice;
@@ -344,14 +342,13 @@ namespace StrumentiMusicali.App.Core.Controllers
                         _logger.Info("Stampa completata correttamente.");
                     }
                 }
-
             }
             catch (Exception ex)
             {
                 ExceptionManager.ManageError(ex);
             }
-
         }
+
         private int Iva(string val)
         {
             var valiva = 0;
@@ -359,12 +356,14 @@ namespace StrumentiMusicali.App.Core.Controllers
                 return valiva;
             return 0;
         }
+
         private void AggiungiComandi()
         {
-
             AggiungiComandiStampa(GetMenu().Tabs[0], false);
         }
+
         public static readonly string PulsanteCambioTipoDoc = "Cambio tipo documento";
+
         public void AggiungiComandiStampa(MenuRibbon.RibbonMenuTab tab, bool editItem)
         {
             if (editItem)
@@ -386,13 +385,11 @@ namespace StrumentiMusicali.App.Core.Controllers
                     StampaFattura(EditItem);
                 else
                     StampaFattura(SelectedItem);
-
             };
 
             var ribStampaXml = pnlStampa.Add("Genera fattura xml", Properties.Resources.Fattura_xml_48, true);
             ribStampaXml.Click += (a, e) =>
             {
-
                 if (editItem)
                     GeneraFatturaXml(EditItem);
                 else
@@ -407,7 +404,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                 {
                     using (var uof = new UnitOfWork())
                     {
-
                         var idFatt = 0;
                         if (editItem)
                             idFatt = (EditItem).ID;
@@ -433,7 +429,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                         }
                         //else
                         //{
-
                         //	frm.OnSave += (d, b) =>
                         //	{
                         //		frm.Validate();
@@ -444,16 +439,13 @@ namespace StrumentiMusicali.App.Core.Controllers
                         //	ShowView(frm, enAmbienti.Cliente, null, false);
                         //	ViewFactory.AddView(enAmbienti.Cliente, frm);
                         //}
-
                     }
                 }
-
             };
         }
 
         public override void RefreshList(UpdateList<Fattura> obj)
         {
-
             try
             {
                 var datoRicerca = TestoRicerca;
@@ -480,13 +472,11 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                 DataSource = new View.Utility.MySortableBindingList<FatturaItem>(list);
 
-
                 base.RefreshList(obj);
             }
             catch (Exception ex)
             {
                 ExceptionManager.ManageError(ex);
-
             }
         }
     }

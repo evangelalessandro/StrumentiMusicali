@@ -1,5 +1,6 @@
 ﻿using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
+using StrumentiMusicali.Library.Entity.Altro;
 using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Entity.Ecomm;
 using StrumentiMusicali.Library.Entity.Setting;
@@ -30,6 +31,7 @@ namespace StrumentiMusicali.Library.Repo
             }
             return serverName;
         }
+
         public IRepository<Categoria> CategorieRepository {
             get {
                 if (_CategorieRepository == null)
@@ -39,6 +41,7 @@ namespace StrumentiMusicali.Library.Repo
                 return _CategorieRepository;
             }
         }
+
         private Repository<CategoriaWeb> _CategorieWebRepository;
 
         public IRepository<CategoriaWeb> CategorieWebRepository {
@@ -50,7 +53,9 @@ namespace StrumentiMusicali.Library.Repo
                 return _CategorieWebRepository;
             }
         }
+
         private Repository<RepartoWeb> _RepartoWebRepository;
+
         public IRepository<RepartoWeb> RepartoWebRepository {
             get {
                 if (_RepartoWebRepository == null)
@@ -60,6 +65,7 @@ namespace StrumentiMusicali.Library.Repo
                 return _RepartoWebRepository;
             }
         }
+
         private Repository<DatiMittente> _DatiMittenteRepository;
 
         public IRepository<DatiMittente> DatiMittenteRepository {
@@ -71,6 +77,7 @@ namespace StrumentiMusicali.Library.Repo
                 return _DatiMittenteRepository;
             }
         }
+
         public void EseguiBackup()
         {
             using (var connection = new SqlConnection(this.dbContext.Database.Connection.ConnectionString))
@@ -84,6 +91,7 @@ namespace StrumentiMusicali.Library.Repo
                 command.ExecuteNonQuery();
             }
         }
+
         private Repository<DatiIntestazioneStampaFattura> _DatiIntestazioneStampaFatturaRepository;
 
         public IRepository<DatiIntestazioneStampaFattura> DatiIntestazioneStampaFatturaRepository {
@@ -119,6 +127,7 @@ namespace StrumentiMusicali.Library.Repo
                 return _SettingDocumentiPagamentiRepository;
             }
         }
+
         private Repository<SettingBackupFtp> _SettingBackupFtpRepository;
 
         public IRepository<SettingBackupFtp> SettingBackupFtpRepository {
@@ -130,8 +139,6 @@ namespace StrumentiMusicali.Library.Repo
                 return _SettingBackupFtpRepository;
             }
         }
-
-
 
         private Repository<FattureGenerateInvio> _FattureGenerateInvioRepository;
 
@@ -145,7 +152,6 @@ namespace StrumentiMusicali.Library.Repo
             }
         }
 
-
         private Repository<Utente> _Utenti;
 
         public IRepository<Utente> UtentiRepository {
@@ -157,6 +163,7 @@ namespace StrumentiMusicali.Library.Repo
                 return _Utenti;
             }
         }
+
         private Repository<PagamentoDocumenti> _PagamentoDocumentiRepository;
 
         public IRepository<PagamentoDocumenti> PagamentoDocumentiRepository {
@@ -168,6 +175,7 @@ namespace StrumentiMusicali.Library.Repo
                 return _PagamentoDocumentiRepository;
             }
         }
+
         private Repository<Pagamento> _PagamentoRepository;
 
         public IRepository<Pagamento> PagamentoRepository {
@@ -215,6 +223,7 @@ namespace StrumentiMusicali.Library.Repo
                 return _AggiornamentoWebArticoloRepository;
             }
         }
+
         private Repository<Articolo> _ArticoliRepository;
 
         public IRepository<Articolo> ArticoliRepository {
@@ -287,6 +296,18 @@ namespace StrumentiMusicali.Library.Repo
         //	}
         //}
 
+        private Repository<SchedulerJob> _SchedulerJobRepository;
+
+        public IRepository<SchedulerJob> SchedulerJobRepository {
+            get {
+                if (_SchedulerJobRepository == null)
+                {
+                    _SchedulerJobRepository = new Repository<SchedulerJob>(dbContext);
+                }
+                return _SchedulerJobRepository;
+            }
+        }
+
         private Repository<FotoArticolo> _FotoArticoloRepository;
 
         public IRepository<FotoArticolo> FotoArticoloRepository {
@@ -337,10 +358,11 @@ namespace StrumentiMusicali.Library.Repo
                 throw new Exception(ex.InnerException.ToString());
             }
         }
+
         public void ChiamaSp()
         {
-
         }
+
         //IDisposible implementation
         private bool disposed = false;
 

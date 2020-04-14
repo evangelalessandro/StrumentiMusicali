@@ -3,13 +3,10 @@ namespace StrumentiMusicali.Library.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class AllineamentoWeb_2 : DbMigration
+    public partial class AggiornamentoWeb : DbMigration
     {
         public override void Up()
-        { 
-            DropColumn("dbo.Articoli", "DataUltimoAggMagazzino");
-            DropColumn("dbo.Articoli", "DataUltimoAggFoto");
-          
+        {
             Sql(@"CREATE OR ALTER TRIGGER [dbo].[tr_FotoArticoli]
                ON  [dbo].[FotoArticoli]
                AFTER INSERT,DELETE,UPDATE
@@ -78,12 +75,11 @@ namespace StrumentiMusicali.Library.Migrations
             ALTER TABLE[dbo].[Magazzino] ENABLE TRIGGER[tr_Magazzino]
             GO
             ");
+
         }
 
         public override void Down()
         {
-            AddColumn("dbo.Articoli", "DataUltimoAggFoto", c => c.DateTime(nullable: false));
-            AddColumn("dbo.Articoli", "DataUltimoAggMagazzino", c => c.DateTime(nullable: false));
         }
     }
 }

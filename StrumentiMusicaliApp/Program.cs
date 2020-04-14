@@ -2,13 +2,10 @@
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.Core.Scheduler;
-using StrumentiMusicali.Core.Scheduler.Jobs.Interface;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Articoli;
 using StrumentiMusicali.Library.Repo;
-using StrumentiMusicali.PrestaShopSyncro.Scheduler;
 using System;
-using System.Collections.Generic;
 
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -23,7 +20,6 @@ namespace StrumentiMusicali.App
         [STAThread]
         private static void Main(string[] args)
         {
-
             GridLocalizer.Active = new ItalianGridLocalizer();
             //Localizer.Active = new GermanEditorsLocalizer();
             if (args == null || args.Length == 0 || string.IsNullOrEmpty(args[0]))
@@ -33,9 +29,9 @@ namespace StrumentiMusicali.App
                 {
                     if (createdNew)
                     {
-                        using (var uof=new UnitOfWork())
+                        using (var uof = new UnitOfWork())
                         {
-                            if (uof.ServerName()==Environment.MachineName)
+                            if (uof.ServerName() == Environment.MachineName)
                             {
                                 AttivaSchedulatore();
                             }
@@ -45,7 +41,6 @@ namespace StrumentiMusicali.App
                             controller.ShowMainView();
                         }
                     }
-
                     else
                     {
                         ProcessUtils.SetFocusToPreviousInstance(BaseController.MainName);
@@ -66,51 +61,42 @@ namespace StrumentiMusicali.App
         }
 
         private static void AttivaSchedulatore()
-        { 
-
+        {
             var scheduler = new SchedulerTask();
             scheduler.Init();
-
-            
         }
-         
     }
+
     public static class ProcessUtils
     {
         [DllImport("user32.dll", SetLastError = true)]
-        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
 
         [DllImport("user32.dll")]
-        static extern bool IsIconic(IntPtr hWnd);
+        private static extern bool IsIconic(IntPtr hWnd);
 
         [DllImport("user32.dll")]
-        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-        const int SW_RESTORE = 9;
-
-        [DllImport("user32.dll")]
-        static extern IntPtr GetLastActivePopup(IntPtr hWnd);
+        private const int SW_RESTORE = 9;
 
         [DllImport("user32.dll")]
-        static extern bool IsWindowEnabled(IntPtr hWnd);
+        private static extern IntPtr GetLastActivePopup(IntPtr hWnd);
 
+        [DllImport("user32.dll")]
+        private static extern bool IsWindowEnabled(IntPtr hWnd);
 
         public static void SetFocusToPreviousInstance(string windowCaption)
         {
-
             IntPtr hWnd = FindWindow(null, windowCaption);
-
 
             if (hWnd != null)
             {
-
                 IntPtr hPopupWnd = GetLastActivePopup(hWnd);
-
-
 
                 if (hPopupWnd != null && IsWindowEnabled(hPopupWnd))
                 {
@@ -119,7 +105,6 @@ namespace StrumentiMusicali.App
 
                 SetForegroundWindow(hWnd);
 
-
                 if (IsIconic(hWnd))
                 {
                     ShowWindow(hWnd, SW_RESTORE);
@@ -127,5 +112,4 @@ namespace StrumentiMusicali.App
             }
         }
     }
-
 }

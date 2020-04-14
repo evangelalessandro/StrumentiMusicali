@@ -23,13 +23,10 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private Subscription<Save<Cliente>> _subSave;
 
-
         public ControllerClienti()
             : base(enAmbiente.ClientiList, enAmbiente.Cliente)
         {
-
             SelectedItem = new Cliente();
-
 
             _selectSub = EventAggregator.Instance().Subscribe<Add<Cliente>>((a) =>
             {
@@ -117,7 +114,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                     {
                         ID = a.ID,
                         Entity = a,
-
                     }).ToList();
                 }
 
@@ -131,6 +127,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                 { ExceptionManager.ManageError(ex); }).BeginInvoke(null, null);
             }
         }
+
         // The bulk of the clean-up code is implemented in Dispose(bool)
         protected new void Dispose(bool disposing)
         {
@@ -140,12 +137,9 @@ namespace StrumentiMusicali.App.Core.Controllers
                 EventAggregator.Instance().UnSbscribe(_subSave);
                 EventAggregator.Instance().UnSbscribe(_selectSub);
                 EventAggregator.Instance().UnSbscribe(_subRemove);
-
             }
             // free native resources if there are any.
         }
-
-
 
         private void Save(Save<Cliente> obj)
         {

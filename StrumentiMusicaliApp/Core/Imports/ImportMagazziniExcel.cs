@@ -22,21 +22,15 @@ namespace StrumentiMusicali.App.Core.Imports
 
                 LeggiMagazzino("Mag SANMAURO");
                 LeggiMagazzino("Mag.NEGOZIO1");
-
-
             }
             catch (Exception ex)
             {
-
                 ExceptionManager.ManageError(ex);
             }
             finally
             {
                 ProgressManager.Instance().Visible = false;
-
             }
-
-
         }
 
         private void LeggiMagazzino(string nomeDeposito)
@@ -138,7 +132,6 @@ namespace StrumentiMusicali.App.Core.Imports
                         }
                         categoriaName = categoriaName.Replace(" ", "").ToUpper();
 
-
                         var categoriaSel = listCategorie.Where(a => a.Nome.ToUpper().Replace(" ", "")
                         == categoriaName).FirstOrDefault();
 
@@ -156,7 +149,6 @@ namespace StrumentiMusicali.App.Core.Imports
                         }
                         articolo.CategoriaID = categoriaSel.ID;
 
-
                         magItem.Qta = int.Parse(item.Qta);
                         magItem.Articolo = articolo;
                         magItem.Deposito = deposito;
@@ -171,11 +163,9 @@ namespace StrumentiMusicali.App.Core.Imports
                         magItem.Articolo = articolo;
                         //uof.ArticoliRepository.Find(a=>a.)
                         uof.MagazzinoRepository.Add(magItem);
-
                     }
                     catch (Exception ex)
                     {
-
                         throw ex;
                     }
                     ProgressManager.Instance().Value++;
@@ -183,6 +173,5 @@ namespace StrumentiMusicali.App.Core.Imports
                 uof.Commit();
             }
         }
-
     }
 }

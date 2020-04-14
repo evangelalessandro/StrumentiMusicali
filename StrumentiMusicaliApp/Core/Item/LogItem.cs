@@ -12,6 +12,7 @@ namespace StrumentiMusicali.App.Core.Item
             : base()
         {
         }
+
         public LogItem(EventLog eventLog)
             : base()
         {

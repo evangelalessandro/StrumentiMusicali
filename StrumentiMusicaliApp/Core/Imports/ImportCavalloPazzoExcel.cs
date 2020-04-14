@@ -14,7 +14,6 @@ namespace StrumentiMusicali.App.Core.Imports
         public ImportCavalloPazzoExcel()
             : base()
         {
-
         }
 
         protected override void Import()
@@ -35,7 +34,6 @@ namespace StrumentiMusicali.App.Core.Imports
                     ImportLibri(uof, deposito, listCategorie);
                     ProgressManager.Instance().Messaggio = "Salvataggio..";
                     uof.Commit();
-
                 }
                 catch (Exception ex)
                 {
@@ -46,8 +44,8 @@ namespace StrumentiMusicali.App.Core.Imports
                     ProgressManager.Instance().Visible = false;
                 }
             }
-
         }
+
         private void ImportLibri(UnitOfWork uof, Deposito deposito, System.Collections.Generic.List<Categoria> listCategorie)
         {
             DataTable dt = ReadDatatable(enNomeTabellaExcel.LIBRI.ToString());
@@ -68,8 +66,6 @@ namespace StrumentiMusicali.App.Core.Imports
                 PrezzoVendita = decimal.Parse(a.Field<string>(10)),
                 Categoria = "Libri - Altro",
             }).ToList();
-
-
 
             ProgressManager.Instance().Messaggio = "Libri";
             ProgressManager.Instance().Value = 0;
@@ -108,11 +104,9 @@ namespace StrumentiMusicali.App.Core.Imports
                 magItem.Articolo = articolo;
                 magItem.Deposito = deposito;
 
-
                 uof.MagazzinoRepository.Add(magItem);
                 ProgressManager.Instance().Value++;
             }
-
         }
 
         private void ImportStrumenti(UnitOfWork uof, Deposito deposito, System.Collections.Generic.List<Categoria> listCategorie)
@@ -120,7 +114,6 @@ namespace StrumentiMusicali.App.Core.Imports
             DataTable dt = ReadDatatable(enNomeTabellaExcel.strum.ToString());
             try
             {
-
                 var list = dt.AsEnumerable().Select(a => new
                 {
                     // assuming column 0's type is Nullable<long>
@@ -140,7 +133,6 @@ namespace StrumentiMusicali.App.Core.Imports
                 ProgressManager.Instance().Value = 0;
                 ProgressManager.Instance().Max = list.Count();
 
-
                 foreach (var item in list.ToList())
                 {
                     var magItem = new Magazzino();
@@ -155,7 +147,6 @@ namespace StrumentiMusicali.App.Core.Imports
                     if (categoriaSel == null)
                     {
                         throw new MessageException(string.Format("Negli strumenti non è specificata una categoria corretta per l'articolo {0}", item.CodiceABarre));
-
                     }
                     articolo.CategoriaID = categoriaSel.ID;
 
@@ -178,10 +169,10 @@ namespace StrumentiMusicali.App.Core.Imports
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
+
         private enum enNomeTabellaExcel
         {
             artic,
@@ -257,9 +248,6 @@ namespace StrumentiMusicali.App.Core.Imports
             {
                 throw ex;
             }
-
         }
-
-
     }
 }

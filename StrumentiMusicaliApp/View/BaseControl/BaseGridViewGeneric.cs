@@ -17,7 +17,7 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App.View.BaseControl
 {
-    public abstract partial class BaseGridViewGeneric<TBaseItem, TController, TEntity> : UserControl, IKeyController, IDisposable, Interfaces.ICloseSave
+    public partial class BaseGridViewGeneric<TBaseItem, TController, TEntity> : UserControl, IKeyController, IDisposable, Interfaces.ICloseSave
         where TEntity : BaseEntity, new()
         where TBaseItem : BaseItem<TEntity>, new()
         where TController : BaseControllerGeneric<TEntity, TBaseItem>
@@ -251,7 +251,7 @@ namespace StrumentiMusicali.App.View.BaseControl
                 }
             }
         }
-        public abstract void FormatGrid();
+        public virtual void FormatGrid() { }
 
         private void DgvMaster_SelectionChanged(object sender, EventArgs e)
         {

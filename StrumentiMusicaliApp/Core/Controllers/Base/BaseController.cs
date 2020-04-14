@@ -493,6 +493,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                 case enAmbiente.SettingFtpBackup:
                     return "Impostazioni ftp backup";
 
+                case enAmbiente.Scheduler:
+                    return "Scheduler";
+
                 case enAmbiente.ScaricoMagazzino:
                     return "Scarico Magazzino";
 

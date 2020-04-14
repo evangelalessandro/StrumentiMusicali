@@ -18,14 +18,13 @@ namespace CheckUpdate
             TipoFile = CheckUpdate.Properties.Settings.Default.tipoFile;
             FileDaAprireAlTermine = CheckUpdate.Properties.Settings.Default.ApplicazioneDaAprire;
             CartelleDaIncludere = CheckUpdate.Properties.Settings.Default.SottoCartelle;
-
         }
+
         public string TipoFile { get; set; }
         public string CartelleDaIncludere { get; set; }
         public string ServerRemoto { get; set; }
         public string CartellaLocale { get; set; }
         public string FileDaAprireAlTermine { get; set; }
-
 
         private void CheckFile(string file1)
         {
@@ -48,16 +47,16 @@ namespace CheckUpdate
             bool filesAreEqual = File.ReadAllBytes(file1).SequenceEqual(File.ReadAllBytes(path2));
             if (!filesAreEqual)
             {
-
                 File.Copy(file1, path2, true);
                 return;
             }
             else
             {
-
             }
         }
-        BackgroundWorker _background;
+
+        private BackgroundWorker _background;
+
         private void Form1_Load(object sender, EventArgs e)
         {
             _background = new BackgroundWorker();
@@ -70,7 +69,6 @@ namespace CheckUpdate
 
         private void _background_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-
             var start = Process.Start(Path.Combine(CartellaLocale
                 , FileDaAprireAlTermine));
             MessageBox.Show("Attendere l'apertura dell'applicazione STRUMENTI MUSICALI!", "Attenzione", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -105,5 +103,4 @@ namespace CheckUpdate
             }
         }
     }
-
 }

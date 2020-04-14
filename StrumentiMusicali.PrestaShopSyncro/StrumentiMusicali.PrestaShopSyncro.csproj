@@ -57,10 +57,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArticoloBase.cs" />
     <Compile Include="BaseClass\SyncroBase.cs" />
     <Compile Include="CategorySync.cs" />
     <Compile Include="ProductSyncro.cs" />
+    <Compile Include="Products\BaseProduct.cs" />
+    <Compile Include="Products\ImageProduct.cs" />
     <Compile Include="Products\ReadProductsFormSite.cs" />
+    <Compile Include="Products\StockProducts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scheduler\UpdateEcommerce.cs" />
   </ItemGroup>

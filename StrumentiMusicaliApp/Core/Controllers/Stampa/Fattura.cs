@@ -12,17 +12,17 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
     public class StampaFattura : IDisposable
     {
         private ClosedXML.Excel.XLWorkbook _excel;
+
         public StampaFattura()
         {
-
             _excel = new ClosedXML.Excel.XLWorkbook(Path.Combine(Application.StartupPath
                 , @"TemplateExcel\ProtoFatt.xlsx"));
         }
+
         public void Stampa(DatiIntestazioneStampaFattura intestStampa,
             Fattura fatturaSel)
         {
             DatiIntestazione(intestStampa);
-
 
             using (var uof = new UnitOfWork())
             {
@@ -35,7 +35,6 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
                 /*calcolo iva*/
 
                 ImpostaQuadroIVa(righeFatt, fattura);
-
 
                 ImpostaDettaglio(righeFatt, fattura);
             }
@@ -69,8 +68,6 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
                     importoIvaTot += importoIva;
                     imponibileIVaTot += imponibileIVa;
                     rigaIniziale++;
-
-
                 }
 
                 _excel.Range("ImportoIVa").Value = (importoIvaTot).ToString("C2");
@@ -86,8 +83,6 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
             else
             {
                 _excel.Range("QuadroDDTDaCancellare").Clear(ClosedXML.Excel.XLClearOptions.Contents);
-
-
             }
         }
 
@@ -108,19 +103,22 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
             _excel.Range("Pagamento").Value = fattura.Pagamento;
             switch (fattura.TipoDocumento)
             {
-
                 case EnTipoDocumento.FatturaDiCortesia:
                     _excel.Range("TipoDocumento").Value = "Fattura di cortesia";
                     break;
+
                 case EnTipoDocumento.RicevutaFiscale:
                     _excel.Range("TipoDocumento").Value = "Ricevuta fiscale";
                     break;
+
                 case EnTipoDocumento.NotaDiCredito:
                     _excel.Range("TipoDocumento").Value = "Nota di credito";
                     break;
+
                 case EnTipoDocumento.DDT:
                     _excel.Range("TipoDocumento").Value = "DDT";
                     break;
+
                 default:
                     break;
             }
@@ -131,7 +129,6 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
             _excel.Range("ClienteCitta").Value = fattura.Cliente.Indirizzo.Citta;
             _excel.Range("ClientePIVACF").Value = "CF - PIVA:" + fattura.Cliente.PIVA;
             _excel.Range("CodiceCliente").Value = fattura.Cliente.ID;
-
         }
 
         private void DatiIntestazione(DatiIntestazioneStampaFattura intestStampa)
@@ -161,7 +158,6 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
             {
                 colQta = colIva;
             }
-
 
             if (fattura.TipoDocumento == EnTipoDocumento.DDT)
             {
@@ -225,6 +221,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
         {
             _excel.Range("Righe").Range(riga, colonna, riga, colonna).Value = valore;
         }
+
         private void ImpostaRigaIva(int riga, int colonna, object valore)
         {
             _excel.Range("IVA").Range(riga, colonna, riga, colonna).Value = valore;

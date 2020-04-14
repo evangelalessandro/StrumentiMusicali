@@ -14,13 +14,12 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
 {
     internal class ReadProductsFormSite : BaseClass.SyncroBase
     {
-         /// <summary>
-         /// Salva quelli che non sono presenti in locale
-         /// </summary>
-         /// <returns>ritorna quanti sono stati inseriti</returns>
+        /// <summary>
+        /// Salva quelli che non sono presenti in locale
+        /// </summary>
+        /// <returns>ritorna quanti sono stati inseriti</returns>
         public int SaveLocalFromSite()
         {
-
             int count = 0;
             using (var uof = new UnitOfWork())
             {
@@ -32,7 +31,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
                     //filter.Add("Name", "EKO RANGER");
                     var listProd = new List<product>();
 
-                    var codiciGiaPresenti = uof.ArticoliRepository.Find(a => 1 == 1).Select(a => a.ArticoloWeb.CodiceArticoloEcommerce).ToList();
+                    var codiciGiaPresenti = uof.AggiornamentoWebArticoloRepository.Find(a => 1 == 1).Select(a => a.CodiceArticoloEcommerce).ToList();
                     var listIdProdWeb = _productFactory.GetIds().OrderBy(a => a).Select(a => a.ToString()).ToList();
                     //prendo quelli che non sono già salvati
                     foreach (var item in codiciGiaPresenti.Where(a => !listIdProdWeb.Contains(a)))
@@ -46,7 +45,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
                         var codice = item.id.Value.ToString();
 
                         var name = item.name.First().Value;
-                        var articolo = uof.ArticoliRepository.Find(a => a.ArticoloWeb.CodiceArticoloEcommerce == codice).FirstOrDefault();
+                        var articolo = uof.AggiornamentoWebArticoloRepository.Find(a => a.CodiceArticoloEcommerce == codice).Select(a=>a.Articolo).FirstOrDefault();
                         if (articolo == null)
                         {
                             try
@@ -153,13 +152,18 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
 
             articolo.ArticoloWeb.DescrizioneHtml = item.description.FirstOrDefault().Value;
             articolo.ArticoloWeb.DescrizioneBreveHtml = item.description_short.FirstOrDefault().Value;
-            articolo.ArticoloWeb.CodiceArticoloEcommerce = item.id.Value.ToString();
-
+            
             articolo.CaricaInMercatino = false;
             articolo.CaricainECommerce = false;
 
             uof.ArticoliRepository.Add(articolo);
 
+            uof.Commit();
+
+            var agg = uof.AggiornamentoWebArticoloRepository.Find(a => a.ArticoloID == a.ArticoloID).First();
+
+            agg.CodiceArticoloEcommerce = item.id.Value.ToString();
+            uof.AggiornamentoWebArticoloRepository.Update(agg);
             uof.Commit();
 
             item.reference = articolo.ID.ToString();

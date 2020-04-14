@@ -10,6 +10,7 @@ namespace StrumentiMusicali.ftpBackup.Ftp
     public class FtpManager : IDisposable
     {
         internal readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+
         public bool Upload(string fileLocal)
         {
             FtpClient client = Connetti();
@@ -37,7 +38,9 @@ namespace StrumentiMusicali.ftpBackup.Ftp
             }
             return false;
         }
+
         private FtpClient _client = null;
+
         public bool Delete(string remoteFileName)
         {
             FtpClient client = Connetti();
@@ -45,11 +48,11 @@ namespace StrumentiMusicali.ftpBackup.Ftp
             {
                 client.DeleteFile(remoteFileName);
 
-
                 return true;
             }
             return false;
         }
+
         public List<FileDirectoryFtp> FileList()
         {
             var retList = new List<FileDirectoryFtp>();
@@ -101,6 +104,7 @@ namespace StrumentiMusicali.ftpBackup.Ftp
             }
             return retList;
         }
+
         public bool ConnessioneOk()
         {
             FtpClient client = Connetti();
@@ -110,6 +114,7 @@ namespace StrumentiMusicali.ftpBackup.Ftp
             }
             return false;
         }
+
         private FtpClient Connetti()
         {
             try
@@ -134,7 +139,6 @@ namespace StrumentiMusicali.ftpBackup.Ftp
 
                 _client = client;
                 return client;
-
             }
             catch (Exception ex)
             {

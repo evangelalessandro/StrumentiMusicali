@@ -36,6 +36,7 @@ namespace StrumentiMusicali.App.Core.Exports
             _fotoToUpload.Clear();
             _fotoToUpload = null;
         }
+
         internal readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
         public void InvioArticoli()
@@ -43,7 +44,6 @@ namespace StrumentiMusicali.App.Core.Exports
             _logger.Info("Inizio controlli per invio CSV");
             using (var controller = new ControllerImmagini())
             {
-
                 if (!controller.CheckFolderImmagini())
                     return;
             }
@@ -89,8 +89,6 @@ namespace StrumentiMusicali.App.Core.Exports
                         MessageManager.NotificaInfo("Terminato upload nuove foto");
 
                         var artToUpdate = _fotoToUpload.Select(a => a.ArticoloID).Distinct().ToList();
-
-                         
 
                         UploadEndRetray(fileMercatino, _settingSito.UrlCompletoFileMercatino);
                         UploadEndRetray(fileEcommerce, _settingSito.UrlCompletoFileEcommerce);
@@ -147,7 +145,7 @@ namespace StrumentiMusicali.App.Core.Exports
 
         private void ExportLineBase(SettingSito settingSito, List<FotoArticolo> fotoList, StringBuilder sb, Articolo art)
         {
-            var fotoOrdinate = fotoList.Where(b =>b.ArticoloID == art.ID).OrderBy(b => b.Ordine).ToList();
+            var fotoOrdinate = fotoList.Where(b => b.ArticoloID == art.ID).OrderBy(b => b.Ordine).ToList();
 
             foreach (var item in fotoOrdinate)
             {
@@ -316,6 +314,7 @@ namespace StrumentiMusicali.App.Core.Exports
             }
             return name;
         }
+
         private string GetUrlProdotto(Articolo articolo, SettingSito settingSito)
         {
             return settingSito.UrlSito + "?" + articolo.ID;
@@ -361,9 +360,7 @@ namespace StrumentiMusicali.App.Core.Exports
                         throw new MessageException("Non si riesce a fare upload del file " + fileToUpload);
                     }
                 }
-
             } while (!uploadCompleted);
-
         }
 
         private class GiacenzaArt

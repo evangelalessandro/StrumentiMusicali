@@ -250,16 +250,17 @@
     <Compile Include="Core\Controllers\Base\BaseControllerGeneric.cs" />
     <Compile Include="Core\Controllers\Base\BaseController.cs" />
     <Compile Include="Core\Controllers\ControllerArticoli.cs" />
-    <Compile Include="Core\Controllers\ControllerPagamenti.cs" />
-    <Compile Include="Core\Controllers\ControllerPagamentiDocumenti.cs" />
+    <Compile Include="Core\Controllers\ControllerScheduler.cs" />
+    <Compile Include="Core\Controllers\PagamentiFatture\ControllerPagamenti.cs" />
+    <Compile Include="Core\Controllers\PagamentiFatture\ControllerPagamentiDocumenti.cs" />
     <Compile Include="Core\Controllers\ControllerUtenti.cs" />
     <Compile Include="Core\Controllers\ControllerDepositi.cs" />
-    <Compile Include="Core\Controllers\ControllerFatturazione.cs" />
+    <Compile Include="Core\Controllers\PagamentiFatture\ControllerFatturazione.cs" />
     <Compile Include="Core\Controllers\ControllerImmagini.cs" />
     <Compile Include="Core\Controllers\ControllerLog.cs" />
     <Compile Include="Core\Controllers\ControllerMagazzino.cs" />
     <Compile Include="Core\Controllers\ControllerClienti.cs" />
-    <Compile Include="Core\Controllers\ControllerRigheFatture.cs" />
+    <Compile Include="Core\Controllers\PagamentiFatture\ControllerRigheFatture.cs" />
     <Compile Include="Core\Controllers\Stampa\Pagamento.cs" />
     <Compile Include="Core\Events\Tab\GetNewTab.cs" />
     <Compile Include="Core\Events\Tab\RemoveNewTab.cs" />
@@ -274,6 +275,7 @@
     <Compile Include="Core\Item\LogItem.cs" />
     <Compile Include="Core\Controllers\Stampa\Fattura.cs" />
     <Compile Include="Core\Controllers\ControllerMaster.cs" />
+    <Compile Include="Core\Item\SchedulerItem.cs" />
     <Compile Include="Core\MenuRibbon\RibbonButton.cs" />
     <Compile Include="CustomComponents\DateTimePickerBinding.cs" />
     <Compile Include="CustomComponents\TabCustom.cs">
@@ -406,9 +408,6 @@
     </Compile>
     <Compile Include="View\BaseControl\ElementiDettaglio\EDTesto.Designer.cs">
       <DependentUpon>EDTesto.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\BaseControl\SettingBaseView.cs">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\Settings\GenericSettingView.cs">
       <SubType>UserControl</SubType>
@@ -698,9 +697,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\BaseControl\ElementiDettaglio\EDTesto.resx">
       <DependentUpon>EDTesto.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\BaseControl\SettingBaseView.resx">
-      <DependentUpon>SettingBaseView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Pagamenti\PagamentiDocumentiView.resx">
       <DependentUpon>PagamentiDocumentiView.cs</DependentUpon>

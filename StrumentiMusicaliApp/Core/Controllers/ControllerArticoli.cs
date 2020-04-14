@@ -35,21 +35,21 @@ namespace StrumentiMusicali.App.Core.Controllers
         internal enModalitaArticolo ModalitaController { get; private set; }
         internal ControllerImmagini _controllerImmagini = new ControllerImmagini();
         private Subscription<ImageSelected<FotoArticolo>> sub10;
+
         public enum enModalitaArticolo
         {
             Tutto = 0,
             Ricerca = 1,
             SoloStrumenti = 2,
             SoloLibri = 3,
-
         }
+
         public ControllerArticoli(enModalitaArticolo modalitaController)
                     : base(enAmbiente.StrumentiList, enAmbiente.StrumentiDetail)
         {
             ModalitaController = modalitaController;
             sub1 = EventAggregator.Instance().Subscribe<Add<Articolo>>(AggiungiArticolo);
             sub2 = EventAggregator.Instance().Subscribe<Edit<Articolo>>(EditArt);
-
 
             sub3 = EventAggregator.Instance().Subscribe<Remove<Articolo>>(DeleteArticolo);
             sub4 = EventAggregator.Instance().Subscribe<ArticoloDuplicate>(DuplicaArticolo);
@@ -63,7 +63,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 
             SetKeyImageListUI();
         }
-        FotoArticolo _fileFotoSelezionato = null;
+
+        private FotoArticolo _fileFotoSelezionato = null;
+
         private void ImmagineSelezionata(ImageSelected<FotoArticolo> obj)
         {
             if (obj.File != null)
@@ -72,10 +74,9 @@ namespace StrumentiMusicali.App.Core.Controllers
                 _fileFotoSelezionato = null;
         }
 
-        Subscription<ImageAddFiles> _subAddImage;
-        Subscription<ImageOrderSet<FotoArticolo>> _orderImage;
-        Subscription<ImageRemove<FotoArticolo>> _imageRemove;
-
+        private Subscription<ImageAddFiles> _subAddImage;
+        private Subscription<ImageOrderSet<FotoArticolo>> _orderImage;
+        private Subscription<ImageRemove<FotoArticolo>> _imageRemove;
 
         private void SetKeyImageListUI()
         {
@@ -91,7 +92,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                 .Subscribe<ImageRemove<FotoArticolo>>(
                 ImageRemoveSet
                 );
-
         }
 
         private void ImageRemoveSet(ImageRemove<FotoArticolo> obj)
@@ -101,7 +101,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                 EventAggregator.Instance().Publish<ImageArticoloRemove>(
                     new ImageArticoloRemove(
                     FotoSelezionata(), this._controllerImmagini));
-
             }
         }
 
@@ -112,25 +111,26 @@ namespace StrumentiMusicali.App.Core.Controllers
                 EventAggregator.Instance().Publish<ImageArticoloOrderSet>(
                     new ImageArticoloOrderSet(obj.TipoOperazione,
                     FotoSelezionata(), this._controllerImmagini));
-
             }
-
         }
-        List<ImmaginiFile<FotoArticolo>> _listFotoArticolo
+
+        private List<ImmaginiFile<FotoArticolo>> _listFotoArticolo
             = new List<ImmaginiFile<FotoArticolo>>();
+
         public FotoArticolo FotoSelezionata()
         {
             return FotoSelezionata(_fileFotoSelezionato);
         }
+
         private FotoArticolo FotoSelezionata(FotoArticolo file)
         {
             if (file == null)
                 return null;
             return _listFotoArticolo.Where(a => a.Entity == file).Select(a => a.Entity).DefaultIfEmpty(null).FirstOrDefault();
         }
+
         internal List<ImmaginiFile<FotoArticolo>> RefreshImageListData()
         {
-
             using (var uof = new UnitOfWork())
             {
                 var settingSito = SettingSitoValidator.ReadSetting();
@@ -143,8 +143,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                                  , a.UrlFoto, a)).ToList();
 
                 return _listFotoArticolo.ToList();
-
-
             }
         }
 
@@ -160,7 +158,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private void Sconta(ArticoloSconta obj)
         {
-
             if (!MessageManager.QuestionMessage(string.Format(@"Sei sicuro di volere applicare questo sconto su tutti i {0} articoli visualizzati nella lista?", DataSource.Count())))
                 return;
             if (DataSource.Count() > 100)
@@ -182,7 +179,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                 {
                     EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>(this));
                 }
-
             }
         }
 
@@ -202,10 +198,8 @@ namespace StrumentiMusicali.App.Core.Controllers
             EventAggregator.Instance().UnSbscribe(_orderImage);
             EventAggregator.Instance().UnSbscribe(_subAddImage);
 
-
             _controllerImmagini.Dispose();
             _controllerImmagini = null;
-
         }
 
         private void AggiungiComandiMenu()
@@ -221,7 +215,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                 tabFirst.Pannelli.RemoveAt(2);
                 tabFirst.Pannelli.RemoveAt(1);
-
             }
             if (ModalitaController != enModalitaArticolo.Ricerca)
             {
@@ -229,7 +222,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                 rib1.Click += (a, e) =>
                 {
                     EventAggregator.Instance().Publish<ArticoloDuplicate>(new ArticoloDuplicate(this));
-
                 };
                 var pnl2 = GetMenu().Tabs[0].Add("Prezzi");
                 var rib2 = pnl2.Add("Varia prezzi", Properties.Resources.Sconta_Articoli);
@@ -310,7 +302,6 @@ namespace StrumentiMusicali.App.Core.Controllers
             //	EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ScaricoMagazzino));
             //	EventAggregator.Instance().Publish(new MagazzinoSelezionaArticolo() { Articolo=SelectedItem});
 
-
             //};
         }
 
@@ -340,18 +331,14 @@ namespace StrumentiMusicali.App.Core.Controllers
             }
         }
 
-
-
         private void EditArt(Edit<Articolo> obj)
         {
-
             EditItem = SelectedItem;
             ShowViewDettaglio();
         }
+
         private void AggiungiArticolo(Add<Articolo> obj)
         {
-
-
             _logger.Info("Apertura Aggiungi Articolo");
 
             EditItem = new Articolo();
@@ -362,7 +349,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                 {
                     libro = true;
                 }
-
             }
             else
             {
@@ -383,10 +369,8 @@ namespace StrumentiMusicali.App.Core.Controllers
             {
                 using (var uof = new UnitOfWork())
                 {
-
                     var categoria = uof.CategorieRepository.Find(a => a.Codice == 133).FirstOrDefault();
                     EditItem.CategoriaID = categoria.ID;
-
                 }
             }
 
@@ -412,13 +396,10 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                 ShowView(view, enAmbiente.StrumentiDetail);
             }
-
         }
 
         private void DuplicaArticolo(ArticoloDuplicate obj)
         {
-
-
             try
             {
                 using (var saveEntity = new SaveEntityManager())
@@ -450,8 +431,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                         SelectedItem = art;
                         EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>(this));
-
-
                     }
                 }
             }
@@ -460,8 +439,10 @@ namespace StrumentiMusicali.App.Core.Controllers
                 ExceptionManager.ManageError(ex);
             }
         }
+
         public string FiltroLibri { get; set; } = "";
         public string FiltroMarca { get; set; } = "";
+
         public void ImportaCsvArticoli(ImportArticoliCSVMercatino obj)
         {
             try
@@ -596,8 +577,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                 {
                     using (var immaginiController = new ControllerImmagini())
                     {
-
-
                         var item = save.UnitOfWork.ArticoliRepository.Find(a => a.ID ==
                         this.SelectedItem.ID).FirstOrDefault();
                         _logger.Info(string.Format("Cancellazione articolo /r/n{0} /r/n{1}", item.Titolo, item.ID));
@@ -621,12 +600,10 @@ namespace StrumentiMusicali.App.Core.Controllers
                         foreach (var itemAgg in save.UnitOfWork.AggiornamentoWebArticoloRepository.Find(a => a.ArticoloID == item.ID))
                         {
                             save.UnitOfWork.AggiornamentoWebArticoloRepository.Delete(itemAgg);
-
                         }
 
                         save.UnitOfWork.ArticoliRepository.Delete(item);
 
-                        
                         if (save.SaveEntity(enSaveOperation.OpDelete))
                         {
                             EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>(this));
@@ -676,7 +653,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private void AggiungiImmagine(ImageArticoloAdd eventArg)
         {
-
             try
             {
                 using (OpenFileDialog res = new OpenFileDialog())
@@ -733,11 +709,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                         var listRicerche = datoRicerca.Where(a => a.Length > 0).ToList();
 
-
-
                         foreach (var ricerca in listRicerche)
                         {
-
                             datList = datList.Where(a =>
 
                                a.Titolo.Contains(ricerca)
@@ -768,7 +741,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                         .Select(a => new ArticoloItem(a)
                         {
-
                             //Pinned = a.Pinned
                         }).ToList();
 
@@ -776,7 +748,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                         var giacenza = uof.MagazzinoRepository.Find(a => listArt.Contains(a.ArticoloID))
                            .Select(a => new { a.ArticoloID, a.Qta, a.Deposito }).GroupBy(a => new { a.ArticoloID, a.Deposito })
                            .Select(a => new { Sum = a.Sum(b => b.Qta), Articolo = a.Key }).ToList();
-
 
                         foreach (var item in list)
                         {
@@ -789,9 +760,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                             item.QuantitaTotale = val.Sum(a => a.Sum);
                         }
                     }
-
-
-
 
                     DataSource = new View.Utility.MySortableBindingList<ArticoloItem>(list);
                     if (ClearRicerca)

@@ -21,8 +21,8 @@ namespace StrumentiMusicali.App.CustomComponents
             this.tabControl1.HandleCreated += tabControl1_HandleCreated;
 
             this.tabControl1.TabPages.Clear();
-
         }
+
         public TabPage AddTab(string text, string key)
         {
             tabControl1.TabPages.Add(key, text);
@@ -30,15 +30,16 @@ namespace StrumentiMusicali.App.CustomComponents
             var tab = tabControl1.TabPages[tabControl1.TabPages.Count - 1];
             tabControl1.SelectedTab = tab;
             return tab;
-
         }
+
         public void RemoveTab(TabPage control)
         {
             tabControl1.TabPages.Remove(control);
-
         }
+
         [DllImport("user32.dll")]
         private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
+
         private const int TCM_SETMINTABWIDTH = 0x1300 + 49;
         private bool _allowAdd = true;
 
@@ -46,11 +47,13 @@ namespace StrumentiMusicali.App.CustomComponents
         {
             SendMessage(this.tabControl1.Handle, TCM_SETMINTABWIDTH, IntPtr.Zero, (IntPtr)16);
         }
+
         private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
         {
             if (AllowAdd && e.TabPageIndex == this.tabControl1.TabCount - 1)
                 e.Cancel = true;
         }
+
         private void tabControl1_MouseDown(object sender, MouseEventArgs e)
         {
             var lastIndex = this.tabControl1.TabCount - 1;
@@ -80,6 +83,7 @@ namespace StrumentiMusicali.App.CustomComponents
                 }
             }
         }
+
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
             var tabPage = this.tabControl1.TabPages[e.Index];
@@ -87,8 +91,6 @@ namespace StrumentiMusicali.App.CustomComponents
             tabRect.Inflate(-2, -2);
             if (AllowAdd && e.Index == this.tabControl1.TabCount - 1)
             {
-
-
                 var addImage = Properties.Resources.Add_16;
                 e.Graphics.DrawImage(addImage,
                     tabRect.Left + (tabRect.Width - addImage.Width) / 2,
@@ -104,6 +106,7 @@ namespace StrumentiMusicali.App.CustomComponents
                     tabRect, tabPage.ForeColor, TextFormatFlags.Left);
             }
         }
+
         public bool AllowAdd {
             get => _allowAdd;
             set {
@@ -111,10 +114,9 @@ namespace StrumentiMusicali.App.CustomComponents
                 RefreshTab();
             }
         }
+
         private void RefreshTab()
         {
-
-
             if (!AllowAdd)
             {
                 tabControl1.TabPages.Clear();
@@ -123,7 +125,6 @@ namespace StrumentiMusicali.App.CustomComponents
             else
             {
                 tabControl1.TabPages.Add("");
-
             }
             tabControl1.Invalidate();
         }

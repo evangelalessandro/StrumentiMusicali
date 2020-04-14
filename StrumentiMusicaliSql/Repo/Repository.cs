@@ -52,7 +52,6 @@ namespace StrumentiMusicali.Library.Repo
                 var item = (entity as BaseEntity);
                 item.DataUltimaModifica = DateTime.Now;
                 item.DataCreazione = DateTime.Now;
-
             }
 
             FixDateNull(entity);
@@ -71,9 +70,7 @@ namespace StrumentiMusicali.Library.Repo
             if (entity is Entity.Articoli.Articolo)
             {
                 new Repository<AggiornamentoWebArticolo>(dbContext).Add(new AggiornamentoWebArticolo() { Articolo = entity as Articolo });
-
             }
-
         }
 
         public virtual T GetById(Guid id)
@@ -124,11 +121,9 @@ namespace StrumentiMusicali.Library.Repo
                 if (list.Count > 0)
                 {
                     throw new MessageException(list.First().ErrorMessage);
-
                 }
             }
             dbSet.Remove(entity);
-
         }
 
         //IDisposable implementation

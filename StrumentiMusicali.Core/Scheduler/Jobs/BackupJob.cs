@@ -24,13 +24,13 @@ namespace StrumentiMusicali.Core.Scheduler.Jobs
                     {
                         ftpManager.Manage();
 
-                        ManagerLog.AddLogMessage("Backup Effettuato correttamente");
+                        ManagerLog.Logger.Info("Backup Effettuato correttamente");
                     }
                 }
             }
             catch (Exception ex)
             {
-                ManagerLog.AddLogException("Nella fase di backup automatico", ex);
+                ManagerLog.Logger.Error(ex,"Nella fase di backup automatico");
             }
         }
     }

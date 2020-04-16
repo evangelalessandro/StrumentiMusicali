@@ -9,7 +9,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace StrumentiMusicali.App.Settings
+namespace StrumentiMusicali.Core.Settings
 {
     public static class SettingSitoValidator
     {

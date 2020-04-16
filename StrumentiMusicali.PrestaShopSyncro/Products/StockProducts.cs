@@ -15,12 +15,19 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
         private void UpdateStockArt(product newArtWeb, ArticoloBase artDb, UnitOfWork uof)
         {
             var stock = _StockAvailableFactory.Get(newArtWeb.associations.stock_availables.First().id);
+            if (artDb.Aggiornamento.GiacenzaMagazzinoWebInDataAggWeb != stock.quantity)
+            {
+                Core.Manager.ManagerLog.Logger.Info("Il prodotto '" + artDb.ArticoloDb.Titolo +
+                    "' è stato modificato con gli ordini nel web, occorre prima aspettare che venga " +
+                    "scaricata la nuova qta dal job delle giacenze.");
+                return;
+            }
             DateTime date = DateTime.Now;
             stock.quantity = CalcolaStock(artDb);
             _StockAvailableFactory.Update(stock);
             artDb.Aggiornamento.DataUltimoAggMagazzino = date;
             artDb.Aggiornamento.DataUltimoAggMagazzinoWeb = date;
-            
+            artDb.Aggiornamento.GiacenzaMagazzinoWebInDataAggWeb = stock.quantity;
             SalvaAggiornamento(uof, artDb.Aggiornamento);
         }
 

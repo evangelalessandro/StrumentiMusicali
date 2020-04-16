@@ -7,6 +7,11 @@ namespace StrumentiMusicali.Library.Migrations
     {
         public override void Up()
         {
+            var text = StrumentiMusicali.Library.Properties.Resource1.IndexOptimize;
+            Sql(text);
+
+
+
             Sql(@"CREATE OR ALTER TRIGGER [dbo].[tr_FotoArticoli]
                ON  [dbo].[FotoArticoli]
                AFTER INSERT,DELETE,UPDATE

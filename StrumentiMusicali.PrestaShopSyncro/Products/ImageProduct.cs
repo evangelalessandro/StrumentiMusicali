@@ -1,5 +1,5 @@
 ﻿using Bukimedia.PrestaSharp.Entities;
-using StrumentiMusicali.App.Settings;
+using StrumentiMusicali.Core.Settings;
 using StrumentiMusicali.Library.Core.Events.Image;
 using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Repo;

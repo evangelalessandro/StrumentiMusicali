@@ -1,8 +1,8 @@
 ﻿using NLog;
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Controllers.Base;
-using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.Core.Manager;
+using StrumentiMusicali.Core.Settings;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Entity.Setting;

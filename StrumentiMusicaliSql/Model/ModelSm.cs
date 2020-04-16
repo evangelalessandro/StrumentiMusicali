@@ -197,6 +197,8 @@ namespace StrumentiMusicali.Library.Model
 
             modelBuilder.Entity<FotoArticolo>().ToTable("FotoArticoli");
 
+            //modelBuilder.Entity<OrdineWeb>().ToTable("OrdiniWeb");
+ 
             modelBuilder.Entity<Fattura>().ToTable("Fatture");
             modelBuilder.Entity<FatturaRiga>().ToTable("FattureRighe");
 
@@ -217,11 +219,14 @@ namespace StrumentiMusicali.Library.Model
            .HasIndex(b => new { b.Nome, b.Codice, b.Reparto })
            .IsUnique();
 
+            modelBuilder.Entity<Articolo>()
+           .HasIndex(b => new { b.CodiceABarre, b.Titolo, b.Testo});
+           
             modelBuilder.Entity<AggiornamentoWebArticolo>()
                 .HasIndex(b => new { b.ArticoloID })
                 .IsUnique();
         }
-
+        //public virtual DbSet<OrdineWeb> OrdineWeb { get; set; }
         public virtual DbSet<RepartoWeb> RepartoWeb { get; set; }
         public virtual DbSet<CategoriaWeb> CategoriaWeb { get; set; }
         public virtual DbSet<SchedulerJob> SchedulerJob { get; set; }

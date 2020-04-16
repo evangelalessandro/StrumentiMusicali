@@ -65,7 +65,7 @@ namespace StrumentiMusicali.PrestaShopSyncro
                 {
                     artWeb = _productFactory.Get(long.Parse(artDb.Aggiornamento.CodiceArticoloEcommerce));
                 }
-                ManagerLog.AddLogMessage("Caricamento in corso dell'articolo '" + artDb.ArticoloDb.Titolo + "' ID=" + artDb.ArticoloID + "  nel web");
+                ManagerLog.Logger.Info("Caricamento in corso dell'articolo '" + artDb.ArticoloDb.Titolo + "' ID=" + artDb.ArticoloID + "  nel web");
                 setDataItemWeb(artDb, uof, artWeb);
 
                 try

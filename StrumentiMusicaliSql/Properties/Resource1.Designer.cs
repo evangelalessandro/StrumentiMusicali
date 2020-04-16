@@ -78,6 +78,21 @@ namespace StrumentiMusicali.Library.Properties {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a /*
+        ///SQL Server Maintenance Solution - SQL Server 2008, SQL Server 2008 R2, SQL Server 2012, SQL Server 2014, SQL Server 2016, SQL Server 2017, and SQL Server 2019
+        ///Backup: https://ola.hallengren.com/sql-server-backup.html
+        ///Integrity Check: https://ola.hallengren.com/sql-server-integrity-check.html
+        ///Index and Statistics Maintenance: https://ola.hallengren.com/sql-server-index-and-statistics-maintenance.html
+        ///License: https://ola.hallengren.com/license.html
+        ///GitHub: https://github.com/olahallengren/sql-server [stringa troncata]&quot;;.
+        /// </summary>
+        internal static string IndexOptimize {
+            get {
+                return ResourceManager.GetString("IndexOptimize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a create  procedure dbo.sp_Backup
         ///as
         ///

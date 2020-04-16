@@ -27,7 +27,7 @@ namespace StrumentiMusicali.Core.Manager
                         allAssemblies.Add(Assembly.LoadFile(dll));
 
                     // var assemblies = AppDomain.CurrentDomain.GetAssemblies().OrderBy(a=>a.FullName).ToList().ToArray();
-                    container.RegisterAssemblyTypes(allAssemblies.ToArray()).Where(t => t.IsAssignableTo<IUpdateEcommerce>())
+                    container.RegisterAssemblyTypes(allAssemblies.ToArray()).Where(t => t.IsAssignableTo<IPlugInJob>())
                         .AsImplementedInterfaces();
 
                     _container= container.Build();

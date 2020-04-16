@@ -17,6 +17,10 @@ namespace StrumentiMusicali.Library.Entity.Ecomm
         [CustomUIView(Width = 80, Enable = false, Titolo = "Data aggiornamento giacenza Web", Category = "Interni", DateTimeView = true)]
         public DateTime DataUltimoAggMagazzinoWeb { get; set; } = new DateTime(1900, 1, 1);
 
+        [CustomUIView(Width = 80, Enable = false, Titolo = "Giacenza magazzino in data aggiornamento Web"
+            , Category = "Interni")]
+        public int GiacenzaMagazzinoWebInDataAggWeb { get; set; } = 0;
+
         [CustomUIView(Width = 80, Enable = false, Titolo = "Data aggiornamento foto locale", Category = "Interni", DateTimeView = true)]
         public DateTime DataUltimoAggFoto { get; set; } = new DateTime(1900, 1, 1);
 

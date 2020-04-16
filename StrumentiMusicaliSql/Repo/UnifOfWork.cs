@@ -20,11 +20,36 @@ namespace StrumentiMusicali.Library.Repo
         //Private members corresponding to each concrete repository
         private Repository<Categoria> _CategorieRepository;
 
+        public void OptimizeIndex()
+        {
+            var query = @"
+
+                declare @db varchar(50) 
+
+                select @db =DB_NAME()
+
+                EXECUTE dbo.IndexOptimize
+                @Databases = @db,
+                @FragmentationLow = NULL,
+                @FragmentationMedium = 'INDEX_REORGANIZE,INDEX_REBUILD_ONLINE,INDEX_REBUILD_OFFLINE',
+                @FragmentationHigh = 'INDEX_REBUILD_ONLINE,INDEX_REBUILD_OFFLINE',
+                @FragmentationLevel1 = 5,
+                @FragmentationLevel2 = 30
+
+select @db
+"
+            ;
+            object[] parameters = new List<object>().ToArray();
+            var dato = this.dbContext.Database.SqlQuery<string>(query, parameters);
+            dato.ToList();
+
+        }
+
         public string ServerName()
         {
             object[] parameters = new List<object>().ToArray();
-            var dato= this.dbContext.Database.SqlQuery<string>("select @@SERVERNAME", parameters);
-            var serverName= dato.First();
+            var dato = this.dbContext.Database.SqlQuery<string>("select @@SERVERNAME", parameters);
+            var serverName = dato.First();
             if (serverName.Contains(@"\"))
             {
                 serverName = serverName.Split(@"\".ToCharArray()).First();
@@ -175,7 +200,7 @@ namespace StrumentiMusicali.Library.Repo
                 return _PagamentoDocumentiRepository;
             }
         }
-
+         
         private Repository<Pagamento> _PagamentoRepository;
 
         public IRepository<Pagamento> PagamentoRepository {

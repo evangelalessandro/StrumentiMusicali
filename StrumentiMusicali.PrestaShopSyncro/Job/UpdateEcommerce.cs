@@ -1,8 +1,8 @@
 ﻿using StrumentiMusicali.Core.Scheduler.Jobs.Interface;
 
-namespace StrumentiMusicali.PrestaShopSyncro.Scheduler
+namespace StrumentiMusicali.PrestaShopSyncro.Job
 {
-    public class UpdateEcommerce : IUpdateEcommerce
+    public class UpdateEcommerce : IPlugInJob
     {
         private static bool _execting = false;
 
@@ -22,6 +22,11 @@ namespace StrumentiMusicali.PrestaShopSyncro.Scheduler
             {
                 _execting = false;
             }
+        }
+
+        public EnumJobs Name()
+        {
+            return EnumJobs.UpdateWeb;
         }
     }
 }

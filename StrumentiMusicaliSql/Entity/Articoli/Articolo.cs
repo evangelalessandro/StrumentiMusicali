@@ -54,7 +54,7 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         [CustomUIView(Ordine = 4, Combo = TipoDatiCollegati.Condizione)]
         public enCondizioneArticolo Condizione { get; set; } = enCondizioneArticolo.Nuovo;
 
-        [CustomUIView(Width = 80, Ordine = 39, Category = "Prezzo", Money = true)]
+        [CustomUIView(Width = 80, Ordine = 39, Titolo = "Prezzo iva compresa", Category = "Prezzo", Money = true)]
         [Required]
         public decimal Prezzo { get; set; } = 0;
 

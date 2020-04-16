@@ -1,5 +1,5 @@
-﻿using StrumentiMusicali.App.Settings;
-using StrumentiMusicali.Core.Manager;
+﻿using StrumentiMusicali.Core.Manager;
+using StrumentiMusicali.Core.Settings;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Image;
 using StrumentiMusicali.Library.Entity.Articoli;

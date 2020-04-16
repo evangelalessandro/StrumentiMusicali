@@ -8,8 +8,8 @@ namespace StrumentiMusicali.PrestaShopSyncro.BaseClass
 {
     public abstract class SyncroBase : IDisposable
     {
-        private string _url = "";
-        private string _autKey = "";
+        protected string _url = "";
+        protected string _autKey = "";
 
         public SyncroBase()
         {
@@ -23,7 +23,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.BaseClass
             _StockAvailableFactory = new StockAvailableFactory(_url, _autKey, "");
             _productFactory = new ProductFactory(_url, _autKey, "");
             _categoriesFact = new CategoryFactory(_url, _autKey, "");
-            _taxRuleGroupFact=new TaxRuleGroupFactory(_url, _autKey, "");
+            _taxRuleGroupFact = new TaxRuleGroupFactory(_url, _autKey, "");
         }
 
         private PrestaShopSetting LoginData()
@@ -37,7 +37,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.BaseClass
                     uof.SettingSitoRepository.Add(setting);
                     uof.Commit();
                 }
-                return setting.prestaShopSetting;
+                return setting.PrestaShopSetting;
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
-using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.Core.Manager;
+using StrumentiMusicali.Core.Settings;
 using StrumentiMusicali.Core.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Image;

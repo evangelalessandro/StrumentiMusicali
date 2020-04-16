@@ -21,5 +21,10 @@ namespace StrumentiMusicali.Library.Entity
         public int Qta { get; set; }
 
         public decimal PrezzoAcquisto { get; set; }
+
+        [MaxLength(50)]
+        public string Note { get; set; } = "";
+
+        public bool OperazioneWeb { get; set; } = false;
     }
 }

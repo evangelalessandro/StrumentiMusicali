@@ -14,7 +14,7 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         [MaxLength(800)]
         public string DescrizioneBreveHtml { get; set; } = "";
 
-        [CustomUIView(Width = 80, Titolo = "Prezzo per il web iva non compresa", Ordine = 30, Category = "Prezzo", Money = true)]
+        [CustomUIView(Width = 80, Titolo = "Prezzo per il web iva compresa", Ordine = 30, Category = "Prezzo", Money = true)]
         [Required]
         public decimal PrezzoWeb { get; set; } = 0;
 

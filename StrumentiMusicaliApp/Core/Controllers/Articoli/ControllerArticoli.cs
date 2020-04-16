@@ -1,8 +1,8 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Forms;
-using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.Core.Manager;
+using StrumentiMusicali.Core.Settings;
 using StrumentiMusicali.Library.Core;
 
 using StrumentiMusicali.Library.Core.Events.Articoli;
@@ -715,6 +715,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                                a.Titolo.Contains(ricerca)
                               || a.Testo.Contains(ricerca)
+                              || a.ArticoloWeb.DescrizioneBreveHtml.Contains(ricerca)
+                              || a.ArticoloWeb.DescrizioneHtml.Contains(ricerca)
                               || a.TagImport.Contains(ricerca)
                               || a.Categoria.Nome.Contains(ricerca)
                               || a.Categoria.Reparto.Contains(ricerca)
@@ -724,10 +726,11 @@ namespace StrumentiMusicali.App.Core.Controllers
                             );
                         }
 
-                        list = datList.OrderByDescending(a => a.ID)
-                            .Select(a => new { a.Categoria, Articolo = a }).ToList()
+                        var preList = datList.OrderByDescending(a => a.ID)
+                            .Select(a => new { a.Categoria, Articolo = a }).ToList();
 
-                        .Select(a => a.Articolo)
+
+                        list= preList.Select(a => a.Articolo)
                         .Where(a => (
                         a.IsLibro() == true
                         && ModalitaController == enModalitaArticolo.SoloLibri)

@@ -31,8 +31,8 @@ namespace testConsole
             //back.Manage();
             //var obj = new StrumentiMusicali.Library.Model.ModelSm();
             ////obj.sql
-            ProductSyncro productSyncro = new ProductSyncro();
-            productSyncro.AggiornaWeb();
+            var syncro = new OrderSync();
+            syncro.UpdateFromWeb();
 
 
             Console.WriteLine("Fine");

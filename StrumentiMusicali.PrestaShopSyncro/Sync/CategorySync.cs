@@ -14,10 +14,10 @@ namespace StrumentiMusicali.PrestaShopSyncro
         {
             if (Allineati)
                 return;
-            ManagerLog.AddLogMessage("Avviato allineamento categorie reparti");
+            ManagerLog.Logger.Info("Avviato allineamento categorie reparti");
             List<category> listCateg = AllineaReparti();
             AllineaCategorie(listCateg);
-            ManagerLog.AddLogMessage("Terminato allineamento categorie reparti");
+            ManagerLog.Logger.Info("Terminato allineamento categorie reparti");
             Allineati = true;
         }
 
@@ -51,7 +51,7 @@ namespace StrumentiMusicali.PrestaShopSyncro
                             { CategoriaID = categDb.ID, CodiceWeb = newCateg.id.Value });
                             uof.Commit();
 
-                            StrumentiMusicali.Core.Manager.ManagerLog.AddLogMessage("Aggiunta categoria web: " + categDb.NomeCateg);
+                            ManagerLog.Logger.Info("Aggiunta categoria web: " + categDb.NomeCateg);
                         }
                         else
                         {
@@ -74,7 +74,7 @@ namespace StrumentiMusicali.PrestaShopSyncro
                     else
                     {
                         var ex = new MessageException("Manca il reparto " + categDb.Reparto + "  nel ecommerce");
-                        StrumentiMusicali.Core.Manager.ManagerLog.AddLogException(ex.Message, ex);
+                        ManagerLog.Logger.Error(ex.Message, ex);
                     }
                 }
             }
@@ -123,7 +123,7 @@ namespace StrumentiMusicali.PrestaShopSyncro
                         }
                         else
                         {
-                            ManagerLog.AddLogMessage("Reparto presente e corretto : " + reparto);
+                            ManagerLog.Logger.Info("Reparto presente e corretto : " + reparto);
                         }
                     }
                 };
@@ -137,7 +137,7 @@ namespace StrumentiMusicali.PrestaShopSyncro
 
         public List<category> LeggiCategorieDalWeb()
         {
-            Core.Manager.ManagerLog.AddLogMessage("Avvio lettura categorie dal web");
+            ManagerLog.Logger.Info("Avvio lettura categorie dal web");
             var listCategories = new List<category>();
 
             foreach (var item in _categoriesFact.GetAll())

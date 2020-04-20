@@ -1,4 +1,5 @@
 ﻿using StrumentiMusicali.Library.Core;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace StrumentiMusicali.Library.Entity.Setting
@@ -13,8 +14,8 @@ namespace StrumentiMusicali.Library.Entity.Setting
         [CustomUIView(DateTimeView = true, Enable = false)]
         public System.DateTime UltimoAggiornamento { get; set; }
 
-        [CustomUIView(DateTimeView = true, Enable = false,Titolo =@"Data dell'ultimo ordine modificato\creato verificato per le giacenze")]
-        public System.DateTime DataUltimoOrdineGiacenza { get; set; }
+        [CustomUIView(DateTimeView = true, Enable = false, Titolo = @"Data dell'ultimo ordine modificato\creato verificato per le giacenze")]
+        public System.DateTime DataUltimoOrdineGiacenza { get; set; } = new DateTime(1900, 1, 1);
 
     }
 }

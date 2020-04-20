@@ -681,6 +681,9 @@ namespace StrumentiMusicali.App.Core.Controllers
         {
             try
             {
+
+                //GC.ReRegisterForFinalize(DataSource);
+
                 using (CursorManager cursorManager = new CursorManager())
                 {
                     var datoRicerca = TestoRicerca.Split(' ').ToList();
@@ -752,6 +755,10 @@ namespace StrumentiMusicali.App.Core.Controllers
                            .Select(a => new { a.ArticoloID, a.Qta, a.Deposito }).GroupBy(a => new { a.ArticoloID, a.Deposito })
                            .Select(a => new { Sum = a.Sum(b => b.Qta), Articolo = a.Key }).ToList();
 
+
+                        GC.SuppressFinalize(preList);
+                        GC.SuppressFinalize(preList);
+
                         foreach (var item in list)
                         {
                             var val = giacenza.Where(a => a.Articolo.ArticoloID == item.ID).ToList();
@@ -762,8 +769,9 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                             item.QuantitaTotale = val.Sum(a => a.Sum);
                         }
-                    }
+                        GC.SuppressFinalize(giacenza);
 
+                    }
                     DataSource = new View.Utility.MySortableBindingList<ArticoloItem>(list);
                     if (ClearRicerca)
                     {

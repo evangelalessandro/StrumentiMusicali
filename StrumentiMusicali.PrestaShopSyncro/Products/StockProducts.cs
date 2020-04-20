@@ -12,10 +12,10 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
         /// </summary>
         /// <param name="newArtWeb"></param>
         /// <param name="artDb"></param>
-        private void UpdateStockArt(product newArtWeb, ArticoloBase artDb, UnitOfWork uof)
+        public void UpdateStockArt(product newArtWeb, ArticoloBase artDb, UnitOfWork uof, bool forzaUpdate=false)
         {
             var stock = _StockAvailableFactory.Get(newArtWeb.associations.stock_availables.First().id);
-            if (artDb.Aggiornamento.GiacenzaMagazzinoWebInDataAggWeb != stock.quantity)
+            if (!forzaUpdate && artDb.Aggiornamento.GiacenzaMagazzinoWebInDataAggWeb != stock.quantity)
             {
                 Core.Manager.ManagerLog.Logger.Info("Il prodotto '" + artDb.ArticoloDb.Titolo +
                     "' è stato modificato con gli ordini nel web, occorre prima aspettare che venga " +
@@ -54,7 +54,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
             }
         }
 
-        private int CalcolaStock(ArticoloBase artDb)
+        public int CalcolaStock(ArticoloBase artDb)
         {
             using (var uof = new UnitOfWork())
             {

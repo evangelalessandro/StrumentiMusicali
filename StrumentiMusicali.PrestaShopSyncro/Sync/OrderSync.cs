@@ -17,6 +17,12 @@ namespace StrumentiMusicali.PrestaShopSyncro
             var setting = SettingSitoValidator.ReadSetting();
 
             DateTime StartDate = setting.PrestaShopSetting.DataUltimoOrdineGiacenza;
+            if (StartDate.Year == 1900)
+            {
+                Core.Manager.ManagerLog.Logger.Warn(@"Occorre impostare la data ultimo ordine
+                    giacenza nei settaggi per il sito prestashop");
+                return;
+            }
             DateTime EndDate = DateTime.Now.AddDays(1);
             Dictionary<string, string> filter = new Dictionary<string, string>();
             string dFrom = string.Format("{0:yyyy-MM-dd HH:mm:ss}", StartDate);
@@ -49,9 +55,9 @@ namespace StrumentiMusicali.PrestaShopSyncro
             }
         }
 
-        private void UpdateProdotti(List<long> righe, UnitOfWork uof, Deposito depoPrinc)
+        private void UpdateProdotti(List<long> prodotti, UnitOfWork uof, Deposito depoPrinc)
         {
-            foreach (var idProdotto in righe)
+            foreach (var idProdotto in prodotti)
             {
                 var prodotto = _productFactory.Get(idProdotto);
 
@@ -63,23 +69,42 @@ namespace StrumentiMusicali.PrestaShopSyncro
                     continue;
                 if (aggiornamento.GiacenzaMagazzinoWebInDataAggWeb != stock.quantity)
                 {
-                    var dataAgg = DateTime.Now;
-                    ///se c'è stata una vendita allora aggiungo un movimento di magazzino
-                    uof.MagazzinoRepository.Add(new Library.Entity.Magazzino()
+                    using (var stockProd = new Products.StockProducts())
                     {
-                        ArticoloID = aggiornamento.ArticoloID,
-                        DepositoID = depoPrinc.ID,
-                        Qta = -(aggiornamento.GiacenzaMagazzinoWebInDataAggWeb - stock.quantity),
-                        PrezzoAcquisto = 0,
-                        Note = aggiornamento.GiacenzaMagazzinoWebInDataAggWeb > stock.quantity ? "Vendita web Annullata" : "Vendita web Annullata",
-                        OperazioneWeb = true
-                    });
- 
-                    aggiornamento.GiacenzaMagazzinoWebInDataAggWeb = stock.quantity;
-                    aggiornamento.DataUltimoAggMagazzinoWeb = dataAgg;
-                    aggiornamento.DataUltimoAggMagazzino = dataAgg;
-                    uof.AggiornamentoWebArticoloRepository.Update(aggiornamento);
-                    uof.Commit();
+                        var qtaStockLocale = stockProd.CalcolaStock(new ArticoloBase() { ArticoloID = aggiornamento.ArticoloID });
+                        var forzaUpdateGiacenza = (aggiornamento.GiacenzaMagazzinoWebInDataAggWeb != qtaStockLocale);
+                         
+
+                        var dataAgg = DateTime.Now;
+                        ///se c'è stata una vendita allora aggiungo un movimento di magazzino
+                        uof.MagazzinoRepository.Add(new Library.Entity.Magazzino()
+                        {
+                            ArticoloID = aggiornamento.ArticoloID,
+                            DepositoID = depoPrinc.ID,
+                            Qta = -(aggiornamento.GiacenzaMagazzinoWebInDataAggWeb - stock.quantity),
+                            PrezzoAcquisto = 0,
+                            Note = aggiornamento.GiacenzaMagazzinoWebInDataAggWeb > stock.quantity ? "Vendita web Annullata" : "Vendita web Annullata",
+                            OperazioneWeb = true
+                        });
+
+                        aggiornamento.GiacenzaMagazzinoWebInDataAggWeb = stock.quantity;
+                        aggiornamento.DataUltimoAggMagazzinoWeb = dataAgg;
+                        aggiornamento.DataUltimoAggMagazzino = dataAgg;
+                        uof.AggiornamentoWebArticoloRepository.Update(aggiornamento);
+                        uof.Commit();
+
+                        if (forzaUpdateGiacenza)
+                        {
+
+                            stockProd.UpdateStockArt(prodotto, new ArticoloBase()
+                            {
+                                ArticoloID = aggiornamento.ArticoloID,
+                                Aggiornamento = aggiornamento,
+                                CodiceArticoloEcommerce = aggiornamento.CodiceArticoloEcommerce,
+                                ArticoloDb = aggiornamento.Articolo
+                            }, uof, true);
+                        }
+                    }
                 }
             }
         }

@@ -246,6 +246,14 @@
     <Compile Include="Migrations\202004142002192_AggiornamentoWeb.Designer.cs">
       <DependentUpon>202004142002192_AggiornamentoWeb.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004191519070_MaggiorazioneWeb.cs" />
+    <Compile Include="Migrations\202004191519070_MaggiorazioneWeb.Designer.cs">
+      <DependentUpon>202004191519070_MaggiorazioneWeb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004191538072_MaggiorazioneWeb_2.cs" />
+    <Compile Include="Migrations\202004191538072_MaggiorazioneWeb_2.Designer.cs">
+      <DependentUpon>202004191538072_MaggiorazioneWeb_2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
@@ -266,6 +274,12 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Note\TextFile1.txt" />
+    <EmbeddedResource Include="Migrations\202004191519070_MaggiorazioneWeb.resx">
+      <DependentUpon>202004191519070_MaggiorazioneWeb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004191538072_MaggiorazioneWeb_2.resx">
+      <DependentUpon>202004191538072_MaggiorazioneWeb_2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Script\IndexOptimize.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

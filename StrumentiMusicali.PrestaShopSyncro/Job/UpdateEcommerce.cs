@@ -13,7 +13,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Job
                 if (_execting)
                     return;
                 _execting = true;
-                using (var prod = new ProductSyncro())
+                using (var prod = new ProductSyncroLocalToWeb())
                 {
                     prod.AggiornaWeb();
                 }

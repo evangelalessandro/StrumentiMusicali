@@ -66,14 +66,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\ArticoloBase.cs" />
-    <Compile Include="BaseClass\SyncroBase.cs" />
+    <Compile Include="Base\SyncroBase.cs" />
     <Compile Include="Sync\CategorySync.cs" />
     <Compile Include="Job\SyncStockFromWeb.cs" />
     <Compile Include="Sync\OrderSync.cs" />
-    <Compile Include="Sync\ProductSyncro.cs" />
-    <Compile Include="Products\BaseProduct.cs" />
+    <Compile Include="Sync\ProductSyncroLocalToWeb.cs" />
+    <Compile Include="Base\BaseProduct.cs" />
     <Compile Include="Products\ImageProduct.cs" />
-    <Compile Include="Products\ReadProductsFormSite.cs" />
+    <Compile Include="Sync\ProductSyncroWebToLocal.cs" />
     <Compile Include="Products\StockProducts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Job\UpdateEcommerce.cs" />

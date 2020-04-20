@@ -1,6 +1,6 @@
 ﻿using Bukimedia.PrestaSharp.Entities;
 using StrumentiMusicali.Core.Manager;
-using StrumentiMusicali.Library.Entity.Articoli;
+using StrumentiMusicali.Library.Entity.Enums;
 using StrumentiMusicali.Library.Repo;
 using StrumentiMusicali.PrestaShopSyncro.Products;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace StrumentiMusicali.PrestaShopSyncro
 {
-    public class ProductSyncro : BaseProduct
+    public class ProductSyncroLocalToWeb : BaseProduct
     {
         /// <summary>
         /// Tutti gli articoli che sono con il flag CaricainECommerce e
@@ -66,7 +66,7 @@ namespace StrumentiMusicali.PrestaShopSyncro
                     artWeb = _productFactory.Get(long.Parse(artDb.Aggiornamento.CodiceArticoloEcommerce));
                 }
                 ManagerLog.Logger.Info("Caricamento in corso dell'articolo '" + artDb.ArticoloDb.Titolo + "' ID=" + artDb.ArticoloID + "  nel web");
-                setDataItemWeb(artDb, uof, artWeb);
+                SetDataItemWeb(artDb, uof, artWeb);
 
                 try
                 {
@@ -91,7 +91,7 @@ namespace StrumentiMusicali.PrestaShopSyncro
             }
         }
 
-        private static void setDataItemWeb(ArticoloBase artDb, UnitOfWork uof, product artWeb)
+        private void SetDataItemWeb(ArticoloBase artDb, UnitOfWork uof, product artWeb)
         {
             artWeb.price = Math.Round(artDb.ArticoloDb.ArticoloWeb.PrezzoWeb * 100 / (100 + artDb.ArticoloDb.ArticoloWeb.Iva), 6, MidpointRounding.ToEven);
             artWeb.name.Clear();
@@ -110,7 +110,7 @@ namespace StrumentiMusicali.PrestaShopSyncro
                     break;
 
                 case enCondizioneArticolo.ExDemo:
-                    artWeb.condition = "exdemo";
+                    artWeb.condition = "used"; //refurbished
                     break;
 
                 case enCondizioneArticolo.UsatoGarantito:

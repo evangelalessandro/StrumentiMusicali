@@ -2,6 +2,7 @@
 using NLog.Targets;
 using StrumentiMusicali.ftpBackup.Backup;
 using StrumentiMusicali.PrestaShopSyncro;
+using StrumentiMusicali.PrestaShopSyncro.Products;
 using System;
 
 namespace testConsole
@@ -21,7 +22,7 @@ namespace testConsole
 
             NLog.Config.SimpleConfigurator.ConfigureForTargetLogging(target, LogLevel.Debug);
 
-            StrumentiMusicali.Core.Manager.ManagerLog.AddLogMessage("Avvio");
+            //StrumentiMusicali.Core.Manager.ManagerLog.Logger.AddLogMessage("Avvio");
             //var ftpTest = new FtpManager();
             ////class1.Upload(@"C:\Users\fastcode13042017\Downloads\DocFatture\b9f768fb-8f3e-4a42-b54f-11fbde23ec50\Answers-to-Difficult-Bible-Passages.pdf");
             ////class1.Delete("Answers-to-Difficult-Bible-Passages.pdf");
@@ -31,8 +32,8 @@ namespace testConsole
             //back.Manage();
             //var obj = new StrumentiMusicali.Library.Model.ModelSm();
             ////obj.sql
-            var syncro = new OrderSync();
-            syncro.UpdateFromWeb();
+            var syncro = new ProductSyncroWebToLocal();
+            syncro.SaveLocalFromSite();
 
 
             Console.WriteLine("Fine");

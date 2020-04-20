@@ -11,6 +11,7 @@ using StrumentiMusicali.Library.Core.Events.Image;
 using StrumentiMusicali.Library.Core.Events.Magazzino;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Articoli;
+using StrumentiMusicali.Library.Entity.Enums;
 using StrumentiMusicali.Library.Repo;
 using StrumentiMusicali.Library.View.Enums;
 using System;

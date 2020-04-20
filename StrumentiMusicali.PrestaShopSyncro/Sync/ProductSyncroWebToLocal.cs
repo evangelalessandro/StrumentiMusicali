@@ -4,6 +4,7 @@ using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Image;
 using StrumentiMusicali.Library.Core.interfaces;
 using StrumentiMusicali.Library.Entity.Articoli;
+using StrumentiMusicali.Library.Entity.Enums;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Linq;
 
 namespace StrumentiMusicali.PrestaShopSyncro.Products
 {
-    internal class ReadProductsFormSite : BaseClass.SyncroBase
+    public class ProductSyncroWebToLocal : BaseClass.SyncroBase
     {
         /// <summary>
         /// Salva quelli che non sono presenti in locale
@@ -31,10 +32,10 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
                     //filter.Add("Name", "EKO RANGER");
                     var listProd = new List<product>();
 
-                    var codiciGiaPresenti = uof.AggiornamentoWebArticoloRepository.Find(a => 1 == 1).Select(a => a.CodiceArticoloEcommerce).ToList();
+                    var codiciGiaPresenti = uof.AggiornamentoWebArticoloRepository.Find(a => a.CodiceArticoloEcommerce != null).Select(a => a.CodiceArticoloEcommerce).ToList();
                     var listIdProdWeb = _productFactory.GetIds().OrderBy(a => a).Select(a => a.ToString()).ToList();
                     //prendo quelli che non sono già salvati
-                    foreach (var item in codiciGiaPresenti.Where(a => !listIdProdWeb.Contains(a)))
+                    foreach (var item in listIdProdWeb.Where(a => !codiciGiaPresenti.Contains(a)))
                     {
                         var prod = _productFactory.Get(long.Parse(item));
                         listProd.Add(prod);
@@ -45,11 +46,13 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
                         var codice = item.id.Value.ToString();
 
                         var name = item.name.First().Value;
-                        var articolo = uof.AggiornamentoWebArticoloRepository.Find(a => a.CodiceArticoloEcommerce == codice).Select(a=>a.Articolo).FirstOrDefault();
+                        var articolo = uof.AggiornamentoWebArticoloRepository.Find(a => a.CodiceArticoloEcommerce == codice).Select(a => a.Articolo).FirstOrDefault();
                         if (articolo == null)
                         {
                             try
                             {
+
+                                Console.WriteLine("avvio salvataggio per codice articolo web:" + codice);
                                 SaveProduct(uof, item, name, listCategories);
                                 Console.WriteLine("Salvato nuovo articolo dal web:" + name);
                                 count++;
@@ -123,10 +126,14 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
             };
             articolo.ArticoloWeb.Iva = 22;
 
-            articolo.Prezzo = item.wholesale_price;
             articolo.ArticoloWeb.PrezzoWeb = item.wholesale_price;
+            if (articolo.ArticoloWeb.PrezzoWeb == 0)
+            {
+                articolo.ArticoloWeb.PrezzoWeb = item.price*1.22m;
 
-            articolo.TagImport = "SitoWeb";
+            }
+
+            articolo.TagImport = "DaSitoWeb";
             if (item.condition.Contains("new"))
             {
                 articolo.Condizione = enCondizioneArticolo.Nuovo;
@@ -138,37 +145,63 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
             else
             {
             }
-            var categEcommerce = listCategories.Where(a => item.id_category_default.Value == a.id.Value).FirstOrDefault();
-            var categName = categEcommerce.name.First().Value;
-            var categDb = uof.CategorieRepository.Find(a => a.Nome
-             == categName).FirstOrDefault();
-
             /*categoria non specificato*/
             articolo.CategoriaID = 239;
-            if (categDb != null)
-                articolo.CategoriaID = categDb.ID;
 
+            var categEcommerce = listCategories.Where(a => item.id_category_default.Value == a.id.Value).FirstOrDefault();
+            if (categEcommerce != null)
+            {
+                var categName = categEcommerce.name.First().Value;
+                var categDb = uof.CategorieRepository.Find(a => a.Nome
+                == categName).FirstOrDefault();
+
+                if (categDb != null)
+                {
+
+                    articolo.Prezzo = (categDb.PercMaggDaWebaNegozio + 100) * articolo.ArticoloWeb.PrezzoWeb / 100;
+                    articolo.CategoriaID = categDb.ID;
+                }
+            }
             var immagini = ReadImmage(item);
 
             articolo.ArticoloWeb.DescrizioneHtml = item.description.FirstOrDefault().Value;
             articolo.ArticoloWeb.DescrizioneBreveHtml = item.description_short.FirstOrDefault().Value;
-            
+
             articolo.CaricaInMercatino = false;
             articolo.CaricainECommerce = false;
 
             uof.ArticoliRepository.Add(articolo);
 
             uof.Commit();
+            var artImp = new ArticoloImportato() { CodiceArticoloEcommerce = item.id.Value.ToString(), XmlDatiProdotto = item.ToString() };
 
-            var agg = uof.AggiornamentoWebArticoloRepository.Find(a => a.ArticoloID == a.ArticoloID).First();
+            foreach (var itemImage in item.associations.images)
+            {
+                var image = _imageFactory.GetProductImage(item.id.Value, itemImage.id);
+
+                if (artImp.Immagine1 == null)
+                {
+                    artImp.Immagine1 = image;
+                }
+                else if (artImp.Immagine2 == null)
+                {
+                    artImp.Immagine2 = image;
+                }
+                else if (artImp.Immagine3 == null)
+                {
+                    artImp.Immagine3 = image;
+                }
+            }
+            artImp.XmlDatiProdotto =StrumentiMusicali.Core.Manager.ManagerLog.SerializeXmlObject(item);
+            uof.ArticoloImportatoWebRepository.Add(artImp);
+
+            var agg = uof.AggiornamentoWebArticoloRepository.Find(a => articolo.ID== a.ArticoloID).First();
 
             agg.CodiceArticoloEcommerce = item.id.Value.ToString();
             uof.AggiornamentoWebArticoloRepository.Update(agg);
             uof.Commit();
 
-            item.reference = articolo.ID.ToString();
-            _productFactory.Update(item);
-
+    
             var depoPrinc = uof.DepositoRepository.Find(a => a.Principale == true).First();
 
             uof.MagazzinoRepository.Add(new Library.Entity.Magazzino()
@@ -179,6 +212,28 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
             if (immagini.Count() > 0 && !ImageArticoloSave.AddImageFiles(
                 new ImageArticoloAddFiles(articolo, immagini, new ControllerFake())))
                 throw new MessageException("Non si sono salvati correttamente le immagini degli articoli");
+
+            try
+            {
+                item.reference = articolo.ID.ToString();
+                _productFactory.Update(item);
+
+            }
+            catch (Exception exT)
+            {
+                try
+                {
+                    item.position_in_category=0;
+                    _productFactory.Update(item);
+
+                }
+                catch (Exception ex)
+                {
+                     
+                }
+
+            }
+            
         }
 
         private class ControllerFake : IKeyController

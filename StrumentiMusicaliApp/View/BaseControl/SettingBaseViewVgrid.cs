@@ -7,7 +7,7 @@ using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Core.Utility;
 using StrumentiMusicali.Library.Core;
-using StrumentiMusicali.Library.Entity.Articoli;
+using StrumentiMusicali.Library.Entity.Enums;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;

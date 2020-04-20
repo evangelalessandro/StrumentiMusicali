@@ -1,6 +1,7 @@
 ﻿using PropertyChanged;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Base;
+using StrumentiMusicali.Library.Entity.Enums;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -8,14 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StrumentiMusicali.Library.Entity.Articoli
 {
-    public enum enCondizioneArticolo
-    {
-        Nuovo = 1,
-        ExDemo = 3,
-        UsatoGarantito = 5,
 
-        NonSpecificato = -100
-    }
     [AddINotifyPropertyChangedInterface]
     public class Articolo : BaseEntity
     {

@@ -78,7 +78,19 @@ select @db
                 return _CategorieWebRepository;
             }
         }
+        private Repository<ArticoloImportato> _ArticoloImportatoWebRepository;
 
+        public IRepository<ArticoloImportato> ArticoloImportatoWebRepository {
+            get {
+                if (_ArticoloImportatoWebRepository == null)
+                {
+                    _ArticoloImportatoWebRepository = new Repository<ArticoloImportato>(dbContext);
+                }
+                return _ArticoloImportatoWebRepository;
+            }
+        }
+
+        
         private Repository<RepartoWeb> _RepartoWebRepository;
 
         public IRepository<RepartoWeb> RepartoWebRepository {

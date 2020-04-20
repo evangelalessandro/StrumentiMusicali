@@ -16,13 +16,17 @@ namespace StrumentiMusicali.Core.Manager
 
         public static void AddLogObject(object obj, string message)
         {
+            
+            Logger.Info( message+ Environment.NewLine  + SerializeXmlObject(obj));
+        }
+
+        public static string SerializeXmlObject(object obj)
+        {
             var stringBuilder = new StringBuilder();
             var serializer = new Serializer();
             serializer.Serialize(new IndentedTextWriter(new StringWriter(stringBuilder)), obj);
-            
-            Logger.Info( message+ Environment.NewLine  + stringBuilder.ToString());
+            return stringBuilder.ToString();
         }
-
-         
     }
+    
 }

@@ -137,7 +137,9 @@
     <Compile Include="Core\Settings\SettingBackupFtpValidator.cs" />
     <Compile Include="Entity\Altro\SchedulerJob.cs" />
     <Compile Include="Entity\Articoli\Articolo.cs" />
+    <Compile Include="Entity\Articoli\ArticoloImportato.cs" />
     <Compile Include="Entity\Articoli\ArticoloWeb.cs" />
+    <Compile Include="Entity\Enums\enCondizioneArticolo.cs" />
     <Compile Include="Entity\Base\BaseEntity.cs" />
     <Compile Include="Entity\Base\RigaDoc.cs" />
     <Compile Include="Entity\Fatture\DatiIntestazioneFattura.cs" />

@@ -206,6 +206,8 @@ namespace StrumentiMusicali.Library.Model
             //modelBuilder.Entity<SettingSito>().ToTable("SettingSito");
             modelBuilder.Entity<SettingBackupFtp>().ToTable("SettingBackupFtp");
 
+
+            modelBuilder.Entity<ArticoloImportato>().ToTable("ArticoliImportatiDalWeb");
             modelBuilder.Entity<Cliente>().ToTable("Clienti");
             modelBuilder.Entity<FattureGenerateInvio>().ToTable("FattureGenerate");
             modelBuilder.Entity<SettingDocumentiPagamenti>().ToTable("SettingDocumentiPagamenti");
@@ -227,6 +229,9 @@ namespace StrumentiMusicali.Library.Model
                 .IsUnique();
         }
         //public virtual DbSet<OrdineWeb> OrdineWeb { get; set; }
+        public virtual DbSet<ArticoloImportato> ArticoloImportato { get; set; }
+
+        
         public virtual DbSet<RepartoWeb> RepartoWeb { get; set; }
         public virtual DbSet<CategoriaWeb> CategoriaWeb { get; set; }
         public virtual DbSet<SchedulerJob> SchedulerJob { get; set; }

@@ -14,7 +14,7 @@ namespace StrumentiMusicali.Core.Scheduler
             JobManager.AddJob<IndexOptimizeJob>(a => a.ToRunOnceIn(10).Seconds());
             JobManager.AddJob<UpdateWebJob>(a => a.ToRunNow().AndEvery(1).Minutes());
             JobManager.AddJob<UpdateStockJob>(a => a.ToRunNow().AndEvery(1).Minutes());
-
+            
             JobManager.JobStart += (o) =>
             {
                 ManagerLog.Logger.Info("Avviato job " + o.Name);

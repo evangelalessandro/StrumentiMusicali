@@ -74,6 +74,7 @@ namespace StrumentiMusicali.Core.Manager
     {
         OpSave,
         OpDelete,
-        Duplicazione
+        Duplicazione,
+        Unione
     }
 }

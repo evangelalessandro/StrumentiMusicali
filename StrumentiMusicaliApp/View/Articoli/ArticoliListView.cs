@@ -5,7 +5,7 @@ using StrumentiMusicali.App.View.BaseControl;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Articoli;
 
-namespace StrumentiMusicali.App.View
+namespace StrumentiMusicali.App.View.Articoli
 {
     public partial class ArticoliListView :
         BaseGridViewGeneric<ArticoloItem, ControllerArticoli, Articolo>
@@ -17,8 +17,8 @@ namespace StrumentiMusicali.App.View
             : base(controller)
         {
 
-            onEditItemShowView += ((a, b) =>
-            { b.Cancel = true; });
+            onEditItemShowView += (a, b) =>
+            { b.Cancel = true; };
             if (controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloLibri)
                 AggiungiFiltroLibro(controller);
             if (controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti)
@@ -67,11 +67,11 @@ namespace StrumentiMusicali.App.View
         {
 
             dgvRighe.BestFitColumns(true);
-            dgvRighe.Columns["Marca"].Visible = (Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti);
-            dgvRighe.Columns["Categoria"].Visible = (Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti);
-            dgvRighe.Columns["Reparto"].Visible = (Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti);
-            dgvRighe.Columns["QuantitaTotale"].Visible = (Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti);
-            dgvRighe.Columns["PrezzoAcquisto"].Visible = (Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti);
+            dgvRighe.Columns["Marca"].Visible = Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti;
+            dgvRighe.Columns["Categoria"].Visible = Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti;
+            dgvRighe.Columns["Reparto"].Visible = Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti;
+            dgvRighe.Columns["QuantitaTotale"].Visible = Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti;
+            dgvRighe.Columns["PrezzoAcquisto"].Visible = Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti;
 
             dgvRighe.Columns["Settore"].Visible = Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloLibri;
         }

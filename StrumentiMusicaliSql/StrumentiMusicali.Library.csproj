@@ -71,6 +71,7 @@
     <Compile Include="Core\Cloner\ClonerHelpers.cs" />
     <Compile Include="Core\Enums\enAmbiente.cs" />
     <Compile Include="Core\EventAggregator.cs" />
+    <Compile Include="Core\Events\Articoli\ArticoloMerge.cs" />
     <Compile Include="Core\Events\Articoli\ArticoloDuplicate.cs" />
     <Compile Include="Core\Events\Articoli\ArticoloSconta.cs" />
     <Compile Include="Core\Events\Articoli\ImportArticoliCSVMercatino.cs" />

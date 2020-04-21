@@ -1,8 +1,10 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Forms;
+using StrumentiMusicali.App.View.Articoli;
 using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Core.Settings;
+using StrumentiMusicali.Core.Utility;
 using StrumentiMusicali.Library.Core;
 
 using StrumentiMusicali.Library.Core.Events.Articoli;
@@ -36,6 +38,7 @@ namespace StrumentiMusicali.App.Core.Controllers
         internal enModalitaArticolo ModalitaController { get; private set; }
         internal ControllerImmagini _controllerImmagini = new ControllerImmagini();
         private Subscription<ImageSelected<FotoArticolo>> sub10;
+        private Subscription<ArticoloMerge> sub11;
 
         public enum enModalitaArticolo
         {
@@ -43,6 +46,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             Ricerca = 1,
             SoloStrumenti = 2,
             SoloLibri = 3,
+            SelezioneSingola = 4
         }
 
         public ControllerArticoli(enModalitaArticolo modalitaController)
@@ -60,11 +64,158 @@ namespace StrumentiMusicali.App.Core.Controllers
 
             sub10 = EventAggregator.Instance().Subscribe<ImageSelected<FotoArticolo>>(ImmagineSelezionata);
 
+            sub11 = EventAggregator.Instance().Subscribe<ArticoloMerge>(MergeArticolo);
+
             AggiungiComandiMenu();
 
             SetKeyImageListUI();
         }
 
+        private void MergeArticolo(ArticoloMerge obj)
+        {
+            using (var artController = new ControllerArticoli(enModalitaArticolo.SelezioneSingola))
+            {
+                MessageManager.NotificaInfo("Seleziona l'articolo da cui copiare i dati e chiudi la form.");
+                var viewRicercaArt = new View.Articoli.ArticoliListView(artController);
+                this.ShowView(viewRicercaArt, artController.Ambiente, artController, true, true);
+
+                if (artController.SelectedItem != null && artController.SelectedItem.ID > 0)
+                {
+                    if (this.SelectedItem.ID != artController.SelectedItem.ID)
+                    {
+                        if (MessageManager.QuestionMessage(
+                            "Sei sicuro di unire l'articolo codice "
+                            + this.SelectedItem.ID.ToString() + " con l'articolo codice " + artController.SelectedItem.ID.ToString()))
+                        {
+                            MergeArticoli(artController);
+                        }
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Unisce gli articoli in quello selezionato nella prima form
+        /// </summary>
+        /// <param name="artController"></param>
+        private void MergeArticoli(ControllerArticoli artController)
+        {
+            using (var save = new SaveEntityManager(true))
+            {
+                var elem = save.UnitOfWork.ArticoliRepository.Find(a => a.ID == this.SelectedItem.ID
+                      || a.ID == artController.SelectedItem.ID).ToList();
+
+                var baseItem = elem.Where(a => a.ID == this.SelectedItem.ID).First();
+                elem.Remove(baseItem);
+                var secondItem = elem.First();
+
+
+                var list = UtilityProp.GetProperties(baseItem);
+
+
+                /*escludo le proprieta del oggetto entita base
+                 */
+                MergeObjects(baseItem, secondItem);
+                if (baseItem.Condizione == enCondizioneArticolo.NonSpecificato)
+                {
+                    baseItem.Condizione = secondItem.Condizione;
+                }
+                save.UnitOfWork.ArticoliRepository.Update(baseItem);
+
+                var fotoArt2 = save.UnitOfWork.FotoArticoloRepository.Find(a => a.ArticoloID == secondItem.ID).ToList();
+                if (fotoArt2.Count() > 0)
+                {
+                    MessageManager.NotificaInfo("Sposto le eventuali foto da un articolo all'altro");
+                    foreach (var item in fotoArt2)
+                    {
+                        /*sostituisco l'articolo*/
+                        item.ArticoloID = baseItem.ID;
+                        save.UnitOfWork.FotoArticoloRepository.Update(item);
+                    }
+
+                }
+                else
+                {
+                    MessageManager.NotificaInfo("Non ci sono foto");
+                }
+                var aggList = save.UnitOfWork.AggiornamentoWebArticoloRepository.Find(a => a.ArticoloID == baseItem.ID ||
+                  a.ArticoloID == secondItem.ID).ToList();
+
+                var baseAgg = aggList.Where(a => a.ArticoloID == baseItem.ID).First();
+                var secondAgg = aggList.Where(a => a.ArticoloID != baseItem.ID).First();
+
+                if (string.IsNullOrEmpty(baseAgg.CodiceArticoloEcommerce))
+                {
+                    /*scambio l'eventuale codice dell'articolo nell'ecommerce*/
+                    baseAgg.CodiceArticoloEcommerce = secondAgg.CodiceArticoloEcommerce;
+                    secondAgg.CodiceArticoloEcommerce = "";
+
+                    save.UnitOfWork.AggiornamentoWebArticoloRepository.Update(baseAgg);
+                    save.UnitOfWork.AggiornamentoWebArticoloRepository.Update(secondAgg);
+                }
+
+                save.SaveEntity(enSaveOperation.Unione);
+                MessageManager.NotificaInfo("Le eventuali giacenze vanno spostate manualmente");
+            }
+        }
+
+        private static void MergeObjects(object obj1Dest, object obj2)
+        {
+            var listPropBase = UtilityProp.GetProperties(new StrumentiMusicali.Library.Entity.Base.BaseEntity());
+
+            var objToEnumProp = obj1Dest;
+            if (objToEnumProp == null)
+            {
+                objToEnumProp = obj2;
+            }
+            var allProperties = UtilityProp.GetProperties(objToEnumProp).ToList().Where(x =>
+            !listPropBase.Contains(x) &&
+            x.CanRead && x.CanWrite && !x.Name.StartsWith("Show")
+            && !x.Name.StartsWith("Categ")
+            );
+            foreach (var pi in allProperties)
+            {
+                object defaultValue;
+
+                if (pi.PropertyType == typeof(string))
+                {
+                    defaultValue = pi.GetValue(obj1Dest, null);
+                }
+                else if (pi.PropertyType.IsValueType)
+                {
+                    defaultValue = Activator.CreateInstance(pi.PropertyType);
+                }
+                else
+                {
+                    defaultValue = null;
+                    if (pi.PropertyType.FullName.StartsWith("Strument"))
+                    {
+                        MergeObjects(pi.GetValue(obj1Dest, null), pi.GetValue(obj2, null));
+                        continue;
+                    }
+                    else
+                    {
+
+                    }
+
+                }
+
+                var value = pi.GetValue(obj1Dest, null);
+
+                if (value != defaultValue)
+                {
+                    // pi.SetValue(objResult, value, null);
+                }
+                else
+                {
+                    value = pi.GetValue(obj2, null);
+
+                    if (value != defaultValue)
+                    {
+                        pi.SetValue(obj1Dest, value, null);
+                    }
+                }
+            }
+        }
         private FotoArticolo _fileFotoSelezionato = null;
 
         private void ImmagineSelezionata(ImageSelected<FotoArticolo> obj)
@@ -187,6 +338,7 @@ namespace StrumentiMusicali.App.Core.Controllers
         {
             base.Dispose();
 
+            EventAggregator.Instance().UnSbscribe(sub11);
             EventAggregator.Instance().UnSbscribe(sub10);
             EventAggregator.Instance().UnSbscribe(sub1);
             EventAggregator.Instance().UnSbscribe(sub2);
@@ -208,16 +360,23 @@ namespace StrumentiMusicali.App.Core.Controllers
             var tabFirst = GetMenu().Tabs[0];
             var pnl = tabFirst.Pannelli.First();
 
-            if (ModalitaController == enModalitaArticolo.Ricerca)
+            if (ModalitaController == enModalitaArticolo.Ricerca
+                || ModalitaController == enModalitaArticolo.SelezioneSingola)
             {
                 pnl.Pulsanti.RemoveAll(a => a.Tag == MenuTab.TagAdd
                 || a.Tag == MenuTab.TagRemove || a.Tag == MenuTab.TagCerca
                 || a.Tag == MenuTab.TagCercaClear);
 
+
                 tabFirst.Pannelli.RemoveAt(2);
                 tabFirst.Pannelli.RemoveAt(1);
             }
-            if (ModalitaController != enModalitaArticolo.Ricerca)
+            if (ModalitaController == enModalitaArticolo.SelezioneSingola)
+            {
+                pnl.Pulsanti.RemoveAll(a => a.Tag == MenuTab.TagEdit);
+            }
+            if (ModalitaController != enModalitaArticolo.Ricerca
+                && ModalitaController != enModalitaArticolo.SelezioneSingola)
             {
                 var rib1 = pnl.Add("Duplica", Properties.Resources.Duplicate, true);
                 rib1.Click += (a, e) =>
@@ -230,8 +389,13 @@ namespace StrumentiMusicali.App.Core.Controllers
                 {
                     ScontaArticoliShowView();
                 };
+                var rib3 = pnl.Add("Unisci", StrumentiMusicali.Core.Properties.ImageIcons.Merge_64, true);
+                rib3.Click += (a, e) =>
+                {
+                    EventAggregator.Instance().Publish<ArticoloMerge>(new ArticoloMerge(this));
+                };
             }
-            if (LoginData.utenteLogin.Magazzino)
+            if (LoginData.utenteLogin.Magazzino && ModalitaController != enModalitaArticolo.SelezioneSingola)
             {
                 var pnl3 = GetMenu().Tabs[0].Add("Magazzino");
 
@@ -734,7 +898,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                             .Select(a => new { a.Categoria, Articolo = a }).ToList();
 
 
-                        list= preList.Select(a => a.Articolo)
+                        list = preList.Select(a => a.Articolo)
                         .Where(a => (
                         a.IsLibro() == true
                         && ModalitaController == enModalitaArticolo.SoloLibri)
@@ -743,6 +907,8 @@ namespace StrumentiMusicali.App.Core.Controllers
                         && ModalitaController == enModalitaArticolo.SoloStrumenti)
                         ||
                         ModalitaController == enModalitaArticolo.Tutto
+                        ||
+                        ModalitaController == enModalitaArticolo.SelezioneSingola
                         )
                             .Take(ViewAllItem ? 100000 : 300)
 
@@ -758,7 +924,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 
                         GC.SuppressFinalize(preList);
-                        GC.SuppressFinalize(preList);
+                        GC.SuppressFinalize(listArt);
 
                         foreach (var item in list)
                         {

@@ -1,4 +1,6 @@
-﻿namespace StrumentiMusicali.App.View
+﻿using StrumentiMusicali.App.View.Articoli;
+
+namespace StrumentiMusicali.App.View
 {
     partial class FattureListView
 	{

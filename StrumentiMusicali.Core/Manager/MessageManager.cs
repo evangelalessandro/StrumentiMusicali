@@ -33,6 +33,9 @@ namespace StrumentiMusicali.App.Core
                 case enSaveOperation.OpSave:
                     return ("Salvataggio avvenuto con successo");
 
+                case enSaveOperation.Unione:
+                    return ("Salvataggio avvenuto con successo");
+
                 case enSaveOperation.OpDelete:
                     return ("Cancellazione avvenuta correttamente!");
 

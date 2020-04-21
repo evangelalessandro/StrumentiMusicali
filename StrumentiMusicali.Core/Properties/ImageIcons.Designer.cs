@@ -123,6 +123,16 @@ namespace StrumentiMusicali.Core.Properties {
         /// <summary>
         ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap Merge_64 {
+            get {
+                object obj = ResourceManager.GetObject("Merge_64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap Warning_24 {
             get {
                 object obj = ResourceManager.GetObject("Warning_24", resourceCulture);

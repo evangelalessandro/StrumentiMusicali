@@ -43,8 +43,15 @@ namespace StrumentiMusicali.App.Core.Exports
 
             using (var uof = new UnitOfWork())
             {
-                var listArt = uof.ArticoliRepository.Find(a => true).Select(a => new { a.Libro, a.Categoria, articolo = a }).ToList().
-                    Select(a => a.articolo).ToList();
+                var listArt = uof.AggiornamentoWebArticoloRepository.Find(a => true).Select(a => new
+                {
+                    ID=a.ArticoloID,
+                    a.Articolo.Libro,
+                    a.Articolo.Categoria,
+                    articolo = a.Articolo,
+                    a.CodiceArticoloEcommerce,
+                    a.Articolo.Strumento
+                }).ToList();
 
                 var qta = uof.MagazzinoRepository.Find(a => true)
                     .Select(a => new { a.ArticoloID, a.Deposito, a.Qta })
@@ -58,7 +65,7 @@ namespace StrumentiMusicali.App.Core.Exports
                     qta = qta.Where(a => a.sumQta == 0 && a.Key.Deposito.Principale).ToList();
                     listArt = listArt.Where(a => qta.Select(b => b.Key.ArticoloID).Contains(a.ID)).ToList();
 
-                    listArt = listArt.Where(a => !string.IsNullOrEmpty(a.Libro.Autore)
+                    listArt = listArt.Where(a => !string.IsNullOrEmpty(a.articolo.Libro.Autore)
                                   || !string.IsNullOrEmpty(a.Libro.Edizione)
                                   || !string.IsNullOrEmpty(a.Libro.Genere)
                                   || !string.IsNullOrEmpty(a.Libro.Settore)
@@ -84,11 +91,11 @@ namespace StrumentiMusicali.App.Core.Exports
                       a.ID,
                       Categoria = a.Categoria.Nome,
                       a.Categoria.Reparto,
-                      a.Titolo,
-                      Condizione = a.Condizione.ToString(),
-                      a.CodiceABarre,
-                      Prezzo = a.Prezzo.ToString("C2"),
-                      PrezzoAcquisto = a.PrezzoAcquisto.ToString("C2"),
+                      a.articolo.Titolo,
+                      Condizione = a.articolo.Condizione.ToString(),
+                      a.articolo.CodiceABarre,
+                      Prezzo = a.articolo.Prezzo.ToString("C2"),
+                      PrezzoAcquisto = a.articolo.PrezzoAcquisto.ToString("C2"),
 
                       a.Strumento.Marca,
                       a.Strumento.CodiceOrdine,
@@ -96,19 +103,25 @@ namespace StrumentiMusicali.App.Core.Exports
                       a.Strumento.Rivenditore,
                       a.Strumento.Modello,
                       a.Strumento.Nome,
-                      a.Note1,
-                      a.Note2,
-                      a.Note3,
-                      a.NonImponibile,
+                      a.articolo.Note1,
+                      a.articolo.Note2,
+                      a.articolo.Note3,
+                      a.articolo.NonImponibile,
 
-                      a.Testo,
+                      a.articolo.Testo,
                       a.Libro.Autore,
                       a.Libro.TitoloDelLibro,
                       a.Libro.Edizione,
                       a.Libro.Edizione2,
                       a.Libro.Genere,
                       a.Libro.Ordine,
-                      a.Libro.Settore
+                      a.Libro.Settore,
+                      a.articolo.ArticoloWeb.DescrizioneBreveHtml,
+                      a.articolo.ArticoloWeb.DescrizioneHtml,
+                      a.articolo.ArticoloWeb.Iva,
+                      a.articolo.ArticoloWeb.PrezzoWeb,
+
+                      a.CodiceArticoloEcommerce
                   }
 
             ).ToList();

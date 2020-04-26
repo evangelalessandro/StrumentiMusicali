@@ -2,7 +2,9 @@
 using StrumentiMusicali.Library.Entity.Setting;
 using StrumentiMusicali.Library.Repo;
 using System;
+using System.Configuration;
 using System.Linq;
+using System.Reflection;
 
 namespace StrumentiMusicali.PrestaShopSyncro.BaseClass
 {
@@ -17,13 +19,55 @@ namespace StrumentiMusicali.PrestaShopSyncro.BaseClass
             _url = logondata.WebServiceUrl;
             _url += "api/";
             _autKey = logondata.AuthKey;
-            _autKey = "I7APN3Z45A5YYN6R24GLSK3X3JIG24GI";
-            _url = "http://localhost:10280/prestashop/api/";
+            var config = ConfigurationManager.OpenExeConfiguration(
+                Assembly.GetExecutingAssembly().Location);
+            CheckModeDebug(config);
+            if (config.AppSettings.Settings["Test"].Value == "1")
+            {
+                _url = config.AppSettings.Settings["UrlPrestaShop"].Value;
+                _autKey = config.AppSettings.Settings["AutKey"].Value;
+            }
+
             _imageFactory = new ImageFactory(_url, _autKey, "");
             _StockAvailableFactory = new StockAvailableFactory(_url, _autKey, "");
             _productFactory = new ProductFactory(_url, _autKey, "");
             _categoriesFact = new CategoryFactory(_url, _autKey, "");
             _taxRuleGroupFact = new TaxRuleGroupFactory(_url, _autKey, "");
+        }
+        
+        private static bool _checkedDebugMode = false;
+        private static void CheckModeDebug(Configuration config)
+        {
+            if (_checkedDebugMode)
+                return;
+            _checkedDebugMode = true;
+            var setting = config.AppSettings.Settings.AllKeys.Where(a => a == "Test").FirstOrDefault();
+
+            if (setting == null)
+            {
+                config.AppSettings.Settings.Add("Test", StrumentiMusicali.PrestaShopSyncro.Properties.Resources.Test);
+                config.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection("appSettings");
+            }
+            setting = config.AppSettings.Settings.AllKeys.Where(a => a == "Test").FirstOrDefault();
+
+
+            setting = config.AppSettings.Settings.AllKeys.Where(a => a == "AutKey").FirstOrDefault();
+            if (setting == null)
+            {
+                config.AppSettings.Settings.Add("AutKey", StrumentiMusicali.PrestaShopSyncro.Properties.Resources.AutKey);
+                config.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection("appSettings");
+            }
+            setting = config.AppSettings.Settings.AllKeys.Where(a => a == "UrlPrestaShop").FirstOrDefault();
+            if (setting == null)
+            {
+                config.AppSettings.Settings.Add("UrlPrestaShop", StrumentiMusicali.PrestaShopSyncro.Properties.Resources.UrlPrestaShop);
+                config.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection("appSettings");
+            }
+
+            return setting;
         }
 
         private PrestaShopSetting LoginData()

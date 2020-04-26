@@ -1,8 +1,10 @@
 ﻿using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using NLog;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.Utility;
+using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Core.Utility;
 using StrumentiMusicali.Library.Core;
 
@@ -24,6 +26,7 @@ namespace StrumentiMusicali.App.View.BaseControl
     {
         private System.Windows.Forms.Panel pnlGridView;
         protected System.Windows.Forms.FlowLayoutPanel pnlCerca;
+        internal readonly ILogger _logger = ManagerLog.Logger;
 
         private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.Label label1;

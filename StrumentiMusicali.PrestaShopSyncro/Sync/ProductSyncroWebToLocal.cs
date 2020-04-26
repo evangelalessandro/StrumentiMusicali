@@ -198,6 +198,8 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
             var agg = uof.AggiornamentoWebArticoloRepository.Find(a => articolo.ID== a.ArticoloID).First();
 
             agg.CodiceArticoloEcommerce = item.id.Value.ToString();
+            agg.Link= item.link_rewrite.First().Value.ToString();
+
             uof.AggiornamentoWebArticoloRepository.Update(agg);
             uof.Commit();
 

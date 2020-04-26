@@ -14,24 +14,61 @@ using System.Linq;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-    public class ControllerScheduler : BaseControllerGeneric<SchedulerJob, SchedulerItem>, IMenu
+    public class ControllerScheduler : BaseControllerGeneric<SchedulerJob, SchedulerItem>
     {
         public ControllerScheduler()
-            : base(enAmbiente.Scheduler, enAmbiente.Scheduler)
+            : base(enAmbiente.Scheduler, enAmbiente.SchedulerDetail)
         {
             AggiungiComandiMenu();
-
+            _subSave = EventAggregator.Instance().Subscribe<Save<SchedulerJob>>((a) =>
+            {
+                Save(null);
+            });
         }
+        private Subscription<Save<SchedulerJob>> _subSave;
 
+        public override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                EventAggregator.Instance().UnSbscribe(_subSave);
+            }
+        }
+        private void Save(Save<SchedulerJob> obj)
+        {
+            using (var saveManager = new SaveEntityManager())
+            {
+                var uof = saveManager.UnitOfWork;
+                if (((EditItem).ID > 0))
+                {
+                    uof.SchedulerJobRepository.Update(EditItem);
+                }
+                else
+                {
+                    uof.SchedulerJobRepository.Add(EditItem);
+                }
+
+                if (saveManager.SaveEntity(enSaveOperation.OpSave))
+                {
+                    RiselezionaSelezionato();
+                }
+            }
+        }
         private void AggiungiComandiMenu()
         {
-            var tabFirst = GetMenu().Tabs[0];
-            var pnl = tabFirst.Pannelli.First();
-            var rib1 = pnl.Add("Unisci", StrumentiMusicali.Core.Properties.ImageIcons.Merge_64, true);
-            rib1.Click += (a, e) =>
-            {
-                EventAggregator.Instance().Publish<ArticoloMerge>(new ArticoloMerge(this));
-            };
+            GetMenu().Tabs[0].Pannelli[1].Visible=false;
+            var menu=GetMenu();
+            base.GetMenu().ItemByTag(MenuTab.TagAdd).ForEach(a => a.Visible = false);
+            base.GetMenu().ItemByTag(MenuTab.TagRemove).ForEach(a => a.Visible = false);
+            base.GetMenu().ItemByTag(MenuTab.TagEdit).ForEach(a => a.Visible = true);
+            base.GetMenu().ItemByTag(MenuTab.TagCerca).ForEach(a => a.Visible = false);
+
+            //var rib1 = pnl.Add("Unisci", StrumentiMusicali.Core.Properties.ImageIcons.Merge_64, true);
+            //rib1.Click += (a, e) =>
+            //{
+            //    EventAggregator.Instance().Publish<ArticoloMerge>(new ArticoloMerge(this));
+            //};
 
         }
 

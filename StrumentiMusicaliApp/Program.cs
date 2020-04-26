@@ -29,13 +29,7 @@ namespace StrumentiMusicali.App
                 {
                     if (createdNew)
                     {
-                        using (var uof = new UnitOfWork())
-                        {
-                            if (uof.ServerName() == Environment.MachineName)
-                            {
-                                AttivaSchedulatore();
-                            }
-                        }
+                         
                         using (var controller = new ControllerMaster())
                         {
                             controller.ShowMainView();
@@ -59,12 +53,7 @@ namespace StrumentiMusicali.App
                 }
             }
         }
-
-        private static void AttivaSchedulatore()
-        {
-            var scheduler = new SchedulerTask();
-            scheduler.Init();
-        }
+         
     }
 
     public static class ProcessUtils

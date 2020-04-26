@@ -9,8 +9,7 @@ namespace StrumentiMusicali.App.View
     public partial class PagamentiListView :
         BaseGridViewGeneric<PagamentoItem, ControllerPagamenti, Pagamento>
     {
-        private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
-
+         
 
         public PagamentiListView(ControllerPagamenti controller)
             : base(controller)

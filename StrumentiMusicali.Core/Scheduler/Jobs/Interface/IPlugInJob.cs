@@ -17,7 +17,8 @@ namespace StrumentiMusicali.Core.Scheduler.Jobs.Interface
     public enum EnumJobs
     {
         UpdateWeb,
-        UpdateFromWeb
+        UpdateFromWeb,
+        BackupDB
 
     }
 }

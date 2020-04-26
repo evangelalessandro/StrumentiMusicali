@@ -11,7 +11,7 @@ namespace StrumentiMusicali.App.Core
 {
     public class MessageManager
     {
-        internal static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+        internal static readonly ILogger _logger = ManagerLog.Logger;
 
         public static void NotificaInfo(string info)
         {

@@ -4,6 +4,7 @@ using StrumentiMusicali.Library.Entity.Enums;
 using StrumentiMusicali.Library.Repo;
 using StrumentiMusicali.PrestaShopSyncro.Products;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace StrumentiMusicali.PrestaShopSyncro
@@ -21,27 +22,40 @@ namespace StrumentiMusicali.PrestaShopSyncro
                 {
                     groupsync.AllineaCategorieReparti();
                 }
-                UpdateProducts(uof);
+                var listArt = UpdateProducts(uof);
 
                 using (var stockPr = new StockProducts())
                 {
-                    stockPr.UpdateStock(uof);
+                    var listStockArt = stockPr.UpdateStock(uof);
+
+                    listArt.AddRange(listStockArt);
                 }
                 using (var imgPr = new ImageProduct())
                 {
-                    imgPr.UpdateImages(uof);
+                    listArt.AddRange(imgPr.UpdateImages(uof));
                 }
+                var listArtId = listArt.FindAll(a => a.Aggiornamento.ForzaAggiornamento == true).Select(a => a.ArticoloID).Distinct().ToList();
+
+                var aggToFix = uof.AggiornamentoWebArticoloRepository.Find(a => listArtId.Contains(a.ArticoloID) && a.ForzaAggiornamento).ToList();
+                foreach (var item in aggToFix)
+                {
+                    uof.AggiornamentoWebArticoloRepository.Update(item);
+                }
+                uof.Commit();
             }
         }
 
-        private void UpdateProducts(UnitOfWork uof)
+        private List<ArticoloBase> UpdateProducts(UnitOfWork uof)
         {
             DateTime dataLettura = DateTime.Now;
-            var listaArt = uof.AggiornamentoWebArticoloRepository.Find(a => a.Articolo.CaricainECommerce
-                && (a.DataUltimoAggiornamentoWeb < a.Articolo.DataUltimaModifica
+            var listaArt = uof.AggiornamentoWebArticoloRepository.Find(a => (a.Articolo.CaricainECommerce
+                && a.DataUltimoAggiornamentoWeb < a.Articolo.DataUltimaModifica
+               && (a.Articolo.Categoria.Codice >= 0
+                    || a.Articolo.Condizione == enCondizioneArticolo.ExDemo
+                    || a.Articolo.Condizione == enCondizioneArticolo.UsatoGarantito)
 
-              ) && a.Articolo.Categoria.Codice >= 0
-              && a.Articolo.ArticoloWeb.PrezzoWeb > 0).Select(a => new ArticoloBase
+               && a.Articolo.ArticoloWeb.PrezzoWeb > 0) || a.ForzaAggiornamento == true)
+              .Select(a => new ArticoloBase
               {
                   ArticoloDb = a.Articolo,
                   Aggiornamento = a,
@@ -54,6 +68,7 @@ namespace StrumentiMusicali.PrestaShopSyncro
             {
                 UpdateProduct(item, dataLettura);
             }
+            return listaArt;
         }
 
         private void UpdateProduct(ArticoloBase artDb, DateTime dataLettura)
@@ -80,6 +95,8 @@ namespace StrumentiMusicali.PrestaShopSyncro
                     }
                     artDb.Aggiornamento.DataUltimoAggiornamentoWeb = dataLettura;
                     artDb.Aggiornamento.CodiceArticoloEcommerce = artWeb.id.Value.ToString();
+                    artDb.Aggiornamento.Link = artWeb.link_rewrite.First().Value.ToString();
+
                     uof.AggiornamentoWebArticoloRepository.Update(artDb.Aggiornamento);
                     uof.Commit();
 
@@ -124,19 +141,44 @@ namespace StrumentiMusicali.PrestaShopSyncro
                     break;
             }
             artWeb.show_price = 1;
-
-            artWeb.id_category_default = uof.CategorieWebRepository.Find(a => a.CategoriaID == artDb.ArticoloDb.CategoriaID).FirstOrDefault().CodiceWeb;
-
-            var categDb = uof.CategorieRepository.Find(a => a.ID == artDb.ArticoloDb.CategoriaID).First();
-
-            var listaCateg = uof.CategorieWebRepository.Find(a => a.Categoria.Nome == categDb.Nome).Select(a => a.CodiceWeb).ToList();
-
-            artWeb.associations.categories.Clear();
-            foreach (var item in listaCateg)
+            string reparto = "";
+            if (
+                artDb.ArticoloDb.Condizione == enCondizioneArticolo.ExDemo
+                    || artDb.ArticoloDb.Condizione == enCondizioneArticolo.UsatoGarantito)
             {
-                artWeb.associations.categories.Add(new Bukimedia.PrestaSharp.Entities.AuxEntities.category(item));
-            }
 
+                if (artDb.ArticoloDb.Condizione == enCondizioneArticolo.ExDemo)
+                {
+                    reparto = CategorySync.ExDemo;
+                }
+                else if (artDb.ArticoloDb.Condizione == enCondizioneArticolo.UsatoGarantito)
+                {
+                    reparto = CategorySync.Usato;
+                }
+                artWeb.id_category_default = uof.RepartoWebRepository.Find(a =>
+                        a.Reparto == reparto).FirstOrDefault().CodiceWeb;
+
+                artWeb.associations.categories.Clear();
+
+                artWeb.associations.categories.Add(
+                    new Bukimedia.PrestaSharp.Entities.AuxEntities.category(
+                    artWeb.id_category_default.Value));
+
+            }
+            else
+            {
+                artWeb.id_category_default = uof.CategorieWebRepository.Find(a => a.CategoriaID == artDb.ArticoloDb.CategoriaID).FirstOrDefault().CodiceWeb;
+
+                var categDb = uof.CategorieRepository.Find(a => a.ID == artDb.ArticoloDb.CategoriaID).First();
+
+                var listaCateg = uof.CategorieWebRepository.Find(a => a.Categoria.Nome == categDb.Nome).Select(a => a.CodiceWeb).ToList();
+
+                artWeb.associations.categories.Clear();
+                foreach (var item in listaCateg)
+                {
+                    artWeb.associations.categories.Add(new Bukimedia.PrestaSharp.Entities.AuxEntities.category(item));
+                }
+            }
             if (string.IsNullOrEmpty(artDb.ArticoloDb.ArticoloWeb.DescrizioneHtml))
                 artDb.ArticoloDb.ArticoloWeb.DescrizioneHtml = "";
             artWeb.description.Clear();
@@ -154,8 +196,9 @@ namespace StrumentiMusicali.PrestaShopSyncro
             artWeb.visibility = "both";
             artWeb.minimal_quantity = 1;
             artWeb.reference = artDb.ArticoloID.ToString();
+
+
         }
 
-        /*leggo i prodotti che sono da aggiornare */
     }
 }

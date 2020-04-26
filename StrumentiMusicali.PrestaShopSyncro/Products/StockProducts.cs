@@ -1,6 +1,7 @@
 ﻿using Bukimedia.PrestaSharp.Entities;
 using StrumentiMusicali.Library.Repo;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace StrumentiMusicali.PrestaShopSyncro.Products
@@ -31,12 +32,14 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
             SalvaAggiornamento(uof, artDb.Aggiornamento);
         }
 
-        public void UpdateStock(UnitOfWork uof)
+        public List<ArticoloBase> UpdateStock(UnitOfWork uof)
         {
-            var aggiornamentoWebs = uof.AggiornamentoWebArticoloRepository.Find(a => a.Articolo.CaricainECommerce
+            var aggiornamentoWebs = uof.AggiornamentoWebArticoloRepository.Find(a => (a.Articolo.CaricainECommerce
 
                                && a.Articolo.Categoria.Codice >= 0
-                              && a.Articolo.ArticoloWeb.PrezzoWeb > 0).
+                              && a.Articolo.ArticoloWeb.PrezzoWeb > 0
+                              )
+                              || a.ForzaAggiornamento==true).
                               Select(a => new ArticoloBase
                               {
                                   CodiceArticoloEcommerce =
@@ -46,12 +49,14 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
                                   ArticoloDb = a.Articolo
                               }).ToList()
                                 .Where(a => Math.Abs((a.Aggiornamento.DataUltimoAggMagazzino - a.Aggiornamento.DataUltimoAggMagazzinoWeb)
-                                .TotalSeconds) > 10)
+                                .TotalSeconds) > 10
+                                || a.Aggiornamento.ForzaAggiornamento == true)
                                 .ToList();
             foreach (var item in aggiornamentoWebs)
             {
                 UpdateStockArt(item, uof);
             }
+            return aggiornamentoWebs;
         }
 
         public int CalcolaStock(ArticoloBase artDb)

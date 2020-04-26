@@ -38,7 +38,7 @@ namespace StrumentiMusicali.App.Core.Exports
             _fotoToUpload = null;
         }
 
-        internal readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+        internal readonly ILogger _logger = ManagerLog.Logger;
 
         public void InvioArticoli()
         {

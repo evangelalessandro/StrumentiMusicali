@@ -28,6 +28,13 @@ namespace StrumentiMusicali.Library.Entity.Ecomm
         [MaxLength(50)]
         public string CodiceArticoloEcommerce { get; set; } = "";
 
+        [CustomUIView(Ordine = 11, Enable = false, Category = "Allineamento")]
+        [MaxLength(150)]
+        public string Link { get; set; }
+
+        [CustomUIView(Ordine = 12, Titolo = "Forza aggiornamento", Category = "Allineamento")]
+        public bool ForzaAggiornamento { get; set; }
+
         [CustomUIView(Ordine = 20, Enable = false, DateTimeView = true, Category = "Allineamento")]
         public DateTime DataUltimoAggiornamentoWeb { get; set; } = new DateTime(1900, 1, 1);
 

@@ -98,12 +98,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ImageIcons.resx</DependentUpon>
     </Compile>
+    <Compile Include="Scheduler\Jobs\Interface\BaseIjob.cs" />
     <Compile Include="Scheduler\Jobs\IndexOptimizeJob.cs" />
     <Compile Include="Scheduler\Jobs\Interface\IPlugInJob.cs" />
-    <Compile Include="Scheduler\Jobs\Interface\ISyncStockWeb.cs" />
     <Compile Include="Scheduler\Jobs\UpdateStockJob.cs" />
+    <Compile Include="Scheduler\Jobs\BackupDbJob.cs" />
     <Compile Include="Scheduler\Jobs\UpdateWebJob.cs" />
-    <Compile Include="Scheduler\Jobs\BackupJob.cs" />
     <Compile Include="Scheduler\SchedulerTask.cs" />
     <Compile Include="Settings\DatiIntestazioneStampaFatturaValidator.cs" />
     <Compile Include="Settings\ISettingsReader.cs" />
@@ -115,10 +115,6 @@
     <Compile Include="Utility\UtilityProp.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StrumentiMusicali.ftpBackup\StrumentiMusicali.ftpBackup.csproj">
-      <Project>{0e29b767-416d-421e-98f6-a8eed7c7cb6f}</Project>
-      <Name>StrumentiMusicali.ftpBackup</Name>
-    </ProjectReference>
     <ProjectReference Include="..\StrumentiMusicaliSql\StrumentiMusicali.Library.csproj">
       <Project>{114b9db5-6a31-4d89-bbb8-7ae7dd1a25c6}</Project>
       <Name>StrumentiMusicali.Library</Name>

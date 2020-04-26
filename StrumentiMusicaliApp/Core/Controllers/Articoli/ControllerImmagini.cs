@@ -36,7 +36,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             Dispose(false);
         }
         // The bulk of the clean-up code is implemented in Dispose(bool)
-        protected new void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
             if (disposing)

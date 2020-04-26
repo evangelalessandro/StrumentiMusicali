@@ -10,8 +10,7 @@ namespace StrumentiMusicali.App.View
 {
     public partial class LogViewList : BaseGridViewGeneric<LogItem, ControllerLog, EventLog>, IMenu
     {
-        private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
-
+         
         public LogViewList(ControllerLog baseController)
             : base(baseController)
         {

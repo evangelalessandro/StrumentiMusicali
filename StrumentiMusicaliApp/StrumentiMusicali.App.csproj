@@ -38,7 +38,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\Bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -351,12 +351,6 @@
     <Content Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Compile Include="View\BaseControl\ElementiDettaglio\EDDateTime.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="View\BaseControl\ElementiDettaglio\EDDateTime.Designer.cs">
-      <DependentUpon>EDDateTime.cs</DependentUpon>
-    </Compile>
     <Compile Include="View\ClientiListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -396,12 +390,6 @@
     </Compile>
     <Compile Include="View\BaseControl\ElementiDettaglio\EDCheckBok.Designer.cs">
       <DependentUpon>EDCheckBok.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\BaseControl\ElementiDettaglio\EDNumeric.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="View\BaseControl\ElementiDettaglio\EDNumeric.Designer.cs">
-      <DependentUpon>EDNumeric.cs</DependentUpon>
     </Compile>
     <Compile Include="View\BaseControl\ElementiDettaglio\EDTesto.cs">
       <SubType>UserControl</SubType>
@@ -691,9 +679,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\BaseControl\ElementiDettaglio\EDBase.resx">
       <DependentUpon>EDBase.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\BaseControl\ElementiDettaglio\EDNumeric.resx">
-      <DependentUpon>EDNumeric.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\BaseControl\ElementiDettaglio\EDTesto.resx">
       <DependentUpon>EDTesto.cs</DependentUpon>

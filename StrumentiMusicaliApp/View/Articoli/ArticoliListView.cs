@@ -2,6 +2,7 @@
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.CustomComponents;
 using StrumentiMusicali.App.View.BaseControl;
+using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Articoli;
 
@@ -9,9 +10,7 @@ namespace StrumentiMusicali.App.View.Articoli
 {
     public partial class ArticoliListView :
         BaseGridViewGeneric<ArticoloItem, ControllerArticoli, Articolo>
-    {
-        private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
-
+    { 
 
         public ArticoliListView(ControllerArticoli controller)
             : base(controller)

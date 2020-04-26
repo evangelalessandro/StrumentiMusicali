@@ -42,22 +42,25 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
             SalvaAggiornamento(uof, aggiornamento);
         }
 
-        public void UpdateImages(UnitOfWork uof)
+        public List<ArticoloBase> UpdateImages(UnitOfWork uof)
         {
-            var aggiornamentoWebs = uof.AggiornamentoWebArticoloRepository.Find(a => a.Articolo.CaricainECommerce
+            var aggiornamentoWebs = uof.AggiornamentoWebArticoloRepository.Find(a => (a.Articolo.CaricainECommerce
 
                                && a.Articolo.Categoria.Codice >= 0
-                              && a.Articolo.ArticoloWeb.PrezzoWeb > 0).
+                              && a.Articolo.ArticoloWeb.PrezzoWeb > 0)
+                              || a.ForzaAggiornamento
+                              ).
                               Select(a => new ArticoloBase
                               {
-                                  CodiceArticoloEcommerce =
-                              a.CodiceArticoloEcommerce,
+                                  CodiceArticoloEcommerce = a.CodiceArticoloEcommerce,
                                   ArticoloID = a.Articolo.ID,
                                   Aggiornamento = a,
                                   ArticoloDb = a.Articolo
                               }).ToList()
                                 .Where(a => Math.Abs((a.Aggiornamento.DataUltimoAggFoto - a.Aggiornamento.DataUltimoAggFotoWeb)
-                                .TotalSeconds) > 10)
+                                .TotalSeconds) > 10
+                                || a.Aggiornamento.ForzaAggiornamento
+                                )
                                 .ToList();
             foreach (var artDb in aggiornamentoWebs)
             {
@@ -69,6 +72,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
 
                 }
             }
+            return aggiornamentoWebs;
         }
     }
 }

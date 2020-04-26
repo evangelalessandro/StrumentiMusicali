@@ -18,7 +18,7 @@ namespace StrumentiMusicali.App
 {
     public partial class MainView : UserControl, IMenu
     {
-        private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+        internal readonly ILogger _logger = StrumentiMusicali.Core.Manager.ManagerLog.Logger;
 
         private BaseController _baseController;
 

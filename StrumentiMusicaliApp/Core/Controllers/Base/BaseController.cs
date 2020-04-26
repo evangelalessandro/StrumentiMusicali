@@ -25,7 +25,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 {
     public class BaseController : IDisposable, IKeyController
     {
-        internal readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+        internal readonly ILogger _logger = ManagerLog.Logger;
         internal readonly string _PathSetting = Path.Combine(Application.StartupPath, @"settings.json");
         public readonly Guid _INSTANCE_KEY = Guid.NewGuid();
 

@@ -53,7 +53,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             return base.GetMenu();
         }
 
-        protected override void Dispose(bool disposing)
+        public override void Dispose(bool disposing)
         {
             if (disposing)
             {

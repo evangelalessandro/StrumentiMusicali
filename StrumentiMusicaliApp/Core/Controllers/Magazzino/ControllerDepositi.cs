@@ -14,8 +14,7 @@ using System.Linq;
 namespace StrumentiMusicali.App.Core.Controllers
 {
     //[AddINotifyPropertyChangedInterface]
-    public class ControllerDepositi : BaseControllerGeneric<Deposito, DepositoItem>,
-        IDisposable//, INotifyPropertyChanged
+    public class ControllerDepositi : BaseControllerGeneric<Deposito, DepositoItem>
     {
         private Subscription<Add<Deposito>> _selectSub;
 
@@ -67,13 +66,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             // Finalizer calls Dispose(false)
             Dispose(false);
         }
-
-        public override void Dispose()
-        {
-            base.Dispose();
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+         
 
         public override void RefreshList(UpdateList<Deposito> obj)
         {
@@ -107,7 +100,7 @@ namespace StrumentiMusicali.App.Core.Controllers
         }
 
         // The bulk of the clean-up code is implemented in Dispose(bool)
-        protected new void Dispose(bool disposing)
+        public override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
             if (disposing)

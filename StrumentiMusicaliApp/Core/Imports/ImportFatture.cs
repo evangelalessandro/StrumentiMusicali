@@ -14,8 +14,7 @@ namespace StrumentiMusicali.App.Core.Fatture
 {
     public class ImportFatture : IDisposable
     {
-        internal readonly ILogger _logger = LogManager.GetCurrentClassLogger();
-
+        internal readonly ILogger _logger = ManagerLog.Logger;
         public void ImportAccessDB(string file)
         {
             try

@@ -6,14 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 namespace StrumentiMusicali.Core.Scheduler.Jobs
 {
-    public class UpdateWebJob : IJob
+    public class UpdateWebJob : BaseIjob
     {
-         
-        public void Execute()
-        { 
-            var updater = IocContainerSingleton.GetContainer.Resolve<IEnumerable<IPlugInJob>>().Where(a=>a.Name()==EnumJobs.UpdateWeb).FirstOrDefault();
-            
-            updater.Exec();
+        public UpdateWebJob() 
+            : base(EnumJobs.UpdateWeb)
+        {
         }
+
     }
 }

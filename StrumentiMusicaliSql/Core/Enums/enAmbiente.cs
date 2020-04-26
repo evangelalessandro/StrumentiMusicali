@@ -69,7 +69,9 @@ namespace StrumentiMusicali.Library.View.Enums
         RicercaArticolo = 703,
 
         [UIAmbienteAttribute(false)]
-        Scheduler = 130
+        Scheduler = 130,
+        [UIAmbienteAttribute(true)]
+        SchedulerDetail = 131
     }
 
 

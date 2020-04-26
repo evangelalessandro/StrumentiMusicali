@@ -105,7 +105,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
 
         // The bulk of the clean-up code is implemented in Dispose(bool)
-        protected new virtual void Dispose(bool disposing)
+        public virtual void Dispose(bool disposing)
         {
             if (disposing)
             {

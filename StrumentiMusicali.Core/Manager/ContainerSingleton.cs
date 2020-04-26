@@ -11,30 +11,35 @@ namespace StrumentiMusicali.Core.Manager
     public class IocContainerSingleton
     {
         static IContainer _container = null;
+        private static readonly object balanceLock = new object();
 
         public static IContainer GetContainer {
             get {
                 if (_container == null)
                 {
+                    lock (balanceLock)
+                    {
 
-                    var container = new ContainerBuilder();
-                    var allAssemblies = new List<Assembly>();
-                    string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-                    foreach (string dll in Directory.GetFiles(path, "Strumenti*.dll"))
-                        allAssemblies.Add(Assembly.LoadFile(dll));
-                    foreach (string dll in Directory.GetFiles(path, "Strumenti*.exe"))
-                        allAssemblies.Add(Assembly.LoadFile(dll));
+                        var container = new ContainerBuilder();
+                        var allAssemblies = new List<Assembly>();
+                        string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-                    // var assemblies = AppDomain.CurrentDomain.GetAssemblies().OrderBy(a=>a.FullName).ToList().ToArray();
-                    container.RegisterAssemblyTypes(allAssemblies.ToArray()).Where(t => t.IsAssignableTo<IPlugInJob>())
-                        .AsImplementedInterfaces();
+                        foreach (string dll in Directory.GetFiles(path, "Strumenti*.dll"))
+                            allAssemblies.Add(Assembly.LoadFile(dll));
+                        foreach (string dll in Directory.GetFiles(path, "Strumenti*.exe"))
+                            allAssemblies.Add(Assembly.LoadFile(dll));
 
-                    _container= container.Build();
+                        // var assemblies = AppDomain.CurrentDomain.GetAssemblies().OrderBy(a=>a.FullName).ToList().ToArray();
+                        container.RegisterAssemblyTypes(allAssemblies.ToArray()).Where(t => t.IsAssignableTo<IPlugInJob>())
+                            .AsImplementedInterfaces();
+
+                        _container = container.Build();
+                    }
+
                 }
-
-                
                 return _container;
+
             }
         }
     }

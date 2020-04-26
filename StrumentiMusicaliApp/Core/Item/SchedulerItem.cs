@@ -18,9 +18,11 @@ namespace StrumentiMusicali.App.Core.Item
             Nome = schedulerField.Nome;
             ProssimoAvvio = schedulerField.ProssimoAvvio;
             UltimaEsecuzione = schedulerField.UltimaEsecuzione;
+            
+            Entity = schedulerField;
 
             Errore = schedulerField.Errore;
-            Disabled = schedulerField.Disabled;
+            Abilitato = schedulerField.Enabled;
             Duration = schedulerField.Duration;
         }
 
@@ -28,7 +30,7 @@ namespace StrumentiMusicali.App.Core.Item
         public DateTime ProssimoAvvio { get; set; }
         public DateTime UltimaEsecuzione { get; set; }
         public string Errore { get; set; }
-        public bool Disabled { get; set; }
+        public bool Abilitato { get; set; }
 
         public TimeSpan Duration { get; set; }
     }

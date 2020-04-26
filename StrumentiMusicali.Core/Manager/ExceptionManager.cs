@@ -7,8 +7,7 @@ namespace StrumentiMusicali.Core.Manager
 {
     public class ExceptionManager
     {
-        private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
-
+         
         public static void ManageError(Exception ex, bool DontShowNotification = false)
         {
             if (!DontShowNotification)
@@ -22,7 +21,7 @@ namespace StrumentiMusicali.Core.Manager
                     MessageManager.NotificaError("Si è verificato un errore nell'ultima operazione", ex);
                 }
             }
-            _logger.Error(ex, "Errore", new object[0]);
+            ManagerLog.Logger.Error(ex, "Errore", new object[0]);
         }
     }
 }

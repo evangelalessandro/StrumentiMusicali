@@ -32,8 +32,7 @@ namespace StrumentiMusicali.App.Core.Controllers
         public ControllerMaster()
             : base()
         {
-            ConfigureNLog();
-
+            
             EventAggregator.Instance().Subscribe<ApriAmbiente>(Apri);
             EventAggregator.Instance().Subscribe<ImportArticoliCSVMercatino>(ImportaCsvArticoli);
             EventAggregator.Instance().Subscribe<ImportaFattureAccess>(ImportaFatture);
@@ -431,37 +430,7 @@ namespace StrumentiMusicali.App.Core.Controllers
         {
         }
 
-        public static void LogMethod(string level, string message, string exception, string stacktrace, string classLine)
-        {
-            try
-            {
-                using (var uof = new UnitOfWork())
-                {
-                    uof.EventLogRepository.Add(new StrumentiMusicali.Library.Entity.EventLog()
-                    { TipoEvento = level, Errore = message, DataCreazione = DateTime.Now, InnerException = exception, StackTrace = stacktrace, Class = classLine });
-
-                    uof.Commit();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(@"Errore nel salvataggio log\errore! " + Environment.NewLine + ex.Message, "info", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-
-        private void ConfigureNLog()
-        {
-            MethodCallTarget target = new MethodCallTarget();
-            target.ClassName = typeof(ControllerMaster).AssemblyQualifiedName;
-            target.MethodName = "LogMethod";
-            target.Parameters.Add(new MethodCallParameter("${level}"));
-            target.Parameters.Add(new MethodCallParameter("${message}"));
-            target.Parameters.Add(new MethodCallParameter("${exception:format=tostring,Data:maxInnerExceptionLevel=10}"));
-            target.Parameters.Add(new MethodCallParameter("${stacktrace}"));
-            target.Parameters.Add(new MethodCallParameter("${callsite}"));
-
-            NLog.Config.SimpleConfigurator.ConfigureForTargetLogging(target, LogLevel.Debug);
-        }
+        
 
         private void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {

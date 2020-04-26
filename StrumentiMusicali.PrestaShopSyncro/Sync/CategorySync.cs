@@ -79,6 +79,8 @@ namespace StrumentiMusicali.PrestaShopSyncro
                 }
             }
         }
+        public const string Usato = "USATO";
+        public const string ExDemo = "EX-DEMO";
 
         /// <summary>
         /// Aggiorna le categorie mettendo i reparti al livello superiore
@@ -93,8 +95,12 @@ namespace StrumentiMusicali.PrestaShopSyncro
 
             using (UnitOfWork uof = new UnitOfWork())
             {
-                foreach (var reparto in uof.CategorieRepository.Find(a => a.Codice > 0).Select(a => a.Reparto)
-                    .Distinct().OrderBy(a => a).ToList())
+                var reparti = uof.CategorieRepository.Find(a => a.Codice > 0).Select(a => a.Reparto)
+                    .Distinct().OrderBy(a => a).ToList();
+                reparti.Add(Usato);
+                reparti.Add(ExDemo);
+
+                foreach (var reparto in reparti)
                 {
                     /*verifico che il reparto sia presente sotto la root*/
                     var repartoWeb = listCategories.Where(a => a.name.First().Value == reparto).DefaultIfEmpty(null).FirstOrDefault();

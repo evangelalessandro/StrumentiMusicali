@@ -26,6 +26,10 @@ namespace StrumentiMusicali.PrestaShopSyncro.BaseClass
             {
                 _url = config.AppSettings.Settings["UrlPrestaShop"].Value;
                 _autKey = config.AppSettings.Settings["AutKey"].Value;
+
+                //StrumentiMusicali.Core.Manager.ManagerLog.Logger.Info("TEST _url ");
+                //StrumentiMusicali.Core.Manager.ManagerLog.Logger.Info(_url);
+            
             }
 
             _imageFactory = new ImageFactory(_url, _autKey, "");
@@ -67,7 +71,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.BaseClass
                 ConfigurationManager.RefreshSection("appSettings");
             }
 
-            return setting;
+            
         }
 
         private PrestaShopSetting LoginData()

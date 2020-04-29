@@ -895,15 +895,22 @@ namespace StrumentiMusicali.App.Core.Controllers
                         }
 
                         var preList = datList.OrderByDescending(a => a.ID)
-                            .Select(a => new { a.Categoria, Articolo = a }).ToList();
+                            .Select(a => new
+                            {
+                                a.Categoria,
+                                Articolo = a,
+                                IsBook = !string.IsNullOrEmpty(a.Libro.Autore)
+                    || !string.IsNullOrEmpty(a.Libro.Edizione)
+                    || !string.IsNullOrEmpty(a.Libro.Settore)
+                            });
 
 
-                        list = preList.Select(a => a.Articolo)
+                        var listArt2 = preList
                         .Where(a => (
-                        a.IsLibro() == true
+                        a.IsBook == true
                         && ModalitaController == enModalitaArticolo.SoloLibri)
                         ||
-                        (a.IsLibro() == false
+                        (a.IsBook == false
                         && ModalitaController == enModalitaArticolo.SoloStrumenti)
                         ||
                         ModalitaController == enModalitaArticolo.Tutto
@@ -912,10 +919,10 @@ namespace StrumentiMusicali.App.Core.Controllers
                         )
                             .Take(ViewAllItem ? 100000 : 300)
 
-                        .Select(a => new ArticoloItem(a)
-                        {
-                            //Pinned = a.Pinned
-                        }).ToList();
+                        .ToList();
+                        list = listArt2.Select(a => 
+                        new ArticoloItem(a.Articolo)
+                        ).ToList();
 
                         var listArt = list.Select(b => b.ID);
                         var giacenza = uof.MagazzinoRepository.Find(a => listArt.Contains(a.ArticoloID))
@@ -946,6 +953,8 @@ namespace StrumentiMusicali.App.Core.Controllers
                         FiltroMarca = "";
                         FiltroLibri = "";
                     }
+                    GC.SuppressFinalize(list);
+
                 }
                 base.RefreshList(obj);
             }

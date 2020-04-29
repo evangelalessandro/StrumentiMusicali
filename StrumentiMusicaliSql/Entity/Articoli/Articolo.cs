@@ -121,7 +121,7 @@ namespace StrumentiMusicali.Library.Entity.Articoli
             }
             return dato;
         }
-
+         
         [NotMapped]
         [CustomUIView(Width = 80, Ordine = 50, Enable = false, Category = "Magazzino", Titolo = "Quantità in negozio")]
         public int QtaNegozio { get; set; } = 0;

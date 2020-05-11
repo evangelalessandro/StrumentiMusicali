@@ -9,7 +9,7 @@ namespace StrumentiMusicali.ftpBackup.Backup
 {
     public class BackupManager : IDisposable
     {
-        
+
         internal readonly ILogger _logger = LogManager.GetCurrentClassLogger();
         private const string BACKUP_NAME = "Negozio.bak";
 
@@ -146,7 +146,10 @@ namespace StrumentiMusicali.ftpBackup.Backup
         {
             return (bytes / 1024f) / 1024f;
         }
+        public void Dispose(bool dispose)
+        {
 
+        }
         public void Dispose()
         {
         }

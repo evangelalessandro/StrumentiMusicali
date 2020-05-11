@@ -13,12 +13,13 @@ namespace StrumentiMusicali.App.Core.Exports
     public class ExportMagazzino : IDisposable
     {
         private ClosedXML.Excel.XLWorkbook _excel;
-        public TipoExport TipoExp { get; set; } = TipoExport.Tutto;
+        public TipoExport TipoExp { get; set; } = TipoExport.TuttoLibri;
 
 
         public enum TipoExport
         {
-            Tutto,
+            TuttoLibri,
+            TuttoStrumenti,
             SoloLibriMancanti,
             PerMarca
         }
@@ -45,7 +46,7 @@ namespace StrumentiMusicali.App.Core.Exports
             {
                 var listArt = uof.AggiornamentoWebArticoloRepository.Find(a => true).Select(a => new
                 {
-                    ID=a.ArticoloID,
+                    ID = a.ArticoloID,
                     a.Articolo.Libro,
                     a.Articolo.Categoria,
                     articolo = a.Articolo,
@@ -122,6 +123,7 @@ namespace StrumentiMusicali.App.Core.Exports
                       a.articolo.ArticoloWeb.PrezzoWeb,
 
                       a.CodiceArticoloEcommerce
+                      ,a.articolo.DataUltimaModifica
                   }
 
             ).ToList();
@@ -157,12 +159,36 @@ namespace StrumentiMusicali.App.Core.Exports
                     }).ToList());
                 }
 
-                else
+                else if (TipoExp == TipoExport.TuttoLibri)
+                {
+
+                    dt = ToDataTable(listToExport.ToList());
+
+                    dt.Columns.Remove("Nome");
+                    dt.Columns.Remove("Marca");
+                    dt.Columns.Remove("Modello");
+                    dt.Columns.Remove("Rivenditore");
+                    dt.Columns.Remove("Colore");
+                    dt.Columns.Remove("CodiceOrdine");
+                }
+                else if (TipoExp == TipoExport.TuttoStrumenti)
                 {
                     dt = ToDataTable(listToExport.ToList());
+
+
+                    dt.Columns.Remove("Autore");
+                    dt.Columns.Remove("TitoloDelLibro");
+                    dt.Columns.Remove("Edizione");
+                    dt.Columns.Remove("Edizione2");
+                    dt.Columns.Remove("Genere");
+                    dt.Columns.Remove("Ordine");
+                    dt.Columns.Remove("Settore");
+
                 }
-                if (TipoExp == TipoExport.Tutto)
+                if (TipoExp == TipoExport.TuttoLibri
+                    || TipoExp == TipoExport.TuttoStrumenti)
                 {
+
                     foreach (var item in uof.DepositoRepository.Find(a => (a.Principale && TipoExp == TipoExport.SoloLibriMancanti) || TipoExp != TipoExport.SoloLibriMancanti).ToList())
                     {
                         dt.Columns.Add("Qta_" + item.NomeDeposito);
@@ -178,7 +204,7 @@ namespace StrumentiMusicali.App.Core.Exports
                         }
                     }
                 }
-                if (TipoExp != TipoExport.Tutto)
+                if (TipoExp != TipoExport.TuttoLibri && TipoExp != TipoExport.TuttoStrumenti)
                     dt.Columns.Remove("ID");
 
                 _excel.AddWorksheet(dt, "Generale");
@@ -210,27 +236,20 @@ namespace StrumentiMusicali.App.Core.Exports
             return table;
         }
 
-        //private void ImpostaCampiTestata()
-        //{
-        //	_excel.Range("Note1").Value = fattura.Note1;
-        //	_excel.Range("Note2").Value = fattura.Note2;
-        //	_excel.Range("TrasportoACura").Value = fattura.TrasportoACura;
-        //	_excel.Range("Vettore").Value = fattura.Vettore;
+        protected void Dispose(bool dispose)
+        {
+            if (dispose)
+            {
+                if (_excel != null)
+                    _excel.Dispose();
+                _excel = null;
+            }
 
-        //	_excel.Range("ClienteRagioneSociale").Value = fattura.Cliente.RagioneSociale;
-        //	_excel.Range("ClienteIndirizzo").Value = fattura.Cliente.Indirizzo.IndirizzoConCivico;
-        //	_excel.Range("ClienteCap").Value = fattura.Cliente.Indirizzo.Cap;
-        //	_excel.Range("ClienteCitta").Value = fattura.Cliente.Indirizzo.Citta;
-        //	_excel.Range("ClientePIVACF").Value = "CF - PIVA:" + fattura.Cliente.PIVA;
-        //	_excel.Range("CodiceCliente").Value = fattura.Cliente.ID;
-
-        //}
-
+        }
         public void Dispose()
         {
-            if (_excel != null)
-                _excel.Dispose();
-            _excel = null;
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

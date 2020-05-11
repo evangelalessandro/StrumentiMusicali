@@ -64,15 +64,26 @@ namespace StrumentiMusicali.App.View.Articoli
 
         public override void FormatGrid()
         {
+            dgvRighe.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.True;
+            dgvRighe.Columns["ID"].MinWidth = 41;
+            dgvRighe.BestFitColumns(false);
+            
+            dgvRighe.Columns["ID"].MinWidth = 41;
+            dgvRighe.Columns["ID"].Width = 41;
+            dgvRighe.Columns["ID"].BestFit();
 
-            dgvRighe.BestFitColumns(true);
-            dgvRighe.Columns["Marca"].Visible = Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti;
-            dgvRighe.Columns["Categoria"].Visible = Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti;
-            dgvRighe.Columns["Reparto"].Visible = Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti;
-            dgvRighe.Columns["QuantitaTotale"].Visible = Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti;
-            dgvRighe.Columns["PrezzoAcquisto"].Visible = Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti;
+            bool soloStrumenti= Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloStrumenti; 
 
-            dgvRighe.Columns["Settore"].Visible = Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloLibri;
+            dgvRighe.Columns["Marca"].Visible = soloStrumenti;
+            dgvRighe.Columns["Categoria"].Visible= soloStrumenti;
+            dgvRighe.Columns["Reparto"].Visible
+                = soloStrumenti;
+            dgvRighe.Columns["QuantitaTotale"].Visible
+                = soloStrumenti;
+            dgvRighe.Columns["PrezzoAcquisto"].Visible
+                = soloStrumenti;
+            dgvRighe.Columns["Settore"].Visible 
+                = Controller.ModalitaController == ControllerArticoli.enModalitaArticolo.SoloLibri;
         }
 
 

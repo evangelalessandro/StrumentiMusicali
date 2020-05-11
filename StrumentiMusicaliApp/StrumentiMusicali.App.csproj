@@ -63,10 +63,16 @@
     <ManifestKeyFile>StrumentiMusicali.App_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=5.1.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -271,6 +277,7 @@
     <Compile Include="Core\Imports\BaseImportExcel.cs" />
     <Compile Include="Core\Imports\ImportFatture.cs" />
     <Compile Include="Core\Imports\ImportCavalloPazzoExcel.cs" />
+    <Compile Include="Core\Imports\ImportDaExportMagazzino.cs" />
     <Compile Include="Core\Imports\ImportMagazziniExcel.cs" />
     <Compile Include="Core\Item\LogItem.cs" />
     <Compile Include="Core\Controllers\Stampa\Fattura.cs" />
@@ -438,6 +445,7 @@
     <Compile Include="Properties\GlobalAssemblyInfo.cs" />
     <Compile Include="View\Utility\MySortableBindingList.cs" />
     <Compile Include="View\Utility\OrdinaTab.cs" />
+    <None Include="Properties\app.manifest" />
     <None Include="Resources\backGroudImageLogin1.jpg" />
     <Content Include="References\DevExpress_18\DevExpress.Charts.v18.1.Core.dll" />
     <Content Include="References\DevExpress_18\DevExpress.CodeParser.v18.1.dll" />

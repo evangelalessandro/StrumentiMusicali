@@ -846,9 +846,6 @@ namespace StrumentiMusicali.App.Core.Controllers
         {
             try
             {
-
-                //GC.ReRegisterForFinalize(DataSource);
-
                 using (CursorManager cursorManager = new CursorManager())
                 {
                     var datoRicerca = TestoRicerca.Split(' ').ToList();

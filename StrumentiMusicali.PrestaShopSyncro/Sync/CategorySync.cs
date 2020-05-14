@@ -5,9 +5,9 @@ using StrumentiMusicali.Library.Repo;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StrumentiMusicali.PrestaShopSyncro
+namespace StrumentiMusicali.PrestaShopSyncro.Sync
 {
-    public class CategorySync : BaseClass.SyncroBase
+    internal class CategorySync : BaseClass.SyncroBase
     {
         static bool Allineati = false;
         public void AllineaCategorieReparti()

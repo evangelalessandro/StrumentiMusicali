@@ -59,21 +59,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StrumentiMusicali.Core\StrumentiMusicali.Core.csproj">
-      <Project>{a1245fd2-f94b-4916-a0de-f192610f55c3}</Project>
-      <Name>StrumentiMusicali.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StrumentiMusicali.ftpBackup\StrumentiMusicali.ftpBackup.csproj">
-      <Project>{0e29b767-416d-421e-98f6-a8eed7c7cb6f}</Project>
-      <Name>StrumentiMusicali.ftpBackup</Name>
-    </ProjectReference>
     <ProjectReference Include="..\StrumentiMusicali.PrestaShopSyncro\StrumentiMusicali.PrestaShopSyncro.csproj">
       <Project>{ca69f008-cd76-4097-8670-f939e1fee8f0}</Project>
       <Name>StrumentiMusicali.PrestaShopSyncro</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StrumentiMusicaliSql\StrumentiMusicali.Library.csproj">
-      <Project>{114b9db5-6a31-4d89-bbb8-7ae7dd1a25c6}</Project>
-      <Name>StrumentiMusicali.Library</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

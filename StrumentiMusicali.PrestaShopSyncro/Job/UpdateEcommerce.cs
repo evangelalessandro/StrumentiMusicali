@@ -1,4 +1,5 @@
 ﻿using StrumentiMusicali.Core.Scheduler.Jobs.Interface;
+using StrumentiMusicali.PrestaShopSyncro.Sync;
 
 namespace StrumentiMusicali.PrestaShopSyncro.Job
 {

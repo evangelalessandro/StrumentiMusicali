@@ -6,11 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StrumentiMusicali.PrestaShopSyncro
+namespace StrumentiMusicali.PrestaShopSyncro.Sync
 {
-    public class OrderSync : BaseClass.SyncroBase
+    internal class OrderSync : BaseClass.SyncroBase
     {
-        public void UpdateFromWeb()
+        public void UpdateFromWeb(bool onlyOne=false)
         {
             var _orderFact = new OrderFactory(_url, _autKey, "");
 

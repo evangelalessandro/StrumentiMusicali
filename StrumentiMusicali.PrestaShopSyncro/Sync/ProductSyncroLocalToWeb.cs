@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StrumentiMusicali.PrestaShopSyncro
+namespace StrumentiMusicali.PrestaShopSyncro.Sync
 {
     public class ProductSyncroLocalToWeb : BaseProduct
     {

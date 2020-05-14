@@ -1,8 +1,6 @@
 ﻿using NLog;
 using NLog.Targets;
-using StrumentiMusicali.ftpBackup.Backup;
-using StrumentiMusicali.PrestaShopSyncro;
-using StrumentiMusicali.PrestaShopSyncro.Products;
+using StrumentiMusicali.PrestaShopSyncro.Sync;
 using System;
 
 namespace testConsole

@@ -73,36 +73,45 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private void MergeArticolo(ArticoloMerge obj)
         {
-            using (var artController = new ControllerArticoli(enModalitaArticolo.SelezioneSingola))
+            MessageManager.NotificaInfo("Seleziona l'articolo da cui copiare i dati e chiudi la form.");
+            var art = SelezionaSingoloArticolo();
+            if (art != null && art.ID > 0)
             {
-                MessageManager.NotificaInfo("Seleziona l'articolo da cui copiare i dati e chiudi la form.");
-                var viewRicercaArt = new View.Articoli.ArticoliListView(artController);
-                this.ShowView(viewRicercaArt, artController.Ambiente, artController, true, true);
-
-                if (artController.SelectedItem != null && artController.SelectedItem.ID > 0)
+                if (this.SelectedItem.ID != art.ID)
                 {
-                    if (this.SelectedItem.ID != artController.SelectedItem.ID)
+                    if (MessageManager.QuestionMessage(
+                        "Sei sicuro di unire l'articolo codice "
+                        + this.SelectedItem.ID.ToString() + " con l'articolo codice " + art.ID.ToString()))
                     {
-                        if (MessageManager.QuestionMessage(
-                            "Sei sicuro di unire l'articolo codice "
-                            + this.SelectedItem.ID.ToString() + " con l'articolo codice " + artController.SelectedItem.ID.ToString()))
-                        {
-                            MergeArticoli(artController);
-                        }
+                        MergeArticoli(art);
                     }
                 }
+            }
+        }
+        public Articolo SelezionaSingoloArticolo(string ricercaText = "")
+        {
+            using (var artController = new ControllerArticoli(enModalitaArticolo.SelezioneSingola))
+            {
+                artController.TestoRicerca = ricercaText;
+                var viewRicercaArt = new View.Articoli.ArticoliListView(artController);
+                
+
+                this.ShowView(viewRicercaArt, artController.Ambiente, artController, true, true);
+
+                return artController.ArticoloSelezionatoSingolo;
+
             }
         }
         /// <summary>
         /// Unisce gli articoli in quello selezionato nella prima form
         /// </summary>
-        /// <param name="artController"></param>
-        private void MergeArticoli(ControllerArticoli artController)
+        /// <param name="artToMerge"></param>
+        private void MergeArticoli(Articolo artToMerge)
         {
             using (var save = new SaveEntityManager(true))
             {
                 var elem = save.UnitOfWork.ArticoliRepository.Find(a => a.ID == this.SelectedItem.ID
-                      || a.ID == artController.SelectedItem.ID).ToList();
+                      || a.ID == artToMerge.ID).ToList();
 
                 var baseItem = elem.Where(a => a.ID == this.SelectedItem.ID).First();
                 elem.Remove(baseItem);
@@ -464,11 +473,32 @@ namespace StrumentiMusicali.App.Core.Controllers
                     }
                 };
             }
+
+
+            if (ModalitaController == enModalitaArticolo.SelezioneSingola)
+            {
+                var pnl2 = GetMenu().Tabs[0].Add("Conferma");
+                var rib2 = pnl2.Add("Conferma", Properties.Resources.Check_OK_48);
+                rib2.Click += (a, e) =>
+                {
+                    if (SelectedItem != null && SelectedItem.ID > 0)
+                    {
+                        ArticoloSelezionatoSingolo = SelectedItem;
+                        RaiseClose();
+                    }
+                    else
+                    {
+                        MessageManager.NotificaInfo("Selezionare un articolo");
+                    }
+                };
+            }
             //	EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ScaricoMagazzino));
             //	EventAggregator.Instance().Publish(new MagazzinoSelezionaArticolo() { Articolo=SelectedItem});
 
             //};
         }
+
+        public Articolo ArticoloSelezionatoSingolo { get; set; }
 
         private void ScontaArticoliShowView()
         {
@@ -917,7 +947,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                             .Take(ViewAllItem ? 100000 : 300)
 
                         .ToList();
-                        list = listArt2.Select(a => 
+                        list = listArt2.Select(a =>
                         new ArticoloItem(a.Articolo)
                         ).ToList();
 

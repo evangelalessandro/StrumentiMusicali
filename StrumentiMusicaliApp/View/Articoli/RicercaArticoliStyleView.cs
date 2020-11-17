@@ -1,4 +1,5 @@
-﻿using StrumentiMusicali.App.Core.Controllers;
+﻿using StrumentiMusicali.App.Core;
+using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Entity.Articoli;
@@ -68,19 +69,31 @@ namespace StrumentiMusicali.App.View.Articoli
             using (var uof = new UnitOfWork())
             {
                 rtcNote.Clear();
-
-                var item = uof.ArticoliRepository.Find(a => a.CodiceABarre == txtRicerca.Text).
+                var valoreRicerca = txtRicerca.Text;
+                var item = uof.ArticoliRepository.Find(a => a.CodiceABarre == valoreRicerca).
                     FirstOrDefault();
                 txtRicerca.Text = "";
                 _menu.ApplyValidation((item != null));
 
                 if (item == null)
                 {
-                    _controllerArticoli.EditItem = null;
-                    _controllerArticoli.SelectedItem = null;
+                    MessageManager.NotificaInfo("Non è stato trovato nessun articolo per codice a barre");
 
 
-                    return;
+                    var art = _controllerArticoli.SelezionaSingoloArticolo(valoreRicerca);
+                    if (art != null && art.ID > 0)
+                    {
+                        item = uof.ArticoliRepository.Find(a => a.ID == art.ID).
+                                FirstOrDefault();
+                    }
+                    _menu.ApplyValidation((item != null));
+
+                    if (item == null)
+                    {
+                        _controllerArticoli.EditItem = null;
+                        _controllerArticoli.SelectedItem = null;
+                        return;
+                    }
                 }
                 _controllerArticoli.EditItem = item;
                 _controllerArticoli.SelectedItem = item;
@@ -135,18 +148,18 @@ namespace StrumentiMusicali.App.View.Articoli
             this.label1 = new System.Windows.Forms.Label();
             this.rtcNote = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
-            //
+            // 
             // txtRicerca
-            //
+            // 
             this.txtRicerca.Dock = System.Windows.Forms.DockStyle.Top;
             this.txtRicerca.Location = new System.Drawing.Point(10, 41);
             this.txtRicerca.Name = "txtRicerca";
             this.txtRicerca.Size = new System.Drawing.Size(836, 38);
             this.txtRicerca.TabIndex = 0;
             this.txtRicerca.TextChanged += new System.EventHandler(this.TxtRicerca_TextChanged);
-            //
+            // 
             // label1
-            //
+            // 
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Top;
             this.label1.Location = new System.Drawing.Point(10, 10);
@@ -154,9 +167,9 @@ namespace StrumentiMusicali.App.View.Articoli
             this.label1.Size = new System.Drawing.Size(115, 31);
             this.label1.TabIndex = 1;
             this.label1.Text = "Ricerca:";
-            //
+            // 
             // rtcNote
-            //
+            // 
             this.rtcNote.AcceptsTab = true;
             this.rtcNote.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtcNote.Location = new System.Drawing.Point(10, 79);
@@ -164,9 +177,9 @@ namespace StrumentiMusicali.App.View.Articoli
             this.rtcNote.Size = new System.Drawing.Size(836, 386);
             this.rtcNote.TabIndex = 2;
             this.rtcNote.Text = "";
-            //
+            // 
             // RicercaArticoliStyleView
-            //
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.Controls.Add(this.rtcNote);
             this.Controls.Add(this.txtRicerca);
@@ -177,6 +190,7 @@ namespace StrumentiMusicali.App.View.Articoli
             this.Size = new System.Drawing.Size(856, 475);
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private void richTextBox_LOG_write_text(string text, Color text_color, Color background_color)

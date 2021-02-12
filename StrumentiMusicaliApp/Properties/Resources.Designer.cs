@@ -363,6 +363,16 @@ namespace StrumentiMusicali.App.Properties {
         /// <summary>
         ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap PrintScontrino_48 {
+            get {
+                object obj = ResourceManager.GetObject("PrintScontrino_48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Progress_Gif {
             get {
                 object obj = ResourceManager.GetObject("Progress_Gif", resourceCulture);

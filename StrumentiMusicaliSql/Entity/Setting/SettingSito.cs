@@ -26,5 +26,8 @@ namespace StrumentiMusicali.Library.Entity.Setting
         public string UrlCompletoFileEcommerce { get; set; }
 
         public PrestaShopSetting PrestaShopSetting { get; set; } = new PrestaShopSetting();
+
+
+        public WooCommerceSetting WooCommerceSetting { get; set; } = new WooCommerceSetting();
     }
 }

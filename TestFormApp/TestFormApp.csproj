@@ -33,26 +33,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.Data.v18.1">
-      <HintPath>..\StrumentiMusicaliApp\References\DevExpress_18\DevExpress.Data.v18.1.dll</HintPath>
+    <Reference Include="DevExpress.Data.v20.2">
     </Reference>
-    <Reference Include="DevExpress.Utils.v18.1">
-      <HintPath>..\StrumentiMusicaliApp\References\DevExpress_18\DevExpress.Utils.v18.1.dll</HintPath>
+    <Reference Include="DevExpress.Data.Desktop.v20.2">
     </Reference>
-    <Reference Include="DevExpress.Utils.v18.1.UI">
-      <HintPath>..\StrumentiMusicaliApp\References\DevExpress_18\DevExpress.Utils.v18.1.UI.dll</HintPath>
+    <Reference Include="DevExpress.Utils.v20.2">
     </Reference>
-    <Reference Include="DevExpress.XtraBars.v18.1">
-      <HintPath>..\StrumentiMusicaliApp\References\DevExpress_18\DevExpress.XtraBars.v18.1.dll</HintPath>
+    <Reference Include="DevExpress.Utils.v20.2.UI">
     </Reference>
-    <Reference Include="DevExpress.XtraEditors.v18.1">
-      <HintPath>..\StrumentiMusicaliApp\References\DevExpress_18\DevExpress.XtraEditors.v18.1.dll</HintPath>
+    <Reference Include="DevExpress.XtraBars.v20.2">
     </Reference>
-    <Reference Include="DevExpress.XtraLayout.v18.1">
-      <HintPath>..\StrumentiMusicaliApp\References\DevExpress_18\DevExpress.XtraLayout.v18.1.dll</HintPath>
+    <Reference Include="DevExpress.XtraEditors.v20.2">
     </Reference>
-    <Reference Include="DevExpress.XtraVerticalGrid.v18.1">
-      <HintPath>..\StrumentiMusicaliApp\References\DevExpress_18\DevExpress.XtraVerticalGrid.v18.1.dll</HintPath>
+    <Reference Include="DevExpress.XtraLayout.v20.2">
+    </Reference>
+    <Reference Include="DevExpress.XtraVerticalGrid.v20.2">
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -74,10 +69,19 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form2.Designer.cs">
+      <DependentUpon>Form2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form2.resx">
+      <DependentUpon>Form2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -44,6 +44,8 @@ namespace StrumentiMusicali.App
 
             EventAggregator.Instance().Subscribe<GetNewTab>(TakeNewTab);
             EventAggregator.Instance().Subscribe<RemoveNewTab>(RemoveTab);
+
+
         }
 
         private void Tab_CloseButtonClick(object sender, System.EventArgs e)

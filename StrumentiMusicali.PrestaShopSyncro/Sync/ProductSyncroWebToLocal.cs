@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace StrumentiMusicali.PrestaShopSyncro.Sync
 {
-    public class ProductSyncroWebToLocal : BaseClass.SyncroBase
+    public class ProductSyncroWebToLocal : BaseClass.SyncroBasePresta
     {
         /// <summary>
         /// Salva quelli che non sono presenti in locale

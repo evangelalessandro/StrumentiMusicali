@@ -23,8 +23,7 @@ namespace StrumentiMusicali.App.Forms
     public partial class DettaglioArticoloView : UserControl, IMenu, ICloseSave
     {
 
-
-        private static List<CategoriaItem> _categoriList = new List<CategoriaItem>();
+         
 
         private EditorListImmagini<FotoArticolo> _EditorListImmagini;
         Subscription<ImageSelected<FotoArticolo>> _sub12;

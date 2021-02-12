@@ -59,9 +59,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StrumentiMusicali.PrestaShopSyncro\StrumentiMusicali.PrestaShopSyncro.csproj">
-      <Project>{ca69f008-cd76-4097-8670-f939e1fee8f0}</Project>
-      <Name>StrumentiMusicali.PrestaShopSyncro</Name>
+    <ProjectReference Include="..\StrumentiMusicali.EcommerceBaseSyncro\StrumentiMusicali.EcommerceBaseSyncro.csproj">
+      <Project>{f1da812f-ea83-44f5-a6b7-b6410b109fe2}</Project>
+      <Name>StrumentiMusicali.EcommerceBaseSyncro</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StrumentiMusicali.WoocCommerceSyncro\StrumentiMusicali.WooCommerceSyncro.csproj">
+      <Project>{e6a3faad-a1f0-40d8-8d90-dac7752c243c}</Project>
+      <Name>StrumentiMusicali.WooCommerceSyncro</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

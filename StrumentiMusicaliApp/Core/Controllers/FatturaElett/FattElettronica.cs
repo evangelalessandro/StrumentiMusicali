@@ -1,6 +1,7 @@
 ﻿using FatturaElettronica.Defaults;
 using FatturaElettronica.Ordinaria;
 using FatturaElettronica.Ordinaria.FatturaElettronicaBody;
+using FatturaElettronica.Ordinaria.FatturaElettronicaBody.DatiGenerali;
 using FatturaElettronica.Validators;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity;
@@ -118,11 +119,11 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
             {
                 if (DatiMittente.PersonaGiuridica)
                 {
-                    body.DatiGenerali.DatiGeneraliDocumento.DatiRitenuta.TipoRitenuta = "RT02";
+                    body.DatiGenerali.DatiGeneraliDocumento.DatiRitenuta.Add(new DatiRitenuta() { TipoRitenuta = "RT02" });
                 }
                 else
                 {
-                    body.DatiGenerali.DatiGeneraliDocumento.DatiRitenuta.TipoRitenuta = "RT01";
+                    body.DatiGenerali.DatiGeneraliDocumento.DatiRitenuta.Add(new DatiRitenuta() { TipoRitenuta = "RT01" });
                 }
                 /*[2.1.1.5.3] AliquotaRitenuta TODO*/
             }

@@ -1,6 +1,9 @@
 ﻿using Autofac;
+using DevExpress.XtraBars.Docking;
 using Newtonsoft.Json;
 using NLog;
+using StrumentiMusicali.App.Core.Controllers.Scontrino;
+using StrumentiMusicali.App.Core.Events;
 using StrumentiMusicali.App.Core.Events.Tab;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Settings;
@@ -264,6 +267,36 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
         private static Ribbon _ribbonMaster = null;
         private static Form _MainForm;
         private static List<Form> _PreviusForm = new List<Form>();
+
+
+        ScontrinoUtility _scontrinoUtility;
+        private void SetDocManager(Form frm)
+        {
+            DockManager dm = new DockManager();
+            // Specify the form to which the dock panels will be added
+            dm.Form = frm;
+            // Create a new panel and dock it to the left edge of the form
+            DockPanel dp1 = dm.AddPanel(DockingStyle.Right);
+            dp1.Text = "Scontrino";
+            dp1.Tag = tagKeyPanel.Scontrino;
+            _scontrinoUtility = new ScontrinoUtility();
+            _scontrinoUtility.Init(dp1);
+            dp1.ClosingPanel += Dp1_ClosingPanel;
+            
+        }
+
+        private void Dp1_ClosingPanel(object sender, DockPanelCancelEventArgs e)
+        {
+            e.Cancel = true;
+            
+        }
+
+        private enum tagKeyPanel
+        {
+            Nessuno,
+            Scontrino,
+
+        }
         private void AggiungiInForm(UserControl view, enAmbiente ambiente, BaseController controller, bool disposeForm)
         {
             Ribbon ribbon1 = null;
@@ -282,10 +315,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                         action.Invoke();
                         action = null;
                     }
-                    //frm.Activated += (a, b) =>
-                    //{
-
-                    //};
+                    if (ambiente==enAmbiente.Main)
+                    {
+                        SetDocManager(frm);
+                    }
 
                     ImpostaIconaETesto(ambiente, frm);
 
@@ -331,7 +364,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                         { frm.Close(); };
                     }
 
-                    frm.IsMdiContainer = true;
+                    //frm.IsMdiContainer = true;
                     if (ambiente == enAmbiente.Main)
                     {
                         _ribbonMaster = ribbon1;

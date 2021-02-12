@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace StrumentiMusicali.PrestaShopSyncro.Sync
 {
-    internal class CategorySync : BaseClass.SyncroBase
+    internal class CategorySync : BaseClass.SyncroBasePresta
     {
         static bool Allineati = false;
         public void AllineaCategorieReparti()

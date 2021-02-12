@@ -26,6 +26,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.Core", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.Service", "StrumentiMusicali.Service\StrumentiMusicali.Service.csproj", "{6016358F-A0D4-4A4F-86C6-C62470544DBC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WooCommerce.NET", "StrumentiMusicali.WooCommerce\WooCommerce.NET.csproj", "{AC30B506-1841-4002-B5FC-FF1F8DA183D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.WooCommerceSyncro", "StrumentiMusicali.WoocCommerceSyncro\StrumentiMusicali.WooCommerceSyncro.csproj", "{E6A3FAAD-A1F0-40D8-8D90-DAC7752C243C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.EcommerceBaseSyncro", "StrumentiMusicali.EcommerceBaseSyncro\StrumentiMusicali.EcommerceBaseSyncro.csproj", "{F1DA812F-EA83-44F5-A6B7-B6410B109FE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +78,18 @@ Global
 		{6016358F-A0D4-4A4F-86C6-C62470544DBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6016358F-A0D4-4A4F-86C6-C62470544DBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6016358F-A0D4-4A4F-86C6-C62470544DBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC30B506-1841-4002-B5FC-FF1F8DA183D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC30B506-1841-4002-B5FC-FF1F8DA183D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC30B506-1841-4002-B5FC-FF1F8DA183D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC30B506-1841-4002-B5FC-FF1F8DA183D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6A3FAAD-A1F0-40D8-8D90-DAC7752C243C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6A3FAAD-A1F0-40D8-8D90-DAC7752C243C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6A3FAAD-A1F0-40D8-8D90-DAC7752C243C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6A3FAAD-A1F0-40D8-8D90-DAC7752C243C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1DA812F-EA83-44F5-A6B7-B6410B109FE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1DA812F-EA83-44F5-A6B7-B6410B109FE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1DA812F-EA83-44F5-A6B7-B6410B109FE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1DA812F-EA83-44F5-A6B7-B6410B109FE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

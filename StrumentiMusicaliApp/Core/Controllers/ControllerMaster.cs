@@ -118,23 +118,21 @@ namespace StrumentiMusicali.App.Core.Controllers
         {
             using (var controllerArt = new ControllerArticoli(ControllerArticoli.enModalitaArticolo.Tutto))
             {
-                controllerArt.InvioArticoli(obj);
+                controllerArt.InvioArticoli();
             }
         }
 
         private void ImportaFatture(ImportaFattureAccess obj)
         {
-            using (var controller = new ControllerFatturazione())
-            {
-                controller.ImportaFatture(obj);
-            }
+           
+                ControllerFatturazione.ImportaFatture();
         }
 
         private void ImportaCsvArticoli(ImportArticoliCSVMercatino obj)
         {
             using (var controllerArt = new ControllerArticoli(ControllerArticoli.enModalitaArticolo.Tutto))
             {
-                controllerArt.ImportaCsvArticoli(null);
+                controllerArt.ImportaCsvArticoli();
             }
         }
 

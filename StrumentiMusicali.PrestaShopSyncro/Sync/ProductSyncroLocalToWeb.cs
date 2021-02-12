@@ -1,7 +1,9 @@
 ﻿using Bukimedia.PrestaSharp.Entities;
 using StrumentiMusicali.Core.Manager;
+using StrumentiMusicali.EcommerceBaseSyncro;
 using StrumentiMusicali.Library.Entity.Enums;
 using StrumentiMusicali.Library.Repo;
+using StrumentiMusicali.PrestaShopSyncro.BaseClass;
 using StrumentiMusicali.PrestaShopSyncro.Products;
 using System;
 using System.Collections.Generic;
@@ -9,8 +11,13 @@ using System.Linq;
 
 namespace StrumentiMusicali.PrestaShopSyncro.Sync
 {
-    public class ProductSyncroLocalToWeb : BaseProduct
+    public class ProductSyncroLocalToWeb : SyncroBasePresta
     {
+        public ProductSyncroLocalToWeb()
+            :base()
+        {
+
+        }
         /// <summary>
         /// Tutti gli articoli che sono con il flag CaricainECommerce e
         /// </summary>
@@ -24,13 +31,13 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
                 }
                 var listArt = UpdateProducts(uof);
 
-                using (var stockPr = new StockProducts())
+                using (var stockPr = new StockProducts(this))
                 {
                     var listStockArt = stockPr.UpdateStock(uof);
 
                     listArt.AddRange(listStockArt);
                 }
-                using (var imgPr = new ImageProduct())
+                using (var imgPr = new ImageProduct(this))
                 {
                     listArt.AddRange(imgPr.UpdateImages(uof));
                 }

@@ -1,10 +1,10 @@
 ﻿using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Entity.Ecomm;
 
-namespace StrumentiMusicali.PrestaShopSyncro
+namespace StrumentiMusicali.EcommerceBaseSyncro
 {
 
-    internal class ArticoloBase
+    public class ArticoloBase
     {
         public int ArticoloID { get; set; }
         public string CodiceArticoloEcommerce { get; set; }
@@ -12,9 +12,5 @@ namespace StrumentiMusicali.PrestaShopSyncro
         public AggiornamentoWebArticolo Aggiornamento { get; set; }
 
     }
-
-
-
-
 
 }

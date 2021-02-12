@@ -132,6 +132,7 @@
     <Compile Include="Core\Item\FatturaRigaItem.cs" />
     <Compile Include="Core\Item\MovimentoItem.cs" />
     <Compile Include="Core\Item\PagamentoItem.cs" />
+    <Compile Include="Core\Item\ScontrinoLineItem.cs" />
     <Compile Include="Core\Item\UtentiItem.cs" />
     <Compile Include="Core\LoginData.cs" />
     <Compile Include="Core\MessageException.cs" />
@@ -160,6 +161,7 @@
     <Compile Include="Entity\Articoli\FotoArticolo.cs" />
     <Compile Include="Entity\Articoli\Magazzino.cs" />
     <Compile Include="Entity\Fatture\FatturaRiga.cs" />
+    <Compile Include="Entity\Setting\WooCommerceSetting.cs" />
     <Compile Include="Entity\Setting\PrestaShopSetting.cs" />
     <Compile Include="Entity\Setting\SettingBackupFtp.cs" />
     <Compile Include="Entity\Setting\SettingDocumentiFatture.cs" />

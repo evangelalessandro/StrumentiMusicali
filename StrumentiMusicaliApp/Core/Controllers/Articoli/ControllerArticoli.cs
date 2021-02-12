@@ -1,4 +1,6 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
+using StrumentiMusicali.App.Core.Events;
+using StrumentiMusicali.App.Core.Events.Scontrino;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Forms;
 using StrumentiMusicali.App.View.Articoli;
@@ -369,6 +371,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             var tabFirst = GetMenu().Tabs[0];
             var pnl = tabFirst.Pannelli.First();
 
+            
             if (ModalitaController == enModalitaArticolo.Ricerca
                 || ModalitaController == enModalitaArticolo.SelezioneSingola)
             {
@@ -403,6 +406,29 @@ namespace StrumentiMusicali.App.Core.Controllers
                 {
                     EventAggregator.Instance().Publish<ArticoloMerge>(new ArticoloMerge(this));
                 };
+            }
+            if (ModalitaController == enModalitaArticolo.Ricerca
+                || ModalitaController == enModalitaArticolo.SoloLibri
+                || ModalitaController == enModalitaArticolo.SoloStrumenti
+                || ModalitaController == enModalitaArticolo.Tutto)
+            {
+                var pnlS = GetMenu().Tabs[0].Add("Scontrino");
+                pnlS.Add("Aggiungi a scontrino", Properties.Resources.Add, true).Click += (a, e) =>
+                {
+                    EventAggregator.Instance().Publish<ScontrinoAddEvents>(new ScontrinoAddEvents()
+                    {
+                        Articolo = this.SelectedItem
+                    }) ;
+                };
+                pnlS.Add("Stampa", Properties.Resources.PrintScontrino_48, true).Click += (a, e) =>
+                {
+                    EventAggregator.Instance().Publish<ScontrinoStampa>(new ScontrinoStampa());
+                };
+                pnlS.Add("Elimina tutto", Properties.Resources.Delete, true).Click += (a, e) =>
+                {
+                    EventAggregator.Instance().Publish<ScontrinoClear>(new ScontrinoClear());
+                };
+
             }
             if (LoginData.utenteLogin.Magazzino && ModalitaController != enModalitaArticolo.SelezioneSingola)
             {
@@ -508,7 +534,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             }
         }
 
-        public void InvioArticoli(InvioArticoliCSV obj)
+        public void InvioArticoli()
         {
             using (var export = new Exports.ExportArticoliCsv())
             {
@@ -638,7 +664,7 @@ namespace StrumentiMusicali.App.Core.Controllers
         public string FiltroLibri { get; set; } = "";
         public string FiltroMarca { get; set; } = "";
 
-        public void ImportaCsvArticoli(ImportArticoliCSVMercatino obj)
+        public void ImportaCsvArticoli()
         {
             try
             {

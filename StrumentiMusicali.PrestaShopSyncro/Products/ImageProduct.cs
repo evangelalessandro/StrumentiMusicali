@@ -1,8 +1,11 @@
 ﻿using Bukimedia.PrestaSharp.Entities;
 using StrumentiMusicali.Core.Settings;
+using StrumentiMusicali.EcommerceBaseSyncro;
+using StrumentiMusicali.EcommerceBaseSyncro.Base;
 using StrumentiMusicali.Library.Core.Events.Image;
 using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Repo;
+using StrumentiMusicali.PrestaShopSyncro.BaseClass;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,16 +15,26 @@ using System.Threading.Tasks;
 
 namespace StrumentiMusicali.PrestaShopSyncro.Products
 {
-    internal class ImageProduct : BaseProduct
+    internal class ImageProduct : SyncroBase, IDisposable
     {
+        SyncroBasePresta _syncroBasePresta;
+        public ImageProduct(SyncroBasePresta syncroBasePresta)
+        {
+            _syncroBasePresta = syncroBasePresta;
+        }
+        public void Dispose()
+        {
+            if (_syncroBasePresta != null)
+                _syncroBasePresta.Dispose();
 
+        }
         private void UpdateImage(ArticoloBase artDb, product artWeb, UnitOfWork uof)
         {
             DateTime date = DateTime.Now;
             /*cancello le immagini e le sovrascrivo*/
             foreach (var item in artWeb.associations.images)
             {
-                _imageFactory.DeleteProductImage(artWeb.id.Value, item.id);
+                _syncroBasePresta._imageFactory.DeleteProductImage(artWeb.id.Value, item.id);
             }
             var settingSito = SettingSitoValidator.ReadSetting();
 
@@ -33,7 +46,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
 
             foreach (var item in listFotoArticolo)
             {
-                _imageFactory.AddProductImage(artWeb.id.Value, item.File);
+                _syncroBasePresta._imageFactory.AddProductImage(artWeb.id.Value, item.File);
             }
             var aggiornamento = artDb.Aggiornamento;
 
@@ -44,29 +57,12 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
 
         public List<ArticoloBase> UpdateImages(UnitOfWork uof)
         {
-            var aggiornamentoWebs = uof.AggiornamentoWebArticoloRepository.Find(a => (a.Articolo.CaricainECommerce
-
-                               && a.Articolo.Categoria.Codice >= 0
-                              && a.Articolo.ArticoloWeb.PrezzoWeb > 0)
-                              || a.ForzaAggiornamento
-                              ).
-                              Select(a => new ArticoloBase
-                              {
-                                  CodiceArticoloEcommerce = a.CodiceArticoloEcommerce,
-                                  ArticoloID = a.Articolo.ID,
-                                  Aggiornamento = a,
-                                  ArticoloDb = a.Articolo
-                              }).ToList()
-                                .Where(a => Math.Abs((a.Aggiornamento.DataUltimoAggFoto - a.Aggiornamento.DataUltimoAggFotoWeb)
-                                .TotalSeconds) > 10
-                                || a.Aggiornamento.ForzaAggiornamento
-                                )
-                                .ToList();
+            var aggiornamentoWebs = base.ListArt(uof,false);
             foreach (var artDb in aggiornamentoWebs)
             {
                 if (!string.IsNullOrEmpty(artDb.CodiceArticoloEcommerce))
                 {
-                    product artWeb = GetProdWebFromCodartEcommerce(artDb);
+                    product artWeb = _syncroBasePresta.GetProdWebFromCodartEcommerce(artDb);
 
                     UpdateImage(artDb, artWeb, uof);
 

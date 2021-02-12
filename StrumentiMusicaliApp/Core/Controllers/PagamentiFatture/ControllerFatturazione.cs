@@ -197,7 +197,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             ShowDettaglio();
         }
 
-        public void ImportaFatture(ImportaFattureAccess obj)
+        public static void ImportaFatture()
         {
             try
             {

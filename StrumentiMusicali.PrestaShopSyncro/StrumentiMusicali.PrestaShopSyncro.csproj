@@ -65,8 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\ArticoloBase.cs" />
-    <Compile Include="Base\SyncroBase.cs" />
+    <Compile Include="Base\SyncroBasePresta.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -76,7 +75,6 @@
     <Compile Include="Job\SyncStockFromWeb.cs" />
     <Compile Include="Sync\OrderSync.cs" />
     <Compile Include="Sync\ProductSyncroLocalToWeb.cs" />
-    <Compile Include="Base\BaseProduct.cs" />
     <Compile Include="Products\ImageProduct.cs" />
     <Compile Include="Sync\ProductSyncroWebToLocal.cs" />
     <Compile Include="Products\StockProducts.cs" />
@@ -90,6 +88,10 @@
     <ProjectReference Include="..\StrumentiMusicali.Core\StrumentiMusicali.Core.csproj">
       <Project>{a1245fd2-f94b-4916-a0de-f192610f55c3}</Project>
       <Name>StrumentiMusicali.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StrumentiMusicali.EcommerceBaseSyncro\StrumentiMusicali.EcommerceBaseSyncro.csproj">
+      <Project>{f1da812f-ea83-44f5-a6b7-b6410b109fe2}</Project>
+      <Name>StrumentiMusicali.EcommerceBaseSyncro</Name>
     </ProjectReference>
     <ProjectReference Include="..\StrumentiMusicaliSql\StrumentiMusicali.Library.csproj">
       <Project>{114b9db5-6a31-4d89-bbb8-7ae7dd1a25c6}</Project>

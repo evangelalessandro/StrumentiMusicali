@@ -2,7 +2,6 @@
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Base;
 using StrumentiMusicali.Library.Entity.Enums;
-using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

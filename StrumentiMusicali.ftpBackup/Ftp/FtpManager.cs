@@ -21,20 +21,20 @@ namespace StrumentiMusicali.ftpBackup.Ftp
                 var dest = System.IO.Path.Combine(setting.BaseFolder, new System.IO.FileInfo(fileLocal).Name);
 
                 var operazione = client.UploadFile(fileLocal, dest
-                        , FtpExists.Overwrite, false, FtpVerify.Retry);
-
-                if (client.FileExists(dest))
+                        ,FtpRemoteExists.Overwrite,  false, FtpVerify.Retry);
+                
+                if (operazione == FtpStatus.Success && client.FileExists(dest))
                 {
                     _logger.Info("Upload riuscito del file : [" + fileLocal + "]  in [" + dest + "]");
-                    operazione = true;
+                    return true;
                 }
                 else
                 {
                     _logger.Error("Upload non riuscito del file : [" + fileLocal + "]  in [" + dest + "]");
-                    operazione = false;
+                    return false;
                 }
 
-                return operazione;
+                
             }
             return false;
         }

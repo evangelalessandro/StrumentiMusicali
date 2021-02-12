@@ -1,14 +1,16 @@
 ﻿using Bukimedia.PrestaSharp.Factories;
 using StrumentiMusicali.Core.Settings;
+using StrumentiMusicali.EcommerceBaseSyncro;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
+using StrumentiMusicali.PrestaShopSyncro.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace StrumentiMusicali.PrestaShopSyncro.Sync
 {
-    internal class OrderSync : BaseClass.SyncroBase
+    internal class OrderSync : BaseClass.SyncroBasePresta
     {
         public void UpdateFromWeb(bool onlyOne=false)
         {
@@ -69,9 +71,9 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
                     continue;
                 if (aggiornamento.GiacenzaMagazzinoWebInDataAggWeb != stock.quantity)
                 {
-                    using (var stockProd = new Products.StockProducts())
+                    using (var stockProd = new StockProducts(this))
                     {
-                        var qtaStockLocale = stockProd.CalcolaStock(new ArticoloBase() { ArticoloID = aggiornamento.ArticoloID });
+                        var qtaStockLocale = StockProducts.CalcolaStock(new ArticoloBase() { ArticoloID = aggiornamento.ArticoloID });
                         var forzaUpdateGiacenza = (aggiornamento.GiacenzaMagazzinoWebInDataAggWeb != qtaStockLocale);
                          
 

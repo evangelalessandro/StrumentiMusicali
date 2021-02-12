@@ -1,0 +1,827 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeQuality.Analyzers.2.9.8\build\Microsoft.CodeQuality.Analyzers.props" Condition="Exists('..\packages\Microsoft.CodeQuality.Analyzers.2.9.8\build\Microsoft.CodeQuality.Analyzers.props')" />
+  <Import Project="..\packages\PropertyChanged.Fody.2.5.13\build\PropertyChanged.Fody.props" Condition="Exists('..\packages\PropertyChanged.Fody.2.5.13\build\PropertyChanged.Fody.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E6A4D0F6-DC39-431E-A562-AC0C4465BEA4}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>StrumentiMusicali.App</RootNamespace>
+    <AssemblyName>StrumentiMusicali.App</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>StrumentoMusicale.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>DB68EADEB17115E4B70FFF63621E6CA65B4FED84</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>StrumentiMusicali.App_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=5.1.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.5.1.2\lib\net461\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="ClosedXML, Version=0.93.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.93.1\lib\net46\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v18.1.Core">
+    </Reference>
+    <Reference Include="DevExpress.Office.v18.1.Core">
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v18.1.Core">
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v18.1.Export">
+    </Reference>
+    <Reference Include="DevExpress.Printing.v18.1.Core">
+    </Reference>
+    <Reference Include="DevExpress.Data.v18.1">
+    </Reference>
+    <Reference Include="DevExpress.Sparkline.v18.1.Core, Version=18.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v18.1">
+    </Reference>
+    <Reference Include="DevExpress.Xpo.v18.1, Version=18.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraBars.v18.1">
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v18.1.Design">
+    </Reference>
+    <Reference Include="DevExpress.Charts.v18.1.Core">
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v18.1.Wizard">
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v18.1">
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v18.1.Design">
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v18.1, Version=18.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraLayout.v18.1, Version=18.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v18.1">
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v18.1.UI">
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v18.1">
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v18.1.Design">
+    </Reference>
+    <Reference Include="DevExpress.XtraVerticalGrid.v18.1, Version=18.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\DevExpress_18\DevExpress.XtraVerticalGrid.v18.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelNumberFormat, Version=1.0.3.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelNumberFormat.1.0.3\lib\net20\ExcelNumberFormat.dll</HintPath>
+    </Reference>
+    <Reference Include="FastMember.Signed, Version=1.3.0.0, Culture=neutral, PublicKeyToken=9e8f22703bef9a29, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastMember.Signed.1.3.0\lib\net45\FastMember.Signed.dll</HintPath>
+    </Reference>
+    <Reference Include="FatturaElettronica, Version=2.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FatturaElettronica.2.0.6\lib\netstandard2.0\FatturaElettronica.dll</HintPath>
+    </Reference>
+    <Reference Include="FatturaElettronica.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FatturaElettronica.Core.2.0.0\lib\netstandard2.0\FatturaElettronica.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.8.1.3\lib\net45\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.7.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.Windows.Forms.4.3.0\lib\net35\NLog.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="PropertyChanged, Version=2.5.13.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
+      <HintPath>..\packages\PropertyChanged.Fody.2.5.13\lib\net452\PropertyChanged.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.AppContext.4.3.0\lib\net46\System.AppContext.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.4.1\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.ComponentModel.Primitives, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Console, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Console.4.3.0\lib\net46\System.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.3.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Globalization.Calendars, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Globalization.Calendars.4.3.0\lib\net46\System.Globalization.Calendars.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.4.3.0\lib\net46\System.IO.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.0.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.4.3.0\lib\net46\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Sockets, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Sockets.4.3.0\lib\net46\System.Net.Sockets.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms.Ribbon">
+      <HintPath>..\..\..\..\Downloads\System.Windows.Forms.Ribbon.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
+    </Reference>
+    <Reference Include="Tulpep.NotificationWindow, Version=1.1.25.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tulpep.NotificationWindow.1.1.25\lib\net40\Tulpep.NotificationWindow.dll</HintPath>
+    </Reference>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=3.0.6.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
+      <HintPath>..\packages\DockPanelSuite.3.0.6\lib\net40\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2015, Version=3.0.6.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
+      <HintPath>..\packages\DockPanelSuite.ThemeVS2015.3.0.6\lib\net40\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\Controllers\Base\BaseControllerGeneric.cs" />
+    <Compile Include="Core\Controllers\Base\BaseController.cs" />
+    <Compile Include="Core\Controllers\Articoli\ControllerArticoli.cs" />
+    <Compile Include="Core\Controllers\Vari\ControllerScheduler.cs" />
+    <Compile Include="Core\Controllers\PagamentiFatture\ControllerPagamenti.cs" />
+    <Compile Include="Core\Controllers\PagamentiFatture\ControllerPagamentiDocumenti.cs" />
+    <Compile Include="Core\Controllers\Vari\ControllerUtenti.cs" />
+    <Compile Include="Core\Controllers\Magazzino\ControllerDepositi.cs" />
+    <Compile Include="Core\Controllers\PagamentiFatture\ControllerFatturazione.cs" />
+    <Compile Include="Core\Controllers\Articoli\ControllerImmagini.cs" />
+    <Compile Include="Core\Controllers\Vari\ControllerLog.cs" />
+    <Compile Include="Core\Controllers\Magazzino\ControllerMagazzino.cs" />
+    <Compile Include="Core\Controllers\Magazzino\ControllerClienti.cs" />
+    <Compile Include="Core\Controllers\PagamentiFatture\ControllerRigheFatture.cs" />
+    <Compile Include="Core\Controllers\Stampa\Pagamento.cs" />
+    <Compile Include="Core\Events\Tab\GetNewTab.cs" />
+    <Compile Include="Core\Events\Tab\RemoveNewTab.cs" />
+    <Compile Include="Core\Exports\ExportArticoliCsv.cs" />
+    <Compile Include="Core\Exports\ExportMagazzino.cs" />
+    <Compile Include="Core\Controllers\FatturaElett\FattElettronica.cs" />
+    <Compile Include="Core\Controllers\FatturaElett\FatturaHeader.cs" />
+    <Compile Include="Core\Imports\BaseImportExcel.cs" />
+    <Compile Include="Core\Imports\ImportFatture.cs" />
+    <Compile Include="Core\Imports\ImportCavalloPazzoExcel.cs" />
+    <Compile Include="Core\Imports\ImportDaExportMagazzino.cs" />
+    <Compile Include="Core\Imports\ImportMagazziniExcel.cs" />
+    <Compile Include="Core\Item\LogItem.cs" />
+    <Compile Include="Core\Controllers\Stampa\Fattura.cs" />
+    <Compile Include="Core\Controllers\ControllerMaster.cs" />
+    <Compile Include="Core\Item\SchedulerItem.cs" />
+    <Compile Include="Core\MenuRibbon\RibbonButton.cs" />
+    <Compile Include="CustomComponents\DateTimePickerBinding.cs" />
+    <Compile Include="CustomComponents\TabCustom.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomComponents\TabCustom.Designer.cs">
+      <DependentUpon>TabCustom.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Localization_it.cs" />
+    <Compile Include="Settings\UserSettings.cs" />
+    <Compile Include="View\Articoli\RicercaArticoliStyleView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\BaseControl\SettingBaseViewVgrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\EditorListImmagini.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\EditorListImmagini.Designer.cs">
+      <DependentUpon>EditorListImmagini.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\MarcaView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\MarcaView.Designer.cs">
+      <DependentUpon>MarcaView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\PagamentiListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDCombo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDCombo.Designer.cs">
+      <DependentUpon>EDCombo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Login\CambioPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Login\CambioPassword.designer.cs">
+      <DependentUpon>CambioPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Login\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Login\LoginForm.designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Pagamenti\PagamentiDocumentiView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Pagamenti\PagamentiDocumentiView.Designer.cs">
+      <DependentUpon>PagamentiDocumentiView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\UtentiListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Articoli\ScontaArticoliView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Articoli\ScontaArticoliView.Designer.cs">
+      <DependentUpon>ScontaArticoliView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DepositiListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\LogViewList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Utility\UtilityView.cs" />
+    <Compile Include="View\ViewFactory.cs" />
+    <Content Include="FodyWeavers.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Compile Include="View\ClientiListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Articoli\DettaglioArticoloView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Articoli\DettaglioArticoloView.Designer.cs">
+      <DependentUpon>DettaglioArticoloView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Fatture\DettaglioFatturaView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Fatture\DettaglioFatturaView.Designer.cs">
+      <DependentUpon>DettaglioFatturaView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Fatture\FattureListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Fatture\FattureListView.Designer.cs">
+      <DependentUpon>FattureListView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Interfaces\ICloseSave.cs" />
+    <Compile Include="View\MainView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\MainView.Designer.cs">
+      <DependentUpon>MainView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDBase.Designer.cs">
+      <DependentUpon>EDBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDCheckBok.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDCheckBok.Designer.cs">
+      <DependentUpon>EDCheckBok.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDTesto.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\BaseControl\ElementiDettaglio\EDTesto.Designer.cs">
+      <DependentUpon>EDTesto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Settings\GenericSettingView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\BaseControl\BaseGridViewGeneric.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\BaseControl\BaseGridViewGeneric.Designer.cs">
+      <DependentUpon>BaseGridViewGeneric.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Fatture\FattureRigheListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Test.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Test.Designer.cs">
+      <DependentUpon>Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Interfaces\IMenu.cs" />
+    <Compile Include="View\Articoli\ArticoliListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomComponents\AutoCompleteText.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\BaseControl\BaseDataControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\BaseControl\BaseDataControl.Designer.cs">
+      <DependentUpon>BaseDataControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\ScaricoMagazzinoView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\ScaricoMagazzinoView.Designer.cs">
+      <DependentUpon>ScaricoMagazzinoView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\GlobalAssemblyInfo.cs" />
+    <Compile Include="View\Utility\MySortableBindingList.cs" />
+    <Compile Include="View\Utility\OrdinaTab.cs" />
+    <None Include="Properties\app.manifest" />
+    <None Include="Resources\backGroudImageLogin1.jpg" />
+    <Content Include="References\DevExpress_18\DevExpress.Charts.v18.1.Core.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.CodeParser.v18.1.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.Data.v18.1.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.Data.v18.1.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.Images.v18.1.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.Office.v18.1.Core.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.Office.v18.1.Core.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.Pdf.v18.1.Core.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.Pdf.v18.1.Core.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.PivotGrid.v18.1.Core.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.PivotGrid.v18.1.Core.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.Printing.v18.1.Core.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.Printing.v18.1.Core.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.RichEdit.v18.1.Core.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.RichEdit.v18.1.Core.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.RichEdit.v18.1.Export.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.Sparkline.v18.1.Core.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.Sparkline.v18.1.Core.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.Utils.v18.1.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.Utils.v18.1.UI.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.Utils.v18.1.UI.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.Utils.v18.1.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.Xpo.v18.1.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.Xpo.v18.1.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraBars.v18.1.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraBars.v18.1.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraCharts.v18.1.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraCharts.v18.1.Extensions.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraCharts.v18.1.UI.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraCharts.v18.1.UI.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraCharts.v18.1.Wizard.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraCharts.v18.1.Wizard.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraCharts.v18.1.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraEditors.v18.1.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraEditors.v18.1.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraGrid.v18.1.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraGrid.v18.1.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraLayout.v18.1.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraLayout.v18.1.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraNavBar.v18.1.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraNavBar.v18.1.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraPrinting.v18.1.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraPrinting.v18.1.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraRichEdit.v18.1.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraRichEdit.v18.1.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraTreeList.v18.1.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraTreeList.v18.1.xml" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraVerticalGrid.v18.1.dll" />
+    <Content Include="References\DevExpress_18\DevExpress.XtraVerticalGrid.v18.1.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.BonusSkins.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Charts.v8.3.Core.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Data.v8.3.Compact.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Data.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Data.v8.3.Linq.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Data.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.OfficeSkins.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.SharePoint.MOSS.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.SharePoint.WSS.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Tutorials.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Utils.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Utils.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxEditors.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxEditors.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxGauges.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxGauges.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxGridView.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxGridView.v8.3.Export.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxGridView.v8.3.Export.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxGridView.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxHtmlEditor.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxHtmlEditor.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxPivotGrid.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxPivotGrid.v8.3.Export.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxPivotGrid.v8.3.Export.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxPivotGrid.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxScheduler.v8.3.Design.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxScheduler.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxScheduler.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxSpellChecker.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxSpellChecker.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxTreeList.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxTreeList.v8.3.Export.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.ASPxTreeList.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Web.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Xpo.v8.3.Compact.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Xpo.v8.3.Design.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Xpo.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Xpo.v8.3.Linq.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Xpo.v8.3.Providers.Compact.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Xpo.v8.3.Providers.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.Xpo.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraBars.v8.3.Design.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraBars.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraBars.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraCharts.v8.3.Design.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraCharts.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraCharts.v8.3.UI.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraCharts.v8.3.UI.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraCharts.v8.3.Web.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraCharts.v8.3.Web.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraCharts.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraEditors.v8.3.Design.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraEditors.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraEditors.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraGauges.v8.3.Core.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraGauges.v8.3.Core.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraGauges.v8.3.Design.Win.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraGauges.v8.3.Presets.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraGauges.v8.3.Win.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraGauges.v8.3.Win.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraGrid.v8.3.Design.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraGrid.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraGrid.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraLayout.v8.3.Design.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraLayout.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraLayout.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraNavBar.v8.3.Design.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraNavBar.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraNavBar.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraPivotGrid.v8.3.Core.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraPivotGrid.v8.3.Core.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraPivotGrid.v8.3.Design.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraPivotGrid.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraPivotGrid.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraPrinting.v8.3.Design.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraPrinting.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraPrinting.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraReports.v8.3.Design.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraReports.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraReports.v8.3.Import.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraReports.v8.3.Web.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraReports.v8.3.Web.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraReports.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraRichEdit.v8.3.Design.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraRichEdit.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraRichEdit.v8.3.Extensions.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraRichEdit.v8.3.Extensions.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraRichEdit.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraScheduler.v8.3.Core.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraScheduler.v8.3.Core.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraScheduler.v8.3.Design.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraScheduler.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraScheduler.v8.3.Extensions.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraScheduler.v8.3.Extensions.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraScheduler.v8.3.iCalendarExchange.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraScheduler.v8.3.iCalendarExchange.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraScheduler.v8.3.OutlookExchange.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraScheduler.v8.3.Printing.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraScheduler.v8.3.VCalendarExchange.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraScheduler.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraSpellChecker.v8.3.Core.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraSpellChecker.v8.3.Core.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraSpellChecker.v8.3.Design.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraSpellChecker.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraSpellChecker.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraTreeList.v8.3.Design.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraTreeList.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraTreeList.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraVerticalGrid.v8.3.Design.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraVerticalGrid.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraVerticalGrid.v8.3.xml" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraWizard.v8.3.dll" />
+    <Content Include="References\DevExpress_8.3.x\DevExpress.XtraWizard.v8.3.xml" />
+    <None Include="Resources\BackGroundForm.jpg" />
+    <None Include="Resources\Payment.png" />
+    <None Include="Resources\Search_48.png" />
+    <None Include="Resources\Search.png" />
+    <None Include="Resources\Excel_export.png" />
+    <None Include="Resources\MantieniFiltro.png" />
+    <None Include="Resources\Libro_48.png" />
+    <None Include="Resources\Identity_48.png" />
+    <None Include="Resources\pdfIcon.png" />
+    <None Include="Resources\PreviewIcon.png" />
+    <Content Include="Resources\StrumentoMusicale.ico" />
+    <Content Include="StrumentoMusicale.ico" />
+    <None Include="Resources\Close.png" />
+    <None Include="Resources\Add2.png" />
+    <None Include="Resources\View_all_48.png" />
+    <None Include="Resources\View_all_64.png" />
+    <None Include="Resources\Check_OK_48.png" />
+    <None Include="Resources\Sconta_Articoli.png" />
+    <None Include="Resources\Utenti.png" />
+    <None Include="Resources\Depositi.png" />
+    <None Include="Resources\Totali_Aggiorna_48.png" />
+    <None Include="Resources\Fattura_xml_48.png" />
+    <None Include="Resources\Close_48.png" />
+    <None Include="Resources\Save_Close.png" />
+    <None Include="Resources\Customer_48.png" />
+    <None Include="Resources\Print_48.png" />
+    <None Include="Resources\ImmagineMancante.png" />
+    <None Include="Resources\Warning_24.png" />
+    <None Include="Resources\Error_24.png" />
+    <None Include="Resources\Info_24.png" />
+    <None Include="Resources\StrumentoMusicale.png" />
+    <None Include="Resources\LogView_48.png" />
+    <None Include="Resources\Down.png" />
+    <None Include="Resources\Up.png" />
+    <EmbeddedResource Include="CustomComponents\TabCustom.resx">
+      <DependentUpon>TabCustom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="View\Articoli\RicercaArticoliStyleView.resx">
+      <DependentUpon>RicercaArticoliStyleView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\EditorListImmagini.resx">
+      <DependentUpon>EditorListImmagini.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\MarcaView.resx">
+      <DependentUpon>MarcaView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\PagamentiListView.resx">
+      <DependentUpon>PagamentiListView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Articoli\DettaglioArticoloView.resx">
+      <DependentUpon>DettaglioArticoloView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Articoli\ScontaArticoliView.resx">
+      <DependentUpon>ScontaArticoliView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\BaseControl\ElementiDettaglio\EDCombo.resx">
+      <DependentUpon>EDCombo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Fatture\DettaglioFatturaView.resx">
+      <DependentUpon>DettaglioFatturaView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Fatture\FattureListView.resx">
+      <DependentUpon>FattureListView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Login\CambioPassword.resx">
+      <DependentUpon>CambioPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Login\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\MainView.resx">
+      <DependentUpon>MainView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\BaseControl\ElementiDettaglio\EDBase.resx">
+      <DependentUpon>EDBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\BaseControl\ElementiDettaglio\EDTesto.resx">
+      <DependentUpon>EDTesto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Pagamenti\PagamentiDocumentiView.resx">
+      <DependentUpon>PagamentiDocumentiView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Settings\GenericSettingView.resx">
+      <DependentUpon>GenericSettingView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\BaseControl\BaseGridViewGeneric.resx">
+      <DependentUpon>BaseGridViewGeneric.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Articoli\ArticoliListView.resx">
+      <DependentUpon>ArticoliListView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\BaseControl\BaseDataControl.resx">
+      <DependentUpon>BaseDataControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\ScaricoMagazzinoView.resx">
+      <DependentUpon>ScaricoMagazzinoView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Test.resx">
+      <DependentUpon>Test.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="TemplateExcel\ProtoFatt.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TemplateExcel\ProtoPagamento.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 e x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StrumentiMusicali.Core\StrumentiMusicali.Core.csproj">
+      <Project>{a1245fd2-f94b-4916-a0de-f192610f55c3}</Project>
+      <Name>StrumentiMusicali.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StrumentiMusicali.ftpBackup\StrumentiMusicali.ftpBackup.csproj">
+      <Project>{0e29b767-416d-421e-98f6-a8eed7c7cb6f}</Project>
+      <Name>StrumentiMusicali.ftpBackup</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StrumentiMusicali.PrestaShopSyncro\StrumentiMusicali.PrestaShopSyncro.csproj">
+      <Project>{CA69F008-CD76-4097-8670-F939E1FEE8F0}</Project>
+      <Name>StrumentiMusicali.PrestaShopSyncro</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StrumentiMusicaliSql\StrumentiMusicali.Library.csproj">
+      <Project>{114b9db5-6a31-4d89-bbb8-7ae7dd1a25c6}</Project>
+      <Name>StrumentiMusicali.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\Manager\" />
+    <Folder Include="View\Attributes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="References\System.Windows.Forms.Ribbon.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\Apri_Fatturazione.png" />
+    <None Include="Resources\Fatture_48.png" />
+    <None Include="Resources\warning_64.png" />
+    <None Include="Resources\Magazzino.png" />
+    <None Include="Resources\Remove.png" />
+    <None Include="Resources\Add1.png" />
+    <None Include="Resources\Progress_Gif.gif" />
+    <None Include="Resources\Import.png" />
+    <None Include="Resources\Upload_64.png" />
+    <None Include="Resources\Upload.png" />
+    <None Include="Resources\error_64.png" />
+    <None Include="Resources\Save.png" />
+    <None Include="Resources\Settings.png" />
+    <None Include="Resources\pin_16.png" />
+    <None Include="Resources\Penna.png" />
+    <None Include="Resources\Info_64.png" />
+    <None Include="Resources\info_48.png" />
+    <None Include="Resources\Error.png" />
+    <None Include="Resources\Duplicate.png" />
+    <None Include="Resources\Delete.png" />
+    <None Include="Resources\Cerca.png" />
+    <None Include="Resources\Apri.png" />
+    <None Include="Resources\Add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.CodeQuality.Analyzers.2.9.8\analyzers\dotnet\cs\Humanizer.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeQuality.Analyzers.2.9.8\analyzers\dotnet\cs\Microsoft.CodeQuality.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeQuality.Analyzers.2.9.8\analyzers\dotnet\cs\Microsoft.CodeQuality.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Fody.3.2.9\build\Fody.targets" Condition="Exists('..\packages\Fody.3.2.9\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Questo progetto fa riferimento a uno o più pacchetti NuGet che non sono presenti in questo computer. Usare lo strumento di ripristino dei pacchetti NuGet per scaricarli. Per altre informazioni, vedere http://go.microsoft.com/fwlink/?LinkID=322105. Il file mancante è {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.3.2.9\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.3.2.9\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\PropertyChanged.Fody.2.5.13\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.2.5.13\build\PropertyChanged.Fody.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeQuality.Analyzers.2.9.8\build\Microsoft.CodeQuality.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeQuality.Analyzers.2.9.8\build\Microsoft.CodeQuality.Analyzers.props'))" />
+  </Target>
+</Project>

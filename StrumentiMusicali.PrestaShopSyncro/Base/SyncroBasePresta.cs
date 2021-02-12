@@ -1,4 +1,6 @@
-﻿using Bukimedia.PrestaSharp.Factories;
+﻿using Bukimedia.PrestaSharp.Entities;
+using Bukimedia.PrestaSharp.Factories;
+using StrumentiMusicali.EcommerceBaseSyncro;
 using StrumentiMusicali.Library.Entity.Setting;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -8,12 +10,16 @@ using System.Reflection;
 
 namespace StrumentiMusicali.PrestaShopSyncro.BaseClass
 {
-    public abstract class SyncroBase : IDisposable
+    public abstract class SyncroBasePresta : EcommerceBaseSyncro.Base.SyncroBase, IDisposable
     {
         protected string _url = "";
         protected string _autKey = "";
-
-        public SyncroBase()
+        internal product GetProdWebFromCodartEcommerce(ArticoloBase artDb)
+        {
+            return _productFactory.Get(long.Parse(artDb.CodiceArticoloEcommerce));
+        }
+        public SyncroBasePresta()
+            :base()
         {
             var logondata = LoginData();
             _url = logondata.WebServiceUrl;
@@ -89,12 +95,12 @@ namespace StrumentiMusicali.PrestaShopSyncro.BaseClass
             }
         }
 
-        protected TaxRuleGroupFactory _taxRuleGroupFact = null;
+        internal TaxRuleGroupFactory _taxRuleGroupFact = null;
 
-        protected CategoryFactory _categoriesFact = null;
-        protected StockAvailableFactory _StockAvailableFactory = null;
-        protected ImageFactory _imageFactory = null;
-        protected ProductFactory _productFactory = null;
+        internal CategoryFactory _categoriesFact = null;
+        internal StockAvailableFactory _StockAvailableFactory = null;
+        internal ImageFactory _imageFactory = null;
+        internal ProductFactory _productFactory = null;
 
         #region IDisposable Support
         private bool disposedValue = false; // Per rilevare chiamate ridondanti

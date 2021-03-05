@@ -16,8 +16,10 @@ namespace StrumentiMusicali.Core.Scheduler.Jobs.Interface
 
     public enum EnumJobs
     {
-        UpdateWeb,
-        UpdateFromWeb,
+        PrestaUpdateWeb,
+        PrestaUpdateFromWeb,
+        WooCommerceUpdateWeb,
+        WooCommerceUpdateFromWeb,
         BackupDB
 
     }

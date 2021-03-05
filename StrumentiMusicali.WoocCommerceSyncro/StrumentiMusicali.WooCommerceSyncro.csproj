@@ -52,6 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\SyncroBaseWooCommerce.cs" />
+    <Compile Include="Job\SyncStockFromWeb.cs" />
+    <Compile Include="Job\UpdateEcommerce.cs" />
     <Compile Include="Sync\CategorySync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sync\OrderSync.cs" />

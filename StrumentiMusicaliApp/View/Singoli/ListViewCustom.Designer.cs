@@ -1,6 +1,6 @@
 ﻿namespace StrumentiMusicali.App.View
 {
-    partial class MarcaView
+    partial class ListViewCustom
     {
         /// <summary>
         /// Required designer variable.

@@ -34,7 +34,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -265,6 +265,7 @@
     <Compile Include="Core\Controllers\Base\BaseControllerGeneric.cs" />
     <Compile Include="Core\Controllers\Base\BaseController.cs" />
     <Compile Include="Core\Controllers\Articoli\ControllerArticoli.cs" />
+    <Compile Include="Core\Controllers\Scontrino\ScontrinoLine.cs" />
     <Compile Include="Core\Controllers\Scontrino\ScontrinoUtility.cs" />
     <Compile Include="Core\Controllers\Vari\ControllerScheduler.cs" />
     <Compile Include="Core\Controllers\PagamentiFatture\ControllerPagamenti.cs" />
@@ -318,11 +319,11 @@
     <Compile Include="View\EditorListImmagini.Designer.cs">
       <DependentUpon>EditorListImmagini.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\MarcaView.cs">
+    <Compile Include="View\Singoli\ListViewCustom.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\MarcaView.Designer.cs">
-      <DependentUpon>MarcaView.cs</DependentUpon>
+    <Compile Include="View\Singoli\ListViewCustom.Designer.cs">
+      <DependentUpon>ListViewCustom.cs</DependentUpon>
     </Compile>
     <Compile Include="View\PagamentiListView.cs">
       <SubType>UserControl</SubType>
@@ -669,8 +670,8 @@
     <EmbeddedResource Include="View\EditorListImmagini.resx">
       <DependentUpon>EditorListImmagini.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\MarcaView.resx">
-      <DependentUpon>MarcaView.cs</DependentUpon>
+    <EmbeddedResource Include="View\Singoli\ListViewCustom.resx">
+      <DependentUpon>ListViewCustom.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\PagamentiListView.resx">
       <DependentUpon>PagamentiListView.cs</DependentUpon>

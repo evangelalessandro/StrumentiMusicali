@@ -1,4 +1,5 @@
-﻿using StrumentiMusicali.Library.Repo;
+﻿using StrumentiMusicali.App.View;
+using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,11 +32,18 @@ namespace StrumentiMusicali.App.Core.Exports
             string marcaFiltro = "";
             if (TipoExp == TipoExport.PerMarca)
             {
-                using (var frmMarche = new View.MarcaView())
+                using (var uof = new UnitOfWork())
                 {
-                    frmMarche.ShowDialog();
-                    marcaFiltro = frmMarche.Marca;
 
+                    var list = uof.ArticoliRepository.Find(a => a.Strumento.Marca.Length > 0)
+                    .Select(a => a.Strumento.Marca.ToUpper()).Distinct().OrderBy(a => a).ToList();
+
+                    using (var frmMarche = new ListViewCustom(list,"Marca"))
+                    {
+                        frmMarche.ShowDialog();
+                        marcaFiltro = frmMarche.SelectedItem;
+
+                    }
                 }
             }
 
@@ -123,7 +131,8 @@ namespace StrumentiMusicali.App.Core.Exports
                       a.articolo.ArticoloWeb.PrezzoWeb,
 
                       a.CodiceArticoloEcommerce
-                      ,a.articolo.DataUltimaModifica
+                      ,
+                      a.articolo.DataUltimaModifica
                   }
 
             ).ToList();

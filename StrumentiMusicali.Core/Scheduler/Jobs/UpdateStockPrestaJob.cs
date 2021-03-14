@@ -4,14 +4,15 @@ using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Core.Scheduler.Jobs.Interface;
 using System.Collections.Generic;
 using System.Linq;
+
 namespace StrumentiMusicali.Core.Scheduler.Jobs
 {
-    public class UpdateWebJob : BaseIjob
+    public class UpdateLocalStockPrestaJob : BaseIjob
     {
-        public UpdateWebJob() 
-            : base(EnumJobs.UpdateWeb)
+        public UpdateLocalStockPrestaJob() 
+            : base(EnumJobs.PrestaUpdateFromWeb)
         {
-        }
 
+        }
     }
 }

@@ -101,9 +101,11 @@
     <Compile Include="Scheduler\Jobs\Interface\BaseIjob.cs" />
     <Compile Include="Scheduler\Jobs\IndexOptimizeJob.cs" />
     <Compile Include="Scheduler\Jobs\Interface\IPlugInJob.cs" />
-    <Compile Include="Scheduler\Jobs\UpdateStockJob.cs" />
+    <Compile Include="Scheduler\Jobs\UpdateLocalStockWooJob.cs" />
+    <Compile Include="Scheduler\Jobs\UpdateStockPrestaJob.cs" />
     <Compile Include="Scheduler\Jobs\BackupDbJob.cs" />
-    <Compile Include="Scheduler\Jobs\UpdateWebJob.cs" />
+    <Compile Include="Scheduler\Jobs\UpdateWebPrestaJob.cs" />
+    <Compile Include="Scheduler\Jobs\UpdateWebWooJob.cs" />
     <Compile Include="Scheduler\SchedulerTask.cs" />
     <Compile Include="Settings\DatiIntestazioneStampaFatturaValidator.cs" />
     <Compile Include="Settings\ISettingsReader.cs" />

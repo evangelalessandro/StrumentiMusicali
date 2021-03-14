@@ -4,6 +4,7 @@ using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Entity.Ecomm;
 using StrumentiMusicali.Library.Entity.Setting;
 using StrumentiMusicali.Library.Repo;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
@@ -189,12 +190,14 @@ namespace StrumentiMusicali.Library.Model
         {
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+            modelBuilder.Properties<DateTime>().Configure(c => c.HasColumnType("datetime"));
             modelBuilder.Entity<Pagamento>().ToTable("Pagamenti");
             modelBuilder.Entity<Deposito>().ToTable("Depositi");
             modelBuilder.Entity<Magazzino>().ToTable("Magazzino");
             modelBuilder.Entity<Articolo>().ToTable("Articoli");
             modelBuilder.Entity<Categoria>().ToTable("Categorie");
 
+            modelBuilder.Entity<TipiPagamentoScontrino>().ToTable("TipiPagamentiScontrino");
             modelBuilder.Entity<FotoArticolo>().ToTable("FotoArticoli");
 
             //modelBuilder.Entity<OrdineWeb>().ToTable("OrdiniWeb");
@@ -255,8 +258,12 @@ namespace StrumentiMusicali.Library.Model
 
         public virtual DbSet<Utente> Utenti { get; set; }
         public virtual DbSet<SettingSito> SettingSito { get; set; }
+
+        public virtual DbSet<SettingScontrino> SettingScontrino { get; set; }
         public virtual DbSet<DatiIntestazioneStampaFattura> DatiIntestazioneStampaFattura { get; set; }
         public virtual DbSet<DatiMittente> DatiMittenteFattura { get; set; }
+
+        public virtual DbSet<TipiPagamentoScontrino> TipiPagamentoScontrino { get; set; }
 
         public virtual DbSet<Categoria> Categorie { get; set; }
         public virtual DbSet<EventLog> LogEventi { get; set; }

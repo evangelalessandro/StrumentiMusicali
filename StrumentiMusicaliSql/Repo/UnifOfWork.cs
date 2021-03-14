@@ -66,6 +66,19 @@ select @db
                 return _CategorieRepository;
             }
         }
+        private Repository<TipiPagamentoScontrino> _TipiPagamentoScontrinoRepository;
+
+        public IRepository<TipiPagamentoScontrino> TipiPagamentoScontrinoRepository
+        {
+            get
+            {
+                if (_TipiPagamentoScontrinoRepository == null)
+                {
+                    _TipiPagamentoScontrinoRepository = new Repository<TipiPagamentoScontrino>(dbContext);
+                }
+                return _TipiPagamentoScontrinoRepository;
+            }
+        }
 
         private Repository<CategoriaWeb> _CategorieWebRepository;
 
@@ -138,6 +151,20 @@ select @db
                     _DatiIntestazioneStampaFatturaRepository = new Repository<DatiIntestazioneStampaFattura>(dbContext);
                 }
                 return _DatiIntestazioneStampaFatturaRepository;
+            }
+        }
+
+        private Repository<SettingScontrino> _SettingScontrino;
+
+        public IRepository<SettingScontrino> SettingScontrino
+        {
+            get
+            {
+                if (_SettingScontrino == null)
+                {
+                    _SettingScontrino = new Repository<SettingScontrino>(dbContext);
+                }
+                return _SettingScontrino;
             }
         }
 

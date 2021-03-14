@@ -111,6 +111,7 @@
     <Compile Include="Settings\ISettingsReader.cs" />
     <Compile Include="Settings\SettingBackupFtpValidator.cs" />
     <Compile Include="Settings\SettingDocumentiPagamentiValidator.cs" />
+    <Compile Include="Settings\SettingScontrinoValidator.cs" />
     <Compile Include="Settings\SettingSitoValidator.cs" />
     <Compile Include="Utility\ImageArticoloSave.cs" />
     <Compile Include="Utility\UtilityIco.cs" />

@@ -22,9 +22,14 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
         private void StampaScontrino(ScontrinoStampa obj)
         {
-         
-        }
+            if (Datasource.Count==0)
+            {
+                MessageManager.NotificaWarnig("Non ci sono articoli da stampare");
+                return;
+            }
 
+        }
+         
         private void RipulisciScontrino(ScontrinoClear obj)
         {
             Datasource.Clear();

@@ -526,6 +526,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                 case enAmbiente.SettingFtpBackup:
                     return "Impostazioni ftp backup";
 
+                case enAmbiente.SettingScontrino:
+                    return "Impostazioni scontrino";
+
                 case enAmbiente.Scheduler:
                     return "Scheduler";
 
@@ -607,16 +610,12 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                 case enAmbiente.Magazzino:
                     frm.Icon = UtilityView.GetIco(Properties.Resources.UnloadWareHouse);
                     break;
+                case enAmbiente.SettingScontrino:
                 case enAmbiente.SettingFatture:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.Settings);
-                    break;
                 case enAmbiente.SettingFtpBackup:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.Settings);
-                    break;
                 case enAmbiente.SettingDocPagamenti:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.Settings);
-                    break;
                 case enAmbiente.SettingSito:
+                case enAmbiente.SettingStampa:
                     frm.Icon = UtilityView.GetIco(Properties.Resources.Settings);
                     break;
                 case enAmbiente.ScaricoMagazzino:
@@ -624,9 +623,6 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                     break;
                 case enAmbiente.LogViewList:
                     frm.Icon = UtilityView.GetIco(Properties.Resources.LogView_48);
-                    break;
-                case enAmbiente.SettingStampa:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.Settings);
                     break;
                 case enAmbiente.FattureRigheList:
                     frm.Icon = UtilityView.GetIco(Properties.Resources.Invoice);

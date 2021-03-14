@@ -1,6 +1,8 @@
 namespace StrumentiMusicali.Library.Migrations
 {
     using StrumentiMusicali.Library.Entity.Articoli;
+    using StrumentiMusicali.Library.Model;
+    using System;
     using System.Data.Entity.Migrations;
 
     internal sealed class Configuration : DbMigrationsConfiguration<StrumentiMusicali.Library.Model.ModelSm>
@@ -8,7 +10,7 @@ namespace StrumentiMusicali.Library.Migrations
 		public Configuration()
 		{
 			AutomaticMigrationsEnabled = true;
-			AutomaticMigrationDataLossAllowed = true;
+			AutomaticMigrationDataLossAllowed = false;
 		}
 
 		protected override void Seed(StrumentiMusicali.Library.Model.ModelSm context)
@@ -19,9 +21,28 @@ namespace StrumentiMusicali.Library.Migrations
 			//  to avoid creating duplicate seed data.
 
 			InitCategories(context);
+			InitTipiPagamenti(context);
 		}
 
-		 
+		private void InitTipiPagamenti(ModelSm context)
+		{
+			context.TipiPagamentoScontrino.AddOrUpdate(
+				
+				pag => new { pag.Codice, pag.Descrizione }
+								,
+
+
+
+			new Entity.TipiPagamentoScontrino() { Codice = 1, Descrizione = "Pagamento in Contanti" },
+			new Entity.TipiPagamentoScontrino() { Codice = 2, Descrizione = "Pagamento con Assegno" },
+			new Entity.TipiPagamentoScontrino() { Codice = 3, Descrizione = "Pagamento con Credito" },
+			new Entity.TipiPagamentoScontrino() { Codice = 4, Descrizione = "Pagamento con Carta di credito" },
+			new Entity.TipiPagamentoScontrino() { Codice = 5, Descrizione = "Pagamento in Corrispettivi non riscossi" },
+			new Entity.TipiPagamentoScontrino() { Codice = 54, Descrizione = "Pagamento con Bancomat" }
+			);
+
+
+		}
 
 		private static void InitCategories(Model.ModelSm context)
 		{

@@ -56,6 +56,9 @@ namespace StrumentiMusicali.Library.View.Enums
 
         [UIAmbienteAttribute(false)]
         SettingFtpBackup = 40,
+        
+        [UIAmbienteAttribute(false)]
+        SettingScontrino = 125,
 
         NonSpecificato = 100,
         [UIAmbienteAttribute(false)]

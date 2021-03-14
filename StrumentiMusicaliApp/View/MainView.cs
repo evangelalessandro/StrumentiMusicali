@@ -124,6 +124,11 @@ namespace StrumentiMusicali.App
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.Scheduler));
             };
+            var rib7 = panel1.Add("Scontrino", Properties.Resources.Settings);
+            rib7.Click += (s, e) =>
+            {
+                EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingScontrino));
+            };
         }
 
         private void AggiungiTabLog()

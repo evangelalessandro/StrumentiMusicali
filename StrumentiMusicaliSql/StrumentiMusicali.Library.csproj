@@ -137,6 +137,7 @@
     <Compile Include="Core\LoginData.cs" />
     <Compile Include="Core\MessageException.cs" />
     <Compile Include="Core\Settings\SettingBackupFtpValidator.cs" />
+    <Compile Include="Entity\Altro\TipiPagamentoScontrino.cs" />
     <Compile Include="Entity\Altro\SchedulerJob.cs" />
     <Compile Include="Entity\Articoli\Articolo.cs" />
     <Compile Include="Entity\Articoli\ArticoloImportato.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Entity\Articoli\FotoArticolo.cs" />
     <Compile Include="Entity\Articoli\Magazzino.cs" />
     <Compile Include="Entity\Fatture\FatturaRiga.cs" />
+    <Compile Include="Entity\Setting\SettingScontrino.cs" />
     <Compile Include="Entity\Setting\WooCommerceSetting.cs" />
     <Compile Include="Entity\Setting\PrestaShopSetting.cs" />
     <Compile Include="Entity\Setting\SettingBackupFtp.cs" />

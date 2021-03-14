@@ -243,6 +243,10 @@ namespace StrumentiMusicali.App.Core.Controllers
                     ApriSettingFtpBackup();
                     break;
 
+                case enAmbiente.SettingScontrino:
+
+                    ApriSettingScontrino();
+                    break;
                 case enAmbiente.SettingSito:
 
                     ApriSettingSito();
@@ -281,6 +285,29 @@ namespace StrumentiMusicali.App.Core.Controllers
                 default:
                     break;
             }
+        }
+
+        private void ApriSettingScontrino()
+        {
+            var setting = SettingScontrinoValidator.ReadSetting();
+
+            var view = new GenericSettingView(setting);
+            {
+                view.OnSave += (a, b) =>
+                {
+                    using (var cur = new CursorManager())
+                    {
+                        view.Validate();
+                        using (var save = new SaveEntityManager())
+                        {
+                            save.UnitOfWork.SettingScontrino.Update(setting);
+                            save.SaveEntity(enSaveOperation.OpSave);
+                        }
+                    }
+                };
+                this.ShowView(view, enAmbiente.SettingSito);
+            }
+
         }
 
         private void ApriSettingScheduler()

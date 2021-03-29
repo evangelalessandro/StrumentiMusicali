@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StrumentiMusicali.Library.Core.Item;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,16 +20,12 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
         Vino Lambrusco ; 22 ;2;0,75;1,50;V;     
      */
-    internal class ScontrinoLine
-    {
-        public string Descrizione { get; set; } = "";
-        public decimal Aliquota { get; set; } = 22;
-        public decimal PrezzoSingoloIvato { get; set; } = 0;
-
-        public bool TipoTotale { get; set; } = false;
+    internal class ScontrinoLine : ScontrinoLineItem
+    {  
+         
         public decimal Qta { get; set; } = 10.5M;
 
-        public decimal TotaleRiga { get { return Qta * PrezzoSingoloIvato; } }
+        public decimal TotaleRiga { get { return Qta * PrezzoIvato; } }
 
         public string Pagamento { get; set; }
         /// <summary>
@@ -39,18 +36,23 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
         public override string ToString()
         {
             StringBuilder dato = new StringBuilder("");
-            if (TipoTotale == false)
-                dato.Append( Descrizione.Replace(";",",") + ";" + Aliquota + ";" + Qta.ToString("0.00") + ";" + PrezzoSingoloIvato.ToString("0.00") + ";" + TotaleRiga.ToString("0.00") + ";");
-            else
+            if (TipoRigaScontrino ==TipoRigaScontrino.Vendita)
+                dato.Append( Descrizione.Replace(";",",") + ";" + IvaPerc + ";" + Qta.ToString("0.00") + ";" + PrezzoIvato.ToString("0.00") + ";" + TotaleRiga.ToString("0.00") + ";");
+            else if (TipoRigaScontrino == TipoRigaScontrino.Sconto)
+                dato.Append(Descrizione.Replace(";", ",") + ";" + 0 + ";" + 0.ToString("0.00") + ";" + PrezzoIvato.ToString("0.00") + ";" + TotaleRiga.ToString("0.00") + ";");
+            else if (TipoRigaScontrino == TipoRigaScontrino.Totale)
             {
 
                 dato.Append("TOTALE" + ";" + ""+ ";" + "" + ";" + ";" + TotaleComplessivo.ToString("0.00") + ";");
 
             }
-            if (TipoTotale == false)
+            if (TipoRigaScontrino == TipoRigaScontrino.Vendita)
                 dato.Append("V;");
+            else if (TipoRigaScontrino == TipoRigaScontrino.Sconto)
+                dato.Append("S;");
+
             else
-                dato.Append("T;" + Pagamento);
+                        dato.Append("T;" + Pagamento);
             return dato.ToString();
         }
     }

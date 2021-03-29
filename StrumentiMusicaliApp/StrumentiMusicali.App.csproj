@@ -76,10 +76,10 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-	<Content Include="Devepress_Ref\*.*">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <DeploymentContent>true</DeploymentContent>
-        <Link>Devepress_Ref\%(Filename)%(Extension)</Link>
+    <Content Include="Devepress_Ref\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DeploymentContent>true</DeploymentContent>
+      <Link>Devepress_Ref\%(Filename)%(Extension)</Link>
     </Content>
     <Reference Include="Autofac, Version=5.1.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.5.1.2\lib\net461\Autofac.dll</HintPath>
@@ -284,6 +284,8 @@
     <Compile Include="Core\Controllers\Magazzino\ControllerClienti.cs" />
     <Compile Include="Core\Controllers\PagamentiFatture\ControllerRigheFatture.cs" />
     <Compile Include="Core\Controllers\Stampa\Pagamento.cs" />
+    <Compile Include="Core\Events\Scontrino\ScontrinoRemoveLineEvents.cs" />
+    <Compile Include="Core\Events\Scontrino\ScontrinoAddScontoEvents.cs" />
     <Compile Include="Core\Events\Scontrino\ScontrinoAddEvents.cs" />
     <Compile Include="Core\Events\Scontrino\ScontrinoClear.cs" />
     <Compile Include="Core\Events\Scontrino\ScontrinoStampa.cs" />
@@ -944,6 +946,10 @@
     <None Include="Resources\pdfIcon.png" />
     <None Include="Resources\PreviewIcon.png" />
     <None Include="Resources\PrintScontrino_48.png" />
+    <None Include="Resources\Sconto_64.png" />
+    <None Include="Resources\Cancella_Scontrino.png" />
+    <None Include="Resources\CancellaRiga_scontrino.png" />
+    <None Include="Resources\Cancella_scontrino_64.png" />
     <Content Include="Resources\StrumentoMusicale.ico" />
     <Content Include="StrumentoMusicale.ico" />
     <None Include="Resources\Close.png" />

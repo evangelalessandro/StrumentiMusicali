@@ -103,6 +103,26 @@ namespace StrumentiMusicali.App.Properties {
         /// <summary>
         ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Cancella_scontrino_64 {
+            get {
+                object obj = ResourceManager.GetObject("Cancella_scontrino_64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CancellaRiga_scontrino {
+            get {
+                object obj = ResourceManager.GetObject("CancellaRiga_scontrino", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Check_OK_48 {
             get {
                 object obj = ResourceManager.GetObject("Check_OK_48", resourceCulture);
@@ -416,6 +436,16 @@ namespace StrumentiMusicali.App.Properties {
         internal static System.Drawing.Bitmap Sconta_Articoli {
             get {
                 object obj = ResourceManager.GetObject("Sconta_Articoli", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Sconto_64 {
+            get {
+                object obj = ResourceManager.GetObject("Sconto_64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

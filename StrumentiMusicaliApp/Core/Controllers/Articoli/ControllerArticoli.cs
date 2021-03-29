@@ -420,11 +420,25 @@ namespace StrumentiMusicali.App.Core.Controllers
                         Articolo = this.SelectedItem
                     }) ;
                 };
+                pnlS.Add("Aggiungi sconto", Properties.Resources.Sconto_64, true).Click += (a, e) =>
+                {
+                    EventAggregator.Instance().Publish<ScontrinoAddScontoEvents>(new ScontrinoAddScontoEvents()
+                    {
+                         
+                    });
+                };
+                pnlS.Add("Rimuovi Riga o Sconto", Properties.Resources.CancellaRiga_scontrino, true).Click += (a, e) =>
+                {
+                    EventAggregator.Instance().Publish<ScontrinoRemoveLineEvents>(new ScontrinoRemoveLineEvents()
+                    {
+
+                    });
+                };
                 pnlS.Add("Stampa", Properties.Resources.PrintScontrino_48, true).Click += (a, e) =>
                 {
                     EventAggregator.Instance().Publish<ScontrinoStampa>(new ScontrinoStampa());
                 };
-                pnlS.Add("Elimina tutto", Properties.Resources.Delete, true).Click += (a, e) =>
+                pnlS.Add("Elimina tutto", Properties.Resources.Cancella_scontrino_64, true).Click += (a, e) =>
                 {
                     EventAggregator.Instance().Publish<ScontrinoClear>(new ScontrinoClear());
                 };

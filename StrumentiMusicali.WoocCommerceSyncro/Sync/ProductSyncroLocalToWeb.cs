@@ -1,11 +1,15 @@
 ﻿
 using StrumentiMusicali.Core.Manager;
+using StrumentiMusicali.Core.Settings;
 using StrumentiMusicali.EcommerceBaseSyncro;
+using StrumentiMusicali.Library.Core.Events.Image;
+using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Entity.Enums;
 using StrumentiMusicali.Library.Repo;
 using StrumentiMusicali.WooCommerceSyncro.Products;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using WooCommerceNET.WooCommerce.v3;
 
@@ -55,7 +59,7 @@ namespace StrumentiMusicali.WooCommerceSyncro.Sync
             {
                 
                 DateTime dataLettura = DateTime.Now;
-                var listaArt = base.ListArt(uof, false).Take(10).ToList();
+                var listaArt = base.ListArt(uof, false,true).Take(10).ToList();
 
                 foreach (var item in listaArt)
                 {
@@ -106,26 +110,44 @@ namespace StrumentiMusicali.WooCommerceSyncro.Sync
 
             //*iva al 22%*//
             artWeb.tax_class = artDb.ArticoloDb.ArticoloWeb.Iva.ToString();
-            //switch (artDb.ArticoloDb.Condizione)
-            //{
-            //    case enCondizioneArticolo.Nuovo:
-            //        artWeb.condition = "new";
-            //        break;
 
-            //    case enCondizioneArticolo.ExDemo:
-            //        artWeb.condition = "used"; //refurbished
-            //        break;
+            ImpostaCategoria(artDb, uof, artWeb);
 
-            //    case enCondizioneArticolo.UsatoGarantito:
-            //        artWeb.condition = "used";
-            //        break;
+            if (string.IsNullOrEmpty(artDb.ArticoloDb.ArticoloWeb.DescrizioneHtml))
+            {
+                artWeb.description = "";
+                artWeb.enable_html_description = false;
+            }
+            else
+            {
+                artWeb.description = artDb.ArticoloDb.ArticoloWeb.DescrizioneHtml;
+                artWeb.enable_html_description = true;
+            }
+            artWeb.short_description =
+                artDb.ArticoloDb.ArticoloWeb.DescrizioneBreveHtml;
+            artWeb.enable_html_short_description = "true";
 
-            //    case enCondizioneArticolo.NonSpecificato:
-            //        break;
 
-            //    default:
-            //        break;
-            //} 
+            if (artDb.ArticoloDb.Condizione != enCondizioneArticolo.Nuovo)
+            {
+                artWeb.name = "USATO " + artWeb.name;
+                artWeb.description = "USATO " + artWeb.description;
+            }
+
+            artWeb.manage_stock = true;
+
+            if (newProd)
+                artWeb.stock_quantity = StockProductsBase.CalcolaStock(new ArticoloBase() { ArticoloID = artDb.ArticoloID });
+
+
+            artWeb.sku = artDb.ArticoloID.ToString();
+
+            UpdateImage(artDb, artWeb, uof);
+
+        }
+
+        private static void ImpostaCategoria(ArticoloBase artDb, UnitOfWork uof, Product artWeb)
+        {
             string reparto = "";
             artWeb.categories = new List<WooCommerceNET.WooCommerce.v3.ProductCategoryLine>();
             artWeb.categories.Clear();
@@ -147,9 +169,7 @@ namespace StrumentiMusicali.WooCommerceSyncro.Sync
                 {
                     id = (int)uof.RepartoWebRepository.Find(a =>
                         a.Reparto == reparto).FirstOrDefault().CodiceWeb
-                });  
-
-
+                });
 
             }
             else
@@ -163,36 +183,39 @@ namespace StrumentiMusicali.WooCommerceSyncro.Sync
                     artWeb.categories.Add(new WooCommerceNET.WooCommerce.v3.ProductCategoryLine() { id = (int)item });
                 }
             }
-            if (string.IsNullOrEmpty(artDb.ArticoloDb.ArticoloWeb.DescrizioneHtml))
+        }
+
+        private void UpdateImage(ArticoloBase artDb, WooCommerceNET.WooCommerce.v3.Product artWeb, UnitOfWork uof)
+        {
+            //DateTime date = DateTime.Now;
+            /*cancello le immagini e le sovrascrivo*/
+            artWeb.images.Clear();
+            foreach (var item in artWeb.images)
             {
-                artWeb.description = "";
-                artWeb.enable_html_description = false;
+                
+                
             }
-            else
-            {
-                artWeb.description = artDb.ArticoloDb.ArticoloWeb.DescrizioneHtml;
-                artWeb.enable_html_description = true;
-            } 
-            artWeb.short_description =
-                artDb.ArticoloDb.ArticoloWeb.DescrizioneBreveHtml;
-            artWeb.enable_html_short_description = "true";
+            var settingSito = SettingSitoValidator.ReadSetting();
 
+            var imageList = uof.FotoArticoloRepository.Find(a => a.ArticoloID == artDb.ArticoloID).OrderBy(a => a.Ordine).ToList();
 
-            if (artDb.ArticoloDb.Condizione!=enCondizioneArticolo.Nuovo)
+            var listFotoArticolo = imageList.Select(a => new ImmaginiFile<FotoArticolo>(Path.Combine(
+                settingSito.CartellaLocaleImmagini, a.UrlFoto)
+                             , a.UrlFoto, a)).ToList();
+
+            int ord = 0;
+            foreach (var item in listFotoArticolo)
             {
-                artWeb.name = "USATO " + artWeb.name;
-                artWeb.description = "USATO " + artWeb.description;
+                
+                ///provaale.atwebpages.com/wp-content/uploads/2021/03
+                artWeb.images.Add(new ProductImage() { src= item.File,position=ord,name=item.Name,alt=artDb.ArticoloDb.Titolo});
+                ord++;
             }
-          
-            artWeb.manage_stock = true;
-            
-            if (newProd)
-                artWeb.stock_quantity = StockProductsBase.CalcolaStock(new ArticoloBase() { ArticoloID = artDb.ArticoloID}); 
+            //var aggiornamento = artDb.Aggiornamento;
 
-
-            artWeb.sku = artDb.ArticoloID.ToString();
-
-
+            //aggiornamento.DataUltimoAggFoto = date;
+            //aggiornamento.DataUltimoAggFotoWeb = date;
+            //SalvaAggiornamento(uof, aggiornamento);
         }
 
     }

@@ -6,13 +6,13 @@ namespace StrumentiMusicali.Library.Core.Item
     [AddINotifyPropertyChangedInterface]
     public class ScontrinoLineItem
     {
-        public int Ordine { get; set; }
         public TipoRigaScontrino TipoRigaScontrino { get; set; }
-        public int Articolo { get; set; }
+        //public int Articolo { get; set; }
         public string Descrizione { get; set; }
         public decimal IvaPerc { get; set; }
         public decimal PrezzoIvato { get; set; }
 
+        public int ScontoPerc { get; set; } = 0;
 
         //public event PropertyChangedEventHandler PropertyChanged;
 
@@ -21,7 +21,8 @@ namespace StrumentiMusicali.Library.Core.Item
     public enum TipoRigaScontrino
     {
         Vendita,
-        Sconto,
-        Totale
+        ScontoIncondizionato,
+        Totale,
+        Sconto
     }
 }

@@ -30,7 +30,7 @@ namespace StrumentiMusicali.EcommerceBaseSyncro.Base
         /// <param name="uof"></param>
         /// <param name="stock">Filtro per data modifica stock non allineata</param>
         /// <returns></returns>
-        public List<ArticoloBase> ListArt(UnitOfWork uof, bool stock)
+        public List<ArticoloBase> ListArt(UnitOfWork uof, bool stock, bool foto=false)
         {
             var dati = uof.AggiornamentoWebArticoloRepository.Find(a => (a.Articolo.CaricainECommerce
 
@@ -59,6 +59,8 @@ namespace StrumentiMusicali.EcommerceBaseSyncro.Base
             {
 
                 dati = dati.Where(a => Math.Abs((a.Aggiornamento.DataUltimoAggiornamentoWeb - a.ArticoloDb.DataUltimaModifica).TotalSeconds) > 10
+                        || (foto && Math.Abs((a.Aggiornamento.DataUltimoAggFotoWeb - a.Aggiornamento.DataUltimoAggFoto).TotalSeconds) > 10)
+
                     || a.Aggiornamento.ForzaAggiornamento == true).ToList();
 
             }

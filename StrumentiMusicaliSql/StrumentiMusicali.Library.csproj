@@ -261,6 +261,10 @@
     <Compile Include="Migrations\202004191538072_MaggiorazioneWeb_2.Designer.cs">
       <DependentUpon>202004191538072_MaggiorazioneWeb_2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103311355236_Scontrino.cs" />
+    <Compile Include="Migrations\202103311355236_Scontrino.Designer.cs">
+      <DependentUpon>202103311355236_Scontrino.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
@@ -286,6 +290,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004191538072_MaggiorazioneWeb_2.resx">
       <DependentUpon>202004191538072_MaggiorazioneWeb_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103311355236_Scontrino.resx">
+      <DependentUpon>202103311355236_Scontrino.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Script\IndexOptimize.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -420,14 +420,14 @@ namespace StrumentiMusicali.App.Core.Controllers
                         Articolo = this.SelectedItem
                     }) ;
                 };
-                pnlS.Add("Aggiungi sconto", Properties.Resources.Sconto_64, true).Click += (a, e) =>
-                {
-                    EventAggregator.Instance().Publish<ScontrinoAddScontoEvents>(new ScontrinoAddScontoEvents()
-                    {
+                //pnlS.Add("Aggiungi sconto", Properties.Resources.Sconto_64, true).Click += (a, e) =>
+                //{
+                //    EventAggregator.Instance().Publish<ScontrinoAddScontoEvents>(new ScontrinoAddScontoEvents()
+                //    {
                          
-                    });
-                };
-                pnlS.Add("Rimuovi Riga o Sconto", Properties.Resources.CancellaRiga_scontrino, true).Click += (a, e) =>
+                //    });
+                //};
+                pnlS.Add("Rimuovi riga", Properties.Resources.CancellaRiga_scontrino, true).Click += (a, e) =>
                 {
                     EventAggregator.Instance().Publish<ScontrinoRemoveLineEvents>(new ScontrinoRemoveLineEvents()
                     {
@@ -438,10 +438,10 @@ namespace StrumentiMusicali.App.Core.Controllers
                 {
                     EventAggregator.Instance().Publish<ScontrinoStampa>(new ScontrinoStampa());
                 };
-                pnlS.Add("Elimina tutto", Properties.Resources.Cancella_scontrino_64, true).Click += (a, e) =>
-                {
-                    EventAggregator.Instance().Publish<ScontrinoClear>(new ScontrinoClear());
-                };
+                //pnlS.Add("Elimina tutto", Properties.Resources.Cancella_scontrino_64, true).Click += (a, e) =>
+                //{
+                //    EventAggregator.Instance().Publish<ScontrinoClear>(new ScontrinoClear());
+                //};
 
             }
             if (LoginData.utenteLogin.Magazzino && ModalitaController != enModalitaArticolo.SelezioneSingola)

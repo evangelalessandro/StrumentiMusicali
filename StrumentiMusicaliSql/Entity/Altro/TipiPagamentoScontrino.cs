@@ -8,5 +8,7 @@ namespace StrumentiMusicali.Library.Entity
 
         public string Descrizione { get; set; }
 
+        public bool Enable { get; set; } = true;
+
     }
 }

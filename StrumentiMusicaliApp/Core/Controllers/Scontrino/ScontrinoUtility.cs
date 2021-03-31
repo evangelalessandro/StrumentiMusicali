@@ -14,6 +14,7 @@ using StrumentiMusicali.Library.Repo;
 using DevExpress.XtraGrid.Views.Grid;
 using System.ComponentModel;
 using System.Drawing;
+using DevExpress.XtraEditors.Repository;
 
 namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 {
@@ -24,7 +25,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
         public ScontrinoUtility()
         {
             EventAggregator.Instance().Subscribe<ScontrinoAddEvents>(AggiungiArticolo);
-            EventAggregator.Instance().Subscribe<ScontrinoAddScontoEvents>(AggiungiSconto);
+
             EventAggregator.Instance().Subscribe<ScontrinoRemoveLineEvents>(ScontrinoRemoveLine);
             EventAggregator.Instance().Subscribe<ScontrinoClear>(RipulisciScontrino);
             EventAggregator.Instance().Subscribe<ScontrinoStampa>(StampaScontrino);
@@ -36,20 +37,18 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             {
 
                 var row = (ScontrinoLineItem)_dgvScontrino.GetRow(_dgvScontrino.FocusedRowHandle);
-                if (row.TipoRigaScontrino == TipoRigaScontrino.Totale)
+                if (row.TipoRigaScontrino == TipoRigaScontrino.Totale
+                    || row.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato)
                 {
-                    MessageManager.NotificaInfo("Non si elimina il totale");
+                    MessageManager.NotificaInfo("Non si elimina il totale o lo sconto");
                     return;
                 }
-                if (row.TipoRigaScontrino == TipoRigaScontrino.Sconto)
-                {
 
-                    Datasource.Remove(row);
-                    if (row.Ordine < 100)
-                    {
-                        Datasource.RemoveAll(a => row.TipoRigaScontrino == TipoRigaScontrino.Sconto && a.Ordine - 1 == row.Ordine);
-                    }
-                }
+
+                Datasource.Remove(row);
+
+
+
                 this.Reffreshlist();
             }
             catch (Exception ex)
@@ -109,12 +108,27 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             UtilityView.InitGridDev(_dgvScontrino);
             _dgvScontrino.OptionsBehavior.Editable = true;
             _dgvScontrino.OptionsView.ShowAutoFilterRow = false;
-            
-            if (_dgvScontrino.Columns["Ordine"] != null)
-                _dgvScontrino.Columns["Ordine"].SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
 
-            //_dgvScontrino.Columns["Ord"]
+
+
+
             Reffreshlist();
+            _dgvScontrino.OptionsCustomization.AllowSort = false;
+
+            var rp = new RepositoryItemTextEdit();
+            rp.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
+
+
+            rp.Mask.EditMask = "P0";
+            _gcScontrino.RepositoryItems.Add(rp);
+            var col = _dgvScontrino.Columns["ScontoPerc"];
+
+            _dgvScontrino.Columns["ScontoPerc"].ColumnEdit = rp;
+            _dgvScontrino.Columns["ScontoPerc"].OptionsColumn.AllowEdit = true;
+            col.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            col.DisplayFormat.FormatString = "{0:n0} %";
+
+
         }
         private void _dgvScontrino_RowStyle(object sender, RowStyleEventArgs e)
         {
@@ -127,11 +141,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                     e.Appearance.Font = new Font(e.Appearance.Font.FontFamily, 12, FontStyle.Bold);// = Color.FromArgb(150, Color.LightCoral);
                     e.Appearance.BackColor = Color.FromArgb(150, Color.Blue);
                 }
-                if ((line.TipoRigaScontrino == TipoRigaScontrino.Sconto))
+                if ((line.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato))
                 {
                     e.Appearance.Font = new Font(e.Appearance.Font.FontFamily, e.Appearance.Font.Size, FontStyle.Italic);// = Color.FromArgb(150, Color.LightCoral);
                     e.Appearance.BackColor = Color.FromArgb(150, Color.Aqua);
-                    
+
                 }
                 //string priority = View.GetRowCellDisplayText(e.RowHandle, View.Columns["Priority"]);
                 //if (priority == "High")
@@ -153,11 +167,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                 e.Cancel = true;
             else
             {
-                if ((line.TipoRigaScontrino == TipoRigaScontrino.Sconto))
+                if ((line.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato))
                 {
-                    if (focusCol == "PrezzoIvato" && line.Ordine < 100)
-                        e.Cancel = true;
-                    if (focusCol == "IvaPerc" && line.Ordine > 100)
+                    if (focusCol == "ScontoPerc" || focusCol == "IvaPerc")
                         e.Cancel = true;
                 }
             }
@@ -168,11 +180,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
         {
             var newitem = (new ScontrinoLineItem()
             {
-                Articolo = obj.Articolo.ID,
+
                 Descrizione = obj.Articolo.Titolo,
                 PrezzoIvato = obj.Articolo.Prezzo,
                 TipoRigaScontrino = TipoRigaScontrino.Vendita,
-                Ordine = Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Vendita).Count() * 2,
+
 
             });
             if (obj.Articolo.NonImponibile)
@@ -183,53 +195,35 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             {
                 newitem.IvaPerc = 22;
             }
-            Datasource.Add(newitem);
+            Datasource.Insert(0, newitem);
             if (Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Vendita).Count() > 0)
             {
+                if (Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato).Count() == 0)
+                {
+                    Datasource.Add(new ScontrinoLineItem()
+                    {
+                        TipoRigaScontrino = TipoRigaScontrino.ScontoIncondizionato,
+
+                        Descrizione = "Abbuono",
+                        PrezzoIvato = 0
+                    });
+                }
                 if (Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Totale).Count() == 0)
                 {
                     Datasource.Add(new ScontrinoLineItem()
                     {
                         TipoRigaScontrino = TipoRigaScontrino.Totale,
-                        Ordine = 100,
+
                         Descrizione = "Totale",
                         PrezzoIvato = 0
                     });
                 }
+
             }
             Reffreshlist();
         }
 
-        private void AggiungiSconto(ScontrinoAddScontoEvents obj)
-        {
-            var row = (ScontrinoLineItem)_dgvScontrino.GetRow(_dgvScontrino.FocusedRowHandle);
-            if (row.TipoRigaScontrino == TipoRigaScontrino.Sconto)
-            {
-                MessageManager.NotificaInfo("Non si aggiunge lo sconto dello sconto ");
 
-                return;
-            }
-            else
-            {
-                var ordineNew = row.Ordine + 1;
-                if (Datasource.Where(a => a.Ordine == ordineNew).Count() > 0)
-                {
-                    MessageManager.NotificaInfo("Esiste già la riga di sconto ");
-                    return;
-                }
-
-                Datasource.Add(new ScontrinoLineItem()
-                {
-                    TipoRigaScontrino = TipoRigaScontrino.Sconto,
-                    IvaPerc = 0,
-                    Ordine = row.Ordine + 1,
-                    Descrizione = "Sconto"
-
-                });
-            }
-
-            Reffreshlist();
-        }
 
         private void Newitem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -238,6 +232,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
         private void Reffreshlist()
         {
+            Datasource.OrderByDescending(a => a.TipoRigaScontrino == TipoRigaScontrino.Totale).ThenByDescending(a => a.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato).ToList();
             foreach (var item in Datasource)
             {
 
@@ -247,8 +242,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
             _gcScontrino.DataSource = Datasource;
             _gcScontrino.RefreshDataSource();
-            if (_dgvScontrino.Columns["Ordine"] != null)
-                _dgvScontrino.Columns["Ordine"].SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
+
+
+
+
             RefreshTotale();
         }
 
@@ -258,11 +255,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             decimal tot = 0;
             foreach (var item in Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Vendita))
             {
-                var ord = item.Ordine;
-                var sconto = Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Sconto && a.Ordine == ord + 1).FirstOrDefault();
-                if (sconto != null && sconto.IvaPerc > 0)
+                if (item.ScontoPerc != 0)
                 {
-                    tot = tot + (item.PrezzoIvato / ((decimal)100.0) * (((decimal)100) - sconto.IvaPerc)); ;
+                    tot = tot + (item.PrezzoIvato / ((decimal)100.0) * (((decimal)100) - Math.Abs(item.ScontoPerc)));
                 }
                 else
                 {
@@ -270,14 +265,14 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                 }
 
             }
-            var scontoFinale = Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Sconto && datoTotale != null && a.Ordine == datoTotale.Ordine + 1).FirstOrDefault();
+            var scontoFinale = Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato).FirstOrDefault();
             if (scontoFinale != null)
             {
                 tot = tot - Math.Abs(scontoFinale.PrezzoIvato);
             }
             if (datoTotale != null)
-                datoTotale.PrezzoIvato = tot;
-            //dato.PrezzoIvato=
+                datoTotale.PrezzoIvato = Math.Round(tot, 2);
+
         }
 
         private void RipulisciScontrino(ScontrinoClear obj)
@@ -289,20 +284,36 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
         private void ScriviFile()
         {
 
-            var righe = Datasource.OrderBy(a => a.TipoRigaScontrino != TipoRigaScontrino.Totale).ThenBy(a => a.Ordine).ToList().Select(a =>
-                      new ScontrinoLine { Descrizione = a.Descrizione, IvaPerc = a.IvaPerc, Qta = 1, PrezzoIvato = a.PrezzoIvato, TipoRigaScontrino = a.TipoRigaScontrino })
-                .ToList();
+
+
+            var listRighe = new List<ScontrinoLine>();
+            for (int i = 0; i < Datasource.Count(); i++)
+            {
+                var a = Datasource[i];
+                if (a.TipoRigaScontrino != TipoRigaScontrino.ScontoIncondizionato)
+                {
+                    listRighe.Add(new ScontrinoLine { Descrizione = a.Descrizione, IvaPerc = a.IvaPerc, Qta = 1, PrezzoIvato = a.PrezzoIvato, TipoRigaScontrino = a.TipoRigaScontrino });
+                }
+                if (a.TipoRigaScontrino == TipoRigaScontrino.Vendita && a.ScontoPerc > 0)
+                {
+                    listRighe.Add(new ScontrinoLine { Descrizione = "Sconto " + a.ScontoPerc.ToString() + "%", IvaPerc = 0, Qta = 1, PrezzoIvato = -a.PrezzoIvato * (a.ScontoPerc) / 100, TipoRigaScontrino = TipoRigaScontrino.Sconto });
+                }
+                if (a.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato && a.PrezzoIvato > 0)
+                {
+                    listRighe.Add(new ScontrinoLine { Descrizione = a.Descrizione, IvaPerc = 0, Qta = 1, PrezzoIvato = -a.PrezzoIvato, TipoRigaScontrino = TipoRigaScontrino.Sconto });
+                }
+            }
 
 
 
 
             using (var uof = new UnitOfWork())
             {
-                var list = uof.TipiPagamentoScontrinoRepository.Find(a => 1 == 1).ToList().Select(a => a.Codice.ToString() + " " + a.Descrizione).ToList();
-                using (var frmMarche = new ListViewCustom(list, "Tipo pagamento"))
+                var list = uof.TipiPagamentoScontrinoRepository.Find(a => a.Enable == true).ToList().Select(a => a.Codice.ToString() + " " + a.Descrizione).ToList();
+                using (var tipiPagamento = new ListViewCustom(list, "Tipo pagamento"))
                 {
-                    frmMarche.ShowDialog();
-                    var pagamento = frmMarche.SelectedItem;
+                    tipiPagamento.ShowDialog();
+                    var pagamento = tipiPagamento.SelectedItem;
 
                     if (string.IsNullOrEmpty(pagamento))
                     {
@@ -310,9 +321,12 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
                         return;
                     }
-                    //righe.Add(new ScontrinoLine { TotaleComplessivo = righe.Sum(a => a.TotaleRiga), TipoTotale = true, Pagamento = pagamento });
+                    var tot = listRighe.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Totale).First();
 
-                    var content = righe.Select(a => a.ToString()).ToList().ToArray();
+                    tot.Pagamento = pagamento;
+                    tot.TotaleComplessivo = tot.TotaleRiga;
+
+                    var content = listRighe.Select(a => a.ToString()).ToList().ToArray();
 
                     var validator = SettingScontrinoValidator.ReadSetting();
 
@@ -321,10 +335,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
                     MessageManager.NotificaInfo("Scontrino pubblicato al servizio correttamente!");
 
-                    //if (MessageManager.QuestionMessage("Ripulisco la lista che è nello scontrino?"))
-                    //{
+
                     RipulisciScontrino(new ScontrinoClear());
-                    //}
+
                 }
             }
         }

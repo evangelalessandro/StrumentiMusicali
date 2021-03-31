@@ -21,8 +21,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
         Vino Lambrusco ; 22 ;2;0,75;1,50;V;     
      */
     internal class ScontrinoLine : ScontrinoLineItem
-    {  
-         
+    {
+
         public decimal Qta { get; set; } = 10.5M;
 
         public decimal TotaleRiga { get { return Qta * PrezzoIvato; } }
@@ -36,14 +36,14 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
         public override string ToString()
         {
             StringBuilder dato = new StringBuilder("");
-            if (TipoRigaScontrino ==TipoRigaScontrino.Vendita)
-                dato.Append( Descrizione.Replace(";",",") + ";" + IvaPerc + ";" + Qta.ToString("0.00") + ";" + PrezzoIvato.ToString("0.00") + ";" + TotaleRiga.ToString("0.00") + ";");
+            if (TipoRigaScontrino == TipoRigaScontrino.Vendita)
+                dato.Append(Descrizione.Replace(";", ",") + ";" + IvaPerc + ";" + Qta.ToString("0.00") + ";" + PrezzoIvato.ToString("0.00") + ";" + TotaleRiga.ToString("0.00") + ";");
             else if (TipoRigaScontrino == TipoRigaScontrino.Sconto)
                 dato.Append(Descrizione.Replace(";", ",") + ";" + 0 + ";" + 0.ToString("0.00") + ";" + PrezzoIvato.ToString("0.00") + ";" + TotaleRiga.ToString("0.00") + ";");
             else if (TipoRigaScontrino == TipoRigaScontrino.Totale)
             {
 
-                dato.Append("TOTALE" + ";" + ""+ ";" + "" + ";" + ";" + TotaleComplessivo.ToString("0.00") + ";");
+                dato.Append("TOTALE" + ";" + "" + ";" + "" + ";" + ";" + TotaleComplessivo.ToString("0.00") + ";");
 
             }
             if (TipoRigaScontrino == TipoRigaScontrino.Vendita)
@@ -52,7 +52,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                 dato.Append("S;");
 
             else
-                        dato.Append("T;" + Pagamento);
+                dato.Append("T;" + Pagamento);
             return dato.ToString();
         }
     }

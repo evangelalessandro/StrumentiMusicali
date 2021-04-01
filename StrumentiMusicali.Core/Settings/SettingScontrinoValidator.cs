@@ -27,7 +27,7 @@ namespace StrumentiMusicali.Core.Settings
 
             if (string.IsNullOrEmpty(item))
             {
-                MessageManager.NotificaWarnig("Occorre impostare la cartella di destinazineo! " + Environment.NewLine + "Clicca per settare.", act);
+                MessageManager.NotificaWarnig("Occorre impostare la cartella di destinazione! " + Environment.NewLine + "Clicca per settare.", act);
             
                 return false;
             }

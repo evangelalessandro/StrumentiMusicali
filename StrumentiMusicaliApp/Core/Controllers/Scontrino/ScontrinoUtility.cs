@@ -15,6 +15,9 @@ using DevExpress.XtraGrid.Views.Grid;
 using System.ComponentModel;
 using System.Drawing;
 using DevExpress.XtraEditors.Repository;
+using StrumentiMusicali.Library.Core.Events.Magazzino;
+using StrumentiMusicali.Library.Core.Events.Generics;
+using StrumentiMusicali.Library.Entity.Articoli;
 
 namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 {
@@ -123,11 +126,20 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             _gcScontrino.RepositoryItems.Add(rp);
             var col = _dgvScontrino.Columns["ScontoPerc"];
 
-            _dgvScontrino.Columns["ScontoPerc"].ColumnEdit = rp;
-            _dgvScontrino.Columns["ScontoPerc"].OptionsColumn.AllowEdit = true;
+
+            col.ColumnEdit = rp;
+            col.OptionsColumn.AllowEdit = true;
             col.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             col.DisplayFormat.FormatString = "{0:n0} %";
 
+            col = _dgvScontrino.Columns["ScontoPerc"];
+            col.ColumnEdit = rp;
+            col.OptionsColumn.AllowEdit = true;
+            col.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            col.DisplayFormat.FormatString = "{0:n0} %";
+
+
+            _dgvScontrino.Columns["Articolo"].Visible = false;
 
         }
         private void _dgvScontrino_RowStyle(object sender, RowStyleEventArgs e)
@@ -139,7 +151,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                 if ((line.TipoRigaScontrino == TipoRigaScontrino.Totale))
                 {
                     e.Appearance.Font = new Font(e.Appearance.Font.FontFamily, 12, FontStyle.Bold);// = Color.FromArgb(150, Color.LightCoral);
-                    e.Appearance.BackColor = Color.FromArgb(150, Color.Blue);
+                    e.Appearance.BackColor = Color.FromArgb(150, Color.GreenYellow);
                 }
                 if ((line.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato))
                 {
@@ -178,9 +190,28 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
         private void AggiungiArticolo(ScontrinoAddEvents obj)
         {
+
+            using (var uof = new UnitOfWork())
+            {
+                var giacenza = uof.MagazzinoRepository.Find(a => obj.Articolo.ID == (a.ArticoloID) && a.Deposito.Principale == true)
+                          .Select(a => new { a.ArticoloID, a.Qta }).GroupBy(a => new { a.ArticoloID })
+                          .Select(a => new { Sum = a.Sum(b => b.Qta), Articolo = a.Key }).ToList();
+
+
+
+                var giacNegozio = giacenza.First().Sum - Datasource.Where(a =>a.TipoRigaScontrino==TipoRigaScontrino.Vendita &&
+                a.Articolo == obj.Articolo.ID).Count();
+
+                if (giacNegozio == 0)
+                {
+                    MessageManager.NotificaWarnig("Quantità in negozio non sufficiente!");
+                    return;
+                }
+
+            }
             var newitem = (new ScontrinoLineItem()
             {
-
+                Articolo = obj.Articolo.ID,
                 Descrizione = obj.Articolo.Titolo,
                 PrezzoIvato = obj.Articolo.Prezzo,
                 TipoRigaScontrino = TipoRigaScontrino.Vendita,
@@ -193,7 +224,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             }
             else
             {
-                newitem.IvaPerc = 22;
+                newitem.IvaPerc = obj.Articolo.ArticoloWeb.Iva;
             }
             Datasource.Insert(0, newitem);
             if (Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Vendita).Count() > 0)
@@ -284,7 +315,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
         private void ScriviFile()
         {
 
-
+            if (!SettingScontrinoValidator.Check())
+                return;
 
             var listRighe = new List<ScontrinoLine>();
             for (int i = 0; i < Datasource.Count(); i++)
@@ -296,11 +328,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                 }
                 if (a.TipoRigaScontrino == TipoRigaScontrino.Vendita && a.ScontoPerc > 0)
                 {
-                    listRighe.Add(new ScontrinoLine { Descrizione = "Sconto " + a.ScontoPerc.ToString() + "%", IvaPerc = 0, Qta = 1, PrezzoIvato = -a.PrezzoIvato * (a.ScontoPerc) / 100, TipoRigaScontrino = TipoRigaScontrino.Sconto });
+                    listRighe.Add(new ScontrinoLine { Descrizione = "Sconto " + a.ScontoPerc.ToString() + "%", IvaPerc = 0, Qta = 1, PrezzoIvato = a.PrezzoIvato * (a.ScontoPerc) / 100, TipoRigaScontrino = TipoRigaScontrino.Sconto });
                 }
                 if (a.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato && a.PrezzoIvato > 0)
                 {
-                    listRighe.Add(new ScontrinoLine { Descrizione = a.Descrizione, IvaPerc = 0, Qta = 1, PrezzoIvato = -a.PrezzoIvato, TipoRigaScontrino = TipoRigaScontrino.Sconto });
+                    listRighe.Add(new ScontrinoLine { Descrizione = a.Descrizione, IvaPerc = 0, Qta = 1, PrezzoIvato = a.PrezzoIvato, TipoRigaScontrino = TipoRigaScontrino.Sconto });
                 }
             }
 
@@ -323,25 +355,42 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                     }
                     var tot = listRighe.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Totale).First();
 
-                    tot.Pagamento = pagamento;
+                    tot.Pagamento = pagamento.Split(" ".ToCharArray()).First();
                     tot.TotaleComplessivo = tot.TotaleRiga;
 
                     var content = listRighe.Select(a => a.ToString()).ToList().ToArray();
 
                     var validator = SettingScontrinoValidator.ReadSetting();
+                    
+                    var negozio = uof.DepositoRepository.Find(a => a.Principale == true).First();
+                    foreach (var item in Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Vendita))
+                    {
+                        using (var depo = new Core.Controllers.ControllerMagazzino())
+                        {
+                            ScaricaQtaMagazzino scarica = new ScaricaQtaMagazzino();
 
+                            scarica.Qta = 1;
+
+                            scarica.Deposito = negozio.ID;
+                            scarica.ArticoloID = item.Articolo;
+                            EventAggregator.Instance().Publish<ScaricaQtaMagazzino>(scarica);
+
+                        }
+                    }
                     System.IO.File.WriteAllLines(
-                        System.IO.Path.Combine(validator.FolderDestinazione, DateTime.Now.Ticks.ToString() + ".txt"), content);
+                          System.IO.Path.Combine(validator.FolderDestinazione, DateTime.Now.Ticks.ToString() + ".txt"), content);
+
 
                     MessageManager.NotificaInfo("Scontrino pubblicato al servizio correttamente!");
 
+                    //EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>(this));
 
                     RipulisciScontrino(new ScontrinoClear());
+
 
                 }
             }
         }
-
         private void StampaScontrino(ScontrinoStampa obj)
         {
 
@@ -356,7 +405,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             /*
              Il file deve contenere le righe di vendita cosi strutturate  :
 
- 
+
 
                 Descrizione : per il tipo di riga V deve sempre esserci , per il resto è opzionale
                 Aliquota Iva : per il tipo di riga V deve sempre esserci , per il resto è opzionale
@@ -364,18 +413,18 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                 Totale : è sempre obbligatoria
                 Tipo Riga (V,T) : è sempre obbligatoria
                 Extra : è sempre opzionale
-                
-                    
+
+
                 -V sta per Vendita
                 -T sta per Totale
                 -S sconto e importo
                 Vino Lambrusco ; 22 ;1;0,75;2,50;V;
 
- 
+
 
                 Es riga Totale :
 
- 
+
 
                 Totale; ; ; ; 2,50;T;1 Riga con pagamento in contanti
 

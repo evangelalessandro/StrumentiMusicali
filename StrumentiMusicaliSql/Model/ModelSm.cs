@@ -63,6 +63,11 @@ namespace StrumentiMusicali.Library.Model
                 {
                     articolo.UpdateTitolo = "";
                 }
+                if (articolo.NonImponibile==true)
+                {
+                    articolo.ArticoloWeb.Iva = 0;
+                }
+
                 if (articolo.CategoriaID == 0)
                 {
                     result.ValidationErrors.Add(

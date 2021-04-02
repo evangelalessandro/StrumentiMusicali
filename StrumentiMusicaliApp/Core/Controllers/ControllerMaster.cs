@@ -81,6 +81,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             {
                 using (var login = new View.Login.LoginForm())
                 {
+                    login.TopMost = true;
                     var ret = login.ShowDialog();
                     if (ret != DialogResult.OK)
                         return;

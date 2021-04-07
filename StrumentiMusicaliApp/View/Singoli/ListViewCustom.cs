@@ -33,6 +33,7 @@ namespace StrumentiMusicali.App.View
             _combo.Controllo.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             this.button1.Click += Button1_Click;
             this.Text = titolo;
+            this.AcceptButton = button1;
         }
 
 
@@ -53,6 +54,7 @@ namespace StrumentiMusicali.App.View
         private void Button1_Click(object sender, EventArgs e)
         {
             this.Hide();
+            this.DialogResult = DialogResult.OK;
         }
 
         private void MarcaView_Load(object sender, EventArgs e)

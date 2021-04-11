@@ -420,11 +420,18 @@ namespace StrumentiMusicali.App.Core.Controllers
                         Articolo = this.SelectedItem
                     }) ;
                 };
+                pnlS.Add("Aggiungi generico", Properties.Resources.Add, true).Click += (a, e) =>
+                {
+                    EventAggregator.Instance().Publish<ScontrinoAddEvents>(new ScontrinoAddEvents()
+                    {
+                        
+                    });
+                };
                 //pnlS.Add("Aggiungi sconto", Properties.Resources.Sconto_64, true).Click += (a, e) =>
                 //{
                 //    EventAggregator.Instance().Publish<ScontrinoAddScontoEvents>(new ScontrinoAddScontoEvents()
                 //    {
-                         
+
                 //    });
                 //};
                 pnlS.Add("Rimuovi riga", Properties.Resources.CancellaRiga_scontrino, true).Click += (a, e) =>

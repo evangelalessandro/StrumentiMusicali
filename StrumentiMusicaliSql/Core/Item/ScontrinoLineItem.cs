@@ -23,6 +23,7 @@ namespace StrumentiMusicali.Library.Core.Item
         Vendita,
         ScontoIncondizionato,
         Totale,
-        Sconto
+        Sconto,
+        Incassato
     }
 }

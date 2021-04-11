@@ -13,17 +13,19 @@ namespace StrumentiMusicali.App.View
     public partial class ListViewCustom : Form
     {
         EDCombo _combo = new EDCombo();
-        public ListViewCustom(List<string> list, string titolo)
+        EDTesto _txt = new EDTesto();
+
+        public bool AddText { get; set; }
+        public ListViewCustom(List<string> list, string titolo, bool addText = false)
         {
             InitializeComponent();
-            
+
             this.Font = new Font(this.Font.FontFamily, 24);
             _combo.Controllo.Font = this.Font;
             _combo.Titolo = titolo;
             _combo.Controllo.Properties.Appearance.Font = this.Font;
             _combo.Controllo.Properties.NullText = "Selezionare un elemento";
 
-            _combo.Controllo.EditValueChanged += LookUpEdit1_EditValueChanged;
 
             _combo.Controllo.Properties.ValueMember = "";
             _combo.Controllo.Properties.DisplayMember = "";
@@ -34,23 +36,14 @@ namespace StrumentiMusicali.App.View
             this.button1.Click += Button1_Click;
             this.Text = titolo;
             this.AcceptButton = button1;
+
+            AddText = addText;
+
         }
 
 
 
 
-        private void LookUpEdit1_EditValueChanged(object sender, EventArgs e)
-        {
-            //Display lookup editor's current value.
-            LookUpEditBase lookupEditor = sender as LookUpEditBase;
-            if (lookupEditor == null) return;
-            //LabelControl label = labelDictionary[lookupEditor];
-            //if (label == null) return;
-            //if (lookupEditor.EditValue == null)
-            //    label.Text = "Current EditValue: null";
-            //else
-            //    label.Text = "Current EditValue: " + lookupEditor.EditValue.ToString();
-        }
         private void Button1_Click(object sender, EventArgs e)
         {
             this.Hide();
@@ -59,10 +52,16 @@ namespace StrumentiMusicali.App.View
 
         private void MarcaView_Load(object sender, EventArgs e)
         {
-            _combo.Dock = DockStyle.Fill;
+            _combo.Dock = DockStyle.Top;
             this.panel1.Controls.Add(_combo);
             _combo.Controllo.EditValueChanged += Controllo_EditValueChanged;
 
+            if (AddText)
+            {
+                _txt.Titolo = "Codice lotteria";
+                this.panel1.Controls.Add(_txt);
+                _txt.Dock = DockStyle.Bottom;
+            }
         }
 
         private void Controllo_EditValueChanged(object sender, EventArgs e)
@@ -73,5 +72,11 @@ namespace StrumentiMusicali.App.View
             this.Text = "Elemento selezionato: " + SelectedItem;
         }
         public string SelectedItem { get; set; }
+
+        public string SelectedTextProp { 
+            get {return _txt.ControlToBind.Text ; } 
+        }
+
+
     }
 }

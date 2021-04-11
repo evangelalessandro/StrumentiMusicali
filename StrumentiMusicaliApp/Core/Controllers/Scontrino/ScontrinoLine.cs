@@ -33,6 +33,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
         /// </summary>
         public decimal TotaleComplessivo { get; set; } = 0;
 
+        public string CodiceLotteria { get; set; } = "";
+
         public override string ToString()
         {
             StringBuilder dato = new StringBuilder("");
@@ -50,9 +52,14 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                 dato.Append("V;");
             else if (TipoRigaScontrino == TipoRigaScontrino.Sconto)
                 dato.Append("S;");
-
-            else
+            else if (TipoRigaScontrino == TipoRigaScontrino.Totale)
+            {
                 dato.Append("T;" + Pagamento);
+                if (CodiceLotteria != "")
+                {
+                    dato.Append("|" + CodiceLotteria);
+                }
+            }
             return dato.ToString();
         }
     }

@@ -4,14 +4,18 @@ namespace StrumentiMusicali.App.View.Settings
 {
     public class GenericSettingView : SettingBaseViewVgrid
     {
-        object _itemToBind;
+        private object _itemToBind;
+        private ItemEditorManager _manager;
         public GenericSettingView(object itemToBind)
            : base()
         {
             _itemToBind = itemToBind;
             this.Load += GenericSettingView_Load;
             this.SuspendLayout();
-            BindProp(_itemToBind, "");
+            _manager = new ItemEditorManager(this.vGrid);
+            _manager.BindProp(_itemToBind, "");
+
+            ComplexBestFit();
 
         }
 

@@ -58,6 +58,7 @@ namespace StrumentiMusicali.App.View.Utility
         public static void AddButtonSaveAndClose(RibbonMenuPanel pnl, ICloseSave control, bool addSave = true)
         {
             var rib3 = pnl.Add("Chiudi", Properties.Resources.Close_48);
+            rib3.Tag = MenuTab.TagClose;
 
             rib3.Click += (a, e) =>
             {
@@ -65,16 +66,10 @@ namespace StrumentiMusicali.App.View.Utility
             };
             if (addSave)
             {
-                //var rib2 = pnl.Add("Salva e chiudi", Properties.Resources.Save_Close);
-
-                //rib2.Click += (a, e) =>
-                //{
-                //	control.RaiseSave();
-
-                //	control.RaiseClose();
-                //};
+                 
 
                 var rib1 = pnl.Add("Salva", Properties.Resources.Save);
+                
 
                 rib1.Click += (a, e) =>
                 {

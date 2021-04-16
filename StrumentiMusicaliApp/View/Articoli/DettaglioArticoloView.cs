@@ -9,25 +9,37 @@ using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Core.Events.Image;
 using StrumentiMusicali.Library.Core.Events.Magazzino;
+using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Repo;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using StrumentiMusicali.App.View.BaseControl;
+using System.ComponentModel;
 
 namespace StrumentiMusicali.App.Forms
 {
     public partial class DettaglioArticoloView : UserControl, IMenu, ICloseSave
     {
 
-         
+
 
         private EditorListImmagini<FotoArticolo> _EditorListImmagini;
         Subscription<ImageSelected<FotoArticolo>> _sub12;
         private Subscription<ImageListUpdate> _sub1;
+        private ControllerListinoFornitori _ControllerListinoFornitori;
+
+        private enum tabAnagrafica
+        {
+            Principale,
+            Immagini,
+            ListinoFornitori
+        }
         public DettaglioArticoloView(ControllerArticoli articoloController)
             : base()
         {
@@ -45,7 +57,6 @@ namespace StrumentiMusicali.App.Forms
             _EditorListImmagini.Dock = DockStyle.Fill;
             tabPage2.Controls.Add(_EditorListImmagini);
 
-
             /*controlla se mostrare libro o no*/
             if (!articoloController.EditItem.ShowLibro.HasValue)
             {
@@ -61,8 +72,12 @@ namespace StrumentiMusicali.App.Forms
             tabPage1.AutoScroll = true;
             AggiornaQtaNegozio();
 
+            tabControl1.TabPages.Add(tabAnagrafica.ListinoFornitori.ToString(), "Listino fornitori");
+            _ControllerListinoFornitori = new ControllerListinoFornitori(articoloController, true);
+
 
         }
+
 
         private void ImmagineSelezionata(ImageSelected<FotoArticolo> obj)
         {
@@ -103,6 +118,21 @@ namespace StrumentiMusicali.App.Forms
         {
             if (DesignMode)
                 return;
+
+            var manager = new UserControlGridViewInlineEdit<ListinoPrezziFornitori, ListinoPrezziFornitoriItem>(_ControllerListinoFornitori);
+
+            var control = manager.ControlContainer;
+            
+            ((INotifyPropertyChanged)_ControllerListinoFornitori).PropertyChanged += (object sender2, PropertyChangedEventArgs e2) =>
+            {
+                if (e2.PropertyName == "DataSourceInRow")
+                    manager.Refreshlist(_ControllerListinoFornitori.DataSourceInRow);
+            };
+
+            _ControllerListinoFornitori.RefreshList(null);
+
+            tabControl1.TabPages[tabAnagrafica.ListinoFornitori.ToString()].Controls.Add(control);
+
 
             this.tabControl1.DrawItem +=
                          new DrawItemEventHandler(PageTab_DrawItem);
@@ -181,15 +211,27 @@ namespace StrumentiMusicali.App.Forms
 
         private void UpdateButtonState()
         {
-            tabPage2.Enabled = _articoloController.EditItem != null
+            for (int i = 1; i < tabControl1.TabPages.Count; i++)
+            {
+                var a = tabControl1.TabPages[i];
+                a.Enabled = _articoloController.EditItem != null
                 && _articoloController.EditItem.ID != 0;
+
+            }
+
+            var fornitori = tabControl1.TabPages[tabAnagrafica.ListinoFornitori.ToString()] == tabControl1.SelectedTab;
+            _ControllerListinoFornitori.GetMenu().Tabs[0].Pannelli.ForEach(a => a.Enabled = fornitori);
+
             if (_ribPannelImmagini != null)
             {
                 _ribPannelImmagini.Enabled = tabControl1.SelectedTab == tabPage2;
                 _ribRemove.Enabled = true;
                 _ribRemove.Enabled = _articoloController.FotoSelezionata() != null;
             }
+            _ControllerListinoFornitori.GetMenu().Enabled = tabControl1.SelectedTab.Tag == tabPage2;
             _EditorListImmagini.UpdateButtonState();
+
+
         }
 
 
@@ -248,6 +290,15 @@ namespace StrumentiMusicali.App.Forms
                         new ImageArticoloRemove(foto,
                         _articoloController));
                 };
+
+
+
+
+
+                var menu = _ControllerListinoFornitori.GetMenu();
+                tab.Pannelli.Add(menu.Tabs[0].Pannelli[0]);
+
+
                 var magazzino = tab.Add("Magazzino");
 
                 var rib4 = magazzino.Add("1 pezzo venduto", Properties.Resources.Remove, true);

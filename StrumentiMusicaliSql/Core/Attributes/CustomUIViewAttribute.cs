@@ -13,6 +13,7 @@ namespace StrumentiMusicali.Library.Core
         public bool Money { get; set; } = false;
         public int MultiLine { get; set; } = 0;
 
+        public string MaskDate { get; set; } = "";
         /// <summary>
         /// ordine di visualizzazione nella form
         /// </summary>
@@ -44,12 +45,14 @@ namespace StrumentiMusicali.Library.Core
         Categorie,
         Condizione,
         Articoli,
+        Fornitori,
         Marca,
         Modello,
         Rivenditore,
         Colore,
         NomeStrumento,
-        LibroAutore
+        LibroAutore,
+        TipiSoggetto
     }
 
 

@@ -74,7 +74,7 @@ namespace StrumentiMusicali.App.Core.Fatture
             uof.Commit();
         }
 
-        private List<Fattura> ImportaDdtTestate(OleDbConnection connection, UnitOfWork uof, List<Cliente> clientiList)
+        private List<Fattura> ImportaDdtTestate(OleDbConnection connection, UnitOfWork uof, List<Soggetto> clientiList)
         {
             ProgressManager.Instance().Value = 0;
             var ddtList = ImportDDT(connection, clientiList);
@@ -137,7 +137,7 @@ namespace StrumentiMusicali.App.Core.Fatture
             uof.Commit();
         }
 
-        private List<Fattura> ImportFattureTestate(OleDbConnection connection, UnitOfWork uof, List<Cliente> clientiList)
+        private List<Fattura> ImportFattureTestate(OleDbConnection connection, UnitOfWork uof, List<Soggetto> clientiList)
         {
             var fattureList = ImportTestateFatture(connection, clientiList);
 
@@ -155,7 +155,7 @@ namespace StrumentiMusicali.App.Core.Fatture
             return fattureList;
         }
 
-        private List<Cliente> ImportClienti(OleDbConnection connection, UnitOfWork uof)
+        private List<Soggetto> ImportClienti(OleDbConnection connection, UnitOfWork uof)
         {
             var clientiList = ImportClienti(connection);
             ProgressManager.Instance().Max = clientiList.Count();
@@ -271,7 +271,7 @@ namespace StrumentiMusicali.App.Core.Fatture
             return listaFattureRighe;
         }
 
-        private List<Fattura> ImportDDT(OleDbConnection conection, List<Cliente> listaClienti)
+        private List<Fattura> ImportDDT(OleDbConnection conection, List<Soggetto> listaClienti)
         {
             var query = "Select * From DDT";
             var ddtList = new List<Fattura>();
@@ -346,7 +346,7 @@ namespace StrumentiMusicali.App.Core.Fatture
             return ddtList;
         }
 
-        private List<Fattura> ImportTestateFatture(OleDbConnection conection, List<Cliente> listaClienti)
+        private List<Fattura> ImportTestateFatture(OleDbConnection conection, List<Soggetto> listaClienti)
         {
             var query = "Select * From fatture where [# documento] like '%18' or  [# documento] like '%17'";
             var fattureList = new List<Fattura>();
@@ -430,17 +430,17 @@ namespace StrumentiMusicali.App.Core.Fatture
             return fattureList;
         }
 
-        private List<Cliente> ImportClienti(OleDbConnection conection)
+        private List<Soggetto> ImportClienti(OleDbConnection conection)
         {
             var query = "Select * From anagrafica";
 
             var tabella = GetDati(conection, query);
-            var listaClienti = new List<Cliente>();
+            var listaClienti = new List<Soggetto>();
             foreach (var a in tabella.AsEnumerable())
             {
                 try
                 {
-                    var cliente = new Cliente
+                    var cliente = new Soggetto
                     {
                         CodiceClienteOld = int.Parse(a["cod_cliente"].ToString()),
                         Cellulare = (a["Cellulare"].ToString()),

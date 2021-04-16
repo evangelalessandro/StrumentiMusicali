@@ -83,15 +83,13 @@ namespace StrumentiMusicali.App.Core.Exports
                             .Select(a => new GiacenzaArt { ArticoloId = a.Key, Giacenza = a.Sum(b => b.Qta) }).ToList();
 
                         var fileEcommerce = FileEcommerce(uof, fotoList, magazzinoGiac);
-
-                        var fileMercatino = FileMercatino(uof, fotoList, magazzinoGiac);
+                         
 
                         UploadNewFoto();
                         MessageManager.NotificaInfo("Terminato upload nuove foto");
 
                         var artToUpdate = _fotoToUpload.Select(a => a.ArticoloID).Distinct().ToList();
-
-                        UploadEndRetray(fileMercatino, _settingSito.UrlCompletoFileMercatino);
+                         
                         UploadEndRetray(fileEcommerce, _settingSito.UrlCompletoFileEcommerce);
 
                         uof.Commit();
@@ -256,26 +254,7 @@ namespace StrumentiMusicali.App.Core.Exports
             return fileEcommerce;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="uof"></param>
-        /// <param name="fotoList"></param>
-        /// <param name="magazzinoGiac"></param>
-        /// <returns>ritorna il nome del file generato</returns>
-        private string FileMercatino(UnitOfWork uof, List<FotoArticolo> fotoList, List<GiacenzaArt> magazzinoGiac)
-        {
-            List<Articolo> listArticoli = uof.ArticoliRepository.Find(a => a.CaricaInMercatino
-                                                        && a.CaricainECommerce && a.Categoria.Codice >= 0)
-                .Select(a => new { articolo = a, Categoria = a.Categoria }).ToList()
-                .Select(a => a.articolo).ToList();
-
-            var fileMercatinoContent = ExportFile(listArticoli, magazzinoGiac, fotoList);
-            var fileMercatino = SaveFileCsv(fileMercatinoContent, _settingSito.SoloNomeFileMercatino);
-            MessageManager.NotificaInfo("Creato file Mercatino");
-            _logger.Info("Creato file Mercatino con '{0}' articoli ", listArticoli.Count.ToString());
-            return fileMercatino;
-        }
+        
 
         /// <summary>
         ///

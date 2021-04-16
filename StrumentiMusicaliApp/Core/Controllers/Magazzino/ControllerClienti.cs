@@ -14,33 +14,33 @@ using System.Linq;
 namespace StrumentiMusicali.App.Core.Controllers
 {
     //[AddINotifyPropertyChangedInterface]
-    public class ControllerClienti : BaseControllerGeneric<Cliente, ClientiItem>,
+    public class ControllerClienti : BaseControllerGeneric<Soggetto, ClientiItem>,
         IDisposable//, INotifyPropertyChanged
     {
-        private Subscription<Add<Cliente>> _selectSub;
+        private Subscription<Add<Soggetto>> _selectSub;
 
-        private Subscription<Remove<Cliente>> _subRemove;
+        private Subscription<Remove<Soggetto>> _subRemove;
 
-        private Subscription<Save<Cliente>> _subSave;
+        private Subscription<Save<Soggetto>> _subSave;
 
         public ControllerClienti()
             : base(enAmbiente.ClientiList, enAmbiente.Cliente)
         {
-            SelectedItem = new Cliente();
+            SelectedItem = new Soggetto();
 
-            _selectSub = EventAggregator.Instance().Subscribe<Add<Cliente>>((a) =>
+            _selectSub = EventAggregator.Instance().Subscribe<Add<Soggetto>>((a) =>
             {
-                EditItem = new Cliente() { RagioneSociale = "" };
+                EditItem = new Soggetto() { RagioneSociale = "" };
                 ShowEditView();
             });
-            _subRemove = EventAggregator.Instance().Subscribe<Remove<Cliente>>((a) =>
+            _subRemove = EventAggregator.Instance().Subscribe<Remove<Soggetto>>((a) =>
             {
                 if (!MessageManager.QuestionMessage("Sei sicuro di volere eliminare la riga selezionata?"))
                     return;
                 using (var saveManager = new SaveEntityManager())
                 {
                     var uof = saveManager.UnitOfWork;
-                    var curItem = (Cliente)SelectedItem;
+                    var curItem = (Soggetto)SelectedItem;
                     if (curItem.ID > 0)
                     {
                         var item = uof.ClientiRepository.Find(b => b.ID == curItem.ID).First();
@@ -48,12 +48,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                         if (saveManager.SaveEntity(enSaveOperation.OpDelete))
                         {
-                            EventAggregator.Instance().Publish<UpdateList<Cliente>>(new UpdateList<Cliente>(this));
+                            EventAggregator.Instance().Publish<UpdateList<Soggetto>>(new UpdateList<Soggetto>(this));
                         }
                     }
                 }
             });
-            _subSave = EventAggregator.Instance().Subscribe<Save<Cliente>>((a) =>
+            _subSave = EventAggregator.Instance().Subscribe<Save<Soggetto>>((a) =>
            {
                Save(null);
            });
@@ -75,7 +75,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             GC.SuppressFinalize(this);
         }
 
-        public override void RefreshList(UpdateList<Cliente> obj)
+        public override void RefreshList(UpdateList<Soggetto> obj)
         {
             try
             {
@@ -141,7 +141,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             // free native resources if there are any.
         }
 
-        private void Save(Save<Cliente> obj)
+        private void Save(Save<Soggetto> obj)
         {
             using (var saveManager = new SaveEntityManager())
             {

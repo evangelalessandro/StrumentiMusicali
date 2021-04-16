@@ -2,6 +2,7 @@
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Base;
 using StrumentiMusicali.Library.Entity.Enums;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -24,14 +25,21 @@ namespace StrumentiMusicali.Library.Entity.Articoli
             UpdateTitolo = Titolo;
 
         }
+        [CustomUIView(Ordine = 10, Titolo = "Qta sotto cui è da considerare da riordinare", Category = "Riordino")]
+        public int SottoScorta { get; set; } = 0;
+        [CustomUIView(Ordine = 11, Titolo = "Inizio periodo di validità di sotto scorta (dd/MM)", Category = "Riordino",DateView = true,MaskDate ="dd/MM")]
+        public DateTime PeriodoSottoScortaInizio { get; set; } = new DateTime(1900,1,1);
+        [CustomUIView(Ordine = 11, Titolo = "Fine periodo di validità di sotto scorta  (dd/MM)", Category = "Riordino",DateView =true, MaskDate = "dd/MM")]
+        public DateTime PeriodoSottoScortaFine { get; set; } = new DateTime(1900, 12, 31);
+        [CustomUIView(Ordine = 11, Titolo = "Ultimo fornitore Acquisto", Category = "Riordino")]
+        public string UltimoFornitoreAcquisto { get; set; }
 
         [CustomUIView(Ordine = 6, Category = "Online")]
         public bool BoxProposte { get; set; }
 
         [CustomUIView(Ordine = 7, Titolo = "Carica in E-Commerce", Category = "Online")]
         public bool CaricainECommerce { get; set; } = true;
-        [CustomUIView(Ordine = 8, Titolo = "Carica in Mercatino", Category = "Online")]
-        public bool CaricaInMercatino { get; set; } = true;
+ 
 
         [CustomUIView(Width = 350, Ordine = 1, Combo = TipoDatiCollegati.Categorie, Titolo = "Categoria")]
         [Required]
@@ -43,6 +51,10 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         [CustomUIView(Ordine = 9, Width = 250)]
         [MaxLength(100)]
         public string CodiceABarre { get; set; }
+
+        [CustomUIView(Ordine = 10, Width = 250)]
+        [MaxLength(100)]
+        public string CodiceInterno { get; set; }
 
         [CustomUIView(Ordine = 4, Combo = TipoDatiCollegati.Condizione)]
         public enCondizioneArticolo Condizione { get; set; } = enCondizioneArticolo.Nuovo;

@@ -43,10 +43,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                 frm.Close();
             }
         });
-        public BaseController()
+        public bool InLineEditor { get; private set; }
+        public BaseController(bool inlineEditor=false)
         {
             //
-
+            InLineEditor = inlineEditor;
 
         }
         public const bool ModalitàAForm = false;
@@ -297,6 +298,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
             Scontrino,
 
         }
+
         private void AggiungiInForm(UserControl view, enAmbiente ambiente, BaseController controller, bool disposeForm)
         {
             Ribbon ribbon1 = null;
@@ -485,10 +487,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
             switch (ambiente)
             {
                 case enAmbiente.ClientiList:
-                    return "Clienti";
+                    return @"Clienti\Fornitori";
 
                 case enAmbiente.Cliente:
-                    return "Cliente";
+                    return @"Cliente\Fornitore";
 
                 case enAmbiente.Main:
                     return MainName;

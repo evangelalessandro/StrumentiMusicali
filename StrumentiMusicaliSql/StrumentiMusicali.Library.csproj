@@ -129,6 +129,7 @@
     <Compile Include="Core\Item\DepositoItem.cs" />
     <Compile Include="Core\Item\DepositoScaricoItem.cs" />
     <Compile Include="Core\Item\FatturaItem.cs" />
+    <Compile Include="Core\Item\ListinoPrezziFornitoriItem.cs" />
     <Compile Include="Core\Item\FatturaRigaItem.cs" />
     <Compile Include="Core\Item\MovimentoItem.cs" />
     <Compile Include="Core\Item\PagamentoItem.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="Entity\Articoli\Articolo.cs" />
     <Compile Include="Entity\Articoli\ArticoloImportato.cs" />
     <Compile Include="Entity\Articoli\ArticoloWeb.cs" />
+    <Compile Include="Entity\Articoli\ListinoPrezziFornitori.cs" />
     <Compile Include="Entity\Enums\enCondizioneArticolo.cs" />
     <Compile Include="Entity\Base\BaseEntity.cs" />
     <Compile Include="Entity\Base\RigaDoc.cs" />
@@ -152,7 +154,7 @@
     <Compile Include="Entity\Ecomm\RepartoWeb.cs" />
     <Compile Include="Entity\Fatture\Pagamento.cs" />
     <Compile Include="Entity\Fatture\FattureGenerateInvio.cs" />
-    <Compile Include="Entity\Fatture\Cliente.cs" />
+    <Compile Include="Entity\Fatture\Soggetto.cs" />
     <Compile Include="Entity\Articoli\Deposito.cs" />
     <Compile Include="Entity\Articoli\Categorie.cs" />
     <Compile Include="Entity\Altro\EventLog.cs" />

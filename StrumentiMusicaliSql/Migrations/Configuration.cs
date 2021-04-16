@@ -10,7 +10,7 @@ namespace StrumentiMusicali.Library.Migrations
 		public Configuration()
 		{
 			AutomaticMigrationsEnabled = true;
-			AutomaticMigrationDataLossAllowed = false;
+			AutomaticMigrationDataLossAllowed = true;
 		}
 
 		protected override void Seed(StrumentiMusicali.Library.Model.ModelSm context)

@@ -1,4 +1,5 @@
-﻿using DevExpress.XtraTab;
+﻿using DevExpress.XtraEditors;
+using DevExpress.XtraTab;
 using DevExpress.XtraTab.ViewInfo;
 using NLog;
 using StrumentiMusicali.App.Core.Controllers.Base;
@@ -17,7 +18,7 @@ using System.Windows.Forms;
 
 namespace StrumentiMusicali.App
 {
-    public partial class MainView : UserControl, IMenu
+    public partial class MainView : XtraUserControl, IMenu
     {
         internal readonly ILogger _logger = StrumentiMusicali.Core.Manager.ManagerLog.Logger;
 
@@ -224,7 +225,7 @@ namespace StrumentiMusicali.App
                 {
                     EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.FattureList));
                 };
-                var rib2 = panel1.Add("Clienti", Properties.Resources.Customer_48);
+                var rib2 = panel1.Add(@"Clienti\Fornitori", Properties.Resources.Customer_48);
                 rib2.Click += (s, e) =>
                 {
                     EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ClientiList));

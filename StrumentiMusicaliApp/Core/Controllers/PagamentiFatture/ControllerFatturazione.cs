@@ -421,8 +421,8 @@ namespace StrumentiMusicali.App.Core.Controllers
                             view.OnSave += (d, b) =>
                             {
                                 view.Validate();
-                                EventAggregator.Instance().Publish<Save<Cliente>>
-                                (new Save<Cliente>(controllerCl));
+                                EventAggregator.Instance().Publish<Save<Soggetto>>
+                                (new Save<Soggetto>(controllerCl));
                             };
                             ShowView(view, enAmbiente.Cliente, null, false);
                             ViewFactory.AddView(enAmbiente.Cliente, view);

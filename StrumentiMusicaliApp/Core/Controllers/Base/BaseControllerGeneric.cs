@@ -11,18 +11,21 @@ using StrumentiMusicali.Library.Core.Item.Base;
 using StrumentiMusicali.Library.Entity.Base;
 using StrumentiMusicali.Library.View.Enums;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace StrumentiMusicali.App.Core.Controllers.Base
 {
     [AddINotifyPropertyChangedInterface]
     public abstract class BaseControllerGeneric<TEntity, TBaseItem> : BaseController, IMenu, IDisposable, ICloseSave //, INotifyPropertyChanged
         where TEntity : BaseEntity, new()
-        where TBaseItem : BaseItem<TEntity>, new()
+        where TBaseItem : BaseItem<TEntity>,  new()
     {
 
 
 
-        public BaseControllerGeneric(enAmbiente ambiente, enAmbiente ambienteDettaglio)
+        public BaseControllerGeneric(enAmbiente ambiente, enAmbiente ambienteDettaglio, bool gestioneInline = false):
+            base(gestioneInline)
         {
             AmbienteDettaglio = ambienteDettaglio;
 
@@ -155,7 +158,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
             }
         }
         public MySortableBindingList<TBaseItem> DataSource { get; set; } = new MySortableBindingList<TBaseItem>();
-
+        
+        
+        public List< TEntity> DataSourceInRow { get; set; } = new List<TEntity>();
         internal void UpdateDataSource()
         {
             RefreshList(null);

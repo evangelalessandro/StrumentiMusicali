@@ -7,9 +7,9 @@ using System;
 
 namespace StrumentiMusicali.App.View
 {
-    public class ClientiListView : BaseGridViewGeneric<ClientiItem, ControllerClienti, Cliente>, IMenu, IDisposable
+    public class SoggettiListView : BaseGridViewGeneric<ClientiItem, ControllerClienti, Soggetto>, IMenu, IDisposable
     {
-        public ClientiListView(ControllerClienti controller)
+        public SoggettiListView(ControllerClienti controller)
             : base(controller)
         {
             this.Load += control_Load;

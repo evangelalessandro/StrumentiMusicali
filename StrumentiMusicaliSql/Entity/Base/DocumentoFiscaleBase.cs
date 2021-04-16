@@ -19,7 +19,7 @@ namespace StrumentiMusicali.Library.Entity
         [Required]
         public int ClienteID { get; set; }
 
-        public virtual Cliente Cliente { get; set; }
+        public virtual Soggetto Cliente { get; set; }
 
         public string TrasportoACura { get; set; }
         public string CausaleTrasporto { get; set; }

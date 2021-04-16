@@ -41,10 +41,12 @@ namespace StrumentiMusicali.App.View.BaseControl
             }
 
         }
-
-        public BaseGridViewGeneric(TController controllerItem)
+        
+        public BaseGridViewGeneric(TController controllerItem )
         {
             InitializeComponent();
+             
+            
             Init();
 
             txtCerca.DataBindings.Add("Text", controllerItem, "TestoRicerca");

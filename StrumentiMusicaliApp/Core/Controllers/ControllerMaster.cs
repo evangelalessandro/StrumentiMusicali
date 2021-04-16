@@ -1,4 +1,6 @@
-﻿using DevExpress.XtraEditors.Repository;
+﻿using DevExpress.LookAndFeel;
+using DevExpress.UserSkins;
+using DevExpress.XtraEditors.Repository;
 using NLog;
 using NLog.Targets;
 using StrumentiMusicali.App.Core.Controllers.Base;
@@ -75,6 +77,10 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         public void ShowMainView()
         {
+            BonusSkins.Register();
+        //    DevExpress.Skins.SkinManager.EnableFormSkins();
+            //UserLookAndFeel.Default.SetSkinStyle(SkinStyle.Foggy);
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             if (!Debugger.IsAttached)
@@ -221,7 +227,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                 case enAmbiente.ClientiList:
                     var controllerClienti = new ControllerClienti();
 
-                    var viewCli = new ClientiListView(controllerClienti);
+                    var viewCli = new SoggettiListView(controllerClienti);
 
                     this.ShowView(viewCli, obj.TipoEnviroment, controllerClienti);
                     break;

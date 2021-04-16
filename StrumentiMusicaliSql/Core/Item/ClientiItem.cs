@@ -4,13 +4,13 @@ using System;
 
 namespace StrumentiMusicali.Library.Core.Item
 {
-    public class ClientiItem : BaseItem<Cliente>
+    public class ClientiItem : BaseItem<Soggetto>
     {
         public ClientiItem()
             : base()
         {
         }
-        public ClientiItem(Cliente item)
+        public ClientiItem(Soggetto item)
             : base()
         {
             ID = item.ID;

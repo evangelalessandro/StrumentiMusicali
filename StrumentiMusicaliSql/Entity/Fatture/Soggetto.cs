@@ -1,10 +1,14 @@
 ﻿using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Base;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StrumentiMusicali.Library.Entity
 {
-    public class Cliente : BaseEntity
+    [Table("Soggetti")]
+    public class Soggetto : BaseEntity
     {
+        [CustomUIViewAttribute(Ordine = 1, Combo =TipoDatiCollegati.TipiSoggetto)]
+        public string TipiSoggetto { get; set; }
         [CustomUIViewAttribute(Ordine = 1)]
         public string RagioneSociale { get; set; }
         [CustomUIViewAttribute(Ordine = 2)]
@@ -48,6 +52,11 @@ namespace StrumentiMusicali.Library.Entity
         public virtual Indirizzo Indirizzo { get; set; } = new Indirizzo();
 
         public bool FatturaVersoPA { get; set; }
+    }
+    public enum enTipiSoggetto
+    {
+        Cliente,
+        Fornitore,
     }
     public class PecConfig
     {

@@ -216,7 +216,7 @@ namespace StrumentiMusicali.Library.Model
 
 
             modelBuilder.Entity<ArticoloImportato>().ToTable("ArticoliImportatiDalWeb");
-            modelBuilder.Entity<Cliente>().ToTable("Clienti");
+            modelBuilder.Entity<Soggetto>().ToTable("Clienti");
             modelBuilder.Entity<FattureGenerateInvio>().ToTable("FattureGenerate");
             modelBuilder.Entity<SettingDocumentiPagamenti>().ToTable("SettingDocumentiPagamenti");
             modelBuilder.Entity<Pagamento>().Property(e => e.ImportoRata).HasPrecision(19, 2);
@@ -249,6 +249,7 @@ namespace StrumentiMusicali.Library.Model
         public virtual DbSet<Deposito> Depositi { get; set; }
         public virtual DbSet<Magazzino> Magazzino { get; set; }
         public virtual DbSet<Articolo> Articoli { get; set; }
+        public virtual DbSet<ListinoPrezziFornitori> ListinoPrezziFornitori { get; set; }
 
         public virtual DbSet<Fattura> Fatture { get; set; }
         public virtual DbSet<FatturaRiga> FattureRighe { get; set; }
@@ -259,7 +260,7 @@ namespace StrumentiMusicali.Library.Model
 
         public virtual DbSet<SettingBackupFtp> SettingBackupFtp { get; set; }
 
-        public virtual DbSet<Cliente> Clienti { get; set; }
+        public virtual DbSet<Soggetto> Clienti { get; set; }
 
         public virtual DbSet<Utente> Utenti { get; set; }
         public virtual DbSet<SettingSito> SettingSito { get; set; }

@@ -41,6 +41,11 @@ namespace StrumentiMusicali.Library.View.Enums
         ClientiList = 13,
         [UIAmbienteAttribute(true)]
         Cliente = 14,
+
+        ListinoPrezziFornitoreList= 60,
+        [UIAmbienteAttribute(true)]
+        ListinoPrezziFornitoreDett = 61,
+
         FattureRigheList = 15,
         [UIAmbienteAttribute(true)]
         FattureRigheDett = 16,

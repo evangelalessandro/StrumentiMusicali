@@ -1,14 +1,17 @@
-﻿using DevExpress.XtraGrid.Localization;
+﻿using DevExpress.LookAndFeel;
+using DevExpress.UserSkins;
+using DevExpress.XtraGrid.Localization;
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Controllers.Base;
-using StrumentiMusicali.Core.Scheduler;
+ 
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Articoli;
-using StrumentiMusicali.Library.Repo;
+ 
 using System;
 
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace StrumentiMusicali.App
 {
@@ -29,7 +32,8 @@ namespace StrumentiMusicali.App
                 {
                     if (createdNew)
                     {
-                         
+                       
+
                         using (var controller = new ControllerMaster())
                         {
                             controller.ShowMainView();

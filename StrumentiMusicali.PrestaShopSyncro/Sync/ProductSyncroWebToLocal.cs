@@ -166,8 +166,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
 
             articolo.ArticoloWeb.DescrizioneHtml = item.description.FirstOrDefault().Value;
             articolo.ArticoloWeb.DescrizioneBreveHtml = item.description_short.FirstOrDefault().Value;
-
-            articolo.CaricaInMercatino = false;
+             
             articolo.CaricainECommerce = false;
 
             uof.ArticoliRepository.Add(articolo);

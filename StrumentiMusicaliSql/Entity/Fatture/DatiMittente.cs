@@ -2,7 +2,7 @@
 
 namespace StrumentiMusicali.Library.Entity
 {
-    public class DatiMittente : Cliente
+    public class DatiMittente : Soggetto
     {
 
         [CustomUIViewAttribute(Ordine = 31)]

@@ -20,7 +20,7 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
     internal class FattElettronica : IDisposable
     {
         public DatiMittente DatiMittente { get; set; }
-        public Cliente DatiDestinatario { get; set; }
+        public Soggetto DatiDestinatario { get; set; }
         public List<FatturaHeader> FattureList { get; set; } = new List<FatturaHeader>();
 
         public void ScriviFattura(int idFattura)

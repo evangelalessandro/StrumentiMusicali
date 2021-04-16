@@ -497,6 +497,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                 MessageManager.NotificaWarnig("Non ci sono articoli da stampare");
                 return;
             }
+            _dgvScontrino.ValidateEditor();
+            _dgvScontrino.FocusedRowHandle = 0;
+            
+            _dgvScontrino.FocusedRowHandle = 1;
 
             /*
              Il file deve contenere le righe di vendita cosi strutturate  :

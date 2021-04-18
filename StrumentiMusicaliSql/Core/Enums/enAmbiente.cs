@@ -61,12 +61,20 @@ namespace StrumentiMusicali.Library.View.Enums
 
         [UIAmbienteAttribute(false)]
         SettingFtpBackup = 40,
-        
+
+
+
+        [UIAmbienteAttribute(false,NomeAmbiente ="Articoli sottoscorta"
+            //,Icona = Properties.Resource.Reorder_48
+            )]
+        ArticoliSottoscorta,
+
         [UIAmbienteAttribute(false)]
         SettingScontrino = 125,
 
         NonSpecificato = 100,
-        [UIAmbienteAttribute(false)]
+        [UIAmbienteAttribute(false//,Icona = Properties.Resource.Payment
+                                   )]
         PagamentiList = 701,
         [UIAmbienteAttribute(true)]
         Pagamento = 702,

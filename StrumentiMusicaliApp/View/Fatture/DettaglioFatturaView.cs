@@ -377,11 +377,11 @@ namespace StrumentiMusicali.App.View
                 var ribPannel = tab.Add("Principale");
                 UtilityView.AddButtonSaveAndClose(ribPannel, this);
                 ribPannelRighe = tab.Add("Righe");
-                ribPannelRighe.Add("Aggiungi", Properties.Resources.Add).Click += (a, b) =>
+                ribPannelRighe.Add("Aggiungi", StrumentiMusicali.Core.Properties.ImageIcons.Add).Click += (a, b) =>
                 {
                     EventAggregator.Instance().Publish<Add<FatturaRiga>>(new Add<FatturaRiga>(_controllerRighe));
                 };
-                var rimuovi = ribPannelRighe.Add("Rimuovi", Properties.Resources.Remove, true);
+                var rimuovi = ribPannelRighe.Add("Rimuovi", StrumentiMusicali.Core.Properties.ImageIcons.Remove, true);
                 rimuovi.Click
                     += (a, b) =>
                     {
@@ -389,14 +389,14 @@ namespace StrumentiMusicali.App.View
                     };
                 rimuovi.Tag = ControllerRigheFatture.KEYEXISTsRiga;
 
-                var menoPrio = ribPannelRighe.Add("Meno prioritario", Properties.Resources.Up, true);
+                var menoPrio = ribPannelRighe.Add("Meno prioritario", StrumentiMusicali.Core.Properties.ImageIcons.Up, true);
                 menoPrio.Click += (a, b) =>
                 {
                     EventAggregator.Instance().Publish<AddPriority<FatturaRiga>>(
                         new AddPriority<FatturaRiga>());
                 };
                 menoPrio.Tag = ControllerRigheFatture.KEYEXISTsRiga;
-                var addPrio = ribPannelRighe.Add("Più prioritario", Properties.Resources.Down, true);
+                var addPrio = ribPannelRighe.Add("Più prioritario", StrumentiMusicali.Core.Properties.ImageIcons.Down, true);
                 addPrio.Click
                 += (a, b) =>
                 {
@@ -407,14 +407,14 @@ namespace StrumentiMusicali.App.View
 
                 _controllerFatturazione.AggiungiComandiStampa(tab, true);
                 //var pnlStampa = tab.Add("Stampa");
-                //var ribStampa = pnlStampa.Add("Avvia stampa", Properties.Resources.Print_48,true);
+                //var ribStampa = pnlStampa.Add("Avvia stampa", StrumentiMusicali.Core.Properties.ImageIcons.Print_48,true);
                 //ribStampa.Click += (a, e) =>
                 //{
                 //	_controllerFatturazione.StampaFattura(_controllerFatturazione.EditItem);
                 //};
 
                 var pnl2 = tab.Add("Totali");
-                var rib01 = pnl2.Add("Aggiorna totali", Properties.Resources.Totali_Aggiorna_48, true);
+                var rib01 = pnl2.Add("Aggiorna totali", StrumentiMusicali.Core.Properties.ImageIcons.Totali_Aggiorna_48, true);
                 rib01.Click += (a, e) =>
                 {
                     RebindEditItem();

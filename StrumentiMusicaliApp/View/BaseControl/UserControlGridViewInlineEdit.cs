@@ -1,4 +1,5 @@
 ﻿using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraGrid.Views.Grid;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Library.Core;
@@ -32,13 +33,28 @@ namespace StrumentiMusicali.App.View.BaseControl
             ControlContainer = new DevExpress.XtraEditors.XtraUserControl();
             ControlContainer.Dock = DockStyle.Fill;
             Init(ControlContainer);
+            //_dgvScontrino.InitNewRow += _dgvScontrino_InitNewRow;
             _baseController = baseController;
-            _dgvScontrino.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.True;
+            //_dgvScontrino.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.True;
+            //_dgvScontrino.OptionsView.NewItemRowPosition = DevExpress.XtraGrid.Views.Grid.NewItemRowPosition.Bottom;
+
             _subSave = EventAggregator.Instance().Subscribe<ValidateViewEvent<TEntity>>((a) =>
               {
                   CloseEditor();
               });
         }
+
+        private void _dgvScontrino_InitNewRow(object sender, DevExpress.XtraGrid.Views.Grid.InitNewRowEventArgs e)
+        {
+            GridView view = sender as GridView;
+
+            //view.SetRowCellValue(e.RowHandle, view.Columns["RecordDate"], DateTime.Today); // Set the new row cell value
+            //view.SetRowCellValue(e.RowHandle, view.Columns["Name"], "CustomName");
+            //int newRowID = Convert.ToInt32(view.GetRowCellValue(e.RowHandle, "ID")); // Obtain the new row cell value 
+            //view.SetRowCellValue(e.RowHandle, view.Columns["Notes"], string.Format("Row ID: {0}", newRowID));
+
+        }
+
         private Subscription<ValidateViewEvent<TEntity>> _subSave;
 
 
@@ -98,38 +114,15 @@ namespace StrumentiMusicali.App.View.BaseControl
 
             _dgvScontrino.FocusedRowChanged += DgvMaster_SelectionChanged;
 
-            //var rp = new RepositoryItemTextEdit();
-            //rp.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
-
-
-            //rp.Mask.EditMask = "P0";
-            //_gcScontrino.RepositoryItems.Add(rp);
-            //var col = _dgvScontrino.Columns["ScontoPerc"];
-
-
-            //col.ColumnEdit = rp;
-            //col.OptionsColumn.AllowEdit = true;
-            //col.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            //col.DisplayFormat.FormatString = "{0:n0} %";
-
-            //col = _dgvScontrino.Columns["IvaPerc"];
-            //col.ColumnEdit = rp;
-            //col.OptionsColumn.AllowEdit = true;
-            //col.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            //col.DisplayFormat.FormatString = "{0:n0} %";
-
-            //_dgvScontrino.Columns["TipoRigaScontrino"].Visible = false;
-
-            //_dgvScontrino.Columns["Articolo"].Visible = false;
-            //_dgvScontrino.CustomDrawCell += _dgvScontrino_CustomDrawCell;
+            
         }
         private void DgvMaster_SelectionChanged(object sender, EventArgs e)
         {
             var current = _dgvScontrino.GetRow(_dgvScontrino.FocusedRowHandle);
-
+            
             var item = (TEntity)null;
 
-
+             
             if (current != null)
             {
                 item = (TEntity)current;
@@ -138,7 +131,9 @@ namespace StrumentiMusicali.App.View.BaseControl
             _baseController.SelectedItem = item;
 
 
-            EventAggregator.Instance().Publish(new ItemSelected<TBaseItem, TEntity>(new TBaseItem() { Entity = item, ID = item.ID }, _baseController));
+            EventAggregator.Instance().Publish(new ItemSelected<TBaseItem, TEntity>(new TBaseItem() { 
+                Entity = item, ID = item ==null ? -1 : item.ID 
+            }, _baseController));
 
             _baseController.UpdateButtonState();
         }

@@ -51,6 +51,7 @@
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
@@ -67,9 +68,7 @@
     <Compile Include="Core\Attributes\ComboDataAttribute.cs" />
     <Compile Include="Core\Attributes\CustomUIViewAttribute.cs" />
     <Compile Include="Core\Attributes\CustomHideUIAttribute.cs" />
-    <Compile Include="Core\Attributes\UIAmbienteAttribute.cs" />
     <Compile Include="Core\Cloner\ClonerHelpers.cs" />
-    <Compile Include="Core\Enums\enAmbiente.cs" />
     <Compile Include="Core\EventAggregator.cs" />
     <Compile Include="Core\Events\Articoli\ArticoloMerge.cs" />
     <Compile Include="Core\Events\Articoli\ArticoloDuplicate.cs" />
@@ -85,7 +84,6 @@
     <Compile Include="Core\Events\Fatture\ImportaFattureAccess.cs" />
     <Compile Include="Core\Events\Generics\Add.cs" />
     <Compile Include="Core\Events\Generics\AddPriority.cs" />
-    <Compile Include="Core\Events\Generics\ApriAmbiente.cs" />
     <Compile Include="Core\Events\Generics\BaseGeneric.cs" />
     <Compile Include="Core\Events\Generics\ClearRicerca.cs" />
     <Compile Include="Core\Events\Generics\Edit.cs" />
@@ -154,6 +152,7 @@
     <Compile Include="Entity\Ecomm\RepartoWeb.cs" />
     <Compile Include="Entity\Fatture\Pagamento.cs" />
     <Compile Include="Entity\Fatture\FattureGenerateInvio.cs" />
+    <Compile Include="Entity\Fatture\RigaOrdAcquisto.cs" />
     <Compile Include="Entity\Fatture\Soggetto.cs" />
     <Compile Include="Entity\Articoli\Deposito.cs" />
     <Compile Include="Entity\Articoli\Categorie.cs" />
@@ -291,6 +290,55 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Note\TextFile1.txt" />
+    <None Include="Resources\Reorder.png" />
+    <None Include="Resources\View_all_64.png" />
+    <None Include="Resources\View_all_48.png" />
+    <None Include="Resources\Utenti.png" />
+    <None Include="Resources\Upload_64.png" />
+    <None Include="Resources\Upload.png" />
+    <None Include="Resources\Up.png" />
+    <None Include="Resources\Magazzino.png" />
+    <None Include="Resources\Totali_Aggiorna_48.png" />
+    <None Include="Resources\StrumentoMusicale.png" />
+    <None Include="Resources\Settings.png" />
+    <None Include="Resources\Search.png" />
+    <None Include="Resources\Sconto_64.png" />
+    <None Include="Resources\Sconta_Articoli.png" />
+    <None Include="Resources\Save_Close.png" />
+    <None Include="Resources\Save.png" />
+    <None Include="Resources\Remove.png" />
+    <None Include="Resources\Progress_Gif.gif" />
+    <None Include="Resources\PrintScontrino_48.png" />
+    <None Include="Resources\Print_48.png" />
+    <None Include="Resources\PreviewIcon.png" />
+    <None Include="Resources\pin_16.png" />
+    <None Include="Resources\pdfIcon.png" />
+    <None Include="Resources\Payment.png" />
+    <None Include="Resources\Apri.png" />
+    <None Include="Resources\MantieniFiltro.png" />
+    <None Include="Resources\LogView_48.png" />
+    <None Include="Resources\Libro_48.png" />
+    <None Include="Resources\Apri_Fatturazione.png" />
+    <None Include="Resources\Fatture_48.png" />
+    <None Include="Resources\Import.png" />
+    <None Include="Resources\ImmagineMancante.png" />
+    <None Include="Resources\Identity_48.png" />
+    <None Include="Resources\Cerca.png" />
+    <None Include="Resources\Fattura_xml_48.png" />
+    <None Include="Resources\Excel_export.png" />
+    <None Include="Resources\Penna.png" />
+    <None Include="Resources\Duplicate.png" />
+    <None Include="Resources\Down.png" />
+    <None Include="Resources\Depositi.png" />
+    <None Include="Resources\Delete.png" />
+    <None Include="Resources\Customer_48.png" />
+    <None Include="Resources\Close_48.png" />
+    <None Include="Resources\Close.png" />
+    <None Include="Resources\Check_OK_48.png" />
+    <None Include="Resources\CancellaRiga_scontrino.png" />
+    <None Include="Resources\Cancella_scontrino_64.png" />
+    <None Include="Resources\Add2.png" />
+    <None Include="Resources\Add.png" />
     <EmbeddedResource Include="Migrations\202004191519070_MaggiorazioneWeb.resx">
       <DependentUpon>202004191519070_MaggiorazioneWeb.cs</DependentUpon>
     </EmbeddedResource>
@@ -377,7 +425,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Core\Enums\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.3.2.9\build\Fody.targets" Condition="Exists('..\packages\Fody.3.2.9\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

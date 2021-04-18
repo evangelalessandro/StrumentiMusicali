@@ -68,7 +68,7 @@
             // 
             // rimuoviImmagineToolStripMenuItem
             // 
-            this.rimuoviImmagineToolStripMenuItem.Image = global::StrumentiMusicali.App.Properties.Resources.Delete;
+            this.rimuoviImmagineToolStripMenuItem.Image = global::StrumentiMusicali.Core.Properties.ImageIcons.Delete;
             this.rimuoviImmagineToolStripMenuItem.Name = "rimuoviImmagineToolStripMenuItem";
             this.rimuoviImmagineToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.rimuoviImmagineToolStripMenuItem.Text = "Rimuovi Immagine";

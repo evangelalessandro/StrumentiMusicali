@@ -1,13 +1,11 @@
-﻿using NLog;
-
+﻿
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.BaseControl;
 using StrumentiMusicali.App.View.Interfaces;
-using StrumentiMusicali.Core.Manager;
+using StrumentiMusicali.Core.Enum;
 using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
-using StrumentiMusicali.Library.View.Enums;
 
 namespace StrumentiMusicali.App.View
 {

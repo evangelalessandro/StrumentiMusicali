@@ -4,6 +4,7 @@ using StrumentiMusicali.App.Core.Controllers.Stampa;
 using StrumentiMusicali.App.Core.Fatture;
 using StrumentiMusicali.App.View;
 using StrumentiMusicali.App.View.Settings;
+using StrumentiMusicali.Core.Enum;
 using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Core.Settings;
 using StrumentiMusicali.Library.Core;
@@ -13,7 +14,6 @@ using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
-using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -370,7 +370,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             {
                 var pnlTipoDoc = tab.Add("Tipo documento");
 
-                var fattCortesia = pnlTipoDoc.Add(PulsanteCambioTipoDoc, Properties.Resources.Edit, false);
+                var fattCortesia = pnlTipoDoc.Add(PulsanteCambioTipoDoc, StrumentiMusicali.Core.Properties.ImageIcons.Edit, false);
                 fattCortesia.Click += (a, e) =>
                 {
                     EventAggregator.Instance().Publish<FatturaCambiaTipoDoc>(new FatturaCambiaTipoDoc());
@@ -378,7 +378,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             }
             var pnlStampa = tab.Add("Stampa");
 
-            var ribStampa = pnlStampa.Add("Avvia stampa", Properties.Resources.Print_48, true);
+            var ribStampa = pnlStampa.Add("Avvia stampa", StrumentiMusicali.Core.Properties.ImageIcons.Print_48, true);
             ribStampa.Click += (a, e) =>
             {
                 if (editItem)
@@ -387,7 +387,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                     StampaFattura(SelectedItem);
             };
 
-            var ribStampaXml = pnlStampa.Add("Genera fattura xml", Properties.Resources.Fattura_xml_48, true);
+            var ribStampaXml = pnlStampa.Add("Genera fattura xml", StrumentiMusicali.Core.Properties.ImageIcons.Fattura_xml_48, true);
             ribStampaXml.Click += (a, e) =>
             {
                 if (editItem)
@@ -397,7 +397,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             };
 
             var pnlCliente = tab.Add("Anagrafica cliente");
-            var ribCust = pnlCliente.Add("Visualizza cliente", Properties.Resources.Customer_48, true);
+            var ribCust = pnlCliente.Add("Visualizza cliente", StrumentiMusicali.Core.Properties.ImageIcons.Customer_48, true);
             ribCust.Click += (x, e) =>
             {
                 using (var controllerCl = new ControllerClienti())

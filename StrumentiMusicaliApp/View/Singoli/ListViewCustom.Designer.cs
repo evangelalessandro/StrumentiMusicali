@@ -35,7 +35,7 @@
             // button1
             // 
             this.button1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button1.Image = global::StrumentiMusicali.App.Properties.Resources.Check_OK_48;
+            this.button1.Image = global::StrumentiMusicali.Core.Properties.ImageIcons.Check_OK_48;
             this.button1.Location = new System.Drawing.Point(636, 0);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(164, 113);

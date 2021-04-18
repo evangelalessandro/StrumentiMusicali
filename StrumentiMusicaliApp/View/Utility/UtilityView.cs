@@ -49,15 +49,11 @@ namespace StrumentiMusicali.App.View.Utility
 
             return titolo;
         }
-
-        public static Icon GetIco(Bitmap bitmap)
-        {
-            return UtilityIco.GetIco(bitmap);
-        }
+         
 
         public static void AddButtonSaveAndClose(RibbonMenuPanel pnl, ICloseSave control, bool addSave = true)
         {
-            var rib3 = pnl.Add("Chiudi", Properties.Resources.Close_48);
+            var rib3 = pnl.Add("Chiudi", StrumentiMusicali.Core.Properties.ImageIcons.Close_48);
             rib3.Tag = MenuTab.TagClose;
 
             rib3.Click += (a, e) =>
@@ -68,7 +64,7 @@ namespace StrumentiMusicali.App.View.Utility
             {
                  
 
-                var rib1 = pnl.Add("Salva", Properties.Resources.Save);
+                var rib1 = pnl.Add("Salva", StrumentiMusicali.Core.Properties.ImageIcons.Save);
                 
 
                 rib1.Click += (a, e) =>

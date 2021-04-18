@@ -1,5 +1,5 @@
 ﻿using StrumentiMusicali.App.View.Interfaces;
-using StrumentiMusicali.Library.View.Enums;
+using StrumentiMusicali.Core.Enum;
 
 namespace StrumentiMusicali.App.Core.Events.Tab
 {

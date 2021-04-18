@@ -1,14 +1,13 @@
 ﻿using PropertyChanged;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.MenuRibbon;
+using StrumentiMusicali.Core.Enum;
 using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Core.Item;
-using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Repo;
-using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +43,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                 item.Testo = "Listino fornitori";
             }
             var presenti = menu.Tabs[0].Pannelli.Where(a => a.Pulsanti.Count() > 0).First();
-            var save = new RibbonMenuButton() { Testo = "Salva", Immagine = Properties.Resources.Save };
+            var save = new RibbonMenuButton() { Testo = "Salva", Immagine = StrumentiMusicali.Core.Properties.ImageIcons.Save };
             presenti.Pulsanti.Add(save);
             save.Click += Save_Click;
             return menu;

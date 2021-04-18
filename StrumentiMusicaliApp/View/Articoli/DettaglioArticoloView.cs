@@ -270,7 +270,7 @@ namespace StrumentiMusicali.App.Forms
                 _ribPannelImmagini = tab.Add("Immagini");
 
                 var ribAdd = _ribPannelImmagini.Add("Aggiungi",
-                    Properties.Resources.Add);
+                    StrumentiMusicali.Core.Properties.ImageIcons.Add);
 
                 ribAdd.Click += (a, e) =>
                 {
@@ -280,7 +280,7 @@ namespace StrumentiMusicali.App.Forms
 
                 _ribRemove = _ribPannelImmagini.Add(
                     "Rimuovi",
-                    Properties.Resources.Remove
+                    StrumentiMusicali.Core.Properties.ImageIcons.Remove
                 );
                 _ribRemove.Click += (b, e) =>
                 {
@@ -301,7 +301,7 @@ namespace StrumentiMusicali.App.Forms
 
                 var magazzino = tab.Add("Magazzino");
 
-                var rib4 = magazzino.Add("1 pezzo venduto", Properties.Resources.Remove, true);
+                var rib4 = magazzino.Add("1 pezzo venduto", StrumentiMusicali.Core.Properties.ImageIcons.Remove, true);
                 rib4.Click += (a, e) =>
                 {
                     if (_articoloController.EditItem.ID == 0)
@@ -331,7 +331,7 @@ namespace StrumentiMusicali.App.Forms
                     }
 
                 };
-                var rib5 = magazzino.Add("1 pezzo aggiunto", Properties.Resources.Add, true);
+                var rib5 = magazzino.Add("1 pezzo aggiunto", StrumentiMusicali.Core.Properties.ImageIcons.Add, true);
                 rib5.Click += (a, e) =>
                 {
                     if (_articoloController.EditItem.ID == 0)

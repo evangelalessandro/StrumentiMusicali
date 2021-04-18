@@ -8,11 +8,10 @@ using StrumentiMusicali.App.Core.Exports;
 using StrumentiMusicali.App.Core.Imports;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.Interfaces;
+using StrumentiMusicali.Core.Enum;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Articoli;
-using StrumentiMusicali.Library.Core.Events.Fatture;
 using StrumentiMusicali.Library.Core.Events.Generics;
-using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Windows.Forms;
 
@@ -81,6 +80,8 @@ namespace StrumentiMusicali.App
 
                 AggiungiImpostazioni();
 
+                AggiungiGestione();
+
                 AggiungiTabLog();
 
                 AggiungiComandiImportExport();
@@ -88,44 +89,57 @@ namespace StrumentiMusicali.App
             return _menuTab;
         }
 
+        private void AggiungiGestione()
+        {
+            var tabImportExport = _menuTab.Add(@"Gestione");
+            var panel1 = tabImportExport.Add("Principale");
+
+            var rib4 = panel1.Add("SottoScorta", StrumentiMusicali.Core.Properties.ImageIcons.Reorder_48);
+            rib4.Click += (s, e) =>
+            {
+                EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ArticoliSottoscorta));
+            };
+
+        }
+
         private void AggiungiImpostazioni()
         {
             var tabImportExport = _menuTab.Add(@"Impostazioni");
             var panel1 = tabImportExport.Add("Principale");
-            var rib1 = panel1.Add("Mittente fattura", Properties.Resources.Settings);
+            var rib1 = panel1.Add("Mittente fattura", StrumentiMusicali.Core.Properties.ImageIcons.Settings);
             rib1.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingFatture));
             };
-            var rib2 = panel1.Add("Sito & Upload", Properties.Resources.Settings);
+            var rib2 = panel1.Add("Sito & Upload", StrumentiMusicali.Core.Properties.ImageIcons.Settings);
             rib2.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingSito));
             };
 
-            var rib3 = panel1.Add("Intest. fattura per stampa", Properties.Resources.Settings);
+            var rib3 = panel1.Add("Intest. fattura per stampa", StrumentiMusicali.Core.Properties.ImageIcons.Settings);
             rib3.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingStampa));
             };
 
-            var rib4 = panel1.Add("Depositi", Properties.Resources.Settings);
+            var rib4 = panel1.Add("Depositi", StrumentiMusicali.Core.Properties.ImageIcons.Settings);
             rib4.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.DepositoList));
             };
 
-            var rib5 = panel1.Add("Backup ftp", Properties.Resources.Settings);
+            var rib5 = panel1.Add("Backup ftp", StrumentiMusicali.Core.Properties.ImageIcons.Settings);
             rib5.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingFtpBackup));
             };
-            var rib6 = panel1.Add("Scheduler", Properties.Resources.Settings);
+            var rib6 = panel1.Add("Scheduler", StrumentiMusicali.Core.Properties.ImageIcons.Settings);
             rib6.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.Scheduler));
             };
-            var rib7 = panel1.Add("Scontrino", Properties.Resources.Settings);
+            var rib7 = panel1.Add("Scontrino", StrumentiMusicali.Core.Properties.ImageIcons.Settings);
             rib7.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingScontrino));
@@ -136,7 +150,7 @@ namespace StrumentiMusicali.App
         {
             var tabImportExport = _menuTab.Add(@"Log");
             var panel1 = tabImportExport.Add("Principale");
-            var ribSetting = panel1.Add("Visualizza log", Properties.Resources.LogView_48);
+            var ribSetting = panel1.Add("Visualizza log", StrumentiMusicali.Core.Properties.ImageIcons.LogView_48);
             ribSetting.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.LogViewList));
@@ -147,40 +161,40 @@ namespace StrumentiMusicali.App
         {
             var tabImportExport = _menuTab.Add(@"Import\Export");
             var pnlExport = tabImportExport.Add("Export");
-            var ribInvio = pnlExport.Add("Invio Articoli", Properties.Resources.Upload);
+            var ribInvio = pnlExport.Add("Invio Articoli", StrumentiMusicali.Core.Properties.ImageIcons.Upload);
             ribInvio.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new InvioArticoliCSV());
             };
-            var ribExport1 = pnlExport.Add("Export Tutti libri Magazzino", Properties.Resources.Excel_export);
+            var ribExport1 = pnlExport.Add("Export Tutti libri Magazzino", StrumentiMusicali.Core.Properties.ImageIcons.Excel_export);
             ribExport1.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp = ExportMagazzino.TipoExport.TuttoLibri });
             };
-            var ribExport12 = pnlExport.Add("Export Tutti Strumenti Magazzino", Properties.Resources.Excel_export);
+            var ribExport12 = pnlExport.Add("Export Tutti Strumenti Magazzino", StrumentiMusicali.Core.Properties.ImageIcons.Excel_export);
             ribExport12.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp = ExportMagazzino.TipoExport.TuttoStrumenti});
             };
             var pnlExport2 = tabImportExport.Add("Elenco Mancanti");
-            var ribExport2 = pnlExport2.Add("Libri(Betta)", Properties.Resources.Excel_export);
+            var ribExport2 = pnlExport2.Add("Libri(Betta)", StrumentiMusicali.Core.Properties.ImageIcons.Excel_export);
             ribExport2.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp = ExportMagazzino.TipoExport.SoloLibriMancanti });
             };
-            var ribExport3 = pnlExport2.Add("X marca (Luca)", Properties.Resources.Excel_export);
+            var ribExport3 = pnlExport2.Add("X marca (Luca)", StrumentiMusicali.Core.Properties.ImageIcons.Excel_export);
             ribExport3.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp = ExportMagazzino.TipoExport.PerMarca });
             };
 
             var pnlImport = tabImportExport.Add("Import");
-            var ribImportCsv = pnlImport.Add("Import csv mercatino", Properties.Resources.ImportCsv);
+            var ribImportCsv = pnlImport.Add("Import csv mercatino", StrumentiMusicali.Core.Properties.ImageIcons.ImportCsv);
             ribImportCsv.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ImportArticoliCSVMercatino());
             };
-            var ribImport01 = pnlImport.Add("Import Tutti Libri Magazzino", Properties.Resources.Excel_export);
+            var ribImport01 = pnlImport.Add("Import Tutti Libri Magazzino", StrumentiMusicali.Core.Properties.ImageIcons.Excel_export);
             ribImport01.Click += (s, e) =>
             {
                 using (var mag = new ImportDaExportMagazzino(true))
@@ -188,7 +202,7 @@ namespace StrumentiMusicali.App
                     mag.ImportFile();
                 }
             };
-            var ribImport02 = pnlImport.Add("Import Tutti Strumenti Magazzino", Properties.Resources.Excel_export);
+            var ribImport02 = pnlImport.Add("Import Tutti Strumenti Magazzino", StrumentiMusicali.Core.Properties.ImageIcons.Excel_export);
             ribImport02.Click += (s, e) =>
             {
                 using (var mag = new ImportDaExportMagazzino(false))
@@ -197,17 +211,17 @@ namespace StrumentiMusicali.App
                 }
             };
 
-            //var ribImportFatture = pnlImport.Add("Fatture Access", Properties.Resources.ImportInvoice);
+            //var ribImportFatture = pnlImport.Add("Fatture Access", StrumentiMusicali.Core.Properties.ImageIcons.ImportInvoice);
             //ribImportFatture.Click += (s, e) =>
             //{
             //    EventAggregator.Instance().Publish(new ImportaFattureAccess());
             //};
-            //var rib3 = pnlImport.Add("Import Mulino Excel", Properties.Resources.ImportCsv);
+            //var rib3 = pnlImport.Add("Import Mulino Excel", StrumentiMusicali.Core.Properties.ImageIcons.ImportCsv);
             //rib3.Click += (s, e) =>
             //{
             //    EventAggregator.Instance().Publish(new ImportArticoliMulino());
             //};
-            //var rib4 = pnlImport.Add("Import Magazzini excel", Properties.Resources.ImportCsv);
+            //var rib4 = pnlImport.Add("Import Magazzini excel", StrumentiMusicali.Core.Properties.ImageIcons.ImportCsv);
             //rib4.Click += (s, e) =>
             //{
             //    EventAggregator.Instance().Publish(new ImportMagExcel());
@@ -220,12 +234,12 @@ namespace StrumentiMusicali.App
             if (LoginData.utenteLogin.Fatturazione)
             {
                 var panel1 = tabImportExport.Add("Ambienti Fatturazione");
-                var ribFatt = panel1.Add("Fatturazione", Properties.Resources.Invoice);
+                var ribFatt = panel1.Add("Fatturazione", StrumentiMusicali.Core.Properties.ImageIcons.Invoice);
                 ribFatt.Click += (s, e) =>
                 {
                     EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.FattureList));
                 };
-                var rib2 = panel1.Add(@"Clienti\Fornitori", Properties.Resources.Customer_48);
+                var rib2 = panel1.Add(@"Clienti\Fornitori", StrumentiMusicali.Core.Properties.ImageIcons.Customer_48);
                 rib2.Click += (s, e) =>
                 {
                     EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ClientiList));
@@ -233,31 +247,31 @@ namespace StrumentiMusicali.App
             }
             //if (LoginData.utenteLogin.Magazzino)
             //{
-            //	var ribMagaz = panel1.Add("Magazzino", Properties.Resources.UnloadWareHouse);
+            //	var ribMagaz = panel1.Add("Magazzino", StrumentiMusicali.Core.Properties.ImageIcons.UnloadWareHouse);
             //	ribMagaz.Click += (s, e) =>
             //	{
             //		EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ScaricoMagazzino));
             //	};
             //}
             var panel2 = tabImportExport.Add(@"Gestione articoli\libri");
-            var ribArticoli = panel2.Add("Gestione strumenti", Properties.Resources.StrumentoMusicale);
+            var ribArticoli = panel2.Add("Gestione strumenti", StrumentiMusicali.Core.Properties.ImageIcons.StrumentoMusicale);
             ribArticoli.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.StrumentiList));
             };
-            var ribLibri = panel2.Add("Gestione libri", Properties.Resources.Libro_48);
+            var ribLibri = panel2.Add("Gestione libri", StrumentiMusicali.Core.Properties.ImageIcons.Libro_48);
             ribLibri.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.LibriList));
             };
-            var ribRicArticoli = panel2.Add(@"Ricerca articoli\libri", Properties.Resources.Search_48);
+            var ribRicArticoli = panel2.Add(@"Ricerca articoli\libri", StrumentiMusicali.Core.Properties.ImageIcons.Search_48);
             ribRicArticoli.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.RicercaArticolo));
             };
             var panelPag = tabImportExport.Add("Pagamenti");
 
-            var ribPag = panelPag.Add("Gestione Pagamenti", Properties.Resources.Payment);
+            var ribPag = panelPag.Add("Gestione Pagamenti", StrumentiMusicali.Core.Properties.ImageIcons.Payment);
             ribPag.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.PagamentiList));
@@ -266,7 +280,7 @@ namespace StrumentiMusicali.App
             if (LoginData.utenteLogin.AdminUtenti)
             {
                 var panel3 = tabImportExport.Add("Utenti");
-                var ribUtenti = panel3.Add("Utenti Login", Properties.Resources.Utenti);
+                var ribUtenti = panel3.Add("Utenti Login", StrumentiMusicali.Core.Properties.ImageIcons.Utenti);
                 ribUtenti.Click += (s, e) =>
                 {
                     EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.UtentiList));

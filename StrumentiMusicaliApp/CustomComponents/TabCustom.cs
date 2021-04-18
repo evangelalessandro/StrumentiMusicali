@@ -69,7 +69,7 @@ namespace StrumentiMusicali.App.CustomComponents
                 {
                     var tabRect = this.tabControl1.GetTabRect(i);
                     tabRect.Inflate(-2, -2);
-                    var closeImage = Properties.Resources.Close_48;
+                    var closeImage = StrumentiMusicali.Core.Properties.ImageIcons.Close_48;
                     var imageRect = new Rectangle(
                         (tabRect.Right - closeImage.Width),
                         tabRect.Top + (tabRect.Height - closeImage.Height) / 2,
@@ -91,7 +91,7 @@ namespace StrumentiMusicali.App.CustomComponents
             tabRect.Inflate(-2, -2);
             if (AllowAdd && e.Index == this.tabControl1.TabCount - 1)
             {
-                var addImage = Properties.Resources.Add_16;
+                var addImage = StrumentiMusicali.Core.Properties.ImageIcons.Add_16;
                 e.Graphics.DrawImage(addImage,
                     tabRect.Left + (tabRect.Width - addImage.Width) / 2,
                     tabRect.Top + (tabRect.Height - addImage.Height) / 2);

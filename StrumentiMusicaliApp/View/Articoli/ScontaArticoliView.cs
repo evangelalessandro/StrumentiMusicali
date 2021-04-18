@@ -44,7 +44,7 @@ namespace StrumentiMusicali.App.View.Articoli
             var panelComandi = tabArticoli.Add("Comandi");
             UtilityView.AddButtonSaveAndClose(panelComandi, this, false);
 
-            var ribCrea = panelComandi.Add("Conferma", Properties.Resources.Check_OK_48);
+            var ribCrea = panelComandi.Add("Conferma", StrumentiMusicali.Core.Properties.ImageIcons.Check_OK_48);
             ribCrea.Click += RibCrea_Click;
         }
 

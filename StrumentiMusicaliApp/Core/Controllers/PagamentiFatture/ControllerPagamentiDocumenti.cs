@@ -1,13 +1,13 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Settings;
+using StrumentiMusicali.Core.Enum;
 using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Image;
 using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
-using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -56,7 +56,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             var _ribPannelImmagini = tabFirst.Add("Immagini");
 
             var ribAdd = _ribPannelImmagini.Add("Aggiungi",
-                Properties.Resources.Add);
+                StrumentiMusicali.Core.Properties.ImageIcons.Add);
 
             ribAdd.Click += (a, e) =>
             {
@@ -88,7 +88,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
             _ribRemove = _ribPannelImmagini.Add(
                 "Rimuovi",
-                Properties.Resources.Remove
+                StrumentiMusicali.Core.Properties.ImageIcons.Remove
             );
             _ribRemove.Click += (b, e) =>
             {

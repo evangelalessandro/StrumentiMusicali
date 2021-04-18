@@ -1,9 +1,8 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
-using StrumentiMusicali.App.Core.Events;
 using StrumentiMusicali.App.Core.Events.Scontrino;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Forms;
-using StrumentiMusicali.App.View.Articoli;
+using StrumentiMusicali.Core.Enum;
 using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Core.Settings;
 using StrumentiMusicali.Core.Utility;
@@ -17,7 +16,6 @@ using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Entity.Enums;
 using StrumentiMusicali.Library.Repo;
-using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -390,13 +388,13 @@ namespace StrumentiMusicali.App.Core.Controllers
             if (ModalitaController != enModalitaArticolo.Ricerca
                 && ModalitaController != enModalitaArticolo.SelezioneSingola)
             {
-                var rib1 = pnl.Add("Duplica", Properties.Resources.Duplicate, true);
+                var rib1 = pnl.Add("Duplica", StrumentiMusicali.Core.Properties.ImageIcons.Duplicate, true);
                 rib1.Click += (a, e) =>
                 {
                     EventAggregator.Instance().Publish<ArticoloDuplicate>(new ArticoloDuplicate(this));
                 };
                 var pnl2 = GetMenu().Tabs[0].Add("Prezzi");
-                var rib2 = pnl2.Add("Varia prezzi", Properties.Resources.Sconta_Articoli);
+                var rib2 = pnl2.Add("Varia prezzi", StrumentiMusicali.Core.Properties.ImageIcons.Sconta_Articoli);
                 rib2.Click += (a, e) =>
                 {
                     ScontaArticoliShowView();
@@ -413,39 +411,39 @@ namespace StrumentiMusicali.App.Core.Controllers
                 || ModalitaController == enModalitaArticolo.Tutto)
             {
                 var pnlS = GetMenu().Tabs[0].Add("Scontrino");
-                pnlS.Add("Aggiungi a scontrino", Properties.Resources.Add, true).Click += (a, e) =>
+                pnlS.Add("Aggiungi a scontrino", StrumentiMusicali.Core.Properties.ImageIcons.Add, true).Click += (a, e) =>
                 {
                     EventAggregator.Instance().Publish<ScontrinoAddEvents>(new ScontrinoAddEvents()
                     {
                         Articolo = this.SelectedItem
                     }) ;
                 };
-                pnlS.Add("Aggiungi generico", Properties.Resources.Add, true).Click += (a, e) =>
+                pnlS.Add("Aggiungi generico", StrumentiMusicali.Core.Properties.ImageIcons.Add, true).Click += (a, e) =>
                 {
                     EventAggregator.Instance().Publish<ScontrinoAddEvents>(new ScontrinoAddEvents()
                     {
                         
                     });
                 };
-                //pnlS.Add("Aggiungi sconto", Properties.Resources.Sconto_64, true).Click += (a, e) =>
+                //pnlS.Add("Aggiungi sconto", StrumentiMusicali.Core.Properties.ImageIcons.Sconto_64, true).Click += (a, e) =>
                 //{
                 //    EventAggregator.Instance().Publish<ScontrinoAddScontoEvents>(new ScontrinoAddScontoEvents()
                 //    {
 
                 //    });
                 //};
-                pnlS.Add("Rimuovi riga", Properties.Resources.CancellaRiga_scontrino, true).Click += (a, e) =>
+                pnlS.Add("Rimuovi riga", StrumentiMusicali.Core.Properties.ImageIcons.CancellaRiga_scontrino, true).Click += (a, e) =>
                 {
                     EventAggregator.Instance().Publish<ScontrinoRemoveLineEvents>(new ScontrinoRemoveLineEvents()
                     {
 
                     });
                 };
-                pnlS.Add("Stampa", Properties.Resources.PrintScontrino_48, true).Click += (a, e) =>
+                pnlS.Add("Stampa", StrumentiMusicali.Core.Properties.ImageIcons.PrintScontrino_48, true).Click += (a, e) =>
                 {
                     EventAggregator.Instance().Publish<ScontrinoStampa>(new ScontrinoStampa());
                 };
-                //pnlS.Add("Elimina tutto", Properties.Resources.Cancella_scontrino_64, true).Click += (a, e) =>
+                //pnlS.Add("Elimina tutto", StrumentiMusicali.Core.Properties.ImageIcons.Cancella_scontrino_64, true).Click += (a, e) =>
                 //{
                 //    EventAggregator.Instance().Publish<ScontrinoClear>(new ScontrinoClear());
                 //};
@@ -457,7 +455,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                 if (ModalitaController != enModalitaArticolo.Ricerca)
                 {
-                    var rib3 = pnl3.Add("Qta Magazzino", Properties.Resources.UnloadWareHouse, true);
+                    var rib3 = pnl3.Add("Qta Magazzino", StrumentiMusicali.Core.Properties.ImageIcons.UnloadWareHouse, true);
                     rib3.Click += (a, e) =>
                     {
                         using (var depo = new Core.Controllers.ControllerMagazzino(SelectedItem))
@@ -471,7 +469,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                         }
                     };
                 }
-                var rib4 = pnl3.Add("1 pezzo venduto", Properties.Resources.Remove, true);
+                var rib4 = pnl3.Add("1 pezzo venduto", StrumentiMusicali.Core.Properties.ImageIcons.Remove, true);
                 rib4.Click += (a, e) =>
                 {
                     using (var depo = new Core.Controllers.ControllerMagazzino(SelectedItem))
@@ -495,7 +493,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                         }
                     }
                 };
-                var rib5 = pnl3.Add("1 pezzo aggiunto", Properties.Resources.Add, true);
+                var rib5 = pnl3.Add("1 pezzo aggiunto", StrumentiMusicali.Core.Properties.ImageIcons.Add, true);
                 rib5.Click += (a, e) =>
                 {
                     using (var depo = new Core.Controllers.ControllerMagazzino(SelectedItem))
@@ -525,7 +523,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             if (ModalitaController == enModalitaArticolo.SelezioneSingola)
             {
                 var pnl2 = GetMenu().Tabs[0].Add("Conferma");
-                var rib2 = pnl2.Add("Conferma", Properties.Resources.Check_OK_48);
+                var rib2 = pnl2.Add("Conferma", StrumentiMusicali.Core.Properties.ImageIcons.Check_OK_48);
                 rib2.Click += (a, e) =>
                 {
                     if (SelectedItem != null && SelectedItem.ID > 0)

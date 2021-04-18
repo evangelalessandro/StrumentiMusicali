@@ -1,13 +1,13 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Controllers.Stampa;
 using StrumentiMusicali.App.Forms;
+using StrumentiMusicali.Core.Enum;
 using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
-using StrumentiMusicali.Library.Repo;
-using StrumentiMusicali.Library.View.Enums;
+using StrumentiMusicali.Library.Repo; 
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,7 +75,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
             var pnlStampa = tab.Add("Stampa");
 
-            var ribStampa = pnlStampa.Add("Avvia stampa", Properties.Resources.Print_48, true);
+            var ribStampa = pnlStampa.Add("Avvia stampa", StrumentiMusicali.Core.Properties.ImageIcons.Print_48, true);
             ribStampa.Click += (a, e) =>
             {
                 if (editItem)
@@ -86,7 +86,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             };
             var pnlDoc = tab.Add("Documenti");
 
-            var ribDocumenti = pnlDoc.Add("Documenti", Properties.Resources.Identity_48, true);
+            var ribDocumenti = pnlDoc.Add("Documenti", StrumentiMusicali.Core.Properties.ImageIcons.Identity_48, true);
             ribDocumenti.Click += (a, e) =>
                  {
                      using (var controller = new ControllerPagamentiDocumenti(

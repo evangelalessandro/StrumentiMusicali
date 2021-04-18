@@ -1,8 +1,5 @@
-﻿using DevExpress.LookAndFeel;
-using DevExpress.UserSkins;
+﻿using DevExpress.UserSkins;
 using DevExpress.XtraEditors.Repository;
-using NLog;
-using NLog.Targets;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Exports;
 using StrumentiMusicali.App.Core.Imports;
@@ -12,6 +9,7 @@ using StrumentiMusicali.App.View;
 using StrumentiMusicali.App.View.Articoli;
 using StrumentiMusicali.App.View.BaseControl;
 using StrumentiMusicali.App.View.Settings;
+using StrumentiMusicali.Core.Enum;
 using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Core.Settings;
 using StrumentiMusicali.Library.Core;
@@ -21,7 +19,6 @@ using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Altro;
 using StrumentiMusicali.Library.Repo;
-using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -162,6 +159,14 @@ namespace StrumentiMusicali.App.Core.Controllers
                         break;
                     }
                 case enAmbiente.RicercaArticolo:
+
+                    var contrArt = new ControllerArticoli(ControllerArticoli.enModalitaArticolo.Ricerca);
+                    var viewRicercaArt = new RicercaArticoliStyleView(contrArt);
+
+                    this.ShowView(viewRicercaArt, obj.TipoEnviroment, contrArt);
+
+                    break;
+                case enAmbiente.ArticoliSottoscorta:
 
                     var contrArt = new ControllerArticoli(ControllerArticoli.enModalitaArticolo.Ricerca);
                     var viewRicercaArt = new RicercaArticoliStyleView(contrArt);

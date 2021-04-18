@@ -9,13 +9,15 @@ using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Utility;
+using StrumentiMusicali.Core.Ambienti;
+using StrumentiMusicali.Core.Attributes;
+using StrumentiMusicali.Core.Enum;
 using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Core.Utility;
-using StrumentiMusicali.Library.Core;
-using StrumentiMusicali.Library.Core.Attributes;
+using StrumentiMusicali.Library.Core; 
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Core.interfaces;
-using StrumentiMusicali.Library.View.Enums;
+ 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -108,7 +110,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                      (enAmbiente.NonSpecificato, null, null)).FirstOrDefault().Ambiente;
                 if (item != enAmbiente.NonSpecificato)
                 {
-                    MessageBox.Show("Occorre chiudere l'ambiente '" + TestoAmbiente(item) + "'");
+                    MessageBox.Show("Occorre chiudere l'ambiente '" + UtilityAmbienti.TestoAmbiente(item) + "'");
                     view.Dispose();
                     controller.Dispose();
                     return;
@@ -126,7 +128,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
             }
             if (menu != null)
             {
-                menu.Tabs[0].Testo = TestoAmbiente(ambiente);
+                menu.Tabs[0].Testo = UtilityAmbienti.TestoAmbiente(ambiente);
 
                 LoadMenu(menu, _ribbonMaster);
             }
@@ -140,7 +142,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                 closeSave = (view as ICloseSave);
             }
 
-            var arg = new GetNewTab(TestoAmbiente(ambiente), ambiente, closeSave);
+            var arg = new GetNewTab(UtilityAmbienti.TestoAmbiente(ambiente), ambiente, closeSave);
             EventAggregator.Instance().Publish(arg);
 
             var newTab = arg.Tab;
@@ -321,8 +323,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                     {
                         SetDocManager(frm);
                     }
-
-                    ImpostaIconaETesto(ambiente, frm);
+                    frm.Text = UtilityAmbienti.TestoAmbiente(ambiente);
+                    frm.Icon= UtilityAmbienti.GetIcon(ambiente);
 
                     if (view.MinimumSize.Height > 0)
                     {
@@ -482,168 +484,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
             form.Controls.Add(StatusStrip);
         }
         public const string MainName = "Gestione magazzino e fatturazione";
-        public string TestoAmbiente(enAmbiente ambiente)
-        {
-            switch (ambiente)
-            {
-                case enAmbiente.ClientiList:
-                    return @"Clienti\Fornitori";
-
-                case enAmbiente.Cliente:
-                    return @"Cliente\Fornitore";
-
-                case enAmbiente.Main:
-                    return MainName;
-
-                case enAmbiente.Fattura:
-                    return "Fattura";
-
-                case enAmbiente.FattureList:
-                    return "Fatture";
-
-                case enAmbiente.StrumentiDetail:
-                    return "Strumento";
-
-                case enAmbiente.StrumentiList:
-                    return "Gestione Strumenti";
-
-                case enAmbiente.LibriDetail:
-                    return "Libro";
-
-                case enAmbiente.LibriList:
-                    return "Gestione Libri";
-
-                case enAmbiente.Magazzino:
-                    return "Magazzino";
-
-                case enAmbiente.SettingFatture:
-                    return "Impostazioni fatture";
-
-                case enAmbiente.SettingSito:
-                    return "Impostazioni sito";
-
-                case enAmbiente.SettingDocPagamenti:
-                    return "Impostazioni documenti pagamenti";
-
-                case enAmbiente.SettingFtpBackup:
-                    return "Impostazioni ftp backup";
-
-                case enAmbiente.SettingScontrino:
-                    return "Impostazioni scontrino";
-
-                case enAmbiente.Scheduler:
-                    return "Scheduler";
-
-                case enAmbiente.ScaricoMagazzino:
-                    return "Scarico Magazzino";
-
-                case enAmbiente.LogViewList:
-                    return "Visualizzatore dei log";
-
-                case enAmbiente.SettingStampa:
-                    return "Settaggi di stampa fattura";
-
-                case enAmbiente.FattureRigheList:
-                    break;
-                case enAmbiente.FattureRigheDett:
-                    return "Dettaglio riga";
-                case enAmbiente.Deposito:
-                    return "Deposito";
-                case enAmbiente.DepositoList:
-                    return "Depositi";
-                case enAmbiente.ArticoloSconto:
-                    return "Sconta articoli";
-                case enAmbiente.UtentiList:
-                    return "Utenti";
-                case enAmbiente.Utente:
-                    return "Utente";
-                case enAmbiente.PagamentiList:
-                    return "Pagamenti";
-                case enAmbiente.Pagamento:
-                    return "Pagamento";
-                case enAmbiente.RicercaArticolo:
-                    return "Ricerca articolo";
-
-                default:
-                    return "NIENTE DI IMPOSTATO";
-
-            }
-            return "NIENTE DI IMPOSTATO";
-
-        }
-        private void ImpostaIconaETesto(enAmbiente ambiente, Form frm)
-        {
-            switch (ambiente)
-            {
-                case enAmbiente.PagamentiList:
-                case enAmbiente.Pagamento:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.Payment);
-                    break;
-                case enAmbiente.ClientiList:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.Customer_48);
-                    break;
-                case enAmbiente.UtentiList:
-                case enAmbiente.Utente:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.Utenti);
-                    break;
-                case enAmbiente.Cliente:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.Customer_48);
-                    break;
-                case enAmbiente.Main:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.StrumentoMusicale);
-                    break;
-                case enAmbiente.RicercaArticolo:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.Search_48);
-                    break;
-                case enAmbiente.Fattura:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.Invoice);
-                    break;
-                case enAmbiente.FattureList:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.Invoice);
-                    break;
-                case enAmbiente.StrumentiDetail:
-                case enAmbiente.StrumentiList:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.StrumentoMusicale);
-                    break;
-                case enAmbiente.LibriDetail:
-                case enAmbiente.LibriList:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.Libro_48);
-                    break;
-                case enAmbiente.Magazzino:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.UnloadWareHouse);
-                    break;
-                case enAmbiente.SettingScontrino:
-                case enAmbiente.SettingFatture:
-                case enAmbiente.SettingFtpBackup:
-                case enAmbiente.SettingDocPagamenti:
-                case enAmbiente.SettingSito:
-                case enAmbiente.SettingStampa:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.Settings);
-                    break;
-                case enAmbiente.ScaricoMagazzino:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.UnloadWareHouse);
-                    break;
-                case enAmbiente.LogViewList:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.LogView_48);
-                    break;
-                case enAmbiente.FattureRigheList:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.Invoice);
-                    break;
-                case enAmbiente.FattureRigheDett:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.Invoice);
-                    break;
-                case enAmbiente.Deposito:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.Depositi);
-                    break;
-                case enAmbiente.DepositoList:
-                    frm.Icon = UtilityView.GetIco(Properties.Resources.Depositi);
-                    break;
-                default:
-                    break;
-            }
-            frm.Text = TestoAmbiente(ambiente);
-        }
-
+        
 
         private void InitRibbon(Ribbon ribbon1)
         {

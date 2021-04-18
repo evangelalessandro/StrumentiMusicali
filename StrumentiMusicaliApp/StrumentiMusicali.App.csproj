@@ -311,12 +311,6 @@
     <Compile Include="Core\Item\SchedulerItem.cs" />
     <Compile Include="Core\MenuRibbon\RibbonButton.cs" />
     <Compile Include="CustomComponents\DateTimePickerBinding.cs" />
-    <Compile Include="CustomComponents\TabCustom.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CustomComponents\TabCustom.Designer.cs">
-      <DependentUpon>TabCustom.cs</DependentUpon>
-    </Compile>
     <Compile Include="Localization_it.cs" />
     <Compile Include="Settings\UserSettings.cs" />
     <Compile Include="View\Articoli\RicercaArticoliStyleView.cs">
@@ -958,6 +952,7 @@
     <None Include="Resources\Cancella_Scontrino.png" />
     <None Include="Resources\CancellaRiga_scontrino.png" />
     <None Include="Resources\Cancella_scontrino_64.png" />
+    <None Include="Resources\Reorder.png" />
     <Content Include="Resources\StrumentoMusicale.ico" />
     <Content Include="StrumentoMusicale.ico" />
     <None Include="Resources\Close.png" />
@@ -982,9 +977,6 @@
     <None Include="Resources\LogView_48.png" />
     <None Include="Resources\Down.png" />
     <None Include="Resources\Up.png" />
-    <EmbeddedResource Include="CustomComponents\TabCustom.resx">
-      <DependentUpon>TabCustom.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="View\Articoli\RicercaArticoliStyleView.resx">
       <DependentUpon>RicercaArticoliStyleView.cs</DependentUpon>
@@ -1046,6 +1038,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="View\ScaricoMagazzinoView.resx">
       <DependentUpon>ScaricoMagazzinoView.cs</DependentUpon>

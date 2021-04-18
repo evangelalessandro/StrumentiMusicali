@@ -2,13 +2,13 @@
 using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.Interfaces;
+using StrumentiMusicali.Core.Enum;
 using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Library.Core;
 
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Entity;
-using StrumentiMusicali.Library.Repo;
-using StrumentiMusicali.Library.View.Enums;
+using StrumentiMusicali.Library.Repo; 
 using System;
 using System.Collections.Generic;
 using System.Linq;

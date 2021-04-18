@@ -3,13 +3,13 @@ using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.App.View.Utility;
-using StrumentiMusicali.Core.Utility;
+using StrumentiMusicali.Core.Ambienti;
+using StrumentiMusicali.Core.Enum;
 using StrumentiMusicali.Library.Core;
 
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Core.Item.Base;
 using StrumentiMusicali.Library.Entity.Base;
-using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,12 +19,12 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
     [AddINotifyPropertyChangedInterface]
     public abstract class BaseControllerGeneric<TEntity, TBaseItem> : BaseController, IMenu, IDisposable, ICloseSave //, INotifyPropertyChanged
         where TEntity : BaseEntity, new()
-        where TBaseItem : BaseItem<TEntity>,  new()
+        where TBaseItem : BaseItem<TEntity>, new()
     {
 
 
 
-        public BaseControllerGeneric(enAmbiente ambiente, enAmbiente ambienteDettaglio, bool gestioneInline = false):
+        public BaseControllerGeneric(enAmbiente ambiente, enAmbiente ambienteDettaglio, bool gestioneInline = false) :
             base(gestioneInline)
         {
             AmbienteDettaglio = ambienteDettaglio;
@@ -77,7 +77,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
             }
         }
 
-        public TEntity EditItem {
+        public TEntity EditItem
+        {
             get;
             set;
         } = new TEntity();
@@ -158,9 +159,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
             }
         }
         public MySortableBindingList<TBaseItem> DataSource { get; set; } = new MySortableBindingList<TBaseItem>();
-        
-        
-        public List< TEntity> DataSourceInRow { get; set; } = new List<TEntity>();
+
+
+        public List<TEntity> DataSourceInRow { get; set; } = new List<TEntity>();
         internal void UpdateDataSource()
         {
             RefreshList(null);
@@ -195,21 +196,21 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
         private void AggiungiComandi()
         {
 
-            var tab1 = _menuTab.Add(TestoAmbiente(AmbienteMenu));
+            var tab1 = _menuTab.Add(UtilityAmbienti.TestoAmbiente(AmbienteMenu));
             var panelComandi = tab1.Add("Comandi");
             UtilityView.AddButtonSaveAndClose(panelComandi, this, false);
 
-            var ribCrea = panelComandi.Add("Crea", Properties.Resources.Add);
+            var ribCrea = panelComandi.Add("Crea", StrumentiMusicali.Core.Properties.ImageIcons.Add);
             ribCrea.Tag = MenuTab.TagAdd;
 
-            var ribEdit = panelComandi.Add(@"Vedi\Modifica", Properties.Resources.Edit, true);
+            var ribEdit = panelComandi.Add(@"Vedi\Modifica", StrumentiMusicali.Core.Properties.ImageIcons.Edit, true);
             ribEdit.Tag = MenuTab.TagEdit;
 
-            var ribDelete = panelComandi.Add("Cancella", Properties.Resources.Delete, true);
+            var ribDelete = panelComandi.Add("Cancella", StrumentiMusicali.Core.Properties.ImageIcons.Delete, true);
             ribDelete.Tag = MenuTab.TagRemove;
 
             var panel2 = tab1.Add("Cerca");
-            var ribCerca = panel2.Add("Cerca", Properties.Resources.Find);
+            var ribCerca = panel2.Add("Cerca", StrumentiMusicali.Core.Properties.ImageIcons.Find);
             ribCerca.Tag = MenuTab.TagCerca;
 
             ribCrea.Click += (a, e) =>
@@ -217,7 +218,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                 EventAggregator.Instance().Publish(new Add<TEntity>(this));
             };
 
-            var ribClearFilter = panel2.Add("Mantieni filtro", Properties.Resources.MantieniFiltro);
+            var ribClearFilter = panel2.Add("Mantieni filtro", StrumentiMusicali.Core.Properties.ImageIcons.MantieniFiltro);
             ribClearFilter.Tag = MenuTab.TagCercaClear;
             ribClearFilter.Checked = false;
             ribClearFilter.Click += (a, e) =>
@@ -243,7 +244,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
             };
 
             var panel3 = tab1.Add("Visualizza");
-            var rib1 = panel3.Add("Visualizza tutti", Properties.Resources.View_all_48);
+            var rib1 = panel3.Add("Visualizza tutti", StrumentiMusicali.Core.Properties.ImageIcons.View_all_48);
             rib1.Click += (b, c) =>
               {
                   rib1.Checked = !rib1.Checked;

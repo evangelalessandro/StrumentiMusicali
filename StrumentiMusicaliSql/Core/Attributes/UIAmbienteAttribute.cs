@@ -1,6 +1,6 @@
 ﻿
-using StrumentiMusicali.Library.View.Enums;
 using System;
+using System.Drawing;
 
 namespace StrumentiMusicali.Library.Core.Attributes
 {
@@ -14,5 +14,11 @@ namespace StrumentiMusicali.Library.Core.Attributes
         public bool OnlyViewInForm { get; set; }
         /*Richiede chiusura di questo ambiente se si apre l'altro*/
         public enAmbiente AmbienteMutuale { get; set; } = enAmbiente.NonSpecificato;
+
+        public string NomeAmbiente { get; set; } = "Niente";
+
+        public Bitmap Icona { get; set; }
+
+         
     }
 }

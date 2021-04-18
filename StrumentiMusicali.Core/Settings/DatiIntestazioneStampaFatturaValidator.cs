@@ -1,10 +1,10 @@
 ﻿using StrumentiMusicali.App.Core;
+using StrumentiMusicali.Core.Enum;
 using StrumentiMusicali.Core.Utility;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Entity;
-using StrumentiMusicali.Library.Repo;
-using StrumentiMusicali.Library.View.Enums;
+using StrumentiMusicali.Library.Repo; 
 using System;
 using System.Linq;
 

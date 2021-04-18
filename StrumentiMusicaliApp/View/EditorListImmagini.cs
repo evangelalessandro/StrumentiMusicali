@@ -112,14 +112,14 @@ namespace StrumentiMusicali.App.View
                     var extension = new FileInfo(item.File).Extension;
                     if (!System.IO.File.Exists(item.File))
                     {
-                        pb.Image = Properties.Resources.ImmagineMancante;
+                        pb.Image = StrumentiMusicali.Core.Properties.ImageIcons.ImmagineMancante;
                         MessageManager.NotificaWarnig("Manca l'immagine " +
                         item.File);
 
                     }
                     else if (extension.Equals(".pdf", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        pb.Image = Properties.Resources.pdfIcon;
+                        pb.Image = StrumentiMusicali.Core.Properties.ImageIcons.pdfIcon;
                     }
                     else if (IsImage(extension))
                     {
@@ -128,7 +128,7 @@ namespace StrumentiMusicali.App.View
                     }
                     else
                     {
-                        pb.Image = Properties.Resources.PreviewIcon;
+                        pb.Image = StrumentiMusicali.Core.Properties.ImageIcons.PreviewIcon;
                     }
                     pb.Click += Pb_Click;
                     pb.MouseClick += Pb_MouseClick;

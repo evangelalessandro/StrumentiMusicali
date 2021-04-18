@@ -56,7 +56,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             var panelComandiArticoli = tabArticoli.Add("Comandi");
             UtilityView.AddButtonSaveAndClose(panelComandiArticoli, this, false);
 
-            var ribCarica = panelComandiArticoli.Add("Carica", Properties.Resources.Add);
+            var ribCarica = panelComandiArticoli.Add("Carica", StrumentiMusicali.Core.Properties.ImageIcons.Add);
             ribCarica.Tag = TAG_CARICA;
             ribCarica.Click += (a, e) =>
             {
@@ -70,7 +70,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                 });
             };
 
-            var ribScarica = panelComandiArticoli.Add("Scarica", Properties.Resources.Remove);
+            var ribScarica = panelComandiArticoli.Add("Scarica", StrumentiMusicali.Core.Properties.ImageIcons.Remove);
             ribScarica.Tag = TAG_SCARICA;
             ribScarica.Click += (a, e) =>
             {

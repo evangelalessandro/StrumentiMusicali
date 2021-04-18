@@ -33,10 +33,23 @@ namespace StrumentiMusicali.App.View.BaseControl
             ControlContainer.Dock = DockStyle.Fill;
             Init(ControlContainer);
             _baseController = baseController;
+            _dgvScontrino.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.True;
+            _subSave = EventAggregator.Instance().Subscribe<ValidateViewEvent<TEntity>>((a) =>
+              {
+                  CloseEditor();
+              });
+        }
+        private Subscription<ValidateViewEvent<TEntity>> _subSave;
+
+
+        private void CloseEditor()
+        {
+            _dgvScontrino.CloseEditor();
+            _dgvScontrino.UpdateCurrentRow();
 
         }
         public Control ControlContainer { get; private set; }
-        
+
 
         private void Init(Control control)
         {
@@ -71,7 +84,7 @@ namespace StrumentiMusicali.App.View.BaseControl
             ((System.ComponentModel.ISupportInitialize)(_dgvScontrino)).EndInit();
             UtilityView.InitGridDev(_dgvScontrino);
             _dgvScontrino.OptionsBehavior.Editable = true;
-            _dgvScontrino.OptionsView.ShowAutoFilterRow = false;
+            _dgvScontrino.OptionsView.ShowAutoFilterRow = true;
 
 
             emptyEditor = new RepositoryItemButtonEdit();
@@ -79,8 +92,8 @@ namespace StrumentiMusicali.App.View.BaseControl
             emptyEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             _gcScontrino.RepositoryItems.Add(emptyEditor);
 
-             
-            _dgvScontrino.OptionsCustomization.AllowSort = false;
+
+            _dgvScontrino.OptionsCustomization.AllowSort = true;
 
 
             _dgvScontrino.FocusedRowChanged += DgvMaster_SelectionChanged;
@@ -113,20 +126,18 @@ namespace StrumentiMusicali.App.View.BaseControl
         private void DgvMaster_SelectionChanged(object sender, EventArgs e)
         {
             var current = _dgvScontrino.GetRow(_dgvScontrino.FocusedRowHandle);
-            var item = (TEntity)current;
 
-            if (item != null )
+            var item = (TEntity)null;
+
+
+            if (current != null)
             {
-
-                _baseController.SelectedItem = item;
-
-
+                item = (TEntity)current;
             }
-            else
-            {
-                _baseController.SelectedItem = null;
 
-            }
+            _baseController.SelectedItem = item;
+
+
             EventAggregator.Instance().Publish(new ItemSelected<TBaseItem, TEntity>(new TBaseItem() { Entity = item, ID = item.ID }, _baseController));
 
             _baseController.UpdateButtonState();
@@ -137,7 +148,7 @@ namespace StrumentiMusicali.App.View.BaseControl
             _gcScontrino.DataSource = datasource;
             _gcScontrino.RefreshDataSource();
 
-            ItemEditorManager managerEditor = new ItemEditorManager(_gcScontrino,_dgvScontrino);
+            ItemEditorManager managerEditor = new ItemEditorManager(_gcScontrino, _dgvScontrino);
             managerEditor.BindProp(new TEntity(), "");
 
         }
@@ -149,8 +160,11 @@ namespace StrumentiMusicali.App.View.BaseControl
         }
         protected void Dispose(bool disposing)
         {
-            if (disposing) 
+            if (disposing)
             {
+                EventAggregator.Instance().UnSbscribe(_subSave);
+
+                _subSave.Dispose();
                 _dgvScontrino.Dispose();
                 _gcScontrino.Dispose();
             }

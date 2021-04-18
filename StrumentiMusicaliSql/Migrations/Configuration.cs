@@ -26,6 +26,7 @@ namespace StrumentiMusicali.Library.Migrations
 
 		private void InitTipiPagamenti(ModelSm context)
 		{
+			
 			context.TipiPagamentoScontrino.AddOrUpdate(
 				
 				pag => new { pag.Codice, pag.Descrizione }
@@ -47,6 +48,7 @@ namespace StrumentiMusicali.Library.Migrations
 		private static void InitCategories(Model.ModelSm context)
 		{
 
+			context.Categorie.
 			context.Categorie.AddOrUpdate(categoria => new { categoria.Nome, categoria.Reparto, categoria.Codice, categoria.CategoriaCondivisaCon }
 								,
 

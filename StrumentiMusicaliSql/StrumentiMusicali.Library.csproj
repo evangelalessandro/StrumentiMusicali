@@ -267,6 +267,10 @@
     <Compile Include="Migrations\202103311355236_Scontrino.Designer.cs">
       <DependentUpon>202103311355236_Scontrino.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202104180730510_Sottoscorta e fornitori.cs" />
+    <Compile Include="Migrations\202104180730510_Sottoscorta e fornitori.Designer.cs">
+      <DependentUpon>202104180730510_Sottoscorta e fornitori.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
@@ -295,6 +299,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103311355236_Scontrino.resx">
       <DependentUpon>202103311355236_Scontrino.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104180730510_Sottoscorta e fornitori.resx">
+      <DependentUpon>202104180730510_Sottoscorta e fornitori.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Script\IndexOptimize.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -18,6 +18,7 @@ namespace StrumentiMusicali.App.Core.Controllers
     [AddINotifyPropertyChangedInterface]
     public class ControllerListinoFornitori : BaseControllerGeneric<ListinoPrezziFornitori, ListinoPrezziFornitoriItem>, IDisposable
     {
+
         private ControllerArticoli _controllerMaster;
         private Subscription<Add<ListinoPrezziFornitori>> _selectSub;
 
@@ -30,20 +31,20 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 
             var menu = base.GetMenu();
-            
+
             foreach (var item in menu.Tabs[0].Pannelli)
             {
-                var items = item.Pulsanti.Where(a => a.Tag != null 
-                && !a.Tag.Equals(MenuTab.TagAdd) 
+                var items = item.Pulsanti.Where(a => a.Tag != null
+                && !a.Tag.Equals(MenuTab.TagAdd)
                 && !a.Tag.Contains(MenuTab.TagRemove)
-                
+
 
                 ).ToList();
                 item.Pulsanti.RemoveAll(a => items.Contains(a));
                 item.Testo = "Listino fornitori";
             }
-            var presenti= menu.Tabs[0].Pannelli.Where(a => a.Pulsanti.Count() > 0).First();
-            var save=new RibbonMenuButton() { Testo = "Salva", Immagine = Properties.Resources.Save };
+            var presenti = menu.Tabs[0].Pannelli.Where(a => a.Pulsanti.Count() > 0).First();
+            var save = new RibbonMenuButton() { Testo = "Salva", Immagine = Properties.Resources.Save };
             presenti.Pulsanti.Add(save);
             save.Click += Save_Click;
             return menu;
@@ -55,13 +56,13 @@ namespace StrumentiMusicali.App.Core.Controllers
         }
 
         public ControllerListinoFornitori(ControllerArticoli controllerMaster, bool gestioneInline)
-            : base(enAmbiente.ListinoPrezziFornitoreList, enAmbiente.ListinoPrezziFornitoreDett,gestioneInline)
+            : base(enAmbiente.ListinoPrezziFornitoreList, enAmbiente.ListinoPrezziFornitoreDett, gestioneInline)
         {
             _controllerMaster = controllerMaster;
 
             SelectedItem = new ListinoPrezziFornitori();
 
-             
+
             _selectSub = EventAggregator.Instance().Subscribe<Add<ListinoPrezziFornitori>>((a) =>
             {
                 EditItem = new ListinoPrezziFornitori() { ArticoloID = _controllerMaster.EditItem.ID };
@@ -102,6 +103,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             });
             _subSave = EventAggregator.Instance().Subscribe<Save<ListinoPrezziFornitori>>((a) =>
            {
+               EventAggregator.Instance().Publish<ValidateViewEvent<ListinoPrezziFornitori>>(new ValidateViewEvent<ListinoPrezziFornitori>());
                Save(null);
            });
 
@@ -109,6 +111,11 @@ namespace StrumentiMusicali.App.Core.Controllers
             {
                 RefreshList(a);
             });
+            EventAggregator.Instance().Subscribe<ItemSelected<ListinoPrezziFornitoriItem, ListinoPrezziFornitori>>((a) =>
+            {
+                SelectedItem = a.ItemSelected.Entity;
+            });
+
         }
 
 
@@ -170,24 +177,27 @@ namespace StrumentiMusicali.App.Core.Controllers
         }
         private void Save(Save<ListinoPrezziFornitori> obj)
         {
+
+
             using (var saveManager = new SaveEntityManager())
             {
-                EditItem.ArticoloID = _controllerMaster.EditItem.ID;
+                SelectedItem.ArticoloID = _controllerMaster.EditItem.ID;
                 if (_controllerMaster.EditItem.ID == 0)
                     return;
                 var uof = saveManager.UnitOfWork;
-                if (EditItem.ID > 0)
+                if (SelectedItem.ID > 0)
                 {
-                    uof.ListinoPrezziFornitoriRepository.Update(EditItem);
+                    uof.ListinoPrezziFornitoriRepository.Update(SelectedItem);
                 }
                 else
                 {
-                    if (uof.ListinoPrezziFornitoriRepository.Find(a => a.ArticoloID == EditItem.ArticoloID && a.FornitoreID == EditItem.FornitoreID).Count() > 0)
+                    if (uof.ListinoPrezziFornitoriRepository.Find(a => a.ArticoloID == SelectedItem.ArticoloID && a.FornitoreID == SelectedItem.FornitoreID)
+                        .Count() > 0)
                     {
                         MessageManager.NotificaWarnig("Esiste già l''associazione articolo fornitore!");
                         return;
                     }
-                    uof.ListinoPrezziFornitoriRepository.Add(EditItem);
+                    uof.ListinoPrezziFornitoriRepository.Add(SelectedItem);
 
                 }
 

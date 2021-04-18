@@ -12,12 +12,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StrumentiMusicali.App.Core.Controllers
+namespace StrumentiMusicali.App.Core.Controllers.ListiniFornitori
 {
     [AddINotifyPropertyChangedInterface]
     public class ControllerListinoFornitori : BaseControllerGeneric<ListinoPrezziFornitori, ListinoPrezziFornitoriItem>, IDisposable
     {
-
         private ControllerArticoli _controllerMaster;
         private Subscription<Add<ListinoPrezziFornitori>> _selectSub;
 
@@ -25,42 +24,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private Subscription<Save<ListinoPrezziFornitori>> _subSave;
 
-        public override MenuTab GetMenu()
-        {
-
-
-            var menu = base.GetMenu();
-
-            foreach (var item in menu.Tabs[0].Pannelli)
-            {
-                var items = item.Pulsanti.Where(a => a.Tag != null
-                && !a.Tag.Equals(MenuTab.TagAdd)
-                && !a.Tag.Contains(MenuTab.TagRemove)
-
-
-                ).ToList();
-                item.Pulsanti.RemoveAll(a => items.Contains(a));
-                item.Testo = "Listino fornitori";
-            }
-            var presenti = menu.Tabs[0].Pannelli.Where(a => a.Pulsanti.Count() > 0).First();
-            var save = new RibbonMenuButton() { Testo = "Salva", Immagine = StrumentiMusicali.Core.Properties.ImageIcons.Save };
-            presenti.Pulsanti.Add(save);
-            save.Click += Save_Click;
-            return menu;
-        }
-
-        private void Save_Click(object sender, EventArgs e)
-        {
-            EventAggregator.Instance().Publish<Save<ListinoPrezziFornitori>>(new Save<ListinoPrezziFornitori>(this));
-        }
-
         public ControllerListinoFornitori(ControllerArticoli controllerMaster, bool gestioneInline)
             : base(enAmbiente.ListinoPrezziFornitoreList, enAmbiente.ListinoPrezziFornitoreDett, gestioneInline)
         {
             _controllerMaster = controllerMaster;
 
             SelectedItem = new ListinoPrezziFornitori();
-
 
             _selectSub = EventAggregator.Instance().Subscribe<Add<ListinoPrezziFornitori>>((a) =>
             {
@@ -74,8 +43,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                     DataSourceInRow.Add(EditItem);
 
                     DataSourceInRow = DataSourceInRow.ToList();
-
-
                 }
             });
             _subRemove = EventAggregator.Instance().Subscribe<Remove<ListinoPrezziFornitori>>((a) =>
@@ -83,7 +50,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                 using (var saveManager = new SaveEntityManager())
                 {
                     var uof = saveManager.UnitOfWork;
-                    var curItem = (ListinoPrezziFornitori)SelectedItem;
+                    var curItem = SelectedItem;
                     if (curItem != null && curItem.ID > 0)
                     {
                         if (!MessageManager.QuestionMessage("Sei sicuro di volere eliminare la riga selezionata?"))
@@ -94,15 +61,14 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                         if (saveManager.SaveEntity(enSaveOperation.OpDelete))
                         {
-
-                            EventAggregator.Instance().Publish<UpdateList<ListinoPrezziFornitori>>(new UpdateList<ListinoPrezziFornitori>(this));
+                            EventAggregator.Instance().Publish(new UpdateList<ListinoPrezziFornitori>(this));
                         }
                     }
                 }
             });
             _subSave = EventAggregator.Instance().Subscribe<Save<ListinoPrezziFornitori>>((a) =>
            {
-               EventAggregator.Instance().Publish<ValidateViewEvent<ListinoPrezziFornitori>>(new ValidateViewEvent<ListinoPrezziFornitori>());
+               EventAggregator.Instance().Publish(new ValidateViewEvent<ListinoPrezziFornitori>());
                Save(null);
            });
 
@@ -114,11 +80,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             {
                 SelectedItem = a.ItemSelected.Entity;
             });
-
         }
-
-
-
 
         // NOTE: Leave out the finalizer altogether if this class doesn't
         // own unmanaged resources, but leave the other methods
@@ -136,32 +98,6 @@ namespace StrumentiMusicali.App.Core.Controllers
             GC.SuppressFinalize(this);
         }
 
-        public override void RefreshList(UpdateList<ListinoPrezziFornitori> obj)
-        {
-            try
-            {
-                var list = new List<ListinoPrezziFornitori>();
-
-                using (var uof = new UnitOfWork())
-                {
-                    list = uof.ListinoPrezziFornitoriRepository.Find(a => a.ArticoloID == _controllerMaster.EditItem.ID
-
-                    ).Where(a => a.Fornitore.Nome.Contains(TestoRicerca) ||
-                    a.Fornitore.RagioneSociale.Contains(TestoRicerca) ||
-                    a.Fornitore.Cognome.Contains(TestoRicerca) ||
-                    a.Fornitore.PIVA.Contains(TestoRicerca) ||
-                    TestoRicerca == "").OrderBy(a => a.Prezzo).ToList();
-                }
-
-                DataSourceInRow = (list);
-            }
-            catch (Exception ex)
-            {
-                new Action(() =>
-                { ExceptionManager.ManageError(ex); }).BeginInvoke(null, null);
-            }
-        }
-
         // The bulk of the clean-up code is implemented in Dispose(bool)
         public override void Dispose(bool disposing)
         {
@@ -174,10 +110,57 @@ namespace StrumentiMusicali.App.Core.Controllers
             }
             // free native resources if there are any.
         }
+
+        public override MenuTab GetMenu()
+        {
+            var menu = base.GetMenu();
+
+            foreach (var item in menu.Tabs[0].Pannelli)
+            {
+                var items = item.Pulsanti.Where(a => a.Tag != null
+                && !a.Tag.Equals(MenuTab.TagAdd)
+                && !a.Tag.Contains(MenuTab.TagRemove)
+
+                ).ToList();
+                item.Pulsanti.RemoveAll(a => items.Contains(a));
+                item.Testo = "Listino fornitori";
+            }
+            var presenti = menu.Tabs[0].Pannelli.Where(a => a.Pulsanti.Count() > 0).First();
+            var save = new RibbonMenuButton() { Testo = "Salva", Immagine = StrumentiMusicali.Core.Properties.ImageIcons.Save };
+            presenti.Pulsanti.Add(save);
+            save.Click += Save_Click;
+            return menu;
+        }
+
+        public override void RefreshList(UpdateList<ListinoPrezziFornitori> obj)
+        {
+            try
+            {
+                var list = new List<ListinoPrezziFornitori>();
+
+                using (var uof = new UnitOfWork())
+                {
+                    list = uof.ListinoPrezziFornitoriRepository.Find(
+                        a => a.ArticoloID == _controllerMaster.EditItem.ID
+
+                    ).Where(a => a.Fornitore.Nome.Contains(TestoRicerca) ||
+                    a.Fornitore.RagioneSociale.Contains(TestoRicerca) ||
+                    a.Fornitore.Cognome.Contains(TestoRicerca) ||
+                    a.Fornitore.PIVA.Contains(TestoRicerca) ||
+                    TestoRicerca == "").OrderBy(a => a.FornitoreID).ThenBy(a => a.ArticoloID).ToList();
+                }
+
+                DataSourceInRow = list;
+            }
+            catch (Exception ex)
+            {
+                new Action(() =>
+                { ExceptionManager.ManageError(ex); }).BeginInvoke(null, null);
+            }
+        }
+
         private void Save(Save<ListinoPrezziFornitori> obj)
         {
-
-
             using (var saveManager = new SaveEntityManager())
             {
                 SelectedItem.ArticoloID = _controllerMaster.EditItem.ID;
@@ -197,16 +180,18 @@ namespace StrumentiMusicali.App.Core.Controllers
                         return;
                     }
                     uof.ListinoPrezziFornitoriRepository.Add(SelectedItem);
-
                 }
-
 
                 if (saveManager.SaveEntity(enSaveOperation.OpSave))
                 {
-
                     RiselezionaSelezionato();
                 }
             }
+        }
+
+        private void Save_Click(object sender, EventArgs e)
+        {
+            EventAggregator.Instance().Publish(new Save<ListinoPrezziFornitori>(this));
         }
     }
 }

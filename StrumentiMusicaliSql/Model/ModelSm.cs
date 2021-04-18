@@ -182,11 +182,11 @@ namespace StrumentiMusicali.Library.Model
                             new System.Data.Entity.Validation.DbValidationError("Pagamento",
                             "Occorre specificare il tipo pagamento"));
                 }
-                if (fattura.ClienteID == 0)
+                if (fattura.ClienteFornitoreID == 0)
                 {
                     result.ValidationErrors.Add(
-                            new System.Data.Entity.Validation.DbValidationError("ClienteID",
-                            "Occorre specificare il cliente"));
+                            new System.Data.Entity.Validation.DbValidationError("ClienteFornitoreID",
+                            @"Occorre specificare il cliente\fornitore"));
                 }
             }
         }

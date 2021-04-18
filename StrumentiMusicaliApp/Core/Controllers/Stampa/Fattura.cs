@@ -27,7 +27,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
             using (var uof = new UnitOfWork())
             {
                 var fattura = uof.FatturaRepository.Find(a => a.ID == fatturaSel.ID).
-                    Select(a => new { a.Cliente, fat = a }).First().fat;
+                    Select(a => new { a.ClienteFornitore, fat = a }).First().fat;
                 var righeFatt = uof.FattureRigheRepository.Find(a => a.FatturaID == fatturaSel.ID).OrderBy(a => a.OrdineVisualizzazione).ToList();
 
                 ImpostaCampiTestata(fattura);
@@ -118,17 +118,19 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
                 case EnTipoDocumento.DDT:
                     _excel.Range("TipoDocumento").Value = "DDT";
                     break;
-
+                case EnTipoDocumento.OrdineAlFornitore:
+                    _excel.Range("TipoDocumento").Value = "Ordine al fornitore";
+                    break;
                 default:
                     break;
             }
 
-            _excel.Range("ClienteRagioneSociale").Value = fattura.Cliente.RagioneSociale;
-            _excel.Range("ClienteIndirizzo").Value = fattura.Cliente.Indirizzo.IndirizzoConCivico;
-            _excel.Range("ClienteCap").Value = fattura.Cliente.Indirizzo.Cap;
-            _excel.Range("ClienteCitta").Value = fattura.Cliente.Indirizzo.Citta;
-            _excel.Range("ClientePIVACF").Value = "CF - PIVA:" + fattura.Cliente.PIVA;
-            _excel.Range("CodiceCliente").Value = fattura.Cliente.ID;
+            _excel.Range("ClienteRagioneSociale").Value = fattura.ClienteFornitore.RagioneSociale;
+            _excel.Range("ClienteIndirizzo").Value = fattura.ClienteFornitore.Indirizzo.IndirizzoConCivico;
+            _excel.Range("ClienteCap").Value = fattura.ClienteFornitore.Indirizzo.Cap;
+            _excel.Range("ClienteCitta").Value = fattura.ClienteFornitore.Indirizzo.Citta;
+            _excel.Range("ClientePIVACF").Value = "CF - PIVA:" + fattura.ClienteFornitore.PIVA;
+            _excel.Range("CodiceCliente").Value = fattura.ClienteFornitore.ID;
         }
 
         private void DatiIntestazione(DatiIntestazioneStampaFattura intestStampa)

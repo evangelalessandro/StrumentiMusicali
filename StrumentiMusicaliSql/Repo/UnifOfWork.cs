@@ -373,33 +373,33 @@ select @db
         //	}
         //}
 
-        private Repository<Soggetto> _ClientiRepository;
+        private Repository<Soggetto> _SoggettiRepository;
 
-        public IRepository<Soggetto> ClientiRepository
+        public IRepository<Soggetto> SoggettiRepository
         {
             get
             {
-                if (_ClientiRepository == null)
+                if (_SoggettiRepository == null)
                 {
-                    _ClientiRepository = new Repository<Soggetto>(dbContext);
-                    _ClientiRepository.Find(a => a.TipiSoggetto.Contains(enTipiSoggetto.Cliente.ToString())).AsQueryable();
+                    _SoggettiRepository = new Repository<Soggetto>(dbContext);
 
                 }
-                return _ClientiRepository;
+                return _SoggettiRepository;
             }
         }
-        private Repository<Soggetto> _FornitoriRepository;
-
-        public IRepository<Soggetto> FornitoriRepository
+        public IQueryable<Soggetto> ClientiRepository
         {
             get
             {
-                if (_FornitoriRepository == null)
-                {
-                    _FornitoriRepository = new Repository<Soggetto>(dbContext);
-                    
-                }
-                return _FornitoriRepository;
+                return SoggettiRepository.Find(a => a.TipiSoggetto.Contains(enTipiSoggetto.Cliente.ToString())).AsQueryable();
+            }
+        }
+
+        public IQueryable<Soggetto> FornitoriRepository
+        {
+            get
+            {
+                return SoggettiRepository.Find(a => a.TipiSoggetto.Contains(enTipiSoggetto.Fornitore.ToString())).AsQueryable();
             }
         }
 

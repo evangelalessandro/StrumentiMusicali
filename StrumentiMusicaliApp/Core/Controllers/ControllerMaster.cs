@@ -1,6 +1,7 @@
 ﻿using DevExpress.UserSkins;
 using DevExpress.XtraEditors.Repository;
 using StrumentiMusicali.App.Core.Controllers.Base;
+using StrumentiMusicali.App.Core.Controllers.ListiniFornitori;
 using StrumentiMusicali.App.Core.Exports;
 using StrumentiMusicali.App.Core.Imports;
 using StrumentiMusicali.App.Core.Item;
@@ -31,7 +32,7 @@ namespace StrumentiMusicali.App.Core.Controllers
         public ControllerMaster()
             : base()
         {
-            
+
             EventAggregator.Instance().Subscribe<ApriAmbiente>(Apri);
             EventAggregator.Instance().Subscribe<ImportArticoliCSVMercatino>(ImportaCsvArticoli);
             EventAggregator.Instance().Subscribe<ImportaFattureAccess>(ImportaFatture);
@@ -75,7 +76,7 @@ namespace StrumentiMusicali.App.Core.Controllers
         public void ShowMainView()
         {
             BonusSkins.Register();
-        //    DevExpress.Skins.SkinManager.EnableFormSkins();
+            //    DevExpress.Skins.SkinManager.EnableFormSkins();
             //UserLookAndFeel.Default.SetSkinStyle(SkinStyle.Foggy);
 
             Application.EnableVisualStyles();
@@ -128,8 +129,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private void ImportaFatture(ImportaFattureAccess obj)
         {
-           
-                ControllerFatturazione.ImportaFatture();
+
+            ControllerFatturazione.ImportaFatture();
         }
 
         private void ImportaCsvArticoli(ImportArticoliCSVMercatino obj)
@@ -159,20 +160,20 @@ namespace StrumentiMusicali.App.Core.Controllers
                         break;
                     }
                 case enAmbiente.RicercaArticolo:
+                    {
+                        var contrArt = new ControllerArticoli(ControllerArticoli.enModalitaArticolo.Ricerca);
+                        var viewRicercaArt = new RicercaArticoliStyleView(contrArt);
 
-                    var contrArt = new ControllerArticoli(ControllerArticoli.enModalitaArticolo.Ricerca);
-                    var viewRicercaArt = new RicercaArticoliStyleView(contrArt);
-
-                    this.ShowView(viewRicercaArt, obj.TipoEnviroment, contrArt);
-
+                        this.ShowView(viewRicercaArt, obj.TipoEnviroment, contrArt);
+                    }
                     break;
                 case enAmbiente.ArticoliSottoscorta:
+                    {
+                        var contrArt = new ControllerListinoFornitori(null,false);
+                        var viewRicercaArt = BaseGridViewGeneric<ListinoFornitoriItem;
 
-                    var contrArt = new ControllerArticoli(ControllerArticoli.enModalitaArticolo.Ricerca);
-                    var viewRicercaArt = new RicercaArticoliStyleView(contrArt);
-
-                    this.ShowView(viewRicercaArt, obj.TipoEnviroment, contrArt);
-
+                        this.ShowView(viewRicercaArt, obj.TipoEnviroment, contrArt);
+                    }
                     break;
 
                 case enAmbiente.PagamentiList:
@@ -467,7 +468,7 @@ namespace StrumentiMusicali.App.Core.Controllers
         {
         }
 
-        
+
 
         private void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {

@@ -17,9 +17,9 @@ namespace StrumentiMusicali.Library.Entity
         public string PIVA { get; set; }
 
         [Required]
-        public int ClienteID { get; set; }
+        public int ClienteFornitoreID { get; set; }
 
-        public virtual Soggetto Cliente { get; set; }
+        public virtual Soggetto ClienteFornitore { get; set; }
 
         public string TrasportoACura { get; set; }
         public string CausaleTrasporto { get; set; }

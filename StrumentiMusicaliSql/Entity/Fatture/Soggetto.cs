@@ -1,5 +1,6 @@
 ﻿using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Base;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StrumentiMusicali.Library.Entity
@@ -7,6 +8,7 @@ namespace StrumentiMusicali.Library.Entity
     [Table("Soggetti")]
     public class Soggetto : BaseEntity
     {
+        [MaxLength(100)]
         [CustomUIViewAttribute(Ordine = 1, Combo =TipoDatiCollegati.TipiSoggetto)]
         public string TipiSoggetto { get; set; }
         [CustomUIViewAttribute(Ordine = 1)]

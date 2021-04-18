@@ -43,8 +43,8 @@ namespace StrumentiMusicali.App.Core.Controllers
                     var curItem = (Soggetto)SelectedItem;
                     if (curItem.ID > 0)
                     {
-                        var item = uof.ClientiRepository.Find(b => b.ID == curItem.ID).First();
-                        uof.ClientiRepository.Delete(item);
+                        var item = uof.SoggettiRepository.Find(b => b.ID == curItem.ID).First();
+                        uof.SoggettiRepository.Delete(item);
 
                         if (saveManager.SaveEntity(enSaveOperation.OpDelete))
                         {
@@ -87,7 +87,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                 using (var uof = new UnitOfWork())
                 {
-                    list = uof.ClientiRepository.Find(a =>
+                    list = uof.SoggettiRepository.Find(a =>
                     a.RagioneSociale.Contains(TestoRicerca)
                         ||
                     a.Nome.Contains(TestoRicerca)
@@ -148,11 +148,11 @@ namespace StrumentiMusicali.App.Core.Controllers
                 var uof = saveManager.UnitOfWork;
                 if (((EditItem).ID > 0))
                 {
-                    uof.ClientiRepository.Update(EditItem);
+                    uof.SoggettiRepository.Update(EditItem);
                 }
                 else
                 {
-                    uof.ClientiRepository.Add(EditItem);
+                    uof.SoggettiRepository.Add(EditItem);
                 }
 
                 if (saveManager.SaveEntity(enSaveOperation.OpSave))

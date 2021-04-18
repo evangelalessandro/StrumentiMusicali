@@ -29,6 +29,7 @@ namespace StrumentiMusicali.App.View
         public DettaglioFatturaView(ControllerFatturazione controllerFatturazione)
             : base()
         {
+            
             _controllerFatturazione = controllerFatturazione;
             _cambioTipo = EventAggregator.Instance().Subscribe<FatturaCambiaTipoDoc>(AbilitaCambioTipoFatt);
 
@@ -40,8 +41,12 @@ namespace StrumentiMusicali.App.View
                 );
 
             InitializeComponent();
+            this.cboClienteFornitoreID.Tag = "ClienteFornitoreID";
+
             UpdateViewByTipoDocumento();
-            _bindSub = EventAggregator.Instance().Subscribe<RebindItemUpdated<Fattura>>((a) => { RebindEditItem(); });
+            _bindSub = EventAggregator.Instance().Subscribe<RebindItemUpdated<Fattura>>((a) => { 
+                RebindEditItem(); 
+            });
         }
 
         private void AbilitaCambioTipoFatt(FatturaCambiaTipoDoc obj)
@@ -54,6 +59,16 @@ namespace StrumentiMusicali.App.View
             pnl3Basso.Visible = (_controllerFatturazione.EditItem.TipoDocumento != EnTipoDocumento.DDT);
             lblPagamento.Visible = (_controllerFatturazione.EditItem.TipoDocumento != EnTipoDocumento.DDT);
             cboPagamento.Visible = (_controllerFatturazione.EditItem.TipoDocumento != EnTipoDocumento.DDT);
+            if (_controllerFatturazione.EditItem.TipoDocumento == EnTipoDocumento.OrdineAlFornitore)
+                lblCliente.Text = "Fornitore";
+            else
+                lblCliente.Text = "Cliente";
+
+            using (UnitOfWork uof = new UnitOfWork())
+            {
+
+                FillSoggetto(uof);
+            }
         }
 
         /// <summary>
@@ -101,22 +116,45 @@ namespace StrumentiMusicali.App.View
                 txtNote1.Values = uof.FatturaRepository.Find(a => true).Select(a => a.Note1).Distinct().ToList().ToArray();
                 txtNote2.Values = uof.FatturaRepository.Find(a => true).Select(a => a.Note2).Distinct().ToList().ToArray();
 
-                FillCliente(uof);
+                FillSoggetto(uof);
             }
         }
-
-        private void FillCliente(UnitOfWork uof)
+        private EnTipoDocumento UltimoTipodocSoggCaricato=EnTipoDocumento.NonSpecificato;
+        private void FillSoggetto(UnitOfWork uof)
         {
-            var clienti = uof.ClientiRepository.Find(a => true).Select(a => new
+
+            if (UltimoTipodocSoggCaricato== _controllerFatturazione.EditItem.TipoDocumento
+                && cboClienteFornitoreID.Properties.DataSource!=null)
+            {
+                return;
+            }
+            UltimoTipodocSoggCaricato = _controllerFatturazione.EditItem.TipoDocumento;
+
+            var clienti = uof.SoggettiRepository.Find(a=> a.TipiSoggetto!=null).Select(a => new
             {
                 a.ID,
+
                 RagioneSociale = a.RagioneSociale,
                 a.PIVA,
                 a.CodiceFiscale,
                 a.Nome,
-                a.Cognome
+                a.Cognome,
+                a.TipiSoggetto
             })
-                .Distinct().ToList().ToArray();
+                .Distinct().ToList();
+             
+            if (_controllerFatturazione.EditItem.ID == 0)
+                clienti = clienti.Where(a => (_controllerFatturazione.EditItem.TipoDocumento
+                                        == EnTipoDocumento.OrdineAlFornitore
+                                        && a.TipiSoggetto.Contains("Fornitore")
+                                        )
+                                        ||
+                                    (_controllerFatturazione.EditItem.TipoDocumento
+                                        != EnTipoDocumento.OrdineAlFornitore
+                                        && a.TipiSoggetto.Contains("Cliente")
+                                        )).ToList();
+                                        
+
             var clientiDati = clienti.Select(a => new
             {
                 a.ID,
@@ -128,23 +166,27 @@ namespace StrumentiMusicali.App.View
                  && a.PIVA.Length > 0
                         ? a.PIVA : a.CodiceFiscale)
             }).ToList();
-            cboClienteID.Properties.DataSource = clientiDati;
-            cboClienteID.Properties.ValueMember = "ID";
-            cboClienteID.Properties.DisplayMember = "RagioneSociale";
-            cboClienteID.Properties.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.AutoFilter;
-            cboClienteID.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
-            cboClienteID.Properties.BestFit();
+
+            cboClienteFornitoreID.Properties.DataSource = clientiDati;
+
+            cboClienteFornitoreID.Properties.ValueMember = "ID";
+            cboClienteFornitoreID.Properties.DisplayMember = "RagioneSociale";
+            cboClienteFornitoreID.Properties.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.AutoFilter;
+            cboClienteFornitoreID.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+            cboClienteFornitoreID.Properties.BestFit();
         }
 
         private void FillTipoDocumenti()
         {
             var listItem = new List<EnTipoDocumento>();
+
             listItem.Add((EnTipoDocumento.NonSpecificato));
             listItem.Add(EnTipoDocumento.DDT);
             listItem.Add(EnTipoDocumento.FatturaDiCortesia);
             listItem.Add(EnTipoDocumento.RicevutaFiscale);
 
             listItem.Add(EnTipoDocumento.NotaDiCredito);
+            listItem.Add(EnTipoDocumento.OrdineAlFornitore);
 
             cboTipoDocumento.DataSource = listItem.Select(a =>
                     new
@@ -198,7 +240,7 @@ namespace StrumentiMusicali.App.View
 
             UtilityView.SetDataBind(this, null, _controllerFatturazione.EditItem);
 
-            cboClienteID.EditValueChanged += CboClienteID_EditValueChanged;
+            cboClienteFornitoreID.EditValueChanged += CboClienteID_EditValueChanged;
 
             txtRagioneSociale.TextChanged += TxtRagioneSociale_TextChanged;
 
@@ -231,6 +273,7 @@ namespace StrumentiMusicali.App.View
             {
                 cboTipoDocumento.Enabled = false;
             }
+            cboClienteFornitoreID.EditValue = _controllerFatturazione.EditItem.ClienteFornitoreID;
 
             using (var ord = new OrdinaTab())
             {
@@ -244,20 +287,20 @@ namespace StrumentiMusicali.App.View
 
         private void CboClienteID_EditValueChanged(object sender, EventArgs e)
         {
-            var valCli = (int)cboClienteID.EditValue;
+            var valCli = (int)cboClienteFornitoreID.EditValue;
             if (valCli == 0)
                 return;
             if (prevCliente == valCli)
                 return;
             try
             {
-                cboClienteID.EditValueChanged -= CboClienteID_EditValueChanged;
+                cboClienteFornitoreID.EditValueChanged -= CboClienteID_EditValueChanged;
 
                 prevCliente = valCli;
 
                 using (var uof = new UnitOfWork())
                 {
-                    var cliente = uof.ClientiRepository.Find(a => a.ID == valCli).FirstOrDefault();
+                    var cliente = uof.SoggettiRepository.Find(a => a.ID == valCli).FirstOrDefault();
 
                     var item = (_controllerFatturazione.EditItem);
 
@@ -274,7 +317,7 @@ namespace StrumentiMusicali.App.View
                     }
                     Debug.WriteLine(item.RagioneSociale);
                     this.Validate();
-                    cboClienteID.EditValue = valCli;
+                    cboClienteFornitoreID.EditValue = valCli;
                 }
             }
             catch (Exception ex)
@@ -283,7 +326,7 @@ namespace StrumentiMusicali.App.View
             }
             finally
             {
-                cboClienteID.EditValueChanged += CboClienteID_EditValueChanged;
+                cboClienteFornitoreID.EditValueChanged += CboClienteID_EditValueChanged;
             }
         }
 

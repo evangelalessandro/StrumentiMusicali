@@ -7,6 +7,7 @@ namespace StrumentiMusicali.Library.Migrations
     {
         public override void Up()
         {
+            Sql(@"Update Clienti set tipiSoggetto='Cliente'");
         }
         
         public override void Down()

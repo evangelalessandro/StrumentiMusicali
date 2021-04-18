@@ -40,7 +40,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             });
             _selectSub = EventAggregator.Instance().Subscribe<Add<FatturaRiga>>((a) =>
         {
-            EditItem = new FatturaRiga() { IvaApplicata = "22" };
+            EditItem = new FatturaRiga() { IvaApplicata = "22" ,Fattura=_controllerFatturazione.EditItem};
 
             ShowEditView();
         });
@@ -122,7 +122,11 @@ namespace StrumentiMusicali.App.Core.Controllers
                         RigaImporto = a.Qta * a.PrezzoUnitario,
                         PrezzoUnitario = a.PrezzoUnitario,
                         RigaQta = a.Qta,
-                        Iva = a.IvaApplicata
+                        Iva = a.IvaApplicata,
+                        CodiceFornitore=a.CodiceFornitore,
+                        Evasi=a.Evasi,
+                        TipoDoc=a.Fattura.TipoDocumento
+
                     }).OrderBy(a => a.Entity.OrdineVisualizzazione).ThenBy(a => a.ID).ToList();
                 }
 
@@ -221,6 +225,7 @@ namespace StrumentiMusicali.App.Core.Controllers
         {
             using (var saveManager = new SaveEntityManager())
             {
+                EditItem.Fattura = null;
                 EditItem.FatturaID = _controllerFatturazione.EditItem.ID;
                 if (_controllerFatturazione.EditItem.ID == 0)
                     return;

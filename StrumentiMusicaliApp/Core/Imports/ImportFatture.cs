@@ -163,7 +163,7 @@ namespace StrumentiMusicali.App.Core.Fatture
 
             foreach (var item in clientiList)
             {
-                uof.ClientiRepository.Add(item);
+                uof.SoggettiRepository.Add(item);
                 ProgressManager.Instance().Value++;
             }
             uof.Commit();
@@ -323,7 +323,7 @@ namespace StrumentiMusicali.App.Core.Fatture
                     var cliente = listaClienti.Where(b => b.RagioneSociale == (ragioneSociale)).FirstOrDefault();
                     if (cliente != null)
                     {
-                        fattura.ClienteID = cliente.ID;
+                        fattura.ClienteFornitoreID = cliente.ID;
                         fattura.RagioneSociale = cliente.RagioneSociale;
                         fattura.PIVA = cliente.PIVA;
                     }
@@ -407,7 +407,7 @@ namespace StrumentiMusicali.App.Core.Fatture
                     var cliente = listaClienti.Where(b => b.RagioneSociale == (ragioneSociale)).FirstOrDefault();
                     if (cliente != null)
                     {
-                        fattura.ClienteID = cliente.ID;
+                        fattura.ClienteFornitoreID = cliente.ID;
                         fattura.RagioneSociale = cliente.RagioneSociale;
                         fattura.PIVA = cliente.PIVA;
                     }
@@ -441,7 +441,8 @@ namespace StrumentiMusicali.App.Core.Fatture
                 try
                 {
                     var cliente = new Soggetto
-                    {
+                    {       
+                        TipiSoggetto="Cliente",
                         CodiceClienteOld = int.Parse(a["cod_cliente"].ToString()),
                         Cellulare = (a["Cellulare"].ToString()),
                         Indirizzo = new Indirizzo()

@@ -1,4 +1,5 @@
 ﻿using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Core.Attributes;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -22,5 +23,15 @@ namespace StrumentiMusicali.Library.Entity
         public decimal PrezzoUnitario { get; set; }
         [CustomUIViewAttribute(Width = 40, Ordine = 5)]
         public string IvaApplicata { get; set; }
+
+
+        [CustomFattureAttribute(TipoDocShowOnly = EnTipoDocumento.OrdineAlFornitore)]
+        [CustomUIViewAttribute(Width = 40, Ordine = 10)]
+        public string CodiceFornitore { get; set; } = "";
+
+        [CustomFattureAttribute(TipoDocShowOnly = EnTipoDocumento.OrdineAlFornitore)]
+        [CustomUIViewAttribute(Width = 40, Ordine = 11)]
+        public int Evasi { get; set; } = 0;
+
     }
 }

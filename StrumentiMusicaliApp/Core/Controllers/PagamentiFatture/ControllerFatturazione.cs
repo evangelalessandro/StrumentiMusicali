@@ -302,8 +302,8 @@ namespace StrumentiMusicali.App.Core.Controllers
                             uof.DatiMittenteRepository.Find(a => 1 == 1).FirstOrDefault();
 
                             var fatt = uof.FatturaRepository.Find(a => a.ID == selectedItem.ID)
-                                .Select(a => new { Fattura = a, a.Cliente, a.RigheFattura }).First();
-                            stampa.DatiDestinatario = fatt.Cliente;
+                                .Select(a => new { Fattura = a, a.ClienteFornitore, a.RigheFattura }).First();
+                            stampa.DatiDestinatario = fatt.ClienteFornitore;
 
                             FatturaHeader header = new FatturaHeader();
                             header.Righe =
@@ -410,7 +410,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                         else
                             idFatt = (SelectedItem).ID;
 
-                        var cliente = uof.FatturaRepository.Find(a => a.ID == idFatt).Select(a => a.Cliente).First();
+                        var cliente = uof.FatturaRepository.Find(a => a.ID == idFatt).Select(a => a.ClienteFornitore).First();
                         ///impostato per la save.
                         controllerCl.EditItem = cliente;
 

@@ -47,17 +47,14 @@ namespace StrumentiMusicali.App.View
                //var provider = new System.Globalization.CultureInfo("en");
                if (dgvRighe.Columns.Count == 0)
                    return;
-               dgvRighe.Columns["PrezzoUnitario"].DisplayFormat.Format = provider;
-               dgvRighe.Columns["PrezzoUnitario"].DisplayFormat.FormatString = "C2";
-               //dgvRighe.Columns["PrezzoUnitario"]. = DataGridViewContentAlignment.MiddleRight;
+                
+               
+               ItemEditorManager manager = new ItemEditorManager(gridControl1, dgvRighe);
+               manager.BindProp(new FatturaRigaItem(), "");
 
-               dgvRighe.Columns["RigaImporto"].DisplayFormat.Format = provider;
-               dgvRighe.Columns["RigaImporto"].DisplayFormat.FormatString = "C2";
-               //dgvRighe.Columns["RigaImporto"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-
+               dgvRighe.BestFitColumns(true);
                dgvRighe.Columns["Entity"].Visible = false;
                dgvRighe.Columns["ID"].Visible = false;
-               dgvRighe.BestFitColumns(true);
                //dgvRighe.Columns["RigaDescrizione"].VisibleIndex = 1;
                //dgvRighe.Columns["RigaQta"].VisibleIndex = 2;
                //dgvRighe.Columns["PrezzoUnitario"].VisibleIndex = 3;

@@ -16,8 +16,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StrumentiMusicali.App.View.BaseControl
 {
@@ -80,7 +78,7 @@ namespace StrumentiMusicali.App.View.BaseControl
                         break;
                     case TipoDatiCollegati.Clienti:
                         {
-                            var list = uof.ClientiRepository.Find(a => true).Select(a => new { a.ID, Descrizione = a.RagioneSociale.Length > 0 ? a.RagioneSociale : a.Cognome + " " + a.Nome })
+                            var list = uof.ClientiRepository.Select(a => new { a.ID, Descrizione = a.RagioneSociale.Length > 0 ? a.RagioneSociale : a.Cognome + " " + a.Nome })
                                 .Distinct().OrderBy(a => a.Descrizione).ToList();
                             newControl.ValueMember = "ID";
                             newControl.DisplayMember = "Descrizione";
@@ -91,7 +89,7 @@ namespace StrumentiMusicali.App.View.BaseControl
                         break;
                     case TipoDatiCollegati.Fornitori:
                         {
-                            var list = uof.FornitoriRepository.Find(a => a.TipiSoggetto.Contains(enTipiSoggetto.Fornitore.ToString())).AsQueryable()
+                            var list = uof.FornitoriRepository
                                 .Select(a => new { a.ID, Descrizione = a.RagioneSociale.Length > 0 ? a.RagioneSociale : a.Cognome + " " + a.Nome }).Distinct().OrderBy(a => a.Descrizione).ToList();
                             newControl.ValueMember = "ID";
                             newControl.DisplayMember = "Descrizione";
@@ -408,17 +406,19 @@ namespace StrumentiMusicali.App.View.BaseControl
                 return sel.Ordine;
             });
             int indexProp = 0;
+            EvaluateEnableField evaluate = new EvaluateEnableField();
             foreach (var item in listProp)
             {
                 indexProp++;
                 var hideAttr = item.CustomAttributes.Where(a => a.AttributeType == typeof(CustomHideUIAttribute)).FirstOrDefault();
-
+                
+                 
                 GridColumn col = null;
                 if (_dgvScontrino != null)
                 {
                     col = _dgvScontrino.Columns[item.Name];
                 }
-                if (hideAttr != null)
+                if (hideAttr != null || !evaluate.VisibleItem(objToBind, item.Name))
                 {
                     if (col != null)
                     {
@@ -427,6 +427,7 @@ namespace StrumentiMusicali.App.View.BaseControl
                     continue;
 
                 }
+
 
                 var customHide = listProp.FirstOrDefault(a => a.Name == "Show" + item.Name);
                 if (customHide != null)

@@ -136,21 +136,95 @@ namespace StrumentiMusicali.App.Core.Controllers.ListiniFornitori
         {
             try
             {
-                var list = new List<ListinoPrezziFornitori>();
 
                 using (var uof = new UnitOfWork())
                 {
-                    list = uof.ListinoPrezziFornitoriRepository.Find(
-                        a => a.ArticoloID == _controllerMaster.EditItem.ID
+                    if (_controllerMaster != null)
+                    {
+                        var listCurrent = uof.ListinoPrezziFornitoriRepository.Find(
+                         a => a.ArticoloID == _controllerMaster.EditItem.ID
+                             ).Where(a => a.Fornitore.Nome.Contains(TestoRicerca) ||
+                         a.Fornitore.RagioneSociale.Contains(TestoRicerca) ||
+                         a.Fornitore.Cognome.Contains(TestoRicerca) ||
+                         a.Fornitore.PIVA.Contains(TestoRicerca) ||
+                         TestoRicerca == "").OrderBy(a => a.FornitoreID).ThenBy(a => a.ArticoloID)
+                         .ToList();
 
-                    ).Where(a => a.Fornitore.Nome.Contains(TestoRicerca) ||
-                    a.Fornitore.RagioneSociale.Contains(TestoRicerca) ||
-                    a.Fornitore.Cognome.Contains(TestoRicerca) ||
-                    a.Fornitore.PIVA.Contains(TestoRicerca) ||
-                    TestoRicerca == "").OrderBy(a => a.FornitoreID).ThenBy(a => a.ArticoloID).ToList();
+                        DataSourceInRow = listCurrent;
+                        return;
+
+                    }
+                    else
+                    {
+                        var listArtQta = uof.ArticoliRepository.Find(
+                                        a => a.SottoScorta > 0).Select(a => new { Articolo = a.ID, a.SottoScorta }).ToList();
+
+                        var listArt = listArtQta.Select(a => a.Articolo).ToList();
+                        var giacenza = uof.MagazzinoRepository.Find(a =>
+                               listArt.Contains(a.ArticoloID))
+                          .Select(a => new { a.ArticoloID, a.Qta })
+                          .GroupBy(a => new { a.ArticoloID })
+                          .Select(a => new { Sum = a.Sum(b => b.Qta), Articolo = a.Key.ArticoloID }).ToList();
+
+
+                        var sottoGiac = from a in listArtQta
+                                        join b in giacenza
+                                        on a.Articolo equals b.Articolo
+                                        into c 
+                                        from d in c.DefaultIfEmpty()
+                                        select new { Art = a.Articolo, SottoScorta = a.SottoScorta, Giacenza = d.Sum == null ?0: d.Sum};
+
+                        sottoGiac = sottoGiac.Where(a => a.SottoScorta < a.Giacenza).ToList();
+
+                        var dati = uof.ListinoPrezziFornitoriRepository.Find(a =>
+                                sottoGiac.Select(b => b.Art).Contains(a.ArticoloID)).Select(a =>
+                                new { a.FornitoreID, a.ArticoloID, a.MinimoOrdinabile, a.Prezzo }).ToList();
+
+                        var prezzoMinArticolo = dati.GroupBy(a => new { a.ArticoloID }).Select(a =>
+                          new { a.Key.ArticoloID, PrezzoMinimo = a.Min(b => b.Prezzo) }).ToList();
+
+
+                        var listF = uof.ListinoPrezziFornitoriRepository
+                            .Find(a => prezzoMinArticolo.Select(b => b.ArticoloID).Contains(a.ArticoloID)).ToList();
+
+                        var listF2 = from a in listF
+                                     join b in prezzoMinArticolo
+                                     on new { a.ArticoloID, a.Prezzo } equals new { b.ArticoloID, Prezzo = b.PrezzoMinimo }
+                                     select a;
+
+
+                        var datiListF = listF2.Select(a => new ListinoPrezziFornitoriItem
+                        {
+                            ArticoloID = a.ArticoloID,
+                            FornitoreID = a.FornitoreID,
+                            ID = a.ID,
+                            CodiceArticoloFornitore = a.CodiceArticoloFornitore,
+                            QtaMinimaOrdine = a.MinimoOrdinabile,
+                            Prezzo = a.Prezzo,
+                            QtaDaOrdinare = a.MinimoOrdinabile,
+                            QtaGiacenza = 0,
+                            Entity = a
+                        }).ToList();
+
+                        datiListF.ForEach(a =>
+                        {
+
+                            a.QtaGiacenza = giacenza.Where(b => b.Articolo == a.ArticoloID).Select(b => b.Sum).DefaultIfEmpty(0).FirstOrDefault(); 
+                        });
+                        //Join(prezzoMinArticolo,a=>new { a.ArticoloID, a.Prezzo },b=>b,(a,b)=>a).tolist
+
+                        //    ).Where(a => a.Fornitore.Nome.Contains(TestoRicerca) ||
+                        //a.Fornitore.RagioneSociale.Contains(TestoRicerca) ||
+                        //a.Fornitore.Cognome.Contains(TestoRicerca) ||
+                        //a.Fornitore.PIVA.Contains(TestoRicerca) ||
+                        //TestoRicerca == "").OrderBy(a => a.FornitoreID).ThenBy(a => a.ArticoloID)
+                        //.ToList();
+
+                        DataSource = new View.Utility.MySortableBindingList<ListinoPrezziFornitoriItem>(datiListF);
+                        return;
+                    }
+
                 }
-
-                DataSourceInRow = list;
             }
             catch (Exception ex)
             {

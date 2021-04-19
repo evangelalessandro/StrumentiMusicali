@@ -17,8 +17,10 @@ using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Articoli;
 using StrumentiMusicali.Library.Core.Events.Fatture;
 using StrumentiMusicali.Library.Core.Events.Generics;
+using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Altro;
+using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Diagnostics;
@@ -170,7 +172,8 @@ namespace StrumentiMusicali.App.Core.Controllers
                 case enAmbiente.ArticoliSottoscorta:
                     {
                         var contrArt = new ControllerListinoFornitori(null,false);
-                        var viewRicercaArt = BaseGridViewGeneric<ListinoFornitoriItem;
+                        var viewRicercaArt = 
+                            new BaseGridViewGeneric<ListinoPrezziFornitoriItem, ControllerListinoFornitori, ListinoPrezziFornitori>(contrArt);
 
                         this.ShowView(viewRicercaArt, obj.TipoEnviroment, contrArt);
                     }

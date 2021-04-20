@@ -253,6 +253,16 @@ namespace StrumentiMusicali.Core.Properties {
         /// <summary>
         ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap GeneraODQ_ {
+            get {
+                object obj = ResourceManager.GetObject("GeneraODQ_", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap Identity_48 {
             get {
                 object obj = ResourceManager.GetObject("Identity_48", resourceCulture);

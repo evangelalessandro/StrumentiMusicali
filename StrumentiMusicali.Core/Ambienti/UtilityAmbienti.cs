@@ -1,8 +1,10 @@
-﻿using StrumentiMusicali.Core.Enum;
+﻿using StrumentiMusicali.Core.Attributes;
+using StrumentiMusicali.Core.Enum;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,8 +12,30 @@ namespace StrumentiMusicali.Core.Ambienti
 {
     public static class UtilityAmbienti
     {
+
+        public static T GetAttribute<T>(enAmbiente enumValue) where T : Attribute
+        {
+            T attribute;
+
+            MemberInfo memberInfo = enumValue.GetType().GetMember(enumValue.ToString())
+                                            .FirstOrDefault();
+
+            if (memberInfo != null)
+            {
+                attribute = (T)memberInfo.GetCustomAttributes(typeof(T), false).FirstOrDefault();
+                return attribute;
+            }
+            return null;
+        }
+
         public static string TestoAmbiente(enAmbiente ambiente)
         {
+            var attr= GetAttribute<UIAmbienteAttribute>(ambiente);
+
+            if (attr!=null && attr.NomeAmbiente!="")
+            {
+                return attr.NomeAmbiente;
+            }
             switch (ambiente)
             {
                 case enAmbiente.ClientiList:
@@ -101,6 +125,10 @@ namespace StrumentiMusicali.Core.Ambienti
         }
         public static Icon GetIcon(enAmbiente ambiente)
         {
+            var attr = GetAttribute<UIAmbienteAttribute>(ambiente);
+
+             
+
             switch (ambiente)
             {
                 case enAmbiente.PagamentiList:

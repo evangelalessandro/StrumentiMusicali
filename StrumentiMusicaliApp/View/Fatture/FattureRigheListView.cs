@@ -21,7 +21,7 @@ namespace StrumentiMusicali.App.View
         private void FattureRigheListView_Load(object sender, System.EventArgs e)
         {
             _controllerRigheFatture.RefreshList(null);
-            gridControl1.DataSource = _controllerRigheFatture.DataSource;
+            gcControl.DataSource = _controllerRigheFatture.DataSource;
 
             dgvRighe.RefreshData();
             //EventAggregator.Instance().Subscribe<UpdateList<FatturaRiga>>(RefreshList);
@@ -49,7 +49,7 @@ namespace StrumentiMusicali.App.View
                    return;
                 
                
-               ItemEditorManager manager = new ItemEditorManager(gridControl1, dgvRighe);
+               ItemEditorManager manager = new ItemEditorManager(gcControl, dgvRighe);
                manager.BindProp(new FatturaRigaItem(), "");
 
                dgvRighe.BestFitColumns(true);

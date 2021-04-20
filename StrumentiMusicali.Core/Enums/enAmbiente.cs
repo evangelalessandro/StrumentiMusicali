@@ -65,7 +65,7 @@ namespace StrumentiMusicali.Core.Enum
 
 
         [UIAmbienteAttribute(false,NomeAmbiente ="Articoli sottoscorta"
-            ,Icona  = "Properties.Resource.Reorder_48"
+             
             )]
         ArticoliSottoscorta,
 
@@ -73,8 +73,7 @@ namespace StrumentiMusicali.Core.Enum
         SettingScontrino = 125,
 
         NonSpecificato = 100,
-        [UIAmbienteAttribute(false
-            ,Icona = "Properties.Resource.Payment"
+        [UIAmbienteAttribute(false 
             )]
         PagamentiList = 701,
         [UIAmbienteAttribute(true)]

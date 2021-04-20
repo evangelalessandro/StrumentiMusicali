@@ -16,9 +16,8 @@ namespace StrumentiMusicali.Core.Attributes
         /*Richiede chiusura di questo ambiente se si apre l'altro*/
         public enAmbiente AmbienteMutuale { get; set; } = enAmbiente.NonSpecificato;
 
-        public string NomeAmbiente { get; set; } = "Niente";
-
-        public string Icona { get; set; }
+        public string NomeAmbiente { get; set; } = "";
+ 
 
          
     }

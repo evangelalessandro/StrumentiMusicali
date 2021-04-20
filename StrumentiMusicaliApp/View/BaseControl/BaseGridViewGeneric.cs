@@ -33,20 +33,23 @@ namespace StrumentiMusicali.App.View.BaseControl
         private System.Windows.Forms.TextBox txtCerca;
         private Subscription<ViewRicerca<TEntity>> viewRicerca;
         public TController Controller { get; private set; }
-        public Guid INSTANCE_KEY {
-            get {
+        public Guid INSTANCE_KEY
+        {
+            get
+            {
                 if (this.Controller != null)
                     return this.Controller._INSTANCE_KEY;
                 return Guid.Empty;
             }
 
         }
-        
-        public BaseGridViewGeneric(TController controllerItem )
+        public bool InLine { get; private set; }
+        public BaseGridViewGeneric(TController controllerItem, bool inLine=false)
         {
             InitializeComponent();
-             
-            
+
+            InLine = inLine;
+
             Init();
 
             txtCerca.DataBindings.Add("Text", controllerItem, "TestoRicerca");
@@ -55,7 +58,7 @@ namespace StrumentiMusicali.App.View.BaseControl
             this.dgvRighe.DoubleClick += DgvRighe_DoubleClick;
             Controller = controllerItem;
             controllerItem.RefreshList(null);
-            this.gridControl1.DataSource = controllerItem.DataSource;
+            this.gcControl.DataSource = controllerItem.DataSource;
             this.Load += Control_Load;
             if (File.Exists(getLayoutFile()))
             {
@@ -173,7 +176,7 @@ namespace StrumentiMusicali.App.View.BaseControl
         {
             Controller.RefreshList(null);
 
-            gridControl1.DataSource = Controller.DataSource;
+            gcControl.DataSource = Controller.DataSource;
 
             dgvRighe.RefreshData();
 
@@ -229,12 +232,14 @@ namespace StrumentiMusicali.App.View.BaseControl
 
             UtilityView.InitGridDev(dgvRighe);
 
+            dgvRighe.OptionsBehavior.Editable = InLine;
 
             FormatNameColumn();
 
             ForceRefreshSelectItem();
         }
 
+        ItemEditorManager _manager=null;
         private void FormatNameColumn()
         {
             if (dgvRighe.Columns["ID"] != null)
@@ -254,6 +259,18 @@ namespace StrumentiMusicali.App.View.BaseControl
                 {
                     dgvRighe.Columns[i].DisplayFormat.FormatString = "G";
                 }
+            }
+
+            if (InLine && _manager==null)
+            {
+                _manager = new ItemEditorManager(gcControl,dgvRighe);
+                _manager.BindProp(new TBaseItem(), "");   
+            }
+
+            if (dgvRighe.Columns["ID"] != null)
+            {
+                dgvRighe.Columns["ID"].VisibleIndex = 0;
+                dgvRighe.Columns["ID"].OptionsColumn.AllowEdit = false;
             }
         }
         public virtual void FormatGrid() { }
@@ -309,7 +326,7 @@ namespace StrumentiMusicali.App.View.BaseControl
                 Controller.ShowEditView();
             }
             Controller.RefreshList(null);
-            gridControl1.DataSource = Controller.DataSource;
+            gcControl.DataSource = Controller.DataSource;
             dgvRighe.RefreshData();
             FormatGrid();
             if (itemSelected != null)
@@ -333,7 +350,7 @@ namespace StrumentiMusicali.App.View.BaseControl
         {
             FormatGrid();
 
-            DgvMaster_SelectionChanged(gridControl1, null);
+            DgvMaster_SelectionChanged(gcControl, null);
 
         }
 
@@ -341,7 +358,7 @@ namespace StrumentiMusicali.App.View.BaseControl
         {
             this.Invalidate();
 
-            gridControl1.DataSource = Controller.DataSource;
+            gcControl.DataSource = Controller.DataSource;
 
             dgvRighe.RefreshData();
             //dgvRighe.Update();
@@ -355,7 +372,10 @@ namespace StrumentiMusicali.App.View.BaseControl
             {
 
                 if (g == null) return;
-                var location = gridControl1.PointToClient(Cursor.Position);
+
+                if (InLine)
+                    return;
+                var location = gcControl.PointToClient(Cursor.Position);
                 // Get a View at the current point.
                 // Retrieve information on the current View element.
                 GridHitInfo gridHI = g.CalcHitInfo(location);

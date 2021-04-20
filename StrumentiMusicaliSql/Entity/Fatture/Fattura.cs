@@ -12,6 +12,7 @@ namespace StrumentiMusicali.Library.Entity
             Pagamento = "";
         }
 
+        public bool ChiusaSpedita { get; set; } = false;
         public string Pagamento { get; set; }
         public decimal ImponibileIva { get; set; }
         public decimal TotaleIva { get; set; }

@@ -22,16 +22,16 @@ namespace StrumentiMusicali.App.View.BaseControl
     public partial class ItemEditorManager
     {
         private DevExpress.XtraVerticalGrid.VGridControl _vGrid;
-        private GridControl _gcScontrino;
-        private GridView _dgvScontrino;
+        private GridControl _gcControl;
+        private GridView _dgvRighe;
         public ItemEditorManager(DevExpress.XtraVerticalGrid.VGridControl vGrid)
         {
             _vGrid = vGrid;
         }
-        public ItemEditorManager(GridControl gcScontrino, GridView dgvScontrino)
+        public ItemEditorManager(GridControl gcControl, GridView dgvRighe)
         {
-            _dgvScontrino = dgvScontrino;
-            _gcScontrino = gcScontrino;
+            _dgvRighe = dgvRighe;
+            _gcControl = gcControl;
         }
         /// <summary>
         /// aggiorna tutte le proprietà
@@ -379,9 +379,9 @@ namespace StrumentiMusicali.App.View.BaseControl
                 {
                     editorRow.Enabled = false;
                 }
-                if (_dgvScontrino != null)
+                if (_dgvRighe != null)
                 {
-                    _dgvScontrino.Columns[item.Name].OptionsColumn.AllowEdit = false;
+                    _dgvRighe.Columns[item.Name].OptionsColumn.AllowEdit = false;
                 }
             }
 
@@ -414,9 +414,9 @@ namespace StrumentiMusicali.App.View.BaseControl
                 
                  
                 GridColumn col = null;
-                if (_dgvScontrino != null)
+                if (_dgvRighe != null)
                 {
-                    col = _dgvScontrino.Columns[item.Name];
+                    col = _dgvRighe.Columns[item.Name];
                 }
                 if (hideAttr != null || !evaluate.VisibleItem(objToBind, item.Name))
                 {
@@ -471,10 +471,10 @@ namespace StrumentiMusicali.App.View.BaseControl
                 {
                     if (row != null)
                         row.Properties.RowEdit = itemRepo;
-                    if (_gcScontrino != null)
+                    if (_gcControl != null)
                     {
-                        _gcScontrino.RepositoryItems.Add(itemRepo);
-                        _dgvScontrino.Columns[item.Name].ColumnEdit = itemRepo;
+                        _gcControl.RepositoryItems.Add(itemRepo);
+                        _dgvRighe.Columns[item.Name].ColumnEdit = itemRepo;
                     }
                 }
                 //if (row.Properties.RowEdit != null)

@@ -9,8 +9,10 @@ using StrumentiMusicali.Library.Core.Item.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -37,6 +39,34 @@ namespace StrumentiMusicali.App.View.Utility
             }
             return default;
         }
+        public static List<T> DataTableToList<T>(this DataTable table) where T : class, new()
+        {
+
+            List<T> list = new List<T>();
+
+            foreach (var row in table.AsEnumerable())
+            {
+                T obj = new T();
+
+                foreach (var prop in obj.GetType().GetProperties())
+                {
+                    try
+                    {
+                        PropertyInfo propertyInfo = obj.GetType().GetProperty(prop.Name);
+                        propertyInfo.SetValue(obj, Convert.ChangeType(row[prop.Name], propertyInfo.PropertyType), null);
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+                }
+
+                list.Add(obj);
+            }
+
+            return list;
+
+        }
 
         public static string GetTextSplitted(string name)
         {
@@ -49,7 +79,7 @@ namespace StrumentiMusicali.App.View.Utility
 
             return titolo;
         }
-         
+
 
         public static void AddButtonSaveAndClose(RibbonMenuPanel pnl, ICloseSave control, bool addSave = true)
         {
@@ -62,10 +92,10 @@ namespace StrumentiMusicali.App.View.Utility
             };
             if (addSave)
             {
-                 
+
 
                 var rib1 = pnl.Add("Salva", StrumentiMusicali.Core.Properties.ImageIcons.Save);
-                
+
 
                 rib1.Click += (a, e) =>
                 {
@@ -182,8 +212,8 @@ namespace StrumentiMusicali.App.View.Utility
                             cnt.DataBindings.Add(new DateTimePickerBinding(businessObject, item.Name
                                 , DataSourceUpdateMode.OnPropertyChanged));
 
-                            //(cnt as DateTimePicker).DataBindings.Add("Value", businessObject, item.Name);
-                        }
+                        //(cnt as DateTimePicker).DataBindings.Add("Value", businessObject, item.Name);
+                    }
                         else if (cnt is DateEdit)
                         {
                             InitDate(cnt as DateEdit, attribute);

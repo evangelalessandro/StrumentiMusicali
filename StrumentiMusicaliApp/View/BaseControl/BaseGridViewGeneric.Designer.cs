@@ -19,37 +19,37 @@ namespace StrumentiMusicali.App.View.BaseControl
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.gridControl1 = new DevExpress.XtraGrid.GridControl();
+			this.gcControl = new DevExpress.XtraGrid.GridControl();
 			this.dgvRighe = new DevExpress.XtraGrid.Views.Grid.GridView();
-			((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.gcControl)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgvRighe)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// gridControl1
 			// 
-			this.gridControl1.Location = new System.Drawing.Point(8, -15);
-			this.gridControl1.MainView = this.dgvRighe;
-			this.gridControl1.Name = "gridControl1";
-			this.gridControl1.Size = new System.Drawing.Size(411, 244);
-			this.gridControl1.TabIndex = 0;
-			this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+			this.gcControl.Location = new System.Drawing.Point(8, -15);
+			this.gcControl.MainView = this.dgvRighe;
+			this.gcControl.Name = "gridControl1";
+			this.gcControl.Size = new System.Drawing.Size(411, 244);
+			this.gcControl.TabIndex = 0;
+			this.gcControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.dgvRighe});
-			this.gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.gcControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			//
 			// gridView1
 			// 
-			this.dgvRighe.GridControl = this.gridControl1;
+			this.dgvRighe.GridControl = this.gcControl;
 			this.dgvRighe.Name = "gridView1";
 			// 
 			// BaseGridViewGeneric
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.gridControl1);
+			this.Controls.Add(this.gcControl);
 			this.Name = "BaseGridViewGeneric";
 			this.Padding = new System.Windows.Forms.Padding(5);
 			this.Size = new System.Drawing.Size(427, 229);
-			((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.gcControl)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgvRighe)).EndInit();
 			this.ResumeLayout(false);
 
@@ -57,7 +57,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 		#endregion
 
-		internal GridControl gridControl1;
+		internal GridControl gcControl;
 		internal GridView dgvRighe;
 	}
 }

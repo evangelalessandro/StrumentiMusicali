@@ -10,6 +10,8 @@ using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 
 namespace StrumentiMusicali.App.Core.Controllers.ListiniFornitori
@@ -78,7 +80,12 @@ namespace StrumentiMusicali.App.Core.Controllers.ListiniFornitori
             });
             EventAggregator.Instance().Subscribe<ItemSelected<ListinoPrezziFornitoriItem, ListinoPrezziFornitori>>((a) =>
             {
-                SelectedItem = a.ItemSelected.Entity;
+                if (a.ItemSelected != null)
+                    SelectedItem = a.ItemSelected.Entity;
+                else
+                {
+                    SelectedItem = null;
+                }
             });
         }
 
@@ -114,22 +121,168 @@ namespace StrumentiMusicali.App.Core.Controllers.ListiniFornitori
         public override MenuTab GetMenu()
         {
             var menu = base.GetMenu();
-
-            foreach (var item in menu.Tabs[0].Pannelli)
+            if (_controllerMaster != null)
             {
-                var items = item.Pulsanti.Where(a => a.Tag != null
-                && !a.Tag.Equals(MenuTab.TagAdd)
-                && !a.Tag.Contains(MenuTab.TagRemove)
+                foreach (var item in menu.Tabs[0].Pannelli)
+                {
+                    var items = item.Pulsanti.Where(a => a.Tag != null
+                    && !a.Tag.Equals(MenuTab.TagAdd)
+                    && !a.Tag.Contains(MenuTab.TagRemove)
 
-                ).ToList();
-                item.Pulsanti.RemoveAll(a => items.Contains(a));
-                item.Testo = "Listino fornitori";
+                    ).ToList();
+                    item.Pulsanti.RemoveAll(a => items.Contains(a));
+                    item.Testo = "Listino fornitori";
+                }
+                var presenti = menu.Tabs[0].Pannelli.Where(a => a.Pulsanti.Count() > 0).First();
+                var save = new RibbonMenuButton() { Testo = "Salva", Immagine = StrumentiMusicali.Core.Properties.ImageIcons.Save };
+                presenti.Pulsanti.Add(save);
+                save.Click += Save_Click;
             }
-            var presenti = menu.Tabs[0].Pannelli.Where(a => a.Pulsanti.Count() > 0).First();
-            var save = new RibbonMenuButton() { Testo = "Salva", Immagine = StrumentiMusicali.Core.Properties.ImageIcons.Save };
-            presenti.Pulsanti.Add(save);
-            save.Click += Save_Click;
+            else
+            {
+                if (InLineEditor)
+                {
+                    int removed = 0;
+                    foreach (var item in menu.Tabs[0].Pannelli)
+                    {
+                        var items = item.Pulsanti.Where(a => a.Tag != null
+                        && (a.Tag.Equals(MenuTab.TagAdd)
+                        || a.Tag.Contains(MenuTab.TagEdit)
+                        || a.Tag.Contains(MenuTab.TagCercaClear)
+                        || a.Tag.Contains(MenuTab.TagCerca)
+                        || a.Tag.Contains(MenuTab.TagRemove)
+                        )
+
+                        ).ToList();
+                        removed += item.Pulsanti.RemoveAll(a => items.Contains(a));
+
+                    }
+                    menu.Tabs[0].Pannelli.RemoveAll(a => a.Pulsanti.Count == 0);
+                    if (removed != 0)
+                    {
+                        var presenti = menu.Tabs[0].Pannelli.Where(a => a.Pulsanti.Count() > 0).First();
+                        var generaOdg = new RibbonMenuButton() { Testo = "Genera ordini di acquisto", Immagine = StrumentiMusicali.Core.Properties.ImageIcons.GeneraODQ_ };
+                        presenti.Pulsanti.Add(generaOdg);
+                        generaOdg.Click += GeneraOdq_click;
+
+                        var savePreordine = new RibbonMenuButton() { Testo = "Salva Qta da ordinare", Immagine = StrumentiMusicali.Core.Properties.ImageIcons.Save };
+                        presenti.Pulsanti.Add(savePreordine);
+                        savePreordine.Click += SavePreordine_Click; ;
+                    }
+                }
+            }
             return menu;
+        }
+
+        private void SavePreordine_Click(object sender, EventArgs e)
+        {
+            using (var saveEnt = new SaveEntityManager())
+            {
+                bool save = false;
+                foreach (var item in DataSource.Where(a => a.ToSave == true))
+                {
+                    var listino = saveEnt.UnitOfWork.ListinoPrezziFornitoriRepository.Find(a => a.ID == item.ID).FirstOrDefault();
+                    var preOrdAcq = saveEnt.UnitOfWork.PreOrdineAcquistoRepository.Find(a => a.FornitoreID == listino.FornitoreID && a.ArticoloID == listino.ArticoloID).FirstOrDefault();
+                    if (preOrdAcq == null)
+                    {
+                        preOrdAcq = new PreOrdineAcquisto();
+                        preOrdAcq.ArticoloID = listino.ArticoloID;
+                        preOrdAcq.FornitoreID = listino.FornitoreID;
+
+
+
+                    }
+                    save = true;
+                    preOrdAcq.QtaDaOrdinare = item.QtaDaOrdinare;
+                    if (preOrdAcq.ID <= 0)
+                    {
+                        saveEnt.UnitOfWork.PreOrdineAcquistoRepository.Add(preOrdAcq);
+                    }
+                    else
+
+                        saveEnt.UnitOfWork.PreOrdineAcquistoRepository.Update(preOrdAcq);
+
+                }
+                if (save)
+                    saveEnt.SaveEntity(enSaveOperation.OpSave);
+
+            }
+        }
+
+        private void GeneraOdq_click(object sender, EventArgs e)
+        {
+
+            //CalcolaTotali
+            using (var saveEnt = new SaveEntityManager())
+            {
+                bool save = false;
+
+                var listFatt = new List<Library.Entity.Fattura>();
+
+                foreach (var item in DataSource.Where(a => a.QtaDaOrdinare - a.QtaInOrdine > 0)
+                    .Select(a => new { Qta = a.QtaDaOrdinare - a.QtaInOrdine, a.CodiceArticoloFornitore, a.ID, a.Entity, a.Prezzo }).OrderBy(a => a.Entity.FornitoreID).ToList())
+                {
+
+                    Library.Entity.Fattura fattExt = saveEnt.UnitOfWork.FatturaRepository.Find(a => a.ChiusaSpedita == false && a.ClienteFornitoreID == item.Entity.FornitoreID &&
+                    a.TipoDocumento == Library.Entity.EnTipoDocumento.OrdineAlFornitore).FirstOrDefault();
+                    var riga = new Library.Entity.FatturaRiga();
+
+                    Library.Entity.Articoli.Articolo art = saveEnt.UnitOfWork.ArticoliRepository.Find(a => a.ID == item.Entity.ArticoloID).FirstOrDefault();
+
+
+
+                    if (fattExt == null)
+                        fattExt = listFatt.Where(a => a.ClienteFornitoreID == item.Entity.FornitoreID).FirstOrDefault();
+                    
+                    if (fattExt == null)
+                    {
+                        fattExt = new Library.Entity.Fattura();
+                        fattExt.ClienteFornitoreID = item.Entity.FornitoreID;
+                        fattExt.TipoDocumento = Library.Entity.EnTipoDocumento.OrdineAlFornitore;
+                        fattExt.Data = DateTime.Now;
+                        fattExt.Codice = ControllerFatturazione.CalcolaCodice(fattExt);
+                        fattExt.RagioneSociale = "";
+                        saveEnt.UnitOfWork.FatturaRepository.Add(fattExt);
+
+                        saveEnt.SaveEntity("");
+                    }
+                    listFatt.Add(fattExt);
+                    
+                    riga = (new Library.Entity.FatturaRiga()
+                    {
+                        CodiceFornitore = item.CodiceArticoloFornitore,
+                        ArticoloID = item.Entity.ArticoloID,
+                        Descrizione = art.Titolo,
+                        Qta = item.Qta,
+                        Fattura = fattExt,
+                        PrezzoUnitario = item.Prezzo,
+                        IvaApplicata = "22",
+                    });
+                    saveEnt.UnitOfWork.FattureRigheRepository.Add(riga);
+                    save = true;
+                }
+
+
+                if (save)
+                    saveEnt.SaveEntity("");
+                else
+                {
+                    MessageManager.NotificaInfo("Non ci sono articoli da ordinare!");
+                    return;
+                }
+
+                foreach (var item in listFatt.Distinct())
+                {
+                    ControllerFatturazione.CalcolaTotali(item);
+                    saveEnt.UnitOfWork.FatturaRepository.Update(item);
+
+                }
+                if (save)
+                    saveEnt.SaveEntity("Generati gli ordini di acquisto!");
+
+                RefreshList(null);
+
+            }
         }
 
         public override void RefreshList(UpdateList<ListinoPrezziFornitori> obj)
@@ -156,72 +309,41 @@ namespace StrumentiMusicali.App.Core.Controllers.ListiniFornitori
                     }
                     else
                     {
-                        var listArtQta = uof.ArticoliRepository.Find(
-                                        a => a.SottoScorta > 0).Select(a => new { Articolo = a.ID, a.SottoScorta }).ToList();
-
-                        var listArt = listArtQta.Select(a => a.Articolo).ToList();
-                        var giacenza = uof.MagazzinoRepository.Find(a =>
-                               listArt.Contains(a.ArticoloID))
-                          .Select(a => new { a.ArticoloID, a.Qta })
-                          .GroupBy(a => new { a.ArticoloID })
-                          .Select(a => new { Sum = a.Sum(b => b.Qta), Articolo = a.Key.ArticoloID }).ToList();
 
 
-                        var sottoGiac = from a in listArtQta
-                                        join b in giacenza
-                                        on a.Articolo equals b.Articolo
-                                        into c 
-                                        from d in c.DefaultIfEmpty()
-                                        select new { Art = a.Articolo, SottoScorta = a.SottoScorta, Giacenza = d.Sum == null ?0: d.Sum};
-
-                        sottoGiac = sottoGiac.Where(a => a.SottoScorta < a.Giacenza).ToList();
-
-                        var dati = uof.ListinoPrezziFornitoriRepository.Find(a =>
-                                sottoGiac.Select(b => b.Art).Contains(a.ArticoloID)).Select(a =>
-                                new { a.FornitoreID, a.ArticoloID, a.MinimoOrdinabile, a.Prezzo }).ToList();
-
-                        var prezzoMinArticolo = dati.GroupBy(a => new { a.ArticoloID }).Select(a =>
-                          new { a.Key.ArticoloID, PrezzoMinimo = a.Min(b => b.Prezzo) }).ToList();
 
 
-                        var listF = uof.ListinoPrezziFornitoriRepository
-                            .Find(a => prezzoMinArticolo.Select(b => b.ArticoloID).Contains(a.ArticoloID)).ToList();
-
-                        var listF2 = from a in listF
-                                     join b in prezzoMinArticolo
-                                     on new { a.ArticoloID, a.Prezzo } equals new { b.ArticoloID, Prezzo = b.PrezzoMinimo }
-                                     select a;
-
-
-                        var datiListF = listF2.Select(a => new ListinoPrezziFornitoriItem
+                        using (var connection = new SqlConnection(uof.ConnectionString))
                         {
-                            ArticoloID = a.ArticoloID,
-                            FornitoreID = a.FornitoreID,
-                            ID = a.ID,
-                            CodiceArticoloFornitore = a.CodiceArticoloFornitore,
-                            QtaMinimaOrdine = a.MinimoOrdinabile,
-                            Prezzo = a.Prezzo,
-                            QtaDaOrdinare = a.MinimoOrdinabile,
-                            QtaGiacenza = 0,
-                            Entity = a
-                        }).ToList();
+                            SqlDataAdapter da = new SqlDataAdapter();
+                            var cmd = new SqlCommand("dbo.NG_SottoScorta_SelectDati", connection);
+                            cmd.Parameters.AddWithValue("@date", DateTime.Now);
+                            cmd.Parameters.AddWithValue("@idUtente", LoginData.utenteLogin.ID);
+                            cmd.CommandType = CommandType.StoredProcedure;
 
-                        datiListF.ForEach(a =>
-                        {
+                            connection.Open();
 
-                            a.QtaGiacenza = giacenza.Where(b => b.Articolo == a.ArticoloID).Select(b => b.Sum).DefaultIfEmpty(0).FirstOrDefault(); 
-                        });
-                        //Join(prezzoMinArticolo,a=>new { a.ArticoloID, a.Prezzo },b=>b,(a,b)=>a).tolist
+                            da.SelectCommand = cmd;
+                            var ds = new DataTable();
 
-                        //    ).Where(a => a.Fornitore.Nome.Contains(TestoRicerca) ||
-                        //a.Fornitore.RagioneSociale.Contains(TestoRicerca) ||
-                        //a.Fornitore.Cognome.Contains(TestoRicerca) ||
-                        //a.Fornitore.PIVA.Contains(TestoRicerca) ||
-                        //TestoRicerca == "").OrderBy(a => a.FornitoreID).ThenBy(a => a.ArticoloID)
-                        //.ToList();
+                            ///conn.Open();
+                            da.Fill(ds);
 
-                        DataSource = new View.Utility.MySortableBindingList<ListinoPrezziFornitoriItem>(datiListF);
-                        return;
+                            //  
+                            var dat = View.Utility.UtilityView.DataTableToList<ListinoPrezziFornitoriItem>(ds);
+                            //);
+
+                            dat.ForEach(a =>
+                            {
+
+                                a.Entity = uof.ListinoPrezziFornitoriRepository.Find(b => b.ID == a.ID).FirstOrDefault();
+                                a.ToSave = false;
+                            }
+                                );
+
+                            DataSource = new View.Utility.MySortableBindingList<ListinoPrezziFornitoriItem>(dat);
+                        }
+
                     }
 
                 }

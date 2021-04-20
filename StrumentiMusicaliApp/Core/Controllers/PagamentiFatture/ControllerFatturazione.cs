@@ -79,10 +79,13 @@ namespace StrumentiMusicali.App.Core.Controllers
         ~ControllerFatturazione()
         {
         }
-
         public string CalcolaCodice()
         {
-            var fattura = EditItem;
+            return CalcolaCodice(EditItem);
+        }
+        public static string CalcolaCodice(Fattura fattura)
+        {
+
             var prefix = "";
             switch (fattura.TipoDocumento)
             {
@@ -101,7 +104,9 @@ namespace StrumentiMusicali.App.Core.Controllers
                 case EnTipoDocumento.DDT:
                     prefix = "D";
                     break;
-
+                case EnTipoDocumento.OrdineAlFornitore:
+                    prefix = "ODQ";
+                    break;
                 default:
                     break;
             }
@@ -124,7 +129,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                 var valore = 1;
                 if (codice != "")
                 {
-                    codice = codice.Replace("F", "").Replace("NC", "").Replace("D", "");
+                    codice = codice.Replace("F", "").Replace("NC", "").Replace("ODQ", "").Replace("D", "");
                     if (codice.Contains("/"))
                     {
                         codice = codice.Split('/')[0];

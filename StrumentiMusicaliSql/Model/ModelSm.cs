@@ -251,6 +251,9 @@ namespace StrumentiMusicali.Library.Model
         public virtual DbSet<Articolo> Articoli { get; set; }
         public virtual DbSet<ListinoPrezziFornitori> ListinoPrezziFornitori { get; set; }
 
+        public virtual DbSet<PreOrdineAcquisto> PreOrdineAcquisto { get; set; }
+        
+
         public virtual DbSet<Fattura> Fatture { get; set; }
         public virtual DbSet<FatturaRiga> FattureRighe { get; set; }
 

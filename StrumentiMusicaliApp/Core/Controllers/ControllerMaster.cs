@@ -171,9 +171,9 @@ namespace StrumentiMusicali.App.Core.Controllers
                     break;
                 case enAmbiente.ArticoliSottoscorta:
                     {
-                        var contrArt = new ControllerListinoFornitori(null,false);
+                        var contrArt = new ControllerListinoFornitori(null,true);
                         var viewRicercaArt = 
-                            new BaseGridViewGeneric<ListinoPrezziFornitoriItem, ControllerListinoFornitori, ListinoPrezziFornitori>(contrArt);
+                            new BaseGridViewGeneric<ListinoPrezziFornitoriItem, ControllerListinoFornitori, ListinoPrezziFornitori>(contrArt,true);
 
                         this.ShowView(viewRicercaArt, obj.TipoEnviroment, contrArt);
                     }

@@ -252,7 +252,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
                     foreach (var button in pannello.Pulsanti)
                     {
-                        var rbButton = rbPannel.Items.Where(a => a.Tag.ToString() == button.GetHashCode().ToString()).First();
+                        var rbButton = rbPannel.Items.Where(a => a.Tag.ToString() == button.GetHashCode().ToString()).FirstOrDefault();
+                        if (rbButton!=null)
                         rbPannel.Items.Remove(rbButton);
 
                     }

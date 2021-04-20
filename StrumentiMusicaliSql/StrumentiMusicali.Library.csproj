@@ -170,6 +170,7 @@
     <Compile Include="Entity\Setting\SettingDocumentiFatture.cs" />
     <Compile Include="Entity\Setting\SettingSito.cs" />
     <Compile Include="Entity\Altro\Utente.cs" />
+    <Compile Include="Entity\SottoScorta\PreOrdineAcquisto.cs" />
     <Compile Include="Migrations\201812261605085_Init.cs" />
     <Compile Include="Migrations\201812261605085_Init.Designer.cs">
       <DependentUpon>201812261605085_Init.cs</DependentUpon>

@@ -151,6 +151,7 @@ select @db
                 command.ExecuteNonQuery();
             }
         }
+        public string ConnectionString { get { return this.dbContext.Database.Connection.ConnectionString; } }
 
         private Repository<DatiIntestazioneStampaFattura> _DatiIntestazioneStampaFatturaRepository;
 
@@ -277,6 +278,19 @@ select @db
             }
         }
 
+        private Repository<PreOrdineAcquisto> _PreOrdineAcquistoRepository;
+
+        public IRepository<PreOrdineAcquisto> PreOrdineAcquistoRepository
+        {
+            get
+            {
+                if (_PreOrdineAcquistoRepository == null)
+                {
+                    _PreOrdineAcquistoRepository = new Repository<PreOrdineAcquisto>(dbContext);
+                }
+                return _PreOrdineAcquistoRepository;
+            }
+        }
         private Repository<Pagamento> _PagamentoRepository;
 
         public IRepository<Pagamento> PagamentoRepository

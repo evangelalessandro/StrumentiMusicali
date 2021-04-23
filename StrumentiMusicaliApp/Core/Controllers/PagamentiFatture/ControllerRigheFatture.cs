@@ -135,6 +135,8 @@ namespace StrumentiMusicali.App.Core.Controllers
                         Ricevuti = a.Ricevuti
 
                     }).OrderBy(a => a.Entity.OrdineVisualizzazione).ThenBy(a => a.ID).ToList();
+
+                    
                 }
 
                 DataSource = new View.Utility.MySortableBindingList<FatturaRigaItem>(list);
@@ -232,13 +234,13 @@ namespace StrumentiMusicali.App.Core.Controllers
         {
             using (var saveManager = new SaveEntityManager())
             {
+                var uof = saveManager.UnitOfWork;
                 EditItem.Fattura = null;
                 EditItem.FatturaID = _controllerFatturazione.EditItem.ID;
                 if (_controllerFatturazione.EditItem.ID == 0)
                     return;
-                var uof = saveManager.UnitOfWork;
 
-                if (saveManager.UnitOfWork.FatturaRepository.Find(a => a.ID == EditItem.ID).First().ChiusaSpedita)
+                if (saveManager.UnitOfWork.FatturaRepository.Find(a => a.ID == EditItem.FatturaID).Select(a=>a.ChiusaSpedita).First())
                 {
                     MessageManager.NotificaWarnig("Documento già chiuso, non è possibile modificare altro!");
                     return;

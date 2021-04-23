@@ -62,7 +62,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                 if (EditItem.ID > 0)
                 {
-                    if (saveManager.UnitOfWork.FatturaRepository.Find(a => a.ID == EditItem.ID).First().ChiusaSpedita)
+                    if (saveManager.UnitOfWork.FatturaRepository.Find(a => a.ID == EditItem.ID).Select(a=>a.ChiusaSpedita).First())
                     {
                         MessageManager.NotificaWarnig("Documento già chiuso, non è possibile modificare altro!");
                         return;
@@ -534,14 +534,30 @@ namespace StrumentiMusicali.App.Core.Controllers
                             Prezzo = item.PrezzoUnitario
                         }, saveEnt.UnitOfWork))
                         {
-                            MessageManager.NotificaWarnig("Sei sicuro un errore nel inserimento del movimento");
+                            MessageManager.NotificaWarnig("Sei sicuro un errore nell'inserimento del movimento");
                             return;
+                        }
+                        /*salvo i dati di evasione nella riga parent dell'ordine di acquisto*/
+                        var evasi = saveEnt.UnitOfWork.FattureRigheRepository.Find(a => a.IdRigaCollegata != null
+                            && a.IdRigaCollegata == item.IdRigaCollegata)
+                        .Select(a => new { a.IdRigaCollegata, a.Qta })
+                        .GroupBy(a => a.IdRigaCollegata).Select(a => new { TOT = a.Sum(b => b.Qta), IdRigaParent = a.Key.Value }).FirstOrDefault();
+
+                        var rigaParent = saveEnt.UnitOfWork.FattureRigheRepository.Find(a => a.ID == evasi.IdRigaParent).FirstOrDefault();
+
+                        if (rigaParent.Evasi != evasi.TOT)
+                        {
+                            rigaParent.Evasi = evasi.TOT;
+                            saveEnt.UnitOfWork.FattureRigheRepository.Update(rigaParent);
                         }
                     }
                     var dato = saveEnt.UnitOfWork.FatturaRepository.Find(a => a.ID == fatt.ID).FirstOrDefault();
                     dato.ChiusaSpedita = true;
 
                     saveEnt.UnitOfWork.FatturaRepository.Update(dato);
+
+
+
                     saveEnt.SaveEntity("Creati movimenti ingresso a magazzino e chiuso documento");
 
                 }
@@ -656,7 +672,8 @@ namespace StrumentiMusicali.App.Core.Controllers
                 {
 
                     /*deve cercare gli ordini di carico già fatti, e collegati, e detrarre la qta per vedere se farne di nuovi*/
-                    var evaso = saveEnt.UnitOfWork.FattureRigheRepository.Find(a => a.IdRigaCollegata == item.ID).Select(a => a.Qta).DefaultIfEmpty(0).Sum();
+                    var evaso = saveEnt.UnitOfWork.FattureRigheRepository.Find(a => a.IdRigaCollegata == item.ID).Select(a => new 
+                    { Qta = a.Fattura.ChiusaSpedita == true ? a.Ricevuti : a.Qta }).Select(a=>a.Qta).DefaultIfEmpty(0).Sum();
 
                     if (evaso == item.Qta)
                         continue;

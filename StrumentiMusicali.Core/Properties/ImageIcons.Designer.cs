@@ -393,6 +393,16 @@ namespace StrumentiMusicali.Core.Properties {
         /// <summary>
         ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap OrdineDiCarico {
+            get {
+                object obj = ResourceManager.GetObject("OrdineDiCarico", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap Payment {
             get {
                 object obj = ResourceManager.GetObject("Payment", resourceCulture);

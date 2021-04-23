@@ -8,6 +8,7 @@
 
         NotaDiCredito = 2,
         DDT = 3,
-        OrdineAlFornitore=5
+        OrdineAlFornitore=5,
+        OrdineDiCarico=6
     }
 }

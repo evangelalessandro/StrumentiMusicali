@@ -58,8 +58,16 @@ namespace StrumentiMusicali.App.Core.Controllers
                 var uof = saveManager.UnitOfWork;
                 EditItem.Data = EditItem.Data.Date;
 
+
+
                 if (EditItem.ID > 0)
                 {
+                    if (saveManager.UnitOfWork.FatturaRepository.Find(a => a.ID == EditItem.ID).First().ChiusaSpedita)
+                    {
+                        MessageManager.NotificaWarnig("Documento già chiuso, non è possibile modificare altro!");
+                        return;
+                    }
+
                     EditItem = CalcolaTotali(EditItem);
                     uof.FatturaRepository.Update(EditItem);
                 }
@@ -85,34 +93,38 @@ namespace StrumentiMusicali.App.Core.Controllers
         }
         public static string CalcolaCodice(Fattura fattura)
         {
-
-            var prefix = "";
-            switch (fattura.TipoDocumento)
-            {
-                case EnTipoDocumento.NonSpecificato:
-                    return "";
-
-                case EnTipoDocumento.FatturaDiCortesia:
-                case EnTipoDocumento.RicevutaFiscale:
-                    prefix = "F";
-                    break;
-
-                case EnTipoDocumento.NotaDiCredito:
-                    prefix = "NC";
-                    break;
-
-                case EnTipoDocumento.DDT:
-                    prefix = "D";
-                    break;
-                case EnTipoDocumento.OrdineAlFornitore:
-                    prefix = "ODQ";
-                    break;
-                default:
-                    break;
-            }
-
             using (UnitOfWork uof = new UnitOfWork())
             {
+
+                //switch (fattura.TipoDocumento)
+                //{
+                //    case EnTipoDocumento.NonSpecificato:
+                //        return "";
+
+                //    case EnTipoDocumento.FatturaDiCortesia:
+                //    case EnTipoDocumento.RicevutaFiscale:
+                //        prefix = "F";
+                //        break;
+
+                //    case EnTipoDocumento.NotaDiCredito:
+                //        prefix = "NC";
+                //        break;
+
+                //    case EnTipoDocumento.DDT:
+                //        prefix = "D";
+                //        break;
+                //    case EnTipoDocumento.OrdineAlFornitore:
+                //        prefix = "ODQ";
+                //        break;
+                //    case EnTipoDocumento.OrdineDiCarico:
+                //        prefix = "ODC";
+                //        break;
+                //    default:
+                //        break;
+                //}
+                var enumVal = (int)fattura.TipoDocumento;
+                var prefix = uof.TipiDocumentoFiscaleRepository.Find(a => a.IDEnum == enumVal).Select(a => a.Codice).FirstOrDefault();
+
                 var list = new List<EnTipoDocumento>();
                 list.Add(EnTipoDocumento.FatturaDiCortesia);
                 list.Add(EnTipoDocumento.RicevutaFiscale);
@@ -129,7 +141,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                 var valore = 1;
                 if (codice != "")
                 {
-                    codice = codice.Replace("F", "").Replace("NC", "").Replace("ODQ", "").Replace("D", "");
+                    codice = codice.Replace(prefix, "");
                     if (codice.Contains("/"))
                     {
                         codice = codice.Split('/')[0];
@@ -364,12 +376,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private void AggiungiComandi()
         {
-            AggiungiComandiStampa(GetMenu().Tabs[0], false);
+            AggiungiComandi(GetMenu().Tabs[0], false);
         }
 
         public static readonly string PulsanteCambioTipoDoc = "Cambio tipo documento";
 
-        public void AggiungiComandiStampa(MenuRibbon.RibbonMenuTab tab, bool editItem)
+        public void AggiungiComandi(MenuRibbon.RibbonMenuTab tab, bool editItem)
         {
             if (editItem)
             {
@@ -400,7 +412,24 @@ namespace StrumentiMusicali.App.Core.Controllers
                 else
                     GeneraFatturaXml(SelectedItem);
             };
+            if (!editItem)
+            {
+                var ribGeneraOrdineCarico = pnlStampa.Add("Genera Ordine Carico", StrumentiMusicali.Core.Properties.ImageIcons.OrdineDiCarico, true);
+                ribGeneraOrdineCarico.Click += (a, e) =>
+                {
 
+                    GeneraOrdineCarico();
+                };
+            }
+            if (!editItem)
+            {
+                var ribGeneraOrdineCarico = pnlStampa.Add("Genera Giacenze da Ordine di carico", StrumentiMusicali.Core.Properties.ImageIcons.OrdineDiCarico, true);
+                ribGeneraOrdineCarico.Click += (a, e) =>
+                {
+
+                    GeneraMovimentiDaOrdineDiCarico();
+                };
+            }
             var pnlCliente = tab.Add("Anagrafica cliente");
             var ribCust = pnlCliente.Add("Visualizza cliente", StrumentiMusicali.Core.Properties.ImageIcons.Customer_48, true);
             ribCust.Click += (x, e) =>
@@ -432,21 +461,283 @@ namespace StrumentiMusicali.App.Core.Controllers
                             ShowView(view, enAmbiente.Cliente, null, false);
                             ViewFactory.AddView(enAmbiente.Cliente, view);
                         }
-                        //else
-                        //{
-                        //	frm.OnSave += (d, b) =>
-                        //	{
-                        //		frm.Validate();
-                        //		EventAggregator.Instance().Publish<Save<Cliente>>
-                        //		(new Save<Cliente>());
-                        //	};
-                        //	frm.Rebind(cliente);
-                        //	ShowView(frm, enAmbienti.Cliente, null, false);
-                        //	ViewFactory.AddView(enAmbienti.Cliente, frm);
-                        //}
+
                     }
                 }
             };
+        }
+
+        private void GeneraMovimentiDaOrdineDiCarico()
+        {
+            var fatt = SelectedItem;
+
+
+
+            //controllo se ci sono già altri ordini di carico
+            //per le righe di questo ordine
+
+            if (fatt.ChiusaSpedita)
+            {
+                MessageManager.NotificaWarnig("Documento già chiuso, non è possibile generare altre giacenze!");
+                return;
+            }
+            if (fatt.TipoDocumento != EnTipoDocumento.OrdineDiCarico)
+            {
+                MessageManager.NotificaWarnig("Documento deve essere del tipo ordine di carico!");
+                return;
+            }
+            if (!MessageManager.QuestionMessage("Generando i movimenti, il documento non sarà più modificabile. Vuoi proseguire?"))
+            {
+                return;
+            }
+            using (var saveEnt = new SaveEntityManager())
+            {
+                var depositi = saveEnt.UnitOfWork.DepositoRepository.Find(a => a.ID == a.ID).Select(a => new { a.ID, a.NomeDeposito }).ToList();
+
+                using (var selezionaDeposito = new ListViewCustom(depositi.Select(a => a.NomeDeposito).ToList(), "Imposta deposito e nome ddt fornitore", "Numero Ddt Fornitore", false))
+                {
+                    var diag = selezionaDeposito.ShowDialog();
+                    if (diag != DialogResult.OK)
+                        return;
+                    if (selezionaDeposito.SelectedItem == null)
+                    {
+                        MessageManager.NotificaWarnig("Occorre impostare deposito su cui versare la merce!");
+                        return;
+                    }
+                    if (selezionaDeposito.SelectedTextProp.Length == 0)
+                    {
+                        if (!MessageManager.QuestionMessage("Sei sicuro di non volere impostare il codice ddt o un riferimento al ddt fornitore. Vuoi proseguire?"))
+                        {
+                            return;
+                        }
+
+                    }
+                    var deposito = depositi.Where(a => a.NomeDeposito == selezionaDeposito.SelectedItem).FirstOrDefault();
+
+                    var list = saveEnt.UnitOfWork.FattureRigheRepository.Find(a => a.FatturaID == fatt.ID && a.Ricevuti > 0).ToList();
+
+                    if (list.Count() == 0)
+                    {
+                        MessageManager.NotificaWarnig("Non c'è niente tra le qta ricevute nelle righe del documento!");
+                        return;
+                    }
+                    ControllerMagazzino controllerMagazzino = new ControllerMagazzino();
+
+                    foreach (var item in list)
+                    {
+                        if (!controllerMagazzino.NuovoMovimento(new Library.Core.Events.Magazzino.MovimentoMagazzino()
+                        {
+                            ArticoloID = item.ArticoloID.Value,
+                            Deposito = deposito.ID,
+                            Causale = selezionaDeposito.SelectedTextProp,
+                            Qta = item.Ricevuti,
+                            Prezzo = item.PrezzoUnitario
+                        }, saveEnt.UnitOfWork))
+                        {
+                            MessageManager.NotificaWarnig("Sei sicuro un errore nel inserimento del movimento");
+                            return;
+                        }
+                    }
+                    var dato = saveEnt.UnitOfWork.FatturaRepository.Find(a => a.ID == fatt.ID).FirstOrDefault();
+                    dato.ChiusaSpedita = true;
+
+                    saveEnt.UnitOfWork.FatturaRepository.Update(dato);
+                    saveEnt.SaveEntity("Creati movimenti ingresso a magazzino e chiuso documento");
+
+                }
+            }
+        }
+
+        public static bool GeneraOrdAcq(List<ListinoPrezziFornitoriItem> items)
+        {
+            using (var saveEnt = new SaveEntityManager())
+            {
+                bool save = false;
+
+                var listFatt = new List<Library.Entity.Fattura>();
+
+                foreach (var item in items.Where(a => a.QtaDaOrdinare - a.QtaInOrdine > 0)
+                    .Select(a => new { Qta = a.QtaDaOrdinare - a.QtaInOrdine, a.CodiceArticoloFornitore, a.ID, a.Entity, a.Prezzo }).OrderBy(a => a.Entity.FornitoreID).ToList())
+                {
+
+                    Library.Entity.Fattura fattExt = saveEnt.UnitOfWork.FatturaRepository.Find(a => a.ChiusaSpedita == false && a.ClienteFornitoreID == item.Entity.FornitoreID &&
+                    a.TipoDocumento == Library.Entity.EnTipoDocumento.OrdineAlFornitore).FirstOrDefault();
+                    var riga = new Library.Entity.FatturaRiga();
+
+                    Library.Entity.Articoli.Articolo art = saveEnt.UnitOfWork.ArticoliRepository.Find(a => a.ID == item.Entity.ArticoloID).FirstOrDefault();
+
+
+
+                    if (fattExt == null)
+                        fattExt = listFatt.Where(a => a.ClienteFornitoreID == item.Entity.FornitoreID).FirstOrDefault();
+
+                    if (fattExt == null)
+                    {
+                        fattExt = new Library.Entity.Fattura();
+                        fattExt.ClienteFornitoreID = item.Entity.FornitoreID;
+                        fattExt.TipoDocumento = Library.Entity.EnTipoDocumento.OrdineAlFornitore;
+                        fattExt.Data = DateTime.Now;
+                        fattExt.Codice = ControllerFatturazione.CalcolaCodice(fattExt);
+
+                        var fornitore = saveEnt.UnitOfWork.SoggettiRepository.Find(a => a.ID == fattExt.ClienteFornitoreID).Select(a => new { a.RagioneSociale, a.CodiceFiscale, a.PIVA }).FirstOrDefault();
+                        fattExt.RagioneSociale = fornitore.RagioneSociale;
+                        fattExt.PIVA = fornitore.PIVA;
+
+                        saveEnt.UnitOfWork.FatturaRepository.Add(fattExt);
+
+                        saveEnt.SaveEntity("");
+                    }
+                    listFatt.Add(fattExt);
+
+                    riga = (new Library.Entity.FatturaRiga()
+                    {
+                        CodiceFornitore = item.CodiceArticoloFornitore,
+                        ArticoloID = item.Entity.ArticoloID,
+                        Descrizione = art.Titolo,
+                        Qta = item.Qta,
+                        Fattura = fattExt,
+                        PrezzoUnitario = item.Prezzo,
+                        IvaApplicata = art.ArticoloWeb.Iva.ToString(),
+                    });
+                    saveEnt.UnitOfWork.FattureRigheRepository.Add(riga);
+                    save = true;
+                }
+
+
+                if (save)
+                    saveEnt.SaveEntity("");
+                else
+                {
+                    MessageManager.NotificaInfo("Non ci sono articoli da ordinare!");
+                    return false;
+                }
+
+                foreach (var item in listFatt.Distinct())
+                {
+                    ControllerFatturazione.CalcolaTotali(item);
+                    saveEnt.UnitOfWork.FatturaRepository.Update(item);
+
+                }
+                if (save)
+                    saveEnt.SaveEntity("Generati gli ordini di acquisto!");
+
+                return true;
+            }
+        }
+        private void GeneraOrdineCarico()
+        {
+            var fatt = SelectedItem;
+
+
+
+            //controllo se ci sono già altri ordini di carico
+            //per le righe di questo ordine
+
+            if (fatt.ChiusaSpedita)
+            {
+                MessageManager.NotificaWarnig("Documento già chiuso, non è possibile fare altri documenti di carico!");
+                return;
+            }
+            if (fatt.TipoDocumento != EnTipoDocumento.OrdineAlFornitore)
+            {
+                MessageManager.NotificaWarnig("Documento deve essere del tipo ordine al fornitore!");
+                return;
+            }
+
+
+            using (var saveEnt = new SaveEntityManager())
+            {
+                bool save = false;
+
+                var listFatt = new List<Library.Entity.Fattura>();
+
+                var daGenerare = new List<Tuple<FatturaRiga, int>>();
+                foreach (var item in saveEnt.UnitOfWork.FattureRigheRepository.Find(a => a.FatturaID == fatt.ID).ToList())
+                {
+
+                    /*deve cercare gli ordini di carico già fatti, e collegati, e detrarre la qta per vedere se farne di nuovi*/
+                    var evaso = saveEnt.UnitOfWork.FattureRigheRepository.Find(a => a.IdRigaCollegata == item.ID).Select(a => a.Qta).DefaultIfEmpty(0).Sum();
+
+                    if (evaso == item.Qta)
+                        continue;
+                    daGenerare.Add(new Tuple<FatturaRiga, int>(item, item.Qta - evaso));
+
+                }
+
+                if (daGenerare.Count() == 0)
+                {
+                    MessageManager.NotificaInfo("Non ci altre righe da fare ingressare, chiudi ordine fornitore !");
+                    return;
+                }
+
+
+                Library.Entity.Fattura fattExt = null;
+
+                foreach (var item in daGenerare)
+                {
+
+                    if (fattExt == null)
+                    {
+                        fattExt = new Library.Entity.Fattura();
+                        fattExt.ClienteFornitoreID = fatt.ClienteFornitoreID;
+                        fattExt.TipoDocumento = Library.Entity.EnTipoDocumento.OrdineDiCarico;
+                        fattExt.Data = DateTime.Now;
+                        fattExt.Codice = ControllerFatturazione.CalcolaCodice(fattExt);
+
+                        var fornitore = saveEnt.UnitOfWork.SoggettiRepository.Find(a => a.ID == fattExt.ClienteFornitoreID).ToList().Select(a => new
+                        {
+                            RagioneSociale = !string.IsNullOrEmpty(a.RagioneSociale) ? a.RagioneSociale : a.Cognome + " " + a.Nome,
+                            PIVA = !string.IsNullOrEmpty(a.PIVA) ? a.PIVA : a.CodiceFiscale
+                        }).FirstOrDefault();
+                        fattExt.RagioneSociale = fornitore.RagioneSociale;
+                        fattExt.PIVA = fornitore.PIVA;
+
+                        saveEnt.UnitOfWork.FatturaRepository.Add(fattExt);
+
+                        //saveEnt.SaveEntity("");
+
+                        listFatt.Add(fattExt);
+
+                    }
+
+                    var rigaMaster = item.Item1;
+                    var riga = (new Library.Entity.FatturaRiga()
+                    {
+                        CodiceFornitore = rigaMaster.CodiceFornitore,
+                        ArticoloID = rigaMaster.ArticoloID,
+                        Descrizione = rigaMaster.Descrizione,
+                        Qta = item.Item2,
+                        Fattura = fattExt,
+                        PrezzoUnitario = rigaMaster.PrezzoUnitario,
+                        IvaApplicata = rigaMaster.IvaApplicata,
+                        IdRigaCollegata = rigaMaster.ID
+                    });
+                    saveEnt.UnitOfWork.FattureRigheRepository.Add(riga);
+                    save = true;
+                }
+
+                if (save)
+                    saveEnt.SaveEntity("");
+                else
+                {
+                    MessageManager.NotificaInfo("Non ci sono articoli da ordinare!");
+                    return;
+                }
+
+                foreach (var item in listFatt.Distinct())
+                {
+                    ControllerFatturazione.CalcolaTotali(item);
+                    saveEnt.UnitOfWork.FatturaRepository.Update(item);
+
+                }
+                if (save)
+                    saveEnt.SaveEntity("Generato ordine di carico!");
+
+                RefreshList(null);
+
+            }
+
+
         }
 
         public override void RefreshList(UpdateList<Fattura> obj)

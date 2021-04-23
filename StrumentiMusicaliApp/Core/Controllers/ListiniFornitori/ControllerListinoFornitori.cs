@@ -211,80 +211,9 @@ namespace StrumentiMusicali.App.Core.Controllers.ListiniFornitori
 
         private void GeneraOdq_click(object sender, EventArgs e)
         {
-
-            //CalcolaTotali
-            using (var saveEnt = new SaveEntityManager())
-            {
-                bool save = false;
-
-                var listFatt = new List<Library.Entity.Fattura>();
-
-                foreach (var item in DataSource.Where(a => a.QtaDaOrdinare - a.QtaInOrdine > 0)
-                    .Select(a => new { Qta = a.QtaDaOrdinare - a.QtaInOrdine, a.CodiceArticoloFornitore, a.ID, a.Entity, a.Prezzo }).OrderBy(a => a.Entity.FornitoreID).ToList())
-                {
-
-                    Library.Entity.Fattura fattExt = saveEnt.UnitOfWork.FatturaRepository.Find(a => a.ChiusaSpedita == false && a.ClienteFornitoreID == item.Entity.FornitoreID &&
-                    a.TipoDocumento == Library.Entity.EnTipoDocumento.OrdineAlFornitore).FirstOrDefault();
-                    var riga = new Library.Entity.FatturaRiga();
-
-                    Library.Entity.Articoli.Articolo art = saveEnt.UnitOfWork.ArticoliRepository.Find(a => a.ID == item.Entity.ArticoloID).FirstOrDefault();
-
-
-
-                    if (fattExt == null)
-                        fattExt = listFatt.Where(a => a.ClienteFornitoreID == item.Entity.FornitoreID).FirstOrDefault();
-                    
-                    if (fattExt == null)
-                    {
-                        fattExt = new Library.Entity.Fattura();
-                        fattExt.ClienteFornitoreID = item.Entity.FornitoreID;
-                        fattExt.TipoDocumento = Library.Entity.EnTipoDocumento.OrdineAlFornitore;
-                        fattExt.Data = DateTime.Now;
-                        fattExt.Codice = ControllerFatturazione.CalcolaCodice(fattExt);
-                        fattExt.RagioneSociale = "";
-                        saveEnt.UnitOfWork.FatturaRepository.Add(fattExt);
-
-                        saveEnt.SaveEntity("");
-                    }
-                    listFatt.Add(fattExt);
-                    
-                    riga = (new Library.Entity.FatturaRiga()
-                    {
-                        CodiceFornitore = item.CodiceArticoloFornitore,
-                        ArticoloID = item.Entity.ArticoloID,
-                        Descrizione = art.Titolo,
-                        Qta = item.Qta,
-                        Fattura = fattExt,
-                        PrezzoUnitario = item.Prezzo,
-                        IvaApplicata = "22",
-                    });
-                    saveEnt.UnitOfWork.FattureRigheRepository.Add(riga);
-                    save = true;
-                }
-
-
-                if (save)
-                    saveEnt.SaveEntity("");
-                else
-                {
-                    MessageManager.NotificaInfo("Non ci sono articoli da ordinare!");
-                    return;
-                }
-
-                foreach (var item in listFatt.Distinct())
-                {
-                    ControllerFatturazione.CalcolaTotali(item);
-                    saveEnt.UnitOfWork.FatturaRepository.Update(item);
-
-                }
-                if (save)
-                    saveEnt.SaveEntity("Generati gli ordini di acquisto!");
-
+            if (ControllerFatturazione.GeneraOrdAcq(DataSource.ToList()))
                 RefreshList(null);
-
-            }
         }
-
         public override void RefreshList(UpdateList<ListinoPrezziFornitori> obj)
         {
             try
@@ -309,10 +238,6 @@ namespace StrumentiMusicali.App.Core.Controllers.ListiniFornitori
                     }
                     else
                     {
-
-
-
-
                         using (var connection = new SqlConnection(uof.ConnectionString))
                         {
                             SqlDataAdapter da = new SqlDataAdapter();

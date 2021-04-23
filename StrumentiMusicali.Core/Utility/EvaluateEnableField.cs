@@ -23,11 +23,11 @@ namespace StrumentiMusicali.Core.Utility
                 return true;
 
             if (Item is FatturaRiga)
-            if (((FatturaRiga)Item).Fattura.TipoDocumento == sel.TipoDocShowOnly)
-                return true;
+                if (((FatturaRiga)Item).Fattura.TipoDocumento == sel.TipoDocShowOnly)
+                    return true;
 
             if (Item is FatturaRigaItem)
-                if (((FatturaRigaItem)Item).TipoDoc== sel.TipoDocShowOnly)
+                if (((FatturaRigaItem)Item).TipoDoc == sel.TipoDocShowOnly)
                     return true;
 
             return false;

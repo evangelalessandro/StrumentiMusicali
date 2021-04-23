@@ -29,7 +29,7 @@ namespace StrumentiMusicali.App.View
         public DettaglioFatturaView(ControllerFatturazione controllerFatturazione)
             : base()
         {
-            
+
             _controllerFatturazione = controllerFatturazione;
             _cambioTipo = EventAggregator.Instance().Subscribe<FatturaCambiaTipoDoc>(AbilitaCambioTipoFatt);
 
@@ -44,8 +44,9 @@ namespace StrumentiMusicali.App.View
             this.cboClienteFornitoreID.Tag = "ClienteFornitoreID";
 
             UpdateViewByTipoDocumento();
-            _bindSub = EventAggregator.Instance().Subscribe<RebindItemUpdated<Fattura>>((a) => { 
-                RebindEditItem(); 
+            _bindSub = EventAggregator.Instance().Subscribe<RebindItemUpdated<Fattura>>((a) =>
+            {
+                RebindEditItem();
             });
         }
 
@@ -119,18 +120,18 @@ namespace StrumentiMusicali.App.View
                 FillSoggetto(uof);
             }
         }
-        private EnTipoDocumento UltimoTipodocSoggCaricato=EnTipoDocumento.NonSpecificato;
+        private EnTipoDocumento UltimoTipodocSoggCaricato = EnTipoDocumento.NonSpecificato;
         private void FillSoggetto(UnitOfWork uof)
         {
 
-            if (UltimoTipodocSoggCaricato== _controllerFatturazione.EditItem.TipoDocumento
-                && cboClienteFornitoreID.Properties.DataSource!=null)
+            if (UltimoTipodocSoggCaricato == _controllerFatturazione.EditItem.TipoDocumento
+                && cboClienteFornitoreID.Properties.DataSource != null)
             {
                 return;
             }
             UltimoTipodocSoggCaricato = _controllerFatturazione.EditItem.TipoDocumento;
 
-            var clienti = uof.SoggettiRepository.Find(a=> a.TipiSoggetto!=null).Select(a => new
+            var clienti = uof.SoggettiRepository.Find(a => a.TipiSoggetto != null).Select(a => new
             {
                 a.ID,
 
@@ -142,7 +143,7 @@ namespace StrumentiMusicali.App.View
                 a.TipiSoggetto
             })
                 .Distinct().ToList();
-             
+
             if (_controllerFatturazione.EditItem.ID == 0)
                 clienti = clienti.Where(a => (_controllerFatturazione.EditItem.TipoDocumento
                                         == EnTipoDocumento.OrdineAlFornitore
@@ -153,7 +154,7 @@ namespace StrumentiMusicali.App.View
                                         != EnTipoDocumento.OrdineAlFornitore
                                         && a.TipiSoggetto.Contains("Cliente")
                                         )).ToList();
-                                        
+
 
             var clientiDati = clienti.Select(a => new
             {
@@ -179,14 +180,14 @@ namespace StrumentiMusicali.App.View
         private void FillTipoDocumenti()
         {
             var listItem = new List<EnTipoDocumento>();
+            foreach (var item in Enum.GetNames(typeof(EnTipoDocumento)))
+            {
+                EnTipoDocumento itemEnum;
+                if (Enum.TryParse(item, out itemEnum))
+                    listItem.Add(itemEnum);
+            }
 
-            listItem.Add((EnTipoDocumento.NonSpecificato));
-            listItem.Add(EnTipoDocumento.DDT);
-            listItem.Add(EnTipoDocumento.FatturaDiCortesia);
-            listItem.Add(EnTipoDocumento.RicevutaFiscale);
 
-            listItem.Add(EnTipoDocumento.NotaDiCredito);
-            listItem.Add(EnTipoDocumento.OrdineAlFornitore);
 
             cboTipoDocumento.DataSource = listItem.Select(a =>
                     new
@@ -448,7 +449,7 @@ namespace StrumentiMusicali.App.View
                 };
                 addPrio.Tag = ControllerRigheFatture.KEYEXISTsRiga;
 
-                _controllerFatturazione.AggiungiComandiStampa(tab, true);
+                _controllerFatturazione.AggiungiComandi(tab, true);
                 //var pnlStampa = tab.Add("Stampa");
                 //var ribStampa = pnlStampa.Add("Avvia stampa", StrumentiMusicali.Core.Properties.ImageIcons.Print_48,true);
                 //ribStampa.Click += (a, e) =>

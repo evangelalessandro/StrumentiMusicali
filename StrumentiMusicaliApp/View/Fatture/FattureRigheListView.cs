@@ -50,7 +50,7 @@ namespace StrumentiMusicali.App.View
                 
                
                ItemEditorManager manager = new ItemEditorManager(gcControl, dgvRighe);
-               manager.BindProp(new FatturaRigaItem(), "");
+               manager.BindProp(new FatturaRigaItem() { TipoDoc = _controllerRigheFatture.TipoDocFattura }, "");
 
                dgvRighe.BestFitColumns(true);
                dgvRighe.Columns["Entity"].Visible = false;

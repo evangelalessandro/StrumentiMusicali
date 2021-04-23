@@ -209,6 +209,20 @@ select @db
             }
         }
 
+
+        private Repository<TipiDocumentoFiscale> _TipiDocumentoFiscaleRepository;
+
+        public IRepository<TipiDocumentoFiscale> TipiDocumentoFiscaleRepository
+        {
+            get
+            {
+                if (_TipiDocumentoFiscaleRepository == null)
+                {
+                    _TipiDocumentoFiscaleRepository = new Repository<TipiDocumentoFiscale>(dbContext);
+                }
+                return _TipiDocumentoFiscaleRepository;
+            }
+        }
         private Repository<SettingBackupFtp> _SettingBackupFtpRepository;
 
         public IRepository<SettingBackupFtp> SettingBackupFtpRepository

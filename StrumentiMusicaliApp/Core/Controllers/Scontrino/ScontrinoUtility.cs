@@ -427,7 +427,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             using (var uof = new UnitOfWork())
             {
                 var list = uof.TipiPagamentoScontrinoRepository.Find(a => a.Enable == true).ToList().Select(a => a.Codice.ToString() + " " + a.Descrizione).ToList();
-                using (var tipiPagamento = new ListViewCustom(list, "Tipo pagamento",true))
+                using (var tipiPagamento = new ListViewCustom(list, "Tipo pagamento","Codice lotteria"))
                 {
                     var diag = tipiPagamento.ShowDialog();
                     if (diag != DialogResult.OK)

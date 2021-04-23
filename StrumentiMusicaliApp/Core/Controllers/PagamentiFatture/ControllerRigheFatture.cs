@@ -25,11 +25,12 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private Subscription<Save<FatturaRiga>> _subSave;
 
+        public EnTipoDocumento TipoDocFattura { get; private set; }
         public ControllerRigheFatture(ControllerFatturazione controllerFatturazione)
             : base(enAmbiente.FattureRigheList, enAmbiente.FattureRigheDett)
         {
             _controllerFatturazione = controllerFatturazione;
-
+            TipoDocFattura = _controllerFatturazione.EditItem.TipoDocumento;
             SelectedItem = new FatturaRiga();
 
             _removePrio = EventAggregator.Instance().Subscribe<AddPriority<FatturaRiga>>((a) => { CambiaPriorita(true); }); ;
@@ -40,11 +41,11 @@ namespace StrumentiMusicali.App.Core.Controllers
             });
             _selectSub = EventAggregator.Instance().Subscribe<Add<FatturaRiga>>((a) =>
         {
-            EditItem = new FatturaRiga() { IvaApplicata = "22" ,Fattura=_controllerFatturazione.EditItem};
+            EditItem = new FatturaRiga() { IvaApplicata = "22", Fattura = _controllerFatturazione.EditItem };
 
             ShowEditView();
         });
-            _subRemove = EventAggregator.Instance().Subscribe<Remove<FatturaRiga>>((a) =>
+            _subRemove = EventAggregator.Instance().Subscribe<Remove<FatturaRiga>>((x) =>
             {
                 using (var saveManager = new SaveEntityManager())
                 {
@@ -55,6 +56,11 @@ namespace StrumentiMusicali.App.Core.Controllers
                         if (!MessageManager.QuestionMessage("Sei sicuro di volere eliminare la riga selezionata?"))
                             return;
 
+                        if (saveManager.UnitOfWork.FatturaRepository.Find(a => a.ID == curItem.FatturaID).First().ChiusaSpedita)
+                        {
+                            MessageManager.NotificaWarnig("Documento già chiuso, non è possibile modificare altro!");
+                            return;
+                        }
                         var item = uof.FattureRigheRepository.Find(b => b.ID == curItem.ID).First();
                         uof.FattureRigheRepository.Delete(item);
 
@@ -113,7 +119,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                     list = uof.FattureRigheRepository.Find(a => a.FatturaID == _controllerFatturazione.EditItem.ID
 
                     ).Where(a => a.Descrizione.Contains(TestoRicerca) ||
-                    TestoRicerca == "").Select(a => new FatturaRigaItem
+                    TestoRicerca == "").Select(a => new { Riga = a, a.Fattura }).ToList().Select(a => a.Riga).Select(a => new FatturaRigaItem
                     {
                         ID = a.ID,
                         //CodiceArt = a.CodiceArticoloOld,
@@ -123,9 +129,10 @@ namespace StrumentiMusicali.App.Core.Controllers
                         PrezzoUnitario = a.PrezzoUnitario,
                         RigaQta = a.Qta,
                         Iva = a.IvaApplicata,
-                        CodiceFornitore=a.CodiceFornitore,
-                        Evasi=a.Evasi,
-                        TipoDoc=a.Fattura.TipoDocumento
+                        CodiceFornitore = a.CodiceFornitore,
+                        Evasi = a.Evasi,
+                        TipoDoc = a.Fattura.TipoDocumento,
+                        Ricevuti = a.Ricevuti
 
                     }).OrderBy(a => a.Entity.OrdineVisualizzazione).ThenBy(a => a.ID).ToList();
                 }
@@ -230,6 +237,12 @@ namespace StrumentiMusicali.App.Core.Controllers
                 if (_controllerFatturazione.EditItem.ID == 0)
                     return;
                 var uof = saveManager.UnitOfWork;
+
+                if (saveManager.UnitOfWork.FatturaRepository.Find(a => a.ID == EditItem.ID).First().ChiusaSpedita)
+                {
+                    MessageManager.NotificaWarnig("Documento già chiuso, non è possibile modificare altro!");
+                    return;
+                }
                 if (EditItem.ID > 0)
                 {
                     uof.FattureRigheRepository.Update(EditItem);

@@ -163,6 +163,7 @@
     <Compile Include="Entity\Articoli\FotoArticolo.cs" />
     <Compile Include="Entity\Articoli\Magazzino.cs" />
     <Compile Include="Entity\Fatture\FatturaRiga.cs" />
+    <Compile Include="Entity\Fatture\TipiDocumentoFiscale.cs" />
     <Compile Include="Entity\Setting\SettingScontrino.cs" />
     <Compile Include="Entity\Setting\WooCommerceSetting.cs" />
     <Compile Include="Entity\Setting\PrestaShopSetting.cs" />
@@ -271,6 +272,10 @@
     <Compile Include="Migrations\202104180730510_Sottoscorta e fornitori.Designer.cs">
       <DependentUpon>202104180730510_Sottoscorta e fornitori.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202104210957025_TipoDoc.cs" />
+    <Compile Include="Migrations\202104210957025_TipoDoc.Designer.cs">
+      <DependentUpon>202104210957025_TipoDoc.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
@@ -351,6 +356,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202104180730510_Sottoscorta e fornitori.resx">
       <DependentUpon>202104180730510_Sottoscorta e fornitori.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104210957025_TipoDoc.resx">
+      <DependentUpon>202104210957025_TipoDoc.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Script\IndexOptimize.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

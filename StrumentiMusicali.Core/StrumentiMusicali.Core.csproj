@@ -80,8 +80,8 @@
     <Reference Include="Tulpep.NotificationWindow, Version=1.1.25.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Tulpep.NotificationWindow.1.1.25\lib\net40\Tulpep.NotificationWindow.dll</HintPath>
     </Reference>
-    <Reference Include="YamlDotNet, Version=8.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
-      <HintPath>..\packages\YamlDotNet.8.1.0\lib\net45\YamlDotNet.dll</HintPath>
+    <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
+      <HintPath>..\packages\YamlDotNet.11.1.1\lib\net45\YamlDotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +166,7 @@
     <Content Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
     </Content>
+    <None Include="Resources\OrdineDiCarico.png" />
     <None Include="Resources\GeneraODQ_.png" />
     <None Include="Resources\View_all_641.png" />
     <None Include="Resources\View_all_481.png" />

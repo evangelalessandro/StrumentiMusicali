@@ -135,46 +135,16 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private void CaricaMagazzino(CaricaQtaMagazzino obj)
         {
-            NuovoMovimento(new MovimentoMagazzino()
-            { ArticoloID = obj.ArticoloID, Deposito = obj.Deposito, Qta = obj.Qta });
-        }
-
-        private void NuovoMovimento(MovimentoMagazzino movimento)
-        {
             try
             {
-                using (var curs = new CursorManager())
+
+                using (var uof = new UnitOfWork())
                 {
-                    using (var uof = new UnitOfWork())
-                    {
-                        if (movimento.Qta < 0)
-                        {
-                            var qtaDepositata = uof.MagazzinoRepository.Find(a => a.ArticoloID == movimento.ArticoloID &&
-                            a.DepositoID == movimento.Deposito).Select(a => a.Qta).DefaultIfEmpty(0).Sum();
-                            if (qtaDepositata < Math.Abs(movimento.Qta))
-                            {
-                                var depositoSel = uof.DepositoRepository.Find(a => a.ID == movimento.Deposito).First();
-                                MessageManager.NotificaWarnig(
-                                    string.Format(
-                                    @"La quantità presente nel deposito {0} è di {1} pezzi",
-                                    depositoSel.NomeDeposito,
-                                    qtaDepositata
-                                    ));
-                                return;
-                            }
-                        }
-
-                        uof.MagazzinoRepository.Add(new Library.Entity.Magazzino()
-                        {
-                            ArticoloID = movimento.ArticoloID,
-                            DepositoID = movimento.Deposito,
-                            Qta = (int)movimento.Qta
-                        });
-
-                        uof.Commit();
-                        MessageManager.NotificaInfo("Aggiunto movimento magazzino");
-                        EventAggregator.Instance().Publish<MovimentiUpdate>(new MovimentiUpdate());
-                    }
+                    NuovoMovimento(new MovimentoMagazzino()
+                    { ArticoloID = obj.ArticoloID, Deposito = obj.Deposito, Qta = obj.Qta }, uof);
+                    uof.Commit();
+                    MessageManager.NotificaInfo("Aggiunto movimento magazzino");
+                    EventAggregator.Instance().Publish<MovimentiUpdate>(new MovimentiUpdate());
                 }
             }
             catch (Exception ex)
@@ -183,10 +153,66 @@ namespace StrumentiMusicali.App.Core.Controllers
             }
         }
 
+        public bool NuovoMovimento(MovimentoMagazzino movimento, UnitOfWork uof)
+        {
+
+            using (var curs = new CursorManager())
+            {
+
+                if (movimento.Qta < 0)
+                {
+                    var qtaDepositata = uof.MagazzinoRepository.Find(a => a.ArticoloID == movimento.ArticoloID &&
+                    a.DepositoID == movimento.Deposito).Select(a => a.Qta).DefaultIfEmpty(0).Sum();
+                    if (qtaDepositata < Math.Abs(movimento.Qta))
+                    {
+                        var depositoSel = uof.DepositoRepository.Find(a => a.ID == movimento.Deposito).First();
+                        MessageManager.NotificaWarnig(
+                            string.Format(
+                            @"La quantità presente nel deposito {0} è di {1} pezzi",
+                            depositoSel.NomeDeposito,
+                            qtaDepositata
+                            ));
+                        return false;
+                    }
+                }
+
+                uof.MagazzinoRepository.Add(new Library.Entity.Magazzino()
+                {
+                    ArticoloID = movimento.ArticoloID,
+                    DepositoID = movimento.Deposito,
+                    Qta = (int)movimento.Qta,
+                    PrezzoAcquisto = (int)movimento.Qta>0 ? movimento.Prezzo : 0,
+                    
+                    Note = movimento.Causale,
+                }) ;
+                return true;
+
+
+
+            }
+
+        }
+
         private void ScaricaMagazzino(ScaricaQtaMagazzino obj)
         {
-            NuovoMovimento(new MovimentoMagazzino()
-            { ArticoloID = obj.ArticoloID, Deposito = obj.Deposito, Qta = -obj.Qta });
+            try
+            {
+
+                using (var uof = new UnitOfWork())
+                {
+                    NuovoMovimento(new MovimentoMagazzino()
+                    { ArticoloID = obj.ArticoloID, Deposito = obj.Deposito, Qta = -obj.Qta }, uof);
+                    
+                    uof.Commit();
+                    MessageManager.NotificaInfo("Aggiunto movimento magazzino");
+                    EventAggregator.Instance().Publish<MovimentiUpdate>(new MovimentiUpdate());
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.ManageError(ex);
+            }
+
         }
 
         public void RaiseSave()

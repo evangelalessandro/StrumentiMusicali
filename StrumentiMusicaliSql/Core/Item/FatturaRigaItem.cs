@@ -35,5 +35,9 @@ namespace StrumentiMusicali.Library.Core.Item
         [CustomUIViewAttribute(Width = 40, Ordine = 7)]
         public int Evasi { get; set; } = 0;
 
+        [CustomFattureAttribute(TipoDocShowOnly = EnTipoDocumento.OrdineDiCarico)]
+        [CustomUIViewAttribute(Width = 40, Ordine = 8)]
+        public int Ricevuti { get; set; } = 0;
+
     }
 }

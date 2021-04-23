@@ -159,4 +159,84 @@ WHERE object_id = OBJECT_ID(N'[dbo].[sp_Backup]') AND type in (N'P', N'PC'))
 else 
   select 0</value>
   </data>
+  <data name="SP_NG_SottoScorta" xml:space="preserve">
+    <value>CREATE OR ALTER PROCEDURE [dbo].[NG_SottoScorta_SelectDati]
+(
+                 @date date --data riferimento
+                 , @idUtente int = -1
+)
+AS
+
+
+  DROP TABLE IF EXISTS #tmpArt
+
+  SELECT ID AS ArticoloID,
+  Titolo AS ArtDescr,
+  SottoScorta,
+  PeriodoSottoScortaInizio,
+  PeriodoSottoScortaFine,
+  ISNULL(TOT, 0) AS Giac
+  INTO #tmpArt
+  FROM Articoli
+       LEFT JOIN
+       (SELECT ArticoloID AS ArtGiac, SUM(Qta) TOT
+     FROM Magazzino
+     GROUP BY ArticoloID) ArtG
+       ON ArtGiac = ID
+  WHERE SottoScorta &gt; 0
+
+  DROP TABLE IF EXISTS #tmpListiniMin
+  SELECT ArticoloID,
+  MIN(LPF_Prezzo) PrezzoMinimo
+  INTO #tmpListiniMin
+  FROM #tmpArt
+       LEFT JOIN
+       DAT_ListinoPrezziFornitori
+       ON ArticoloID = LPF_ArticoloID
+  GROUP BY ArticoloID
+
+
+  SELECT DAT_ListinoPrezziFornitori.ID AS ID,
+  #tmpArt.ArticoloID,
+  ArtDescr AS Articolo,
+  LPF_Prezzo Prezzo,
+  LPF_CodiceArticoloFornitore AS CodiceArticoloFornitore,
+  LPF_QTA_MINIMA AS QtaMinimaOrdine,
+  Giac AS QtaGiacenza,
+  SottoScorta,
+  b.PRE_QTA_DA_ORDINARE AS QtaDaOrdinare,
+  CASE
+       WHEN f.RagioneSociale &gt; '' THEN f.RagioneSociale
+       ELSE ISNULL(f.Cognome, '') + ' ' + ISNULL(f.Nome, '')
+  END + ' - ' + CASE
+                    WHEN ISNULL(PIVA, '') &gt; '' THEN ISNULL(PIVA, '')
+                    ELSE ISNULL(CodiceFiscale, '')
+               END AS Fornitore,
+  ISNULL(QtaOrdine,0) AS QtaInOrdine
+  FROM #tmpArt
+
+       INNER JOIN
+       #tmpListiniMin
+       ON #tmpArt.ArticoloID = #tmpListiniMin.ArticoloID
+       INNER JOIN
+       DAT_ListinoPrezziFornitori
+       ON PrezzoMinimo = LPF_Prezzo AND
+         LPF_ArticoloID = #tmpArt.ArticoloID
+       INNER JOIN
+       Clienti f
+       ON LPF_FornitoreID = f.ID
+       INNER JOIN
+       DAT_PreordiniAcquisto b
+       ON b.PRE_ARTICOLOID = #tmpArt.ArticoloID AND
+         b.PRE_FORNITOREID = LPF_FornitoreID
+      LEFT JOIN (SELECT r.ArticoloID,f.ClienteFornitoreID,SUM(r.Qta) QtaOrdine
+      FROM 
+      Fatture f INNER JOIN 
+      FattureRighe r ON r.FatturaID=f.ID AND f.ChiusaSpedita=0
+      AND TipoDocumento=5
+      GROUP BY r.ArticoloID,f.ClienteFornitoreID) fatt 
+      ON fatt.ArticoloID= #tmpArt.ArticoloID
+        AND LPF_FornitoreID=fatt.ClienteFornitoreID
+GO</value>
+  </data>
 </root>

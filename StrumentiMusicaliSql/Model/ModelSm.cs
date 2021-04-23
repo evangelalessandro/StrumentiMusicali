@@ -204,16 +204,17 @@ namespace StrumentiMusicali.Library.Model
 
             modelBuilder.Entity<TipiPagamentoScontrino>().ToTable("TipiPagamentiScontrino");
             modelBuilder.Entity<FotoArticolo>().ToTable("FotoArticoli");
-
-            //modelBuilder.Entity<OrdineWeb>().ToTable("OrdiniWeb");
+             
  
             modelBuilder.Entity<Fattura>().ToTable("Fatture");
             modelBuilder.Entity<FatturaRiga>().ToTable("FattureRighe");
 
-            modelBuilder.Entity<Utente>().ToTable("Utenti");
-            //modelBuilder.Entity<SettingSito>().ToTable("SettingSito");
+            modelBuilder.Entity<Utente>().ToTable("Utenti"); 
             modelBuilder.Entity<SettingBackupFtp>().ToTable("SettingBackupFtp");
 
+
+            modelBuilder.Entity<TipiDocumentoFiscale>().ToTable("TipiDocumentiFiscali");
+            modelBuilder.Entity<TipiDocumentoFiscale>().Property(a => a.ID).HasColumnName("TIP_TIPDOC_ID");
 
             modelBuilder.Entity<ArticoloImportato>().ToTable("ArticoliImportatiDalWeb");
             modelBuilder.Entity<Soggetto>().ToTable("Clienti");
@@ -246,6 +247,10 @@ namespace StrumentiMusicali.Library.Model
 
         public virtual DbSet<AggiornamentoWebArticolo> AggiornamentoWebs { get; set; }
 
+        public virtual DbSet<TipiDocumentoFiscale> TipiDocumentoFiscale { get; set; }
+
+
+        
         public virtual DbSet<Deposito> Depositi { get; set; }
         public virtual DbSet<Magazzino> Magazzino { get; set; }
         public virtual DbSet<Articolo> Articoli { get; set; }

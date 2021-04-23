@@ -26,5 +26,8 @@ namespace StrumentiMusicali.Library.Entity
 
         [CustomHideUIAttribute]
         public int OrdineVisualizzazione { get; set; }
+
+
+
     }
 }

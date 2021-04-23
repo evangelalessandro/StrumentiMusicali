@@ -13,5 +13,14 @@
             }
         }
         public int ArticoloID { get; set; }
+
+        public string Causale { get; set; } = "";
+
+        public decimal Prezzo { get; set; } = 0;
+
+
+
+
+
     }
 }

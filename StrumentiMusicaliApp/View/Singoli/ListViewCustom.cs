@@ -15,8 +15,8 @@ namespace StrumentiMusicali.App.View
         EDCombo _combo = new EDCombo();
         EDTesto _txt = new EDTesto();
 
-        public bool AddText { get; set; }
-        public ListViewCustom(List<string> list, string titolo, bool addText = false)
+        public string CaptionText { get; set; }
+        public ListViewCustom(List<string> list, string titolo, string titoloText = "", bool hideListView = false)
         {
             InitializeComponent();
 
@@ -37,7 +37,10 @@ namespace StrumentiMusicali.App.View
             this.Text = titolo;
             this.AcceptButton = button1;
 
-            AddText = addText;
+            CaptionText = titoloText;
+
+            if (hideListView)
+                _combo.Hide();
 
         }
 
@@ -56,12 +59,18 @@ namespace StrumentiMusicali.App.View
             this.panel1.Controls.Add(_combo);
             _combo.Controllo.EditValueChanged += Controllo_EditValueChanged;
 
-            if (AddText)
+            if (!string.IsNullOrEmpty(CaptionText))
             {
-                _txt.Titolo = "Codice lotteria";
+                _txt.Titolo = CaptionText;
                 this.panel1.Controls.Add(_txt);
                 _txt.Dock = DockStyle.Bottom;
+                _txt.ControlToBind.TextChanged += ControlToBind_TextChanged;
             }
+        }
+
+        private void ControlToBind_TextChanged(object sender, EventArgs e)
+        {
+            EnabledButton();
         }
 
         private void Controllo_EditValueChanged(object sender, EventArgs e)
@@ -70,11 +79,27 @@ namespace StrumentiMusicali.App.View
             if (_combo.Controllo.EditValue != null)
                 SelectedItem = _combo.Controllo.EditValue.ToString();
             this.Text = "Elemento selezionato: " + SelectedItem;
+            EnabledButton();
         }
+
+        private void EnabledButton()
+        {
+            
+            if (_combo.Visible && _combo.Controllo.EditValue != null)
+                button1.Enabled = true;
+
+            if (!string.IsNullOrEmpty(CaptionText) && _txt.ControlToBind.Text.Length>0)
+            {
+                button1.Enabled = true;
+            }
+
+        }
+
         public string SelectedItem { get; set; }
 
-        public string SelectedTextProp { 
-            get {return _txt.ControlToBind.Text ; } 
+        public string SelectedTextProp
+        {
+            get { return _txt.ControlToBind.Text; }
         }
 
 

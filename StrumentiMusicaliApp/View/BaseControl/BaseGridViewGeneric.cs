@@ -44,7 +44,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 
         }
         public bool InLine { get; private set; }
-        public BaseGridViewGeneric(TController controllerItem, bool inLine=false)
+        public BaseGridViewGeneric(TController controllerItem, bool inLine = false)
         {
             InitializeComponent();
 
@@ -57,8 +57,17 @@ namespace StrumentiMusicali.App.View.BaseControl
 
             this.dgvRighe.DoubleClick += DgvRighe_DoubleClick;
             Controller = controllerItem;
+
+            ((INotifyPropertyChanged)controllerItem).PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == "DataSource")
+                {
+                    this.gcControl.DataSource = controllerItem.DataSource;
+                }
+            };
             controllerItem.RefreshList(null);
-            this.gcControl.DataSource = controllerItem.DataSource;
+
+            
             this.Load += Control_Load;
             if (File.Exists(getLayoutFile()))
             {
@@ -106,6 +115,7 @@ namespace StrumentiMusicali.App.View.BaseControl
             });
             txtCerca.KeyUp += TxtCerca_KeyUp;
         }
+
 
         private Subscription<Edit<TEntity>> _subEdit;
 
@@ -174,9 +184,8 @@ namespace StrumentiMusicali.App.View.BaseControl
 
         public void RicercaRefresh()
         {
-            Controller.RefreshList(null);
+            EventAggregator.Instance().Subscribe<UpdateList<TEntity>>(RefreshList);
 
-            gcControl.DataSource = Controller.DataSource;
 
             dgvRighe.RefreshData();
 
@@ -239,7 +248,7 @@ namespace StrumentiMusicali.App.View.BaseControl
             ForceRefreshSelectItem();
         }
 
-        ItemEditorManager _manager=null;
+        ItemEditorManager _manager = null;
         private void FormatNameColumn()
         {
             if (dgvRighe.Columns["ID"] != null)
@@ -261,10 +270,10 @@ namespace StrumentiMusicali.App.View.BaseControl
                 }
             }
 
-            if (InLine && _manager==null)
+            if (InLine && _manager == null)
             {
-                _manager = new ItemEditorManager(gcControl,dgvRighe);
-                _manager.BindProp(new TBaseItem(), "");   
+                _manager = new ItemEditorManager(gcControl, dgvRighe);
+                _manager.BindProp(new TBaseItem(), "");
             }
 
             if (dgvRighe.Columns["ID"] != null)
@@ -338,8 +347,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 
         private void RefreshList(UpdateList<TEntity> obj)
         {
-            Controller.RefreshList(obj);
-
+            
             ForceUpdateGridAsync();
 
             ForceRefreshSelectItem();

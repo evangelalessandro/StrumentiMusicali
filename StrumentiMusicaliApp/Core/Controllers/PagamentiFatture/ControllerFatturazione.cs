@@ -162,14 +162,14 @@ namespace StrumentiMusicali.App.Core.Controllers
         {
             try
             {
-                if (!MessageManager.QuestionMessage("Sei sicuro di voler cancellare la fattura selezionata?"))
+                if (!MessageManager.QuestionMessage("Sei sicuro di voler cancellare il documento selezionato?"))
                     return;
                 using (var saveEntity = new SaveEntityManager())
                 {
                     var uof = saveEntity.UnitOfWork;
                     int val = ((Fattura)SelectedItem).ID;
                     var item = uof.FatturaRepository.Find(a => a.ID == val).FirstOrDefault();
-                    _logger.Info(string.Format("Cancellazione fattura/r/n codice {0} /r/n Numero {1}",
+                    _logger.Info(string.Format("Cancellazione documento/r/n codice {0} /r/n ID {1}",
                         item.Codice, item.ID));
 
                     foreach (var itemRiga in uof.FattureRigheRepository.Find(a => a.FatturaID == val))

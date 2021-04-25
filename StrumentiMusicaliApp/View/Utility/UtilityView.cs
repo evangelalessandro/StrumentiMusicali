@@ -44,18 +44,41 @@ namespace StrumentiMusicali.App.View.Utility
 
             List<T> list = new List<T>();
 
+            T objP = new T();
+            var listPro = objP.GetType().GetProperties().Where(a => table.Columns.Contains(a.Name)).ToList();
+
+            var listProInfo = new List<PropertyInfo>();
+            foreach (var item in listPro)
+            {
+                PropertyInfo propertyInfo = objP.GetType().GetProperty(item.Name);
+
+                listProInfo.Add(propertyInfo);
+            }
+
             foreach (var row in table.AsEnumerable())
             {
-                T obj = new T();
 
-                foreach (var prop in obj.GetType().GetProperties())
+                T obj = new T();
+                foreach (var prop in listPro)
                 {
                     try
                     {
-                        PropertyInfo propertyInfo = obj.GetType().GetProperty(prop.Name);
-                        propertyInfo.SetValue(obj, Convert.ChangeType(row[prop.Name], propertyInfo.PropertyType), null);
+                        PropertyInfo propertyInfo = listProInfo.Where(a => a.Name == prop.Name).First();
+
+                        if (row[prop.Name] != null)
+                        {
+                            if (row[prop.Name] != DBNull.Value)
+                            {
+                                propertyInfo.SetValue(obj, Convert.ChangeType(row[prop.Name], propertyInfo.PropertyType), null);
+                            }
+                            else
+                            {
+                                
+                                propertyInfo.SetValue(obj, null);
+                            }
+                        }
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         continue;
                     }
@@ -212,8 +235,8 @@ namespace StrumentiMusicali.App.View.Utility
                             cnt.DataBindings.Add(new DateTimePickerBinding(businessObject, item.Name
                                 , DataSourceUpdateMode.OnPropertyChanged));
 
-                        //(cnt as DateTimePicker).DataBindings.Add("Value", businessObject, item.Name);
-                    }
+                            //(cnt as DateTimePicker).DataBindings.Add("Value", businessObject, item.Name);
+                        }
                         else if (cnt is DateEdit)
                         {
                             InitDate(cnt as DateEdit, attribute);

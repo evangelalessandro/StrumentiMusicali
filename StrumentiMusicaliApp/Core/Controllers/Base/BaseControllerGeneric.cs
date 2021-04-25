@@ -90,7 +90,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
         public void Init()
         {
-            //_updateList = EventAggregator.Instance().Subscribe<UpdateList<TEntity>>(RefreshList);
+            _updateList = EventAggregator.Instance().Subscribe<UpdateList<TEntity>>(RefreshList);
 
             _selectItemSub = EventAggregator.Instance().Subscribe<ItemSelected<TBaseItem, TEntity>>(
                 (a) =>

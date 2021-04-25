@@ -10,7 +10,7 @@ namespace StrumentiMusicali.Library.Entity.Articoli
     {
         [Column("PRE_ARTICOLOID")]
         [Required]
-        [Index(IsUnique =true,IsClustered =false,Order =1)]
+        [Index("IX_DAT_PreOrdiniAcquisti_ART_FOR", IsUnique =true,IsClustered =false,Order =1)]
         public int ArticoloID { get; set; }
         [CustomHideUI]
         public virtual Articolo Articolo { get; set; }
@@ -19,7 +19,7 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         
         [Required]
         [Column("PRE_FORNITOREID")]
-        [Index(IsUnique = true, IsClustered = false, Order = 2)]
+        [Index("IX_DAT_PreOrdiniAcquisti_ART_FOR", IsUnique = true, IsClustered = false, Order = 2)]
         [CustomUIView(Width = 100, Ordine = 1, Combo = TipoDatiCollegati.Fornitori, Titolo = "Fornitore")]
         public int FornitoreID { get; set; }
 

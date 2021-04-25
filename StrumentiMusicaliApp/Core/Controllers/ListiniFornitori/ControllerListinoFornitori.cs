@@ -204,8 +204,11 @@ namespace StrumentiMusicali.App.Core.Controllers.ListiniFornitori
 
                 }
                 if (save)
+                {
                     saveEnt.SaveEntity(enSaveOperation.OpSave);
 
+                    EventAggregator.Instance().Publish<UpdateList<ListinoPrezziFornitori>>(new UpdateList<ListinoPrezziFornitori>(this));
+                }
             }
         }
 
@@ -258,10 +261,15 @@ namespace StrumentiMusicali.App.Core.Controllers.ListiniFornitori
                             var dat = View.Utility.UtilityView.DataTableToList<ListinoPrezziFornitoriItem>(ds);
                             //);
 
+                            var listListinoId = dat.Select(a => a.ID).ToList();
+
+                            var listEntity = uof.ListinoPrezziFornitoriRepository.Find(b => listListinoId.Contains(b.ID)).ToList();
+
+
                             dat.ForEach(a =>
                             {
 
-                                a.Entity = uof.ListinoPrezziFornitoriRepository.Find(b => b.ID == a.ID).FirstOrDefault();
+                                a.Entity = listEntity.Where(b => b.ID == a.ID).FirstOrDefault();
                                 a.ToSave = false;
                             }
                                 );
@@ -305,6 +313,7 @@ namespace StrumentiMusicali.App.Core.Controllers.ListiniFornitori
 
                 if (saveManager.SaveEntity(enSaveOperation.OpSave))
                 {
+                    
                     RiselezionaSelezionato();
                 }
             }

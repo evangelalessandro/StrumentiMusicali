@@ -39,8 +39,45 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
                 ImpostaDettaglio(righeFatt, fattura);
             }
 
+            SalvaFileApri();
+
+        }
+
+        private void SalvaFileApri()
+        {
             var newfile = Path.Combine(System.IO.Path.GetTempPath(), DateTime.Now.Ticks.ToString() + "_Fatt.xlsx");
             _excel.SaveAs(newfile);
+
+            if (_excel.Worksheets.Count() > 1)
+            {
+
+                var totRowPage = _excel.Worksheet(1).PageSetup.PrintAreas.First().RowCount();
+                
+
+                for (int i = 2; i <= _excel.Worksheets.Count(); i++)
+                {
+                    var range = _excel.Worksheet(i).Range("A1", "I" + totRowPage.ToString());
+
+                    var sheetBase = _excel.Worksheet(1);
+                    range.CopyTo(_excel.Worksheet(1).Cell(totRowPage*(i-1)+1, 1));
+
+                    
+                }
+
+
+                _excel.Worksheet(1).PageSetup.PrintAreas.Clear();
+
+                _excel.Worksheet(1).PageSetup.PrintAreas.Add(1, 1, totRowPage * _excel.Worksheets.Count(), 9);
+                
+                for (int i = 2; i <= _excel.Worksheets.Count(); i++)
+                {
+
+                    _excel.Worksheet(1).PageSetup.AddHorizontalPageBreak(totRowPage * (i - 1));
+
+                }
+                _excel.Save();
+            }
+
             Process.Start(newfile);
         }
 
@@ -145,10 +182,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
             _excel.Range("IBAN").Value = intestStampa.IBAN;
             _excel.Range("NegozioPEC").Value = intestStampa.NegozioEmailPEC;
         }
-
+        private List<string> listFilePage = new List<string>();
         private void ImpostaDettaglio(List<FatturaRiga> righeFatt, Fattura fattura)
         {
-            int rigaIniziale = 2;
+            int rigaCorrente = 2;
             int colArt = 1;
             int colDes = 2;
             int colQta = 4;
@@ -164,34 +201,46 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
             if (fattura.TipoDocumento == EnTipoDocumento.DDT)
             {
                 //riscrivo intestazioni
-                _excel.Range("Righe").Range(rigaIniziale - 1, colDes, rigaIniziale - 1, colImporto).Merge();
-                ImpostaValoreRiga(rigaIniziale - 1, colQta, "Qta");
-            }
+                _excel.Range("Righe").Range(rigaCorrente - 1, colDes, rigaCorrente - 1, colImporto).Merge();
+                ImpostaValoreRiga(rigaCorrente - 1, colQta, "Qta");
+            } 
+
+            var countRighe = _excel.Range("Righe").RowCount();
 
             foreach (var item in righeFatt)
             {
-                ImpostaValoreRiga(rigaIniziale, colArt, item.CodiceArticoloOld);
-                ImpostaValoreRiga(rigaIniziale, colDes, item.Descrizione);
+                if (rigaCorrente - 1 == countRighe)
+                {
+                     
+                    rigaCorrente = 2;
+
+                    _excel.Worksheet(1).CopyTo("Page" + _excel.Worksheets.Count().ToString());
+
+                    _excel.Worksheet(1).Select();
+                    
+                    _excel.Range("Righe").Range(rigaCorrente, 1, countRighe, _excel.Range("Righe").Columns().Count()).Clear(ClosedXML.Excel.XLClearOptions.Contents);
+
+                }
+
+                ImpostaValoreRiga(rigaCorrente, colArt, item.CodiceArticoloOld);
+                ImpostaValoreRiga(rigaCorrente, colDes, item.Descrizione);
 
                 if (item.Qta > 0 || (fattura.TipoDocumento != EnTipoDocumento.DDT))
-                    ImpostaValoreRiga(rigaIniziale, colQta, item.Qta);
+                    ImpostaValoreRiga(rigaCorrente, colQta, item.Qta);
 
                 if (fattura.TipoDocumento != EnTipoDocumento.DDT)
                 {
-                    ImpostaValoreRiga(rigaIniziale, colPrezzo, item.PrezzoUnitario.ToString("C2"));
-                    ImpostaValoreRiga(rigaIniziale, colImporto, item.Importo.ToString("C2"));
-                    ImpostaValoreRiga(rigaIniziale, colIva, item.IvaApplicata);
+                    ImpostaValoreRiga(rigaCorrente, colPrezzo, item.PrezzoUnitario.ToString("C2"));
+                    ImpostaValoreRiga(rigaCorrente, colImporto, item.Importo.ToString("C2"));
+                    ImpostaValoreRiga(rigaCorrente, colIva, item.IvaApplicata);
                 }
 
-                _excel.Worksheet(1).Row(rigaIniziale).AdjustToContents();
-                //if (_excel.Range("Righe").Range(rigaIniziale, colDes, rigaIniziale, colDes+1).IsMerged())
-                //{
-                //	_excel.Range("Righe").Range(rigaIniziale, colDes, rigaIniziale, colDes+1).Unmerge();
-                //}
-                _excel.Range("Righe").Range(rigaIniziale, colDes, rigaIniziale, colDes).
+                _excel.Worksheet(1).Row(rigaCorrente).AdjustToContents();
+
+                _excel.Range("Righe").Range(rigaCorrente, colDes, rigaCorrente, colDes).
                     Style.Alignment.WrapText = true;
 
-                var address = _excel.Range("Righe").Range(rigaIniziale, colDes, rigaIniziale, colDes).RangeAddress;
+                var address = _excel.Range("Righe").Range(rigaCorrente, colDes, rigaCorrente, colDes).RangeAddress;
 
                 if (item.Descrizione == null)
                     item.Descrizione = "";
@@ -200,12 +249,12 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
                 if (fattura.TipoDocumento == EnTipoDocumento.DDT)
                 {
                     caratteriPerRiga = 68;
-                    _excel.Range("Righe").Range(rigaIniziale, colDes, rigaIniziale, colImporto).Merge();
+                    _excel.Range("Righe").Range(rigaCorrente, colDes, rigaCorrente, colImporto).Merge();
                 }
                 else
                 {
                     caratteriPerRiga = 15;
-                    _excel.Range("Righe").Range(rigaIniziale, colDes, rigaIniziale, colDes + 1).Merge();
+                    _excel.Range("Righe").Range(rigaCorrente, colDes, rigaCorrente, colDes + 1).Merge();
                 }
 
                 if (lengh > caratteriPerRiga)
@@ -214,7 +263,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
 
                     _excel.Worksheet(1).Row(address.FirstAddress.RowNumber).Height = (double)15 + lengh * (double)15;
                 }
-                rigaIniziale++;
+                rigaCorrente++;
             }
         }
 

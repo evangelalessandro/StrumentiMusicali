@@ -104,7 +104,12 @@ namespace StrumentiMusicali.App.Core.Controllers.FatturaElett
                 });
                 uof.Commit();
 
-                Process.Start("notepad.exe", file);
+                var p = new Process();
+                p.StartInfo = new ProcessStartInfo("notepad.exe", file)
+                {
+                    UseShellExecute = true
+                };
+                p.Start(); 
             }
         }
 

@@ -2,7 +2,6 @@
 using StrumentiMusicali.App.Core.Events.Scontrino;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Forms;
-using StrumentiMusicali.Core.Enum;
 using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Core.Settings;
 using StrumentiMusicali.Core.Utility;
@@ -16,6 +15,7 @@ using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Entity.Enums;
 using StrumentiMusicali.Library.Repo;
+using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -65,6 +65,8 @@ namespace StrumentiMusicali.App.Core.Controllers
             sub10 = EventAggregator.Instance().Subscribe<ImageSelected<FotoArticolo>>(ImmagineSelezionata);
 
             sub11 = EventAggregator.Instance().Subscribe<ArticoloMerge>(MergeArticolo);
+
+
 
             AggiungiComandiMenu();
 

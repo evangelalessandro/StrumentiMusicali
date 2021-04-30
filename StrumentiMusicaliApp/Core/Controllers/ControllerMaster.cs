@@ -10,7 +10,6 @@ using StrumentiMusicali.App.View;
 using StrumentiMusicali.App.View.Articoli;
 using StrumentiMusicali.App.View.BaseControl;
 using StrumentiMusicali.App.View.Settings;
-using StrumentiMusicali.Core.Enum;
 using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Core.Settings;
 using StrumentiMusicali.Library.Core;
@@ -22,6 +21,7 @@ using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Altro;
 using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Repo;
+using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -37,8 +37,6 @@ namespace StrumentiMusicali.App.Core.Controllers
 
             EventAggregator.Instance().Subscribe<ApriAmbiente>(Apri);
             EventAggregator.Instance().Subscribe<ImportArticoliCSVMercatino>(ImportaCsvArticoli);
-            EventAggregator.Instance().Subscribe<ImportaFattureAccess>(ImportaFatture);
-            EventAggregator.Instance().Subscribe<ImportArticoliMulino>(ImportArticoliMulinoExcel);
             EventAggregator.Instance().Subscribe<ImportMagExcel>(ImportMagExcel);
 
             EventAggregator.Instance().Subscribe<InvioArticoliCSV>(InvioArCSV);
@@ -66,14 +64,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                 import.ImportFile();
             }
         }
-
-        private void ImportArticoliMulinoExcel(ImportArticoliMulino obj)
-        {
-            using (var import = new ImportCavalloPazzoExcel())
-            {
-                import.ImportFile();
-            }
-        }
+         
 
         public void ShowMainView()
         {
@@ -128,12 +119,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                 controllerArt.InvioArticoli();
             }
         }
-
-        private void ImportaFatture(ImportaFattureAccess obj)
-        {
-
-            ControllerFatturazione.ImportaFatture();
-        }
+         
 
         private void ImportaCsvArticoli(ImportArticoliCSVMercatino obj)
         {

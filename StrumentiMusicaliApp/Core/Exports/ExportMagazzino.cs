@@ -221,7 +221,12 @@ namespace StrumentiMusicali.App.Core.Exports
 
             var newfile = Path.Combine(System.IO.Path.GetTempPath(), TipoExp.ToString() + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_Magazzino.xlsx");
             _excel.SaveAs(newfile);
-            Process.Start(newfile);
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(newfile)
+            {
+                UseShellExecute = true
+            };
+            p.Start();
         }
         public DataTable ToDataTable<T>(IList<T> data)
         {

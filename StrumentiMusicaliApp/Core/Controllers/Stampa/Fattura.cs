@@ -78,7 +78,12 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
                 _excel.Save();
             }
 
-            Process.Start(newfile);
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(newfile)
+            {
+                UseShellExecute = true
+            };
+            p.Start(); 
         }
 
         private void ImpostaQuadroIVa(List<FatturaRiga> righeFatt, Fattura fattura)

@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace StrumentiMusicali.Core.Ambienti
 {
-    internal static class UtilityViewGetIco
+    public static class UtilityViewGetIco
     {
 
         public static Icon GetIco(Bitmap bitmap)

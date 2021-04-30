@@ -69,8 +69,14 @@ namespace CheckUpdate
 
         private void _background_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            var start = Process.Start(Path.Combine(CartellaLocale
-                , FileDaAprireAlTermine));
+
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(Path.Combine(CartellaLocale
+                , FileDaAprireAlTermine))
+            {
+                UseShellExecute = true
+            };
+            p.Start(); 
             MessageBox.Show("Attendere l'apertura dell'applicazione STRUMENTI MUSICALI!", "Attenzione", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             this.Hide();
         }

@@ -18,15 +18,15 @@ namespace StrumentiMusicali.Library.Core.Item
 
 			if (eventLog.TipoEvento == "Error")
 			{
-				TipoEvento = Properties.Resources.Error_24;
+				TipoEvento = Properties.Resource1.Error_24;
 			}
 			else if (eventLog.TipoEvento.ToLowerInvariant().Contains("Warn".ToLowerInvariant()))
 			{
-				TipoEvento = Properties.Resources.Warning_24;
+				TipoEvento = Properties.Resource1.Warning_24;
 			}
 			else
 			{
-				TipoEvento = Properties.Resources.Info_24;
+				TipoEvento = Properties.Resource1.Info_24;
 			}
 			Evento = eventLog.Evento;
 			Errore = eventLog.Errore;

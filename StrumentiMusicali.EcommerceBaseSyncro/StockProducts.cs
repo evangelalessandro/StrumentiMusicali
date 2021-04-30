@@ -1,5 +1,5 @@
 ﻿
-using StrumentiMusicali.EcommerceBaseSyncro;
+using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.EcommerceBaseSyncro.Base;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -20,7 +20,7 @@ namespace StrumentiMusicali.EcommerceBaseSyncro
             
             if (!forzaUpdate && artDb.Aggiornamento.GiacenzaMagazzinoWebInDataAggWeb != qta)
             {
-                Core.Manager.ManagerLog.Logger.Info("Il prodotto '" + artDb.ArticoloDb.Titolo +
+                ManagerLog.Logger.Info("Il prodotto '" + artDb.ArticoloDb.Titolo +
                     "' è stato modificato con gli ordini nel web, occorre prima aspettare che venga " +
                     "scaricata la nuova qta dal job delle giacenze.");
                 return false;

@@ -171,8 +171,13 @@ namespace StrumentiMusicali.App.View
 
         }
         private void Pb_DoubleClick(object sender, EventArgs e)
-        {
-            Process.Start(this._fileSelected.File);
+        { 
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(this._fileSelected.File)
+            {
+                UseShellExecute = true
+            };
+            p.Start();
         }
 
         public ImmaginiFile<K> FileSelezionato {

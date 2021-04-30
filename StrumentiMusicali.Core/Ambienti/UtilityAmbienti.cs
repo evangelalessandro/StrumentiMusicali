@@ -1,12 +1,9 @@
-﻿using StrumentiMusicali.Core.Attributes;
-using StrumentiMusicali.Core.Enum;
+﻿using StrumentiMusicali.Library.Core.Attributes;
+using StrumentiMusicali.Library.View.Enums;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StrumentiMusicali.Core.Ambienti
 {

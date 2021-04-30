@@ -3,34 +3,32 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.Library", "StrumentiMusicaliSql\StrumentiMusicali.Library.csproj", "{114B9DB5-6A31-4D89-BBB8-7AE7DD1A25C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StrumentiMusicali.Library", "StrumentiMusicaliSql\StrumentiMusicali.Library.csproj", "{114B9DB5-6A31-4D89-BBB8-7AE7DD1A25C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.App", "StrumentiMusicaliApp\StrumentiMusicali.App.csproj", "{E6A4D0F6-DC39-431E-A562-AC0C4465BEA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StrumentiMusicali.App", "StrumentiMusicaliApp\StrumentiMusicali.App.csproj", "{E6A4D0F6-DC39-431E-A562-AC0C4465BEA4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{114B9DB5-6A31-4D89-BBB8-7AE7DD1A25C6} = {114B9DB5-6A31-4D89-BBB8-7AE7DD1A25C6}
+		{A1245FD2-F94B-4916-A0DE-F192610F55C3} = {A1245FD2-F94B-4916-A0DE-F192610F55C3}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckUpdate", "CheckUpdate\CheckUpdate.csproj", "{8195E64E-272F-42F2-972D-67831CC83CD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.ftpBackup", "StrumentiMusicali.ftpBackup\StrumentiMusicali.ftpBackup.csproj", "{0E29B767-416D-421E-98F6-A8EED7C7CB6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StrumentiMusicali.ftpBackup", "StrumentiMusicali.ftpBackup\StrumentiMusicali.ftpBackup.csproj", "{0E29B767-416D-421E-98F6-A8EED7C7CB6F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{114B9DB5-6A31-4D89-BBB8-7AE7DD1A25C6} = {114B9DB5-6A31-4D89-BBB8-7AE7DD1A25C6}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testConsole", "testConsole\testConsole.csproj", "{B2A9346A-F588-4021-B7A4-E063E5CCE534}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpostaBackupInFtp", "SpostaBackupInFtp\SpostaBackupInFtp.csproj", "{0203C1BA-CAA9-447E-8EC8-D990B1865A30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpostaBackupInFtp", "SpostaBackupInFtp\SpostaBackupInFtp.csproj", "{0203C1BA-CAA9-447E-8EC8-D990B1865A30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StrumentiMusicali.PrestaShopSyncro", "StrumentiMusicali.PrestaShopSyncro\StrumentiMusicali.PrestaShopSyncro.csproj", "{CA69F008-CD76-4097-8670-F939E1FEE8F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFormApp", "TestFormApp\TestFormApp.csproj", "{9BB26C16-1197-4955-AACE-0D1187883519}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.PrestaShopSyncro", "StrumentiMusicali.PrestaShopSyncro\StrumentiMusicali.PrestaShopSyncro.csproj", "{CA69F008-CD76-4097-8670-F939E1FEE8F0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.Core", "StrumentiMusicali.Core\StrumentiMusicali.Core.csproj", "{A1245FD2-F94B-4916-A0DE-F192610F55C3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.Service", "StrumentiMusicali.Service\StrumentiMusicali.Service.csproj", "{6016358F-A0D4-4A4F-86C6-C62470544DBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StrumentiMusicali.Core", "StrumentiMusicali.Core\StrumentiMusicali.Core.csproj", "{A1245FD2-F94B-4916-A0DE-F192610F55C3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WooCommerce.NET", "StrumentiMusicali.WooCommerce\WooCommerce.NET.csproj", "{AC30B506-1841-4002-B5FC-FF1F8DA183D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.WooCommerceSyncro", "StrumentiMusicali.WoocCommerceSyncro\StrumentiMusicali.WooCommerceSyncro.csproj", "{E6A3FAAD-A1F0-40D8-8D90-DAC7752C243C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StrumentiMusicali.WooCommerceSyncro", "StrumentiMusicali.WoocCommerceSyncro\StrumentiMusicali.WooCommerceSyncro.csproj", "{E6A3FAAD-A1F0-40D8-8D90-DAC7752C243C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.EcommerceBaseSyncro", "StrumentiMusicali.EcommerceBaseSyncro\StrumentiMusicali.EcommerceBaseSyncro.csproj", "{F1DA812F-EA83-44F5-A6B7-B6410B109FE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StrumentiMusicali.EcommerceBaseSyncro", "StrumentiMusicali.EcommerceBaseSyncro\StrumentiMusicali.EcommerceBaseSyncro.csproj", "{F1DA812F-EA83-44F5-A6B7-B6410B109FE2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,18 +52,10 @@ Global
 		{0E29B767-416D-421E-98F6-A8EED7C7CB6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E29B767-416D-421E-98F6-A8EED7C7CB6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E29B767-416D-421E-98F6-A8EED7C7CB6F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B2A9346A-F588-4021-B7A4-E063E5CCE534}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2A9346A-F588-4021-B7A4-E063E5CCE534}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B2A9346A-F588-4021-B7A4-E063E5CCE534}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B2A9346A-F588-4021-B7A4-E063E5CCE534}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0203C1BA-CAA9-447E-8EC8-D990B1865A30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0203C1BA-CAA9-447E-8EC8-D990B1865A30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0203C1BA-CAA9-447E-8EC8-D990B1865A30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0203C1BA-CAA9-447E-8EC8-D990B1865A30}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9BB26C16-1197-4955-AACE-0D1187883519}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9BB26C16-1197-4955-AACE-0D1187883519}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9BB26C16-1197-4955-AACE-0D1187883519}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9BB26C16-1197-4955-AACE-0D1187883519}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CA69F008-CD76-4097-8670-F939E1FEE8F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CA69F008-CD76-4097-8670-F939E1FEE8F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA69F008-CD76-4097-8670-F939E1FEE8F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -74,10 +64,6 @@ Global
 		{A1245FD2-F94B-4916-A0DE-F192610F55C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1245FD2-F94B-4916-A0DE-F192610F55C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1245FD2-F94B-4916-A0DE-F192610F55C3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6016358F-A0D4-4A4F-86C6-C62470544DBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6016358F-A0D4-4A4F-86C6-C62470544DBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6016358F-A0D4-4A4F-86C6-C62470544DBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6016358F-A0D4-4A4F-86C6-C62470544DBC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AC30B506-1841-4002-B5FC-FF1F8DA183D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AC30B506-1841-4002-B5FC-FF1F8DA183D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC30B506-1841-4002-B5FC-FF1F8DA183D2}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,5 +1,5 @@
 ﻿using StrumentiMusicali.App.View.Settings;
-using StrumentiMusicali.Core.Enum;
+using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;

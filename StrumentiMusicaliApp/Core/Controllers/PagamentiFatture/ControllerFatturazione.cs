@@ -1,10 +1,8 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Controllers.FatturaElett;
 using StrumentiMusicali.App.Core.Controllers.Stampa;
-using StrumentiMusicali.App.Core.Fatture;
 using StrumentiMusicali.App.View;
 using StrumentiMusicali.App.View.Settings;
-using StrumentiMusicali.Core.Enum;
 using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Core.Settings;
 using StrumentiMusicali.Library.Core;
@@ -14,6 +12,7 @@ using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
+using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -213,36 +212,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             EditItem.Data = DateTime.Now.Date;
             ShowDettaglio();
         }
-
-        public static void ImportaFatture()
-        {
-            try
-            {
-                using (OpenFileDialog res = new OpenFileDialog())
-                {
-                    res.Title = "Seleziona file da importare";
-                    //Filter
-                    res.Filter = "File access|*.mdb|Tutti i file|*.*";
-
-                    res.Multiselect = false;
-                    //When the user select the file
-                    if (res.ShowDialog() == DialogResult.OK)
-                    {
-                        using (var dat = new CursorManager())
-                        {
-                            using (var importa = new ImportFatture())
-                            {
-                                importa.ImportAccessDB(res.FileName);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionManager.ManageError(ex);
-            }
-        }
+         
 
         internal void StampaFattura(Fattura fattura)
         {

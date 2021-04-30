@@ -4,15 +4,14 @@ using StrumentiMusicali.App.View.Interfaces;
 using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Core.Ambienti;
-using StrumentiMusicali.Core.Enum;
 using StrumentiMusicali.Library.Core;
 
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Core.Item.Base;
 using StrumentiMusicali.Library.Entity.Base;
+using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace StrumentiMusicali.App.Core.Controllers.Base
 {

@@ -1,4 +1,4 @@
-﻿using StrumentiMusicali.Core.Enum;
+﻿using StrumentiMusicali.Library.View.Enums;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;

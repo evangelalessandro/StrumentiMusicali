@@ -1,6 +1,8 @@
 ﻿using NLog;
 using StrumentiMusicali.App.Core.Manager;
 using StrumentiMusicali.App.View.Utility;
+using StrumentiMusicali.Core.Ambienti;
+using StrumentiMusicali.Core.Manager;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -86,7 +88,7 @@ namespace StrumentiMusicali.App.Core
                 {
                     try
                     {
-                        frm.Icon = UtilityView.GetIco(popup.Image as Bitmap);
+                        frm.Icon = UtilityViewGetIco.GetIco(popup.Image as Bitmap);
                     }
                     catch
                     {
@@ -105,7 +107,7 @@ namespace StrumentiMusicali.App.Core
         public static void NotificaError(string message, System.Exception ex)
         {
             PopupNotifier popup = new PopupNotifier();
-            popup.Image = StrumentiMusicali.App.Properties.Resources.Error_64;
+            popup.Image = StrumentiMusicali.App.Properties.Resources.error_64;
             popup.TitleText = "Error";
             popup.ContentText = message;
             popup.OptionsMenu = getContextMenu(message);

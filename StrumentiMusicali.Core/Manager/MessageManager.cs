@@ -1,4 +1,5 @@
 ﻿using NLog;
+using Notification.Wpf;
 using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Core.Properties;
 using StrumentiMusicali.Core.Utility;
@@ -12,19 +13,21 @@ namespace StrumentiMusicali.App.Core
     public class MessageManager
     {
         internal static readonly ILogger _logger = ManagerLog.Logger;
-
+        private static readonly NotificationManager _notificationManager = new NotificationManager();
         public static void NotificaInfo(string info)
         {
-            PopupNotifier popup = new PopupNotifier();
-            popup.Image = ImageIcons.Info_64;
-            popup.TitleText = "Info";
-            popup.OptionsMenu = getContextMenu(info);
-            popup.ShowOptionsButton = true;
-            popup.ContentText = info;
-            popup.Popup();
-            {
-                ShowMessagio(popup);
-            }
+            _notificationManager.Show("Info", info, NotificationType.Information);
+
+           //PopupNotifier popup = new PopupNotifier();
+           // popup.Image = ImageIcons.Info_64;
+           // popup.TitleText = "Info";
+           // popup.OptionsMenu = getContextMenu(info);
+           // popup.ShowOptionsButton = true;
+           // popup.ContentText = info;
+           // popup.Popup();
+           // {
+           //     ShowMessagio(popup);
+           // }
         }
         public static string GetMessage(enSaveOperation operation)
         {

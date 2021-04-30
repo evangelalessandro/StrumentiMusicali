@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "System.Windows.Forms.Ribbon/1.0.0": {
+        "runtime": {
+          "System.Windows.Forms.Ribbon.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "System.Windows.Forms.Ribbon/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

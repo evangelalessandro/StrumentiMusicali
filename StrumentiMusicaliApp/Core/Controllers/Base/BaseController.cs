@@ -3,21 +3,17 @@ using DevExpress.XtraBars.Docking;
 using Newtonsoft.Json;
 using NLog;
 using StrumentiMusicali.App.Core.Controllers.Scontrino;
-using StrumentiMusicali.App.Core.Events;
 using StrumentiMusicali.App.Core.Events.Tab;
 using StrumentiMusicali.App.Core.MenuRibbon;
 using StrumentiMusicali.App.Settings;
 using StrumentiMusicali.App.View.Interfaces;
-using StrumentiMusicali.App.View.Utility;
 using StrumentiMusicali.Core.Ambienti;
-using StrumentiMusicali.Core.Attributes;
-using StrumentiMusicali.Core.Enum;
 using StrumentiMusicali.Core.Manager;
-using StrumentiMusicali.Core.Utility;
-using StrumentiMusicali.Library.Core; 
+using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Core.Attributes;
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Core.interfaces;
- 
+using StrumentiMusicali.Library.View.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -62,6 +58,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
             var member = enumValue.GetType().GetMember(enumValue.ToString()).FirstOrDefault();
             return (T)member?.GetCustomAttributes(typeof(T), false).FirstOrDefault();
         }
+
         public void ShowView(UserControl view, enAmbiente ambiente, BaseController controller = null, bool disposeForm = true, bool forceFormView = false)
         {
             var attr = GetAttribute<UIAmbienteAttribute>(ambiente);
@@ -87,7 +84,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
         private void AggiungiTab(UserControl view, enAmbiente ambiente, BaseController controller, bool disposeForm)
         {
             var attr = GetAttribute<UIAmbienteAttribute>(ambiente);
-
+            
             var currentAlreadyPresentItem = AmbientiAttivi.Where(a => a.Ambiente == ambiente).DefaultIfEmpty(
                 (enAmbiente.NonSpecificato, null, null)).FirstOrDefault();
 

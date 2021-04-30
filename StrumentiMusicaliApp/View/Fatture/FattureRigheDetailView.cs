@@ -4,6 +4,8 @@ using StrumentiMusicali.App.Core.Item;
 using StrumentiMusicali.App.View.BaseControl;
 using StrumentiMusicali.App.View.BaseControl.ElementiDettaglio;
 using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Core.Events.Generics;
+using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
 using System;

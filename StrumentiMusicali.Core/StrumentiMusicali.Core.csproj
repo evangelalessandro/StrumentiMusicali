@@ -1,280 +1,40 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\PropertyChanged.Fody.2.5.13\build\PropertyChanged.Fody.props" Condition="Exists('..\packages\PropertyChanged.Fody.2.5.13\build\PropertyChanged.Fody.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A1245FD2-F94B-4916-A0DE-F192610F55C3}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StrumentiMusicali.Core</RootNamespace>
-    <AssemblyName>StrumentiMusicali.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Autofac, Version=5.1.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.5.1.2\lib\net461\Autofac.dll</HintPath>
-    </Reference>
-    <Reference Include="FluentScheduler, Version=5.3.0.0, Culture=neutral, PublicKeyToken=b76503528a14ebd1, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentScheduler.5.3.0\lib\net40\FluentScheduler.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.7.9\lib\net45\NLog.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.Windows.Forms.4.3.0\lib\net35\NLog.Windows.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="PropertyChanged, Version=2.5.13.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
-      <HintPath>..\packages\PropertyChanged.Fody.2.5.13\lib\net452\PropertyChanged.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Tulpep.NotificationWindow, Version=1.1.25.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tulpep.NotificationWindow.1.1.25\lib\net40\Tulpep.NotificationWindow.dll</HintPath>
-    </Reference>
-    <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
-      <HintPath>..\packages\YamlDotNet.11.1.1\lib\net45\YamlDotNet.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Ambienti\UtilityAmbienti.cs" />
-    <Compile Include="Ambienti\UtilityViewGetIco.cs" />
-    <Compile Include="Enums\ApriAmbiente.cs" />
-    <Compile Include="Enums\enAmbiente.cs" />
-    <Compile Include="Enums\UIAmbienteAttribute.cs" />
-    <Compile Include="Manager\ContainerSingleton.cs" />
-    <Compile Include="Manager\CursorHandler.cs" />
-    <Compile Include="Manager\ExceptionManager.cs" />
-    <Compile Include="Manager\ManagerLog.cs" />
-    <Compile Include="Manager\MessageManager.cs" />
-    <Compile Include="Manager\ProgressManager.cs" />
-    <Compile Include="Manager\SaveEntityManager.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\ImageIcons.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ImageIcons.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Scheduler\Jobs\Interface\BaseIjob.cs" />
-    <Compile Include="Scheduler\Jobs\IndexOptimizeJob.cs" />
-    <Compile Include="Scheduler\Jobs\Interface\IPlugInJob.cs" />
-    <Compile Include="Scheduler\Jobs\UpdateLocalStockWooJob.cs" />
-    <Compile Include="Scheduler\Jobs\UpdateStockPrestaJob.cs" />
-    <Compile Include="Scheduler\Jobs\BackupDbJob.cs" />
-    <Compile Include="Scheduler\Jobs\UpdateWebPrestaJob.cs" />
-    <Compile Include="Scheduler\Jobs\UpdateWebWooJob.cs" />
-    <Compile Include="Scheduler\SchedulerTask.cs" />
-    <Compile Include="Settings\DatiIntestazioneStampaFatturaValidator.cs" />
-    <Compile Include="Settings\ISettingsReader.cs" />
-    <Compile Include="Settings\SettingBackupFtpValidator.cs" />
-    <Compile Include="Settings\SettingDocumentiPagamentiValidator.cs" />
-    <Compile Include="Settings\SettingScontrinoValidator.cs" />
-    <Compile Include="Settings\SettingSitoValidator.cs" />
-    <Compile Include="Utility\EvaluateEnableField.cs" />
-    <Compile Include="Utility\ImageArticoloSave.cs" />
-    <Compile Include="Utility\UtilityIco.cs" />
-    <Compile Include="Utility\UtilityProp.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\StrumentiMusicaliSql\StrumentiMusicali.Library.csproj">
-      <Project>{114b9db5-6a31-4d89-bbb8-7ae7dd1a25c6}</Project>
-      <Name>StrumentiMusicali.Library</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\ImageIcons.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ImageIcons.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Info_64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Info_24.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\info_48.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Warning_24.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\warning_64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Error.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Error_24.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\error_64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="FodyWeavers.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <None Include="Resources\OrdineDiCarico.png" />
-    <None Include="Resources\GeneraODQ_.png" />
-    <None Include="Resources\View_all_641.png" />
-    <None Include="Resources\View_all_481.png" />
-    <None Include="Resources\Utenti1.png" />
-    <None Include="Resources\Upload_641.png" />
-    <None Include="Resources\Upload1.png" />
-    <None Include="Resources\Up1.png" />
-    <None Include="Resources\Magazzino1.png" />
-    <None Include="Resources\Totali_Aggiorna_481.png" />
-    <None Include="Resources\StrumentoMusicale1.png" />
-    <None Include="Resources\Settings1.png" />
-    <None Include="Resources\Search1.png" />
-    <None Include="Resources\Sconto_641.png" />
-    <None Include="Resources\Sconta_Articoli1.png" />
-    <None Include="Resources\Save_Close1.png" />
-    <None Include="Resources\Save1.png" />
-    <None Include="Resources\Reorder1.png" />
-    <None Include="Resources\Remove1.png" />
-    <None Include="Resources\Progress_Gif1.gif" />
-    <None Include="Resources\PrintScontrino_481.png" />
-    <None Include="Resources\Print_481.png" />
-    <None Include="Resources\PreviewIcon1.png" />
-    <None Include="Resources\pin_161.png" />
-    <None Include="Resources\pdfIcon1.png" />
-    <None Include="Resources\Payment1.png" />
-    <None Include="Resources\Apri1.png" />
-    <None Include="Resources\MantieniFiltro1.png" />
-    <None Include="Resources\LogView_481.png" />
-    <None Include="Resources\Libro_481.png" />
-    <None Include="Resources\Apri_Fatturazione1.png" />
-    <None Include="Resources\Fatture_481.png" />
-    <None Include="Resources\Import1.png" />
-    <None Include="Resources\ImmagineMancante1.png" />
-    <None Include="Resources\Identity_481.png" />
-    <None Include="Resources\Cerca1.png" />
-    <None Include="Resources\Fattura_xml_481.png" />
-    <None Include="Resources\Excel_export1.png" />
-    <None Include="Resources\Penna1.png" />
-    <None Include="Resources\Duplicate1.png" />
-    <None Include="Resources\Down1.png" />
-    <None Include="Resources\Depositi1.png" />
-    <None Include="Resources\Delete1.png" />
-    <None Include="Resources\Customer_481.png" />
-    <None Include="Resources\Close_481.png" />
-    <None Include="Resources\Close1.png" />
-    <None Include="Resources\Check_OK_481.png" />
-    <None Include="Resources\CancellaRiga_scontrino1.png" />
-    <None Include="Resources\Cancella_scontrino_641.png" />
-    <None Include="Resources\Add21.png" />
-    <None Include="Resources\Add1.png" />
-    <None Include="Resources\View_all_64.png" />
-    <None Include="Resources\View_all_48.png" />
-    <None Include="Resources\Utenti.png" />
-    <None Include="Resources\Upload_64.png" />
-    <None Include="Resources\Upload.png" />
-    <None Include="Resources\Up.png" />
-    <None Include="Resources\Magazzino.png" />
-    <None Include="Resources\Totali_Aggiorna_48.png" />
-    <None Include="Resources\StrumentoMusicale.png" />
-    <None Include="Resources\Settings.png" />
-    <None Include="Resources\Search.png" />
-    <None Include="Resources\Sconto_64.png" />
-    <None Include="Resources\Sconta_Articoli.png" />
-    <None Include="Resources\Save_Close.png" />
-    <None Include="Resources\Save.png" />
-    <None Include="Resources\Reorder.png" />
-    <None Include="Resources\Remove.png" />
-    <None Include="Resources\Progress_Gif.gif" />
-    <None Include="Resources\PrintScontrino_48.png" />
-    <None Include="Resources\Print_48.png" />
-    <None Include="Resources\PreviewIcon.png" />
-    <None Include="Resources\pin_16.png" />
-    <None Include="Resources\pdfIcon.png" />
-    <None Include="Resources\Payment.png" />
-    <None Include="Resources\Apri.png" />
-    <None Include="Resources\MantieniFiltro.png" />
-    <None Include="Resources\LogView_48.png" />
-    <None Include="Resources\Libro_48.png" />
-    <None Include="Resources\Apri_Fatturazione.png" />
-    <None Include="Resources\Fatture_48.png" />
-    <None Include="Resources\Import.png" />
-    <None Include="Resources\ImmagineMancante.png" />
-    <None Include="Resources\Identity_48.png" />
-    <None Include="Resources\Cerca.png" />
-    <None Include="Resources\Fattura_xml_48.png" />
-    <None Include="Resources\Excel_export.png" />
-    <None Include="Resources\Penna.png" />
-    <None Include="Resources\Duplicate.png" />
-    <None Include="Resources\Down.png" />
-    <None Include="Resources\Depositi.png" />
-    <None Include="Resources\Delete.png" />
-    <None Include="Resources\Customer_48.png" />
-    <None Include="Resources\Close_48.png" />
-    <None Include="Resources\Close.png" />
-    <None Include="Resources\Check_OK_48.png" />
-    <None Include="Resources\CancellaRiga_scontrino.png" />
-    <None Include="Resources\Cancella_scontrino_64.png" />
-    <None Include="Resources\Add2.png" />
-    <None Include="Resources\Add.png" />
-    <None Include="Resources\Merge.png" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Fody.3.2.9\build\Fody.targets" Condition="Exists('..\packages\Fody.3.2.9\build\Fody.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>Questo progetto fa riferimento a uno o più pacchetti NuGet che non sono presenti in questo computer. Usare lo strumento di ripristino dei pacchetti NuGet per scaricarli. Per altre informazioni, vedere http://go.microsoft.com/fwlink/?LinkID=322105. Il file mancante è {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Fody.3.2.9\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.3.2.9\build\Fody.targets'))" />
-    <Error Condition="!Exists('..\packages\PropertyChanged.Fody.2.5.13\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.2.5.13\build\PropertyChanged.Fody.props'))" />
-  </Target>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net5.0-windows</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+		<RootNamespace>MatchingGame</RootNamespace>
+		<AssemblyName>MatchingGame</AssemblyName>
+		<RootNamespace>StrumentiMusicali.Core</RootNamespace>
+		<AssemblyName>StrumentiMusicali.Core</AssemblyName>
+
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Enums\ApriAmbiente.cs" />
+	  <Compile Remove="Enums\enAmbiente.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Autofac" Version="6.2.0" />
+	  <PackageReference Include="FluentScheduler" Version="5.5.1" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	  <PackageReference Include="NLog" Version="4.7.9" />
+	  <PackageReference Include="Notification.WPF" Version="2.0.0.8" />
+	  <PackageReference Include="Tulpep.NotificationWindow" Version="1.1.38" />
+	  <PackageReference Include="wpf.fontawesome5" Version="5.12.0.1" />
+	  <PackageReference Include="YamlDotNet" Version="11.1.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\StrumentiMusicaliSql\StrumentiMusicali.Library.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Enums\" />
+	</ItemGroup>
+
 </Project>

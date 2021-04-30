@@ -78,6 +78,16 @@ namespace StrumentiMusicali.Library.Properties {
         }
         
         /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Error_24 {
+            get {
+                object obj = ResourceManager.GetObject("Error_24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a /*
         ///SQL Server Maintenance Solution - SQL Server 2008, SQL Server 2008 R2, SQL Server 2012, SQL Server 2014, SQL Server 2016, SQL Server 2017, and SQL Server 2019
         ///Backup: https://ola.hallengren.com/sql-server-backup.html
@@ -89,6 +99,16 @@ namespace StrumentiMusicali.Library.Properties {
         internal static string IndexOptimize {
             get {
                 return ResourceManager.GetString("IndexOptimize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Info_24 {
+            get {
+                object obj = ResourceManager.GetObject("Info_24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -158,6 +178,16 @@ namespace StrumentiMusicali.Library.Properties {
         internal static string SpCheckExists {
             get {
                 return ResourceManager.GetString("SpCheckExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Warning_24 {
+            get {
+                object obj = ResourceManager.GetObject("Warning_24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

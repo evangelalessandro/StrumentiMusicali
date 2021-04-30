@@ -42,7 +42,13 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
             var newfile = Path.Combine(System.IO.Path.GetTempPath(),
                 DateTime.Now.Ticks.ToString() + "_Pag.xlsx");
             _wb.SaveAs(newfile);
-            Process.Start(newfile);
+          
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(newfile)
+            {
+                UseShellExecute = true
+            };
+            p.Start();
         }
 
 

@@ -7,13 +7,13 @@ namespace StrumentiMusicali.Library.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class TipoPagamento : IMigrationMetadata
+    public sealed partial class SottoScorta : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(TipoPagamento));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(SottoScorta));
         
         string IMigrationMetadata.Id
         {
-            get { return "202104300952053_TipoPagamento"; }
+            get { return "202104301359509_SottoScorta"; }
         }
         
         string IMigrationMetadata.Source

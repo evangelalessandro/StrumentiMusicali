@@ -213,8 +213,7 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<Utente>().ToTable("Utenti"); 
             modelBuilder.Entity<SettingBackupFtp>().ToTable("SettingBackupFtp");
 
-            modelBuilder.Entity<Fattura>().Property(a => a.IDTipiPagamentoDocumenti).HasColumnName("ID_TIPO_PAGAMENTO");
-
+           
              
 
             modelBuilder.Entity<TipiPagamentoDocumenti>().ToTable("TipiPagamentoDocumenti");

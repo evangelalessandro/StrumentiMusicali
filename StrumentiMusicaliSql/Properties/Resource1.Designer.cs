@@ -22,7 +22,7 @@ namespace StrumentiMusicali.Library.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resource1 {
+    public class Resource1 {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace StrumentiMusicali.Library.Properties {
         ///   Restituisce l'istanza di ResourceManager nella cache utilizzata da questa classe.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("StrumentiMusicali.Library.Properties.Resource1", typeof(Resource1).Assembly);
@@ -51,7 +51,7 @@ namespace StrumentiMusicali.Library.Properties {
         ///   ricerche di risorse eseguite utilizzando questa classe di risorse fortemente tipizzata.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -71,7 +71,7 @@ namespace StrumentiMusicali.Library.Properties {
         ///   
         ///exec sp_addumpdevice N&apos;disk&apos;, @name, @pathFile.
         /// </summary>
-        internal static string AddDeviceBackup {
+        public static string AddDeviceBackup {
             get {
                 return ResourceManager.GetString("AddDeviceBackup", resourceCulture);
             }
@@ -86,7 +86,7 @@ namespace StrumentiMusicali.Library.Properties {
         ///License: https://ola.hallengren.com/license.html
         ///GitHub: https://github.com/olahallengren/sql-server [stringa troncata]&quot;;.
         /// </summary>
-        internal static string IndexOptimize {
+        public static string IndexOptimize {
             get {
                 return ResourceManager.GetString("IndexOptimize", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace StrumentiMusicali.Library.Properties {
         ///     GROUP BY ArticoloID) ArtG
         ///       ON A [stringa troncata]&quot;;.
         /// </summary>
-        internal static string SP_NG_SottoScorta {
+        public static string SP_NG_SottoScorta {
             get {
                 return ResourceManager.GetString("SP_NG_SottoScorta", resourceCulture);
             }
@@ -142,7 +142,7 @@ namespace StrumentiMusicali.Library.Properties {
         ///and backup_set_id=(select max(backup_set_id) from msdb..backupset where database_name=&apos;NegozioSM&apos;)
         ///RESTORE VERIFYONLY FROM  [BACKUP_N [stringa troncata]&quot;;.
         /// </summary>
-        internal static string SpBackup {
+        public static string SpBackup {
             get {
                 return ResourceManager.GetString("SpBackup", resourceCulture);
             }
@@ -155,7 +155,7 @@ namespace StrumentiMusicali.Library.Properties {
         ///else 
         ///  select 0.
         /// </summary>
-        internal static string SpCheckExists {
+        public static string SpCheckExists {
             get {
                 return ResourceManager.GetString("SpCheckExists", resourceCulture);
             }

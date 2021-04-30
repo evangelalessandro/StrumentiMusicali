@@ -279,9 +279,9 @@
     <Compile Include="Migrations\202104210957025_TipoDoc.Designer.cs">
       <DependentUpon>202104210957025_TipoDoc.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202104300952053_TipoPagamento.cs" />
-    <Compile Include="Migrations\202104300952053_TipoPagamento.Designer.cs">
-      <DependentUpon>202104300952053_TipoPagamento.cs</DependentUpon>
+    <Compile Include="Migrations\202104301359509_SottoScorta.cs" />
+    <Compile Include="Migrations\202104301359509_SottoScorta.Designer.cs">
+      <DependentUpon>202104301359509_SottoScorta.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
@@ -367,8 +367,8 @@
     <EmbeddedResource Include="Migrations\202104210957025_TipoDoc.resx">
       <DependentUpon>202104210957025_TipoDoc.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202104300952053_TipoPagamento.resx">
-      <DependentUpon>202104300952053_TipoPagamento.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202104301359509_SottoScorta.resx">
+      <DependentUpon>202104301359509_SottoScorta.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Script\IndexOptimize.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -439,7 +439,7 @@
       <DependentUpon>202004142002192_AggiornamentoWeb.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resource1.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>

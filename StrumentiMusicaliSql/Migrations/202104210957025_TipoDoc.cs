@@ -30,7 +30,7 @@ namespace StrumentiMusicali.Library.Migrations
                  "(5, 'ODQ', 'OrdineAlFornitore', getdate(), getdate()), " +
                  "(6, 'ODC', 'OrdineDiCarico', getdate(), getdate())  ");
 
-            SqlResource(Properties.Resource1.SP_NG_SottoScorta);
+            //SqlResource(Properties.Resource1.SP_NG_SottoScorta);
             
             AlterColumn("dbo.Fatture", "RagioneSociale", c => c.String(maxLength: 150));
             AlterColumn("dbo.Fatture", "PIVA", c => c.String(maxLength: 50));

@@ -52,7 +52,8 @@ namespace StrumentiMusicali.Library.Core
         Colore,
         NomeStrumento,
         LibroAutore,
-        TipiSoggetto
+        TipiSoggetto,
+        TipiPagamentiDocumenti
     }
 
 

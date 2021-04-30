@@ -16,10 +16,10 @@ namespace StrumentiMusicali.Library.Entity
 
         public bool ChiusaSpedita { get; set; } = false;
         public string Pagamento { get; set; }
-         
 
-        [CustomHideUIAttribute]
-        public int IDTipiPagamentoDocumenti { get; set; }
+
+        [CustomUIView(Combo = TipoDatiCollegati.TipiPagamentiDocumenti, Titolo = "Tipo pagamento")]
+        public  int? PagamentoTipoID { get; set; }
 
         [CustomUIView(Titolo ="Modalità di pagamento")]
         public virtual TipiPagamentoDocumenti PagamentoTipo { get; set; }

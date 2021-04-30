@@ -2,6 +2,7 @@ using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Altro;
 using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Entity.Ecomm;
+using StrumentiMusicali.Library.Entity.Fatture;
 using StrumentiMusicali.Library.Entity.Setting;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -212,7 +213,18 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<Utente>().ToTable("Utenti"); 
             modelBuilder.Entity<SettingBackupFtp>().ToTable("SettingBackupFtp");
 
+            modelBuilder.Entity<Fattura>().Property(a => a.IDTipiPagamentoDocumenti).HasColumnName("ID_TIPO_PAGAMENTO");
 
+             
+
+            modelBuilder.Entity<TipiPagamentoDocumenti>().ToTable("TipiPagamentoDocumenti");
+
+            modelBuilder.Entity<TipiPagamentoDocumenti>().Property(a => a.ID).HasColumnName("TPP_TIPOPAG_ID");
+
+            modelBuilder.Entity<TipiPagamentoDocumenti>().Property(a => a.Descrizione).HasColumnName("TPP_DESCRIZIONE");
+            modelBuilder.Entity<TipiPagamentoDocumenti>().Property(a => a.Enable).HasColumnName("TPP_ABILITATO");
+
+           
             modelBuilder.Entity<TipiDocumentoFiscale>().ToTable("TipiDocumentiFiscali");
             modelBuilder.Entity<TipiDocumentoFiscale>().Property(a => a.ID).HasColumnName("TIP_TIPDOC_ID");
 
@@ -248,6 +260,7 @@ namespace StrumentiMusicali.Library.Model
         public virtual DbSet<AggiornamentoWebArticolo> AggiornamentoWebs { get; set; }
 
         public virtual DbSet<TipiDocumentoFiscale> TipiDocumentoFiscale { get; set; }
+        public virtual DbSet<TipiPagamentoDocumenti> TipiPagamentoDocumenti { get; set; }
 
 
         

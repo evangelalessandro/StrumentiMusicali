@@ -21,6 +21,7 @@ using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Altro;
 using StrumentiMusicali.Library.Entity.Articoli;
+using StrumentiMusicali.Library.Entity.Fatture;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.Diagnostics;
@@ -171,9 +172,9 @@ namespace StrumentiMusicali.App.Core.Controllers
                     break;
                 case enAmbiente.ArticoliSottoscorta:
                     {
-                        var contrArt = new ControllerListinoFornitori(null,true);
-                        var viewRicercaArt = 
-                            new BaseGridViewGeneric<ListinoPrezziFornitoriItem, ControllerListinoFornitori, ListinoPrezziFornitori>(contrArt,true);
+                        var contrArt = new ControllerListinoFornitori(null, true);
+                        var viewRicercaArt =
+                            new BaseGridViewGeneric<ListinoPrezziFornitoriItem, ControllerListinoFornitori, ListinoPrezziFornitori>(contrArt, true);
 
                         this.ShowView(viewRicercaArt, obj.TipoEnviroment, contrArt);
                     }
@@ -198,14 +199,32 @@ namespace StrumentiMusicali.App.Core.Controllers
                     break;
 
                 case enAmbiente.FattureList:
-                    var controllerFatt = new ControllerFatturazione();
+                    {
+                        var controllerFatt = new ControllerFatturazione();
 
-                    var viewFatt = new FattureListView(controllerFatt, enAmbiente.FattureList, enAmbiente.Fattura);
+                        var viewFatt = new FattureListView(controllerFatt, enAmbiente.FattureList, enAmbiente.Fattura);
 
-                    ShowView(viewFatt, enAmbiente.FattureList, controllerFatt);
-
+                        ShowView(viewFatt, enAmbiente.FattureList, controllerFatt);
+                    }
                     break;
+                case enAmbiente.TipiPagamentiList:
+                    {
+                        var controller = new ControllerTipiPagamentiFatture();
 
+                        var view = new BaseGridViewGeneric<TipiPagamentoDocumentiItem, ControllerTipiPagamentiFatture, TipiPagamentoDocumenti>(controller, false);
+
+                        ShowView(view, enAmbiente.TipiPagamentiList, controller);
+                    }
+                    break;
+                case enAmbiente.TipiPagamentiScontrinoList:
+                    {
+                        var controller = new ControllerTipiPagamentiScontrino();
+
+                        var view = new BaseGridViewGeneric<TipiPagamentoScontrinoItem, ControllerTipiPagamentiScontrino, TipiPagamentoScontrino>(controller, false);
+
+                        ShowView(view, enAmbiente.TipiPagamentiList, controller);
+                    }
+                    break;
                 case enAmbiente.LogViewList:
                     var controllerLog = new ControllerLog();
 

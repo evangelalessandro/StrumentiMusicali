@@ -1,5 +1,5 @@
 ﻿using StrumentiMusicali.Core.Attributes;
- 
+
 namespace StrumentiMusicali.Core.Enum
 {
     public enum enAmbiente
@@ -42,7 +42,7 @@ namespace StrumentiMusicali.Core.Enum
         [UIAmbienteAttribute(true)]
         Cliente = 14,
 
-        ListinoPrezziFornitoreList= 60,
+        ListinoPrezziFornitoreList = 60,
         [UIAmbienteAttribute(true)]
         ListinoPrezziFornitoreDett = 61,
 
@@ -54,6 +54,7 @@ namespace StrumentiMusicali.Core.Enum
         [UIAmbienteAttribute(false)]
         DepositoList = 18,
 
+
         [UIAmbienteAttribute(true)]
         Utente = 20,
         [UIAmbienteAttribute(false)]
@@ -64,8 +65,8 @@ namespace StrumentiMusicali.Core.Enum
 
 
 
-        [UIAmbienteAttribute(false,NomeAmbiente ="Articoli sottoscorta"
-             
+        [UIAmbienteAttribute(false, NomeAmbiente = "Articoli sottoscorta"
+
             )]
         ArticoliSottoscorta,
 
@@ -73,7 +74,7 @@ namespace StrumentiMusicali.Core.Enum
         SettingScontrino = 125,
 
         NonSpecificato = 100,
-        [UIAmbienteAttribute(false 
+        [UIAmbienteAttribute(false
             )]
         PagamentiList = 701,
         [UIAmbienteAttribute(true)]
@@ -87,7 +88,17 @@ namespace StrumentiMusicali.Core.Enum
         [UIAmbienteAttribute(false)]
         Scheduler = 130,
         [UIAmbienteAttribute(true)]
-        SchedulerDetail = 131
+        SchedulerDetail = 131,
+
+        [UIAmbienteAttribute(false, NomeAmbiente = "Tipo pagamenti documenti")]
+        TipiPagamentiList,
+        [UIAmbienteAttribute(false, NomeAmbiente = "Tipo pagamento documento")]
+        TipiPagamenti,
+
+        [UIAmbienteAttribute(false, NomeAmbiente = "Tipi pagamenti scontrino")]
+        TipiPagamentiScontrinoList,
+        [UIAmbienteAttribute(false, NomeAmbiente = "Tipo pagamento scontrino")]
+        TipiPagamentiScontrino,
     }
 
 

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using StrumentiMusicali.Library.Core;
+using StrumentiMusicali.Library.Entity.Fatture;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace StrumentiMusicali.Library.Entity
@@ -14,6 +16,15 @@ namespace StrumentiMusicali.Library.Entity
 
         public bool ChiusaSpedita { get; set; } = false;
         public string Pagamento { get; set; }
+         
+
+        [CustomHideUIAttribute]
+        public int IDTipiPagamentoDocumenti { get; set; }
+
+        [CustomUIView(Titolo ="Modalità di pagamento")]
+        public virtual TipiPagamentoDocumenti PagamentoTipo { get; set; }
+
+
         public decimal ImponibileIva { get; set; }
         public decimal TotaleIva { get; set; }
         public decimal TotaleFattura { get; set; }

@@ -3,6 +3,7 @@ using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Altro;
 using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Entity.Ecomm;
+using StrumentiMusicali.Library.Entity.Fatture;
 using StrumentiMusicali.Library.Entity.Setting;
 using StrumentiMusicali.Library.Model;
 using System;
@@ -210,6 +211,19 @@ select @db
         }
 
 
+        private Repository<TipiPagamentoDocumenti> _TipiPagamentoDocumentiRepository;
+
+        public IRepository<TipiPagamentoDocumenti> TipiPagamentoDocumentiRepository
+        {
+            get
+            {
+                if (_TipiPagamentoDocumentiRepository == null)
+                {
+                    _TipiPagamentoDocumentiRepository = new Repository<TipiPagamentoDocumenti>(dbContext);
+                }
+                return _TipiPagamentoDocumentiRepository;
+            }
+        }
         private Repository<TipiDocumentoFiscale> _TipiDocumentoFiscaleRepository;
 
         public IRepository<TipiDocumentoFiscale> TipiDocumentoFiscaleRepository

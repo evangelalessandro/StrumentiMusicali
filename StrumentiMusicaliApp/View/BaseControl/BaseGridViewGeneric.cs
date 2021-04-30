@@ -184,8 +184,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 
         public void RicercaRefresh()
         {
-            EventAggregator.Instance().Subscribe<UpdateList<TEntity>>(RefreshList);
-
+            Controller.RefreshList(null);
 
             dgvRighe.RefreshData();
 

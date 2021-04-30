@@ -101,11 +101,28 @@ namespace StrumentiMusicali.App
             };
 
         }
-
+        private void AggiungiImpostazioniFatture(RibbonMenuTab tabSetting)
+        {
+            var panel1 = tabSetting.Add("Principale");
+            {
+                var rib1 = panel1.Add("Tipi pagamenti fattura", StrumentiMusicali.Core.Properties.ImageIcons.Settings);
+                rib1.Click += (s, e) =>
+                {
+                    EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.TipiPagamentiList));
+                };
+            };
+            {
+                var rib1 = panel1.Add("Tipi pagamenti scontrino", StrumentiMusicali.Core.Properties.ImageIcons.Settings);
+                rib1.Click += (s, e) =>
+                {
+                    EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.TipiPagamentiScontrinoList));
+                };
+            }
+        }
         private void AggiungiImpostazioni()
         {
-            var tabImportExport = _menuTab.Add(@"Impostazioni");
-            var panel1 = tabImportExport.Add("Principale");
+            RibbonMenuTab tabSetting = _menuTab.Add(@"Impostazioni");
+            var panel1 = tabSetting.Add("Principale");
             var rib1 = panel1.Add("Mittente fattura", StrumentiMusicali.Core.Properties.ImageIcons.Settings);
             rib1.Click += (s, e) =>
             {
@@ -144,6 +161,9 @@ namespace StrumentiMusicali.App
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingScontrino));
             };
+
+            AggiungiImpostazioniFatture(tabSetting);
+
         }
 
         private void AggiungiTabLog()
@@ -174,7 +194,7 @@ namespace StrumentiMusicali.App
             var ribExport12 = pnlExport.Add("Export Tutti Strumenti Magazzino", StrumentiMusicali.Core.Properties.ImageIcons.Excel_export);
             ribExport12.Click += (s, e) =>
             {
-                EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp = ExportMagazzino.TipoExport.TuttoStrumenti});
+                EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp = ExportMagazzino.TipoExport.TuttoStrumenti });
             };
             var pnlExport2 = tabImportExport.Add("Elenco Mancanti");
             var ribExport2 = pnlExport2.Add("Libri(Betta)", StrumentiMusicali.Core.Properties.ImageIcons.Excel_export);

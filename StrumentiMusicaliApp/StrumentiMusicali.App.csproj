@@ -276,6 +276,8 @@
     <Compile Include="Core\Controllers\Base\BaseControllerGeneric.cs" />
     <Compile Include="Core\Controllers\Base\BaseController.cs" />
     <Compile Include="Core\Controllers\Articoli\ControllerArticoli.cs" />
+    <Compile Include="Core\Controllers\PagamentiFatture\ControllerTipiPagamentiScontrino.cs" />
+    <Compile Include="Core\Controllers\PagamentiFatture\ControllerTipiPagamenti.cs" />
     <Compile Include="Core\Controllers\Scontrino\ScontrinoLine.cs" />
     <Compile Include="Core\Controllers\Scontrino\ScontrinoUtility.cs" />
     <Compile Include="Core\Controllers\Vari\ControllerScheduler.cs" />

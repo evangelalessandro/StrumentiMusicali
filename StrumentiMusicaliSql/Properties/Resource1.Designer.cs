@@ -124,6 +124,37 @@ namespace StrumentiMusicali.Library.Properties {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a ALTER   PROCEDURE [dbo].[NG_SottoScorta_SelectDati]
+        ///(
+        ///                 @date date --data riferimento
+        ///                 , @idUtente int = -1
+        ///)
+        ///AS
+        ///
+        ///
+        ///  DROP TABLE IF EXISTS #tmpArt
+        ///
+        ///  SELECT ID AS ArticoloID,
+        ///  Titolo AS ArtDescr,
+        ///  SottoScorta,
+        ///  PeriodoSottoScortaInizio,
+        ///  PeriodoSottoScortaFine,
+        ///  ISNULL(TOT, 0) AS Giac
+        ///  INTO #tmpArt
+        ///  FROM Articoli
+        ///       LEFT JOIN
+        ///       (SELECT ArticoloID AS ArtGiac, SUM(Qta) TOT
+        ///     FROM Magazzino
+        ///     GROUP BY ArticoloID) ArtG
+        ///       ON ArtGiac = [stringa troncata]&quot;;.
+        /// </summary>
+        public static string SP_NG_SottoScorta_rev1 {
+            get {
+                return ResourceManager.GetString("SP_NG_SottoScorta_rev1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a create  procedure dbo.sp_Backup
         ///as
         ///

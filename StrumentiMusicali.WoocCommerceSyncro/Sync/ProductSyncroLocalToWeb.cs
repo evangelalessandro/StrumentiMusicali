@@ -103,13 +103,13 @@ namespace StrumentiMusicali.WooCommerceSyncro.Sync
 
         private void SetDataItemWeb(ArticoloBase artDb, UnitOfWork uof, WooCommerceNET.WooCommerce.v3.Product artWeb, bool newProd)
         {
-            artWeb.regular_price = Math.Round(artDb.ArticoloDb.ArticoloWeb.PrezzoWeb * 100 / (100 + artDb.ArticoloDb.ArticoloWeb.Iva), 6, MidpointRounding.ToEven);
+            artWeb.regular_price = Math.Round(artDb.ArticoloDb.ArticoloWeb.PrezzoWeb * 100 / (100 + artDb.ArticoloDb.Iva), 6, MidpointRounding.ToEven);
             //artWeb.sale_price = Math.Round(artDb.ArticoloDb.ArticoloWeb.PrezzoWeb * 100 / (100 + artDb.ArticoloDb.ArticoloWeb.Iva), 6, MidpointRounding.ToEven);
             artWeb.name = artDb.ArticoloDb.Titolo;
 
 
             //*iva al 22%*//
-            artWeb.tax_class = artDb.ArticoloDb.ArticoloWeb.Iva.ToString();
+            artWeb.tax_class = artDb.ArticoloDb.Iva.ToString();
 
             ImpostaCategoria(artDb, uof, artWeb);
 

@@ -110,6 +110,33 @@ select @db
             }
         }
 
+        private Repository<ListinoPrezziVenditaNome> _ListinoPrezziVenditaNomeRepository;
+
+        public IRepository<ListinoPrezziVenditaNome> ListinoPrezziVenditaNomeRepository
+        {
+            get
+            {
+                if (_ListinoPrezziVenditaNomeRepository == null)
+                {
+                    _ListinoPrezziVenditaNomeRepository = new Repository<ListinoPrezziVenditaNome>(dbContext);
+                }
+                return _ListinoPrezziVenditaNomeRepository;
+            }
+        }
+
+        private Repository<ListinoPrezziVenditaArticoli> _ListinoPrezziVenditaArticoliRepository;
+
+        public IRepository<ListinoPrezziVenditaArticoli> ListinoPrezziVenditaArticoliRepository
+        {
+            get
+            {
+                if (_ListinoPrezziVenditaArticoliRepository == null)
+                {
+                    _ListinoPrezziVenditaArticoliRepository = new Repository<ListinoPrezziVenditaArticoli>(dbContext);
+                }
+                return _ListinoPrezziVenditaArticoliRepository;
+            }
+        }
 
         private Repository<RepartoWeb> _RepartoWebRepository;
 

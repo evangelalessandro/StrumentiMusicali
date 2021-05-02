@@ -124,7 +124,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
                 Condizione = enCondizioneArticolo.Nuovo,
                 Testo = name
             };
-            articolo.ArticoloWeb.Iva = 22;
+            articolo.Iva = 22;
 
             articolo.ArticoloWeb.PrezzoWeb = item.wholesale_price;
             if (articolo.ArticoloWeb.PrezzoWeb == 0)

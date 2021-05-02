@@ -67,6 +67,10 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         [Required]
         public bool NonImponibile { get; set; } = false;
 
+        [CustomUIView(Width = 50, Titolo = "Percentuale iva", Ordine = 42, Category = "Prezzo")]
+        public decimal Iva { get; set; } = 22;
+
+
         [CustomUIView(Width = 60, Ordine = 44, Category = "Prezzo", Money = true)]
         public bool PrezzoARichiesta { get; set; } = false;
 

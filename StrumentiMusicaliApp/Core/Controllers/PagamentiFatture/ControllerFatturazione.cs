@@ -613,7 +613,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                         Qta = item.Qta,
                         Fattura = fattExt,
                         PrezzoUnitario = item.Prezzo,
-                        IvaApplicata = art.ArticoloWeb.Iva.ToString(),
+                        IvaApplicata = art.Iva.ToString(),
                     });
                     saveEnt.UnitOfWork.FattureRigheRepository.Add(riga);
                     save = true;

@@ -20,8 +20,8 @@ namespace StrumentiMusicali.App.View.BaseControl
         where TBaseItem : BaseItem<TEntity>, new()
 
     {
-        private DevExpress.XtraGrid.Views.Grid.GridView _dgvScontrino;
-        private DevExpress.XtraGrid.GridControl _gcScontrino;
+        private GridView _dgv;
+        private DevExpress.XtraGrid.GridControl _gc;
         private RepositoryItemButtonEdit emptyEditor;
         private BaseControllerGeneric<TEntity, TBaseItem> _baseController;
 
@@ -60,8 +60,8 @@ namespace StrumentiMusicali.App.View.BaseControl
 
         private void CloseEditor()
         {
-            _dgvScontrino.CloseEditor();
-            _dgvScontrino.UpdateCurrentRow();
+            _dgv.CloseEditor();
+            _dgv.UpdateCurrentRow();
 
         }
         public Control ControlContainer { get; private set; }
@@ -69,60 +69,72 @@ namespace StrumentiMusicali.App.View.BaseControl
 
         private void Init(Control control)
         {
-            _gcScontrino = new DevExpress.XtraGrid.GridControl();
-            _dgvScontrino = new DevExpress.XtraGrid.Views.Grid.GridView();
-            ((System.ComponentModel.ISupportInitialize)(_gcScontrino)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(_dgvScontrino)).BeginInit();
+            _gc = new DevExpress.XtraGrid.GridControl();
+            _dgv = new DevExpress.XtraGrid.Views.Grid.GridView();
+            ((System.ComponentModel.ISupportInitialize)(_gc)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(_dgv)).BeginInit();
 
             //
             // _gridControlScontrino
             //
-            _gcScontrino.Location = new System.Drawing.Point(8, 0);
-            _gcScontrino.MainView = _dgvScontrino;
-            _gcScontrino.Name = "_gridControlScontrino";
-            _gcScontrino.Size = new System.Drawing.Size(411, 244);
-            _gcScontrino.TabIndex = 0;
-            _gcScontrino.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            _dgvScontrino});
-            _gcScontrino.Dock = System.Windows.Forms.DockStyle.Fill;
+            _gc.Location = new System.Drawing.Point(8, 0);
+            _gc.MainView = _dgv;
+            _gc.Name = "_gridControlScontrino";
+            _gc.Size = new System.Drawing.Size(411, 244);
+            _gc.TabIndex = 0;
+            _gc.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            _dgv});
+            _gc.Dock = System.Windows.Forms.DockStyle.Fill;
             //
             // gridView1
             //
-            _dgvScontrino.GridControl = _gcScontrino;
+            _dgv.GridControl = _gc;
             //_dgvScontrino.ShowingEditor += _dgvScontrino_ShowingEditor;
             //_dgvScontrino.RowStyle += _dgvScontrino_RowStyle;
-            _dgvScontrino.Name = "gridView1";
-            _dgvScontrino.Appearance.FocusedRow.Font = new System.Drawing.Font("Tahoma", 20, System.Drawing.FontStyle.Bold);
-            control.Controls.Add(_gcScontrino);
+            _dgv.Name = "gridView1";
+            _dgv.Appearance.FocusedRow.Font = new System.Drawing.Font("Tahoma", 20, System.Drawing.FontStyle.Bold);
+            control.Controls.Add(_gc);
 
-            ((System.ComponentModel.ISupportInitialize)(_gcScontrino)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(_gc)).EndInit();
 
-            ((System.ComponentModel.ISupportInitialize)(_dgvScontrino)).EndInit();
-            UtilityView.InitGridDev(_dgvScontrino);
-            _dgvScontrino.OptionsBehavior.Editable = true;
-            _dgvScontrino.OptionsView.ShowAutoFilterRow = true;
+            ((System.ComponentModel.ISupportInitialize)(_dgv)).EndInit();
+            UtilityView.InitGridDev(_dgv);
+            _dgv.OptionsBehavior.Editable = true;
+            _dgv.OptionsView.ShowAutoFilterRow = true;
 
 
             emptyEditor = new RepositoryItemButtonEdit();
             emptyEditor.Buttons.Clear();
             emptyEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            _gcScontrino.RepositoryItems.Add(emptyEditor);
+            _gc.RepositoryItems.Add(emptyEditor);
 
 
-            _dgvScontrino.OptionsCustomization.AllowSort = true;
+            _dgv.OptionsCustomization.AllowSort = true;
 
 
-            _dgvScontrino.FocusedRowChanged += DgvMaster_SelectionChanged;
+            _dgv.FocusedRowChanged += DgvMaster_SelectionChanged;
 
-            
+
         }
+        List<string> _colListToHide = new List<string>();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nomeCol">Nome colonna da nascondere</param>
+        internal void ForceHideCol(string nomeCol)
+        {
+            if (_colListToHide == null)
+                _colListToHide = new List<string>();
+            _colListToHide.Add(nomeCol);
+        }
+
         private void DgvMaster_SelectionChanged(object sender, EventArgs e)
         {
-            var current = _dgvScontrino.GetRow(_dgvScontrino.FocusedRowHandle);
-            
+            var current = _dgv.GetRow(_dgv.FocusedRowHandle);
+
             var item = (TEntity)null;
 
-             
+
             if (current != null)
             {
                 item = (TEntity)current;
@@ -131,8 +143,10 @@ namespace StrumentiMusicali.App.View.BaseControl
             _baseController.SelectedItem = item;
 
 
-            EventAggregator.Instance().Publish(new ItemSelected<TBaseItem, TEntity>(new TBaseItem() { 
-                Entity = item, ID = item ==null ? -1 : item.ID 
+            EventAggregator.Instance().Publish(new ItemSelected<TBaseItem, TEntity>(new TBaseItem()
+            {
+                Entity = item,
+                ID = item == null ? -1 : item.ID
             }, _baseController));
 
             _baseController.UpdateButtonState();
@@ -140,12 +154,16 @@ namespace StrumentiMusicali.App.View.BaseControl
         public void Refreshlist(object datasource)
         {
 
-            _gcScontrino.DataSource = datasource;
-            _gcScontrino.RefreshDataSource();
+            _gc.DataSource = datasource;
+            _gc.RefreshDataSource();
 
-            ItemEditorManager managerEditor = new ItemEditorManager(_gcScontrino, _dgvScontrino);
+            ItemEditorManager managerEditor = new ItemEditorManager(_gc, _dgv);
             managerEditor.BindProp(new TEntity(), "");
-
+            /*hide columns*/
+            foreach (var item in _dgv.Columns.Where(a => _colListToHide.Contains(a.FieldName)))
+            {
+                item.Visible = false;
+            }
         }
 
         public void Dispose()
@@ -160,8 +178,8 @@ namespace StrumentiMusicali.App.View.BaseControl
                 EventAggregator.Instance().UnSbscribe(_subSave);
 
                 _subSave.Dispose();
-                _dgvScontrino.Dispose();
-                _gcScontrino.Dispose();
+                _dgv.Dispose();
+                _gc.Dispose();
             }
         }
     }

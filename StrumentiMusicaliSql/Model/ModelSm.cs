@@ -66,7 +66,7 @@ namespace StrumentiMusicali.Library.Model
                 }
                 if (articolo.NonImponibile==true)
                 {
-                    articolo.ArticoloWeb.Iva = 0;
+                    articolo.Iva = 0;
                 }
 
                 if (articolo.CategoriaID == 0)
@@ -251,7 +251,11 @@ namespace StrumentiMusicali.Library.Model
         //public virtual DbSet<OrdineWeb> OrdineWeb { get; set; }
         public virtual DbSet<ArticoloImportato> ArticoloImportato { get; set; }
 
-        
+
+        public virtual DbSet<ListinoPrezziVenditaArticoli> ListinoPrezziVenditaArticoli { get; set; }
+
+
+        public virtual DbSet<ListinoPrezziVenditaNome> ListinoPrezziVenditaNomi { get; set; }
         public virtual DbSet<RepartoWeb> RepartoWeb { get; set; }
         public virtual DbSet<CategoriaWeb> CategoriaWeb { get; set; }
         public virtual DbSet<SchedulerJob> SchedulerJob { get; set; }

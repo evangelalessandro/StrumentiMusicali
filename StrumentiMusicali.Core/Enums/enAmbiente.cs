@@ -65,9 +65,7 @@ namespace StrumentiMusicali.Core.Enum
 
 
 
-        [UIAmbienteAttribute(false, NomeAmbiente = "Articoli sottoscorta"
-
-            )]
+        [UIAmbienteAttribute(false, NomeAmbiente = "Articoli sottoscorta")]
         ArticoliSottoscorta,
 
         [UIAmbienteAttribute(false)]
@@ -99,6 +97,12 @@ namespace StrumentiMusicali.Core.Enum
         TipiPagamentiScontrinoList,
         [UIAmbienteAttribute(false, NomeAmbiente = "Tipo pagamento scontrino")]
         TipiPagamentiScontrino,
+
+        [UIAmbienteAttribute(false, NomeAmbiente = "Nomi listini clienti")]
+        NomeListiniClientiList,
+        [UIAmbienteAttribute(false, NomeAmbiente = "Nome listino clienti")]
+        NomeListiniClienti,
+
     }
 
 

@@ -121,7 +121,7 @@ namespace StrumentiMusicali.App.Forms
                 return;
 
             var manager = new UserControlGridViewInlineEdit<ListinoPrezziFornitori, ListinoPrezziFornitoriItem>(_ControllerListinoFornitori);
-
+            manager.ForceHideCol("ArticoloID");
             var control = manager.ControlContainer;
             
             ((INotifyPropertyChanged)_ControllerListinoFornitori).PropertyChanged += (object sender2, PropertyChangedEventArgs e2) =>

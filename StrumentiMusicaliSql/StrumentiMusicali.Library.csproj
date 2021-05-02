@@ -125,6 +125,7 @@
     <Compile Include="Core\Item\Base\CurrentItem.cs" />
     <Compile Include="Core\Item\CategoriaItem.cs" />
     <Compile Include="Core\Item\ClientiItem.cs" />
+    <Compile Include="Core\Item\ListinoPrezziVenditaNomiItem.cs" />
     <Compile Include="Core\Item\TipiPagamentoScontrinoItem.cs" />
     <Compile Include="Core\Item\TipiPagamentoDocumentiItem.cs" />
     <Compile Include="Core\Item\DepositoItem.cs" />
@@ -144,6 +145,8 @@
     <Compile Include="Entity\Articoli\Articolo.cs" />
     <Compile Include="Entity\Articoli\ArticoloImportato.cs" />
     <Compile Include="Entity\Articoli\ArticoloWeb.cs" />
+    <Compile Include="Entity\Articoli\ListinoPrezziVenditaArticoli.cs" />
+    <Compile Include="Entity\Articoli\ListinoPrezziVenditaNomi.cs" />
     <Compile Include="Entity\Articoli\ListinoPrezziFornitori.cs" />
     <Compile Include="Entity\Enums\enCondizioneArticolo.cs" />
     <Compile Include="Entity\Base\BaseEntity.cs" />
@@ -283,6 +286,14 @@
     <Compile Include="Migrations\202104301359509_SottoScorta.Designer.cs">
       <DependentUpon>202104301359509_SottoScorta.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105021649159_IvaSpostata.cs" />
+    <Compile Include="Migrations\202105021649159_IvaSpostata.Designer.cs">
+      <DependentUpon>202105021649159_IvaSpostata.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105021958371_ListinoPrezzi.cs" />
+    <Compile Include="Migrations\202105021958371_ListinoPrezzi.Designer.cs">
+      <DependentUpon>202105021958371_ListinoPrezzi.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
@@ -369,6 +380,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202104301359509_SottoScorta.resx">
       <DependentUpon>202104301359509_SottoScorta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105021649159_IvaSpostata.resx">
+      <DependentUpon>202105021649159_IvaSpostata.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105021958371_ListinoPrezzi.resx">
+      <DependentUpon>202105021958371_ListinoPrezzi.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Script\IndexOptimize.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

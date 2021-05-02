@@ -94,60 +94,79 @@ namespace StrumentiMusicali.App
             var tabImportExport = _menuTab.Add(@"Gestione");
             var panel1 = tabImportExport.Add("Principale");
 
-            var rib4 = panel1.Add("SottoScorta", StrumentiMusicali.Core.Properties.ImageIcons.Reorder_48);
-            rib4.Click += (s, e) =>
+            panel1.Add("SottoScorta",
+                StrumentiMusicali.Core.Properties.ImageIcons.Reorder_48).Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.ArticoliSottoscorta));
             };
 
+
         }
+
+        private void AggiungiImpostazioniListiniClienti(RibbonMenuTab tabSetting)
+        {
+            var panel1 = tabSetting.Add("Impostazioni articoli");
+
+            AggiungiPulsanteSetting(panel1, "Nomi listini prezzi", enAmbiente.NomeListiniClientiList);
+
+        }
+
+        private static void AggiungiPulsanteSetting(RibbonMenuPanel panel1, string nome, enAmbiente ambiente, System.Drawing.Bitmap image = null)
+        {
+            if (image == null)
+                image = StrumentiMusicali.Core.Properties.ImageIcons.Settings;
+            panel1.Add(nome, image)
+                            .Click += (s, e) =>
+                            {
+                                EventAggregator.Instance().Publish(new ApriAmbiente(ambiente));
+                            };
+        }
+
         private void AggiungiImpostazioniFatture(RibbonMenuTab tabSetting)
         {
             var panel1 = tabSetting.Add("Impostazioni Fatture & Scontrino");
+
+            panel1.Add("Tipi pagamenti fattura", StrumentiMusicali.Core.Properties.ImageIcons.Settings).Click += (s, e) =>
             {
-                var rib1 = panel1.Add("Tipi pagamenti fattura", StrumentiMusicali.Core.Properties.ImageIcons.Settings);
-                rib1.Click += (s, e) =>
-                {
-                    EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.TipiPagamentiList));
-                };
+                EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.TipiPagamentiList));
             };
+
+            panel1.Add("Tipi pagamenti scontrino", StrumentiMusicali.Core.Properties.ImageIcons.Settings)
+                .Click += (s, e) =>
             {
-                var rib1 = panel1.Add("Tipi pagamenti scontrino", StrumentiMusicali.Core.Properties.ImageIcons.Settings);
-                rib1.Click += (s, e) =>
-                {
-                    EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.TipiPagamentiScontrinoList));
-                };
-                var rib7 = panel1.Add("Scontrino", StrumentiMusicali.Core.Properties.ImageIcons.Settings);
-                rib7.Click += (s, e) =>
-                {
-                    EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingScontrino));
-                };
-                var rib3 = panel1.Add("Intest. fattura per stampa", StrumentiMusicali.Core.Properties.ImageIcons.Settings);
-                rib3.Click += (s, e) =>
-                {
-                    EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingStampa));
-                };
+                EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.TipiPagamentiScontrinoList));
+            };
+            panel1.Add("Scontrino", StrumentiMusicali.Core.Properties.ImageIcons.Settings)
+                .Click += (s, e) =>
+            {
+                EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingScontrino));
+            };
+            panel1.Add("Intest. fattura per stampa", StrumentiMusicali.Core.Properties.ImageIcons.Settings)
+                .Click += (s, e) =>
+            {
+                EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingStampa));
+            };
 
-                var rib11 = panel1.Add("Mittente fattura", StrumentiMusicali.Core.Properties.ImageIcons.Settings);
-                rib11.Click += (s, e) =>
-                {
-                    EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingFatture));
-                };
+            panel1.Add("Mittente fattura", StrumentiMusicali.Core.Properties.ImageIcons.Settings)
+                .Click += (s, e) =>
+            {
+                EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingFatture));
+            };
 
-            }
         }
+
         private void AggiungiImpostazioni()
         {
             RibbonMenuTab tabSetting = _menuTab.Add(@"Impostazioni");
             var panel1 = tabSetting.Add("Principale");
-           
+
             var rib2 = panel1.Add("Sito & Upload", StrumentiMusicali.Core.Properties.ImageIcons.Settings);
             rib2.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingSito));
             };
 
-          
+
 
             var rib4 = panel1.Add("Depositi", StrumentiMusicali.Core.Properties.ImageIcons.Settings);
             rib4.Click += (s, e) =>
@@ -165,8 +184,9 @@ namespace StrumentiMusicali.App
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.Scheduler));
             };
-           
+
             AggiungiImpostazioniFatture(tabSetting);
+            AggiungiImpostazioniListiniClienti(tabSetting);
 
         }
 

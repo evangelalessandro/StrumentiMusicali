@@ -55,7 +55,5 @@ namespace StrumentiMusicali.Library.Core.Item
         [NotMapped]
         [DoNotNotify]
         public bool ToSave { get; set; } = false;
-
-
     }
 }

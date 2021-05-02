@@ -174,12 +174,23 @@ namespace StrumentiMusicali.App.Core.Controllers
                     {
                         var contrArt = new ControllerListinoFornitori(null, true);
                         var viewRicercaArt =
-                            new BaseGridViewGeneric<ListinoPrezziFornitoriItem, ControllerListinoFornitori, ListinoPrezziFornitori>(contrArt, true);
+                            new BaseGridViewGeneric<ListinoPrezziFornitoriItem, 
+                            ControllerListinoFornitori, ListinoPrezziFornitori>(contrArt, true);
 
                         this.ShowView(viewRicercaArt, obj.TipoEnviroment, contrArt);
                     }
                     break;
 
+                case enAmbiente.NomeListiniClientiList:
+                    {
+                        var contrArt = new ControllerListinoPrezziNomi(false);
+                        var viewRicercaArt =
+                            new BaseGridViewGeneric<ListinoPrezziVenditaNomeItem, ControllerListinoPrezziNomi,
+                            ListinoPrezziVenditaNome>(contrArt);
+
+                        this.ShowView(viewRicercaArt, obj.TipoEnviroment, contrArt);
+                    }
+                    break;
                 case enAmbiente.PagamentiList:
 
                     var controllerPagamenti = new ControllerPagamenti();

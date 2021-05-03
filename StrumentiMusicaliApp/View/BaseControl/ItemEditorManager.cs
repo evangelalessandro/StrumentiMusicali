@@ -261,6 +261,8 @@ namespace StrumentiMusicali.App.View.BaseControl
                 if (row != null)
                     row.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
 
+
+
                 return num;
             }
             else if (item.PropertyType.FullName.Contains("Int32"))
@@ -268,7 +270,15 @@ namespace StrumentiMusicali.App.View.BaseControl
                 var num = new RepositoryItemTextEdit();
                 num.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
                 num.Mask.UseMaskAsDisplayFormat = true;
-                num.Mask.EditMask = "D";
+
+                if (widthAttr != null && widthAttr.Percentuale)
+                {
+                    num.Mask.EditMask = "P0";
+                }
+                else
+                {
+                    num.Mask.EditMask = "D";
+                }
                 num.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
                 num.AppearanceDisabled.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
 
@@ -279,19 +289,20 @@ namespace StrumentiMusicali.App.View.BaseControl
                 var num = new RepositoryItemTextEdit();
                 num.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.DateTime;
                 num.Mask.UseMaskAsDisplayFormat = true;
-                if (widthAttr.MaskDate != "")
-                {
-                    num.Mask.EditMask = widthAttr.MaskDate;
-                }
-                else if (widthAttr.DateTimeView)
-                {
-                    num.Mask.EditMask = "HH:mm:ss dd/MM/yyyy";
-                }
-                else if (widthAttr.DateView)
-                {
-                    num.Mask.EditMask = "dd/MM/yyyy";
+                if (widthAttr != null)
+                    if (widthAttr.MaskDate != "")
+                    {
+                        num.Mask.EditMask = widthAttr.MaskDate;
+                    }
+                    else if (widthAttr.DateTimeView)
+                    {
+                        num.Mask.EditMask = "HH:mm:ss dd/MM/yyyy";
+                    }
+                    else if (widthAttr.DateView)
+                    {
+                        num.Mask.EditMask = "dd/MM/yyyy";
 
-                }
+                    }
 
 
                 return num;
@@ -411,8 +422,8 @@ namespace StrumentiMusicali.App.View.BaseControl
             {
                 indexProp++;
                 var hideAttr = item.CustomAttributes.Where(a => a.AttributeType == typeof(CustomHideUIAttribute)).FirstOrDefault();
-                
-                 
+
+
                 GridColumn col = null;
                 if (_dgvRighe != null)
                 {
@@ -474,7 +485,14 @@ namespace StrumentiMusicali.App.View.BaseControl
                     if (_gcControl != null)
                     {
                         _gcControl.RepositoryItems.Add(itemRepo);
-                        _dgvRighe.Columns[item.Name].ColumnEdit = itemRepo;
+
+                        var colToEdit = _dgvRighe.Columns[item.Name];
+                        colToEdit.ColumnEdit = itemRepo;
+                        if (widthAttr != null && widthAttr.Percentuale)
+                        {
+                            colToEdit.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+                            colToEdit.DisplayFormat.FormatString = "{0:n0} %";
+                        }
                     }
                 }
                 //if (row.Properties.RowEdit != null)

@@ -37,6 +37,8 @@ namespace StrumentiMusicali.Library.Core
 
         public string Category { get; set; } = "Generale";
 
+        public bool Percentuale { get; set; } = false;
+
     }
     public enum TipoDatiCollegati
     {

@@ -269,7 +269,7 @@ namespace StrumentiMusicali.App.View.BaseControl
                 }
             }
 
-            if (InLine && _manager == null)
+            if (_manager == null)
             {
                 _manager = new ItemEditorManager(gcControl, dgvRighe);
                 _manager.BindProp(new TBaseItem(), "");

@@ -45,7 +45,7 @@ namespace StrumentiMusicali.Core.Ambienti
                     return @"Cliente\Fornitore";
 
                 case enAmbiente.Main:
-                    return "MainName";
+                    return "Gestionale";
 
                 case enAmbiente.Fattura:
                     return "Fattura";

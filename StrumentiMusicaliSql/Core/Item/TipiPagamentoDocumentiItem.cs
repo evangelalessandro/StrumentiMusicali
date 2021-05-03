@@ -13,12 +13,11 @@ namespace StrumentiMusicali.Library.Core.Item
         public TipiPagamentoDocumentiItem(TipiPagamentoDocumenti item)
         {
             Descrizione = item.Descrizione;
-            PreCodice = item.PreCodice;
+            
             Abilitato = item.Enable;
             Entity = item;
             ID = item.ID;
-        }
-        public string PreCodice { get; set; }
+        } 
 
         public string Descrizione { get; set; }
 

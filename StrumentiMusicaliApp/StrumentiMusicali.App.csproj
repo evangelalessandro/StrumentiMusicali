@@ -153,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Controllers\Articoli\ControllerCategorie.cs" />
+    <Compile Include="Core\Controllers\ListiniFornitori\ControllerListinoPrezziCliente.cs" />
     <Compile Include="Core\Controllers\ListiniFornitori\ControllerListinoFornitori.cs" />
     <Compile Include="Core\Controllers\Base\BaseControllerGeneric.cs" />
     <Compile Include="Core\Controllers\Base\BaseController.cs" />

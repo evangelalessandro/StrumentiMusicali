@@ -204,19 +204,26 @@ namespace StrumentiMusicali.App.View
         {
             var listPagamenti = new List<Tuple<string, string>>();
             listPagamenti.Add(new Tuple<string, string>("", "Seleziona pagamento"));
-            listPagamenti.Add(new Tuple<string, string>("Bonifico Bancario", "Bonifico Bancario"));
-            listPagamenti.Add(new Tuple<string, string>("Rimessa Diretta", "Rimessa Diretta"));
-            listPagamenti.Add(new Tuple<string, string>("CONTRASSEGNO CONTANTI", "CONTRASSEGNO CONTANTI"));
+            using (var uof = new UnitOfWork())
+            {
+                var listTipi = uof.TipiPagamentoDocumentiRepository.Find(a => a.Enable).Select(a => a.Descrizione).OrderBy(a=>a).ToList();
 
-            cboPagamento.DataSource = listPagamenti.Select(a =>
-                    new
-                    {
-                        ID = a.Item1,
-                        Descrizione = a.Item2
-                    }
-                    ).ToList();
-            cboPagamento.DisplayMember = "Descrizione";
-            cboPagamento.ValueMember = "ID";
+                foreach (var item in listTipi)
+                {
+
+                    listPagamenti.Add(new Tuple<string, string>(item, item));
+                } 
+
+                cboPagamento.DataSource = listPagamenti.Select(a =>
+                        new
+                        {
+                            ID = a.Item1,
+                            Descrizione = a.Item2
+                        }
+                        ).ToList();
+                cboPagamento.DisplayMember = "Descrizione";
+                cboPagamento.ValueMember = "ID";
+            }
         }
 
         private void TxtRagioneSociale_TextChanged(object sender, EventArgs e)

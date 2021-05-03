@@ -90,7 +90,7 @@ namespace StrumentiMusicali.Core.Enum
 
         [UIAmbienteAttribute(false, NomeAmbiente = "Tipo pagamenti documenti")]
         TipiPagamentiList,
-        [UIAmbienteAttribute(false, NomeAmbiente = "Tipo pagamento documento")]
+        [UIAmbienteAttribute(true, NomeAmbiente = "Tipo pagamento documento")]
         TipiPagamenti,
 
         [UIAmbienteAttribute(false, NomeAmbiente = "Tipi pagamenti scontrino")]

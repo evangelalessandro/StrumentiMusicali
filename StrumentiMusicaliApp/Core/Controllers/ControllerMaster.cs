@@ -197,7 +197,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                         var contrArt = new ControllerListinoPrezziNomi(false);
                         var viewRicercaArt =
                             new BaseGridViewGeneric<ListinoPrezziVenditaNomeItem, ControllerListinoPrezziNomi,
-                            ListinoPrezziVenditaNome>(contrArt);
+                            ListinoPrezziVenditaNome>(contrArt,false);
 
                         this.ShowView(viewRicercaArt, obj.TipoEnviroment, contrArt);
                     }

@@ -153,8 +153,8 @@ namespace StrumentiMusicali.App.Core.Controllers.ListiniFornitori
                      TestoRicerca == "")
                      .ToList();
 
-                    DataSource = new MySortableBindingList<ListinoPrezziVenditaNomeItem>(listCurrent.Select(a => new ListinoPrezziVenditaNomeItem()
-                    { Nome = a.Nome, Entity = a, ID = a.ID }).ToList());
+                    DataSource = new MySortableBindingList<ListinoPrezziVenditaNomeItem>(listCurrent.Select(a => new ListinoPrezziVenditaNomeItem(a)
+                    {   Entity = a, ID = a.ID }).ToList());
                 }
 
 

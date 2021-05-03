@@ -1,5 +1,6 @@
 ﻿using DevExpress.UserSkins;
 using DevExpress.XtraEditors.Repository;
+using StrumentiMusicali.App.Core.Controllers.Articoli;
 using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Controllers.ListiniFornitori;
 using StrumentiMusicali.App.Core.Exports;
@@ -181,6 +182,16 @@ namespace StrumentiMusicali.App.Core.Controllers
                     }
                     break;
 
+                case enAmbiente.CategorieArticoliList:
+                    {
+                        var contrArt = new ControllerCategorie();
+                        var viewRicercaArt =
+                            new BaseGridViewGeneric<CategoriaItem, ControllerCategorie,
+                            Categoria>(contrArt);
+
+                        this.ShowView(viewRicercaArt, obj.TipoEnviroment, contrArt);
+                    }
+                    break;
                 case enAmbiente.NomeListiniClientiList:
                     {
                         var contrArt = new ControllerListinoPrezziNomi(false);

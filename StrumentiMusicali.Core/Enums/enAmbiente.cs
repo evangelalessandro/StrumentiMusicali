@@ -102,7 +102,12 @@ namespace StrumentiMusicali.Core.Enum
         NomeListiniClientiList,
         [UIAmbienteAttribute(false, NomeAmbiente = "Nome listino clienti")]
         NomeListiniClienti,
+        [UIAmbienteAttribute(false, NomeAmbiente = "Categorie articoli")]
 
+        CategorieArticoliList,
+        [UIAmbienteAttribute(true, NomeAmbiente = "Categoria articoli")]
+
+        CategorieArticoliDett,
     }
 
 

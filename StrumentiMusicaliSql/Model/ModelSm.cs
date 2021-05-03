@@ -64,7 +64,7 @@ namespace StrumentiMusicali.Library.Model
                 {
                     articolo.UpdateTitolo = "";
                 }
-                if (articolo.NonImponibile==true)
+                if (articolo.NonImponibile == true)
                 {
                     articolo.Iva = 0;
                 }
@@ -205,16 +205,22 @@ namespace StrumentiMusicali.Library.Model
 
             modelBuilder.Entity<TipiPagamentoScontrino>().ToTable("TipiPagamentiScontrino");
             modelBuilder.Entity<FotoArticolo>().ToTable("FotoArticoli");
-             
- 
+
+
             modelBuilder.Entity<Fattura>().ToTable("Fatture");
             modelBuilder.Entity<FatturaRiga>().ToTable("FattureRighe");
 
-            modelBuilder.Entity<Utente>().ToTable("Utenti"); 
+            modelBuilder.Entity<Utente>().ToTable("Utenti");
             modelBuilder.Entity<SettingBackupFtp>().ToTable("SettingBackupFtp");
 
-           
-             
+
+            modelBuilder.Entity<Categoria>()
+               .HasIndex(b => new { b.Nome, b.Reparto })
+               .IsUnique().HasName("Categoria_Reparto_NomeCat");
+
+            modelBuilder.Entity<Categoria>()
+               .HasIndex(b => b.Codice)
+               .IsUnique().HasName("Categoria_Codice");
 
             modelBuilder.Entity<TipiPagamentoDocumenti>().ToTable("TipiPagamentoDocumenti");
 
@@ -223,7 +229,7 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<TipiPagamentoDocumenti>().Property(a => a.Descrizione).HasColumnName("TPP_DESCRIZIONE");
             modelBuilder.Entity<TipiPagamentoDocumenti>().Property(a => a.Enable).HasColumnName("TPP_ABILITATO");
 
-           
+
             modelBuilder.Entity<TipiDocumentoFiscale>().ToTable("TipiDocumentiFiscali");
             modelBuilder.Entity<TipiDocumentoFiscale>().Property(a => a.ID).HasColumnName("TIP_TIPDOC_ID");
 
@@ -242,8 +248,8 @@ namespace StrumentiMusicali.Library.Model
            .IsUnique();
 
             modelBuilder.Entity<Articolo>()
-           .HasIndex(b => new { b.CodiceABarre, b.Titolo, b.Testo});
-           
+           .HasIndex(b => new { b.CodiceABarre, b.Titolo, b.Testo });
+
             modelBuilder.Entity<AggiornamentoWebArticolo>()
                 .HasIndex(b => new { b.ArticoloID })
                 .IsUnique();
@@ -266,14 +272,14 @@ namespace StrumentiMusicali.Library.Model
         public virtual DbSet<TipiPagamentoDocumenti> TipiPagamentoDocumenti { get; set; }
 
 
-        
+
         public virtual DbSet<Deposito> Depositi { get; set; }
         public virtual DbSet<Magazzino> Magazzino { get; set; }
         public virtual DbSet<Articolo> Articoli { get; set; }
         public virtual DbSet<ListinoPrezziFornitori> ListinoPrezziFornitori { get; set; }
 
         public virtual DbSet<PreOrdineAcquisto> PreOrdineAcquisto { get; set; }
-        
+
 
         public virtual DbSet<Fattura> Fatture { get; set; }
         public virtual DbSet<FatturaRiga> FattureRighe { get; set; }

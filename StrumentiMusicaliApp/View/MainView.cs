@@ -109,6 +109,8 @@ namespace StrumentiMusicali.App
 
             AggiungiPulsanteSetting(panel1, "Nomi listini prezzi", enAmbiente.NomeListiniClientiList);
 
+            AggiungiPulsanteSetting(panel1, "Categorie", enAmbiente.CategorieArticoliList);
+
         }
 
         private static void AggiungiPulsanteSetting(RibbonMenuPanel panel1, string nome, enAmbiente ambiente, System.Drawing.Bitmap image = null)

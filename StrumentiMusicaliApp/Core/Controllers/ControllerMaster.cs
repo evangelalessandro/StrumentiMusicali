@@ -37,8 +37,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             : base()
         {
 
-            EventAggregator.Instance().Subscribe<ApriAmbiente>(Apri);
-            EventAggregator.Instance().Subscribe<ImportArticoliCSVMercatino>(ImportaCsvArticoli);
+            EventAggregator.Instance().Subscribe<ApriAmbiente>(Apri); 
             EventAggregator.Instance().Subscribe<ImportaFattureAccess>(ImportaFatture);
             EventAggregator.Instance().Subscribe<ImportArticoliMulino>(ImportArticoliMulinoExcel);
             EventAggregator.Instance().Subscribe<ImportMagExcel>(ImportMagExcel);
@@ -137,13 +136,13 @@ namespace StrumentiMusicali.App.Core.Controllers
             ControllerFatturazione.ImportaFatture();
         }
 
-        private void ImportaCsvArticoli(ImportArticoliCSVMercatino obj)
-        {
-            using (var controllerArt = new ControllerArticoli(ControllerArticoli.enModalitaArticolo.Tutto))
-            {
-                controllerArt.ImportaCsvArticoli();
-            }
-        }
+        //private void ImportaCsvArticoli(ImportArticoliCSVMercatino obj)
+        //{
+        //    using (var controllerArt = new ControllerArticoli(ControllerArticoli.enModalitaArticolo.Tutto))
+        //    {
+        //        controllerArt.ImportaCsvArticoli();
+        //    }
+        //}
 
         private void Apri(ApriAmbiente obj)
         {
@@ -226,7 +225,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                         var viewFatt = new FattureListView(controllerFatt, enAmbiente.FattureList, enAmbiente.Fattura);
 
-                        ShowView(viewFatt, enAmbiente.FattureList, controllerFatt);
+                        ShowView(viewFatt, obj.TipoEnviroment, controllerFatt);
                     }
                     break;
                 case enAmbiente.TipiPagamentiList:
@@ -235,7 +234,16 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                         var view = new BaseGridViewGeneric<TipiPagamentoDocumentiItem, ControllerTipiPagamentiFatture, TipiPagamentoDocumenti>(controller, false);
 
-                        ShowView(view, enAmbiente.TipiPagamentiList, controller);
+                        ShowView(view, obj.TipoEnviroment, controller);
+                    }
+                    break;
+                case enAmbiente.RiordinoPeriodiList:
+                    {
+                        var controller = new ControllerRiordinoPeriodi();
+
+                        var view = new BaseGridViewGeneric<RiordinoPeriodiItem, ControllerRiordinoPeriodi, RiordinoPeriodi>(controller, false);
+
+                        ShowView(view, obj.TipoEnviroment, controller);
                     }
                     break;
                 case enAmbiente.TipiPagamentiScontrinoList:
@@ -244,7 +252,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                         var view = new BaseGridViewGeneric<TipiPagamentoScontrinoItem, ControllerTipiPagamentiScontrino, TipiPagamentoScontrino>(controller, false);
 
-                        ShowView(view, enAmbiente.TipiPagamentiList, controller);
+                        ShowView(view, obj.TipoEnviroment, controller);
                     }
                     break;
                 case enAmbiente.LogViewList:

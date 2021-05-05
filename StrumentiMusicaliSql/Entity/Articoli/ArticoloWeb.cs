@@ -13,12 +13,20 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         [CustomUIView(Ordine = 1, Category = "HTML", MultiLine = 3)]
         [MaxLength(800)]
         public string DescrizioneBreveHtml { get; set; } = "";
+       
 
         [CustomUIView(Width = 80, Titolo = "Prezzo per il web iva compresa", Ordine = 30, Category = "Prezzo", Money = true)]
         [Required]
         public decimal PrezzoWeb { get; set; } = 0;
 
- 
+       
+
+        //[CustomUIView(Width = 60, Ordine = 44, Category = "Prezzo", Money = true)]
+        //public bool PrezzoARichiesta { get; set; } = false;
+
+        //[CustomUIView(Width = 60, Ordine = 45, Category = "Prezzo", Money = true)]
+        //public decimal PrezzoBarrato { get; set; } = 0;
+
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

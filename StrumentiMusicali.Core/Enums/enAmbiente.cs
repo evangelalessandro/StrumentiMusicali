@@ -108,6 +108,12 @@ namespace StrumentiMusicali.Core.Enum
         [UIAmbienteAttribute(true, NomeAmbiente = "Categoria articoli")]
 
         CategorieArticoliDett,
+
+        [UIAmbienteAttribute(false, NomeAmbiente = "Lista Riordino Periodi")]
+        RiordinoPeriodiList,
+
+        [UIAmbienteAttribute(true, NomeAmbiente = "Periodo Riordino")]
+        RiordinoPeriodi,
     }
 
 

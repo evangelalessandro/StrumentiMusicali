@@ -83,13 +83,13 @@ namespace StrumentiMusicali.App.Core.Exports
                             .Select(a => new GiacenzaArt { ArticoloId = a.Key, Giacenza = a.Sum(b => b.Qta) }).ToList();
 
                         var fileEcommerce = FileEcommerce(uof, fotoList, magazzinoGiac);
-                         
+
 
                         UploadNewFoto();
                         MessageManager.NotificaInfo("Terminato upload nuove foto");
 
                         var artToUpdate = _fotoToUpload.Select(a => a.ArticoloID).Distinct().ToList();
-                         
+
                         UploadEndRetray(fileEcommerce, _settingSito.UrlCompletoFileEcommerce);
 
                         uof.Commit();
@@ -204,19 +204,10 @@ namespace StrumentiMusicali.App.Core.Exports
 
             sb.Append(Separatore);
             //Prezzo
-            if (art.PrezzoARichiesta)
-            {
-                sb.Append("NC");
-            }
-            else
-            {
-                sb.Append(art.Prezzo.ToString("0.00"));
-                if (art.PrezzoBarrato > 0)
-                {
-                    sb.Append(";");
-                    sb.Append(art.PrezzoBarrato.ToString("0.00"));
-                }
-            }
+
+            sb.Append(art.Prezzo.ToString("0.00"));
+
+
             sb.Append(Separatore);
 
             //URLFotografia
@@ -228,9 +219,7 @@ namespace StrumentiMusicali.App.Core.Exports
 
             sb.Append(Separatore);
 
-            string proposte = (!art.BoxProposte ? "0" : "1") + ";" + (!art.UsaAnnuncioTurbo ? "0" : "1");
 
-            sb.Append(proposte);
 
             sb.Append(Separatore);
         }
@@ -254,7 +243,7 @@ namespace StrumentiMusicali.App.Core.Exports
             return fileEcommerce;
         }
 
-        
+
 
         /// <summary>
         ///

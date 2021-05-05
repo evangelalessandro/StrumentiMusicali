@@ -11,7 +11,8 @@ namespace StrumentiMusicali.Library.Migrations
             DropColumn("dbo.Articoli", "PeriodoSottoScortaInizio");
             DropColumn("dbo.Articoli", "PeriodoSottoScortaFine");
 
-            Sql("insert into TipiDocumentiFiscali(IDEnum,Codice,Descrizione,DataCreazione,DataUltimaModifica)" +
+            Sql("if not exists(select 1 from TipiDocumentiFiscali where IDEnum=7) " +
+                " insert into TipiDocumentiFiscali(IDEnum,Codice,Descrizione,DataCreazione,DataUltimaModifica)" +
                 "" +
                 "values " +
                  "(7, 'ODS', 'Ordine di Scarico', getdate(), getdate())  ");

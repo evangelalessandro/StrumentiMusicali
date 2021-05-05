@@ -27,17 +27,21 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         }
         [CustomUIView(Ordine = 10, Titolo = "Qta sotto cui è da considerare da riordinare", Category = "Riordino")]
         public int SottoScorta { get; set; } = 0;
-        //[CustomUIView(Ordine = 11, Titolo = "Inizio periodo di validità di sotto scorta (dd/MM)", Category = "Riordino",DateView = true,MaskDate ="dd/MM")]
-        //public DateTime PeriodoSottoScortaInizio { get; set; } = new DateTime(1900,1,1);
-        //[CustomUIView(Ordine = 11, Titolo = "Fine periodo di validità di sotto scorta  (dd/MM)", Category = "Riordino",DateView =true, MaskDate = "dd/MM")]
-        //public DateTime PeriodoSottoScortaFine { get; set; } = new DateTime(1900, 12, 31);
+
+        [CustomUIView(Width = 200, Ordine = 10, Category = "Riordino",Combo = TipoDatiCollegati.RiordinoPeriodi, Titolo = "Periodo per riordino")]
+        [Required]
+        public int RiordinoPeriodiID { get; set; }
+
+        [CustomHideUI]
+        public virtual RiordinoPeriodi RiordinoPeriodi { get; set; }
+        
         [CustomUIView(Ordine = 11, Titolo = "Ultimo fornitore Acquisto", Category = "Riordino")]
         public string UltimoFornitoreAcquisto { get; set; }
 
-        [CustomUIView(Ordine = 6, Category = "Online")]
-        public bool BoxProposte { get; set; }
+        //[CustomUIView(Ordine = 6, Category = "Online")]
+        //public bool BoxProposte { get; set; }
 
-        [CustomUIView(Ordine = 7, Titolo = "Carica in E-Commerce", Category = "Online")]
+        [CustomUIView(Ordine = 7, Titolo = "Carica in E-Commerce", Category = "ArticoloWeb")]
         public bool CaricainECommerce { get; set; } = true;
  
 
@@ -71,18 +75,12 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         public decimal Iva { get; set; } = 22;
 
 
-        [CustomUIView(Width = 60, Ordine = 44, Category = "Prezzo", Money = true)]
-        public bool PrezzoARichiesta { get; set; } = false;
-
-        [CustomUIView(Width = 60, Ordine = 45, Category = "Prezzo", Money = true)]
-        public decimal PrezzoBarrato { get; set; } = 0;
+       
 
         [CustomUIView(Width = 80, Ordine = 40, Category = "Prezzo", Money = true)]
         public decimal PrezzoAcquisto { get; set; } = 0;
 
-        [MaxLength(2000)]
-        [CustomUIView(Width = 500, Ordine = 111, MultiLine = 4, Titolo = "Testo annuncio", Category = "Online")]
-        public string Testo { get; set; }
+       
 
         [CustomUIView(Width = 500, Ordine = 3, Titolo = "Titolo annuncio")]
         [MaxLength(100), Required]
@@ -91,8 +89,8 @@ namespace StrumentiMusicali.Library.Entity.Articoli
             set;
         }
 
-        [CustomUIView(Ordine = 5, Category = "Online")]
-        public bool UsaAnnuncioTurbo { get; set; }
+        //[CustomUIView(Ordine = 5, Category = "Online")]
+        //public bool UsaAnnuncioTurbo { get; set; }
 
         [CustomUIView(Ordine = 20, Category = "Note")]
         [MaxLength(100)]
@@ -101,6 +99,9 @@ namespace StrumentiMusicali.Library.Entity.Articoli
             get;
             set;
         }
+        [MaxLength(2000)]
+        [CustomUIView(Width = 500, Ordine = 111, MultiLine = 4, Titolo = "Testo annuncio", Category = "HTML")]
+        public string Testo { get; set; }
 
         [CustomUIView(Ordine = 21, Category = "Note")]
         [MaxLength(100)]

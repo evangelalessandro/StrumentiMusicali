@@ -10,7 +10,8 @@ namespace StrumentiMusicali.Library.Migrations
             Sql(Properties.Resource1.SP_NG_SottoScorta);
 
 
-            Sql("insert into TipiDocumentiFiscali(IDEnum,Codice,Descrizione,DataCreazione,DataUltimaModifica)" +
+            Sql("if not exists(select 1 from TipiDocumentiFiscali)" +
+                " insert into TipiDocumentiFiscali(IDEnum,Codice,Descrizione,DataCreazione,DataUltimaModifica)" +
               "" +
               "values( 0,'-','NonSpecificato',getdate(),getdate())," +
               "(1, 'F', 'FatturaDiCortesia', getdate(), getdate()), " +

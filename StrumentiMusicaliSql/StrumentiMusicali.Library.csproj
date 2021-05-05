@@ -74,7 +74,6 @@
     <Compile Include="Core\Events\Articoli\ArticoloMerge.cs" />
     <Compile Include="Core\Events\Articoli\ArticoloDuplicate.cs" />
     <Compile Include="Core\Events\Articoli\ArticoloSconta.cs" />
-    <Compile Include="Core\Events\Articoli\ImportArticoliCSVMercatino.cs" />
     <Compile Include="Core\Events\Articoli\ImportArticoliMulino.cs" />
     <Compile Include="Core\Events\Articoli\ImportMagExcel.cs" />
     <Compile Include="Core\Events\Articoli\InvioArticoliCSV.cs" />
@@ -125,6 +124,7 @@
     <Compile Include="Core\Item\Base\CurrentItem.cs" />
     <Compile Include="Core\Item\CategoriaItem.cs" />
     <Compile Include="Core\Item\ClientiItem.cs" />
+    <Compile Include="Core\Item\RiordinoPeriodiItem.cs" />
     <Compile Include="Core\Item\ListinoPrezziVenditaNomiItem.cs" />
     <Compile Include="Core\Item\TipiPagamentoScontrinoItem.cs" />
     <Compile Include="Core\Item\TipiPagamentoDocumentiItem.cs" />
@@ -148,6 +148,7 @@
     <Compile Include="Entity\Articoli\ListinoPrezziVenditaArticoli.cs" />
     <Compile Include="Entity\Articoli\ListinoPrezziVenditaNomi.cs" />
     <Compile Include="Entity\Articoli\ListinoPrezziFornitori.cs" />
+    <Compile Include="Entity\Articoli\RiordinoPeriodi.cs" />
     <Compile Include="Entity\Enums\enCondizioneArticolo.cs" />
     <Compile Include="Entity\Base\BaseEntity.cs" />
     <Compile Include="Entity\Base\RigaDoc.cs" />
@@ -298,6 +299,14 @@
     <Compile Include="Migrations\202105041540519_OrdineScarico.Designer.cs">
       <DependentUpon>202105041540519_OrdineScarico.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105051245546_PeriodiRiordino.cs" />
+    <Compile Include="Migrations\202105051245546_PeriodiRiordino.Designer.cs">
+      <DependentUpon>202105051245546_PeriodiRiordino.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105051332158_Art.cs" />
+    <Compile Include="Migrations\202105051332158_Art.Designer.cs">
+      <DependentUpon>202105051332158_Art.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
@@ -393,6 +402,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105041540519_OrdineScarico.resx">
       <DependentUpon>202105041540519_OrdineScarico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105051245546_PeriodiRiordino.resx">
+      <DependentUpon>202105051245546_PeriodiRiordino.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105051332158_Art.resx">
+      <DependentUpon>202105051332158_Art.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Script\IndexOptimize.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

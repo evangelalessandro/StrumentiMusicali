@@ -236,7 +236,19 @@ select @db
                 return _SettingDocumentiPagamentiRepository;
             }
         }
+        private Repository<RiordinoPeriodi> _RiordinoPeriodiRepository;
 
+        public IRepository<RiordinoPeriodi> RiordinoPeriodiRepository
+        {
+            get
+            {
+                if (_RiordinoPeriodiRepository == null)
+                {
+                    _RiordinoPeriodiRepository = new Repository<RiordinoPeriodi>(dbContext);
+                }
+                return _RiordinoPeriodiRepository;
+            }
+        }
 
         private Repository<TipiPagamentoDocumenti> _TipiPagamentoDocumentiRepository;
 

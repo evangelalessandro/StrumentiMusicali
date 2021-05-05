@@ -180,6 +180,19 @@ namespace StrumentiMusicali.App.View.BaseControl
                             newControl.PopulateColumns();
                         }
                         break;
+                    case TipoDatiCollegati.TipiPagamentiDocumenti:
+                        break;
+                    case TipoDatiCollegati.RiordinoPeriodi:
+                        {
+                            var list = uof.RiordinoPeriodiRepository.Find(a => true).ToList()
+                                .Select(a => new { a.ID, a.Descrizione, Periodi= a.PeriodoSottoScortaInizio.ToString(@"dd\MM") + " " + a.PeriodoSottoScortaFine.ToString(@"dd\MM") }).ToList()
+                                .OrderBy(a => a.Descrizione).ToList();
+                            newControl.ValueMember = "ID";
+                            newControl.DisplayMember= "Descrizione";
+                            newControl.DataSource = (list);
+                            newControl.PopulateColumns();
+                        }
+                        break;
                     default:
                         break;
                 }

@@ -55,7 +55,8 @@ namespace StrumentiMusicali.Library.Core
         NomeStrumento,
         LibroAutore,
         TipiSoggetto,
-        TipiPagamentiDocumenti
+        TipiPagamentiDocumenti,
+        RiordinoPeriodi
     }
 
 

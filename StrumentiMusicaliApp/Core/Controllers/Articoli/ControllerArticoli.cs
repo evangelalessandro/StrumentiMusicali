@@ -651,13 +651,10 @@ namespace StrumentiMusicali.App.Core.Controllers
                     {
                         CategoriaID = itemCurrent.Categoria.ID,
                         Condizione = itemCurrent.Condizione,
-                        BoxProposte = itemCurrent.BoxProposte,
+                        
                         Prezzo = itemCurrent.Prezzo,
-                        PrezzoARichiesta = itemCurrent.PrezzoARichiesta,
-                        PrezzoBarrato = itemCurrent.PrezzoBarrato,
                         Testo = itemCurrent.Testo,
                         Titolo = "* " + itemCurrent.Titolo,
-                        UsaAnnuncioTurbo = itemCurrent.UsaAnnuncioTurbo,
                         DataUltimaModifica = DateTime.Now,
                         DataCreazione = DateTime.Now
                     });
@@ -683,129 +680,128 @@ namespace StrumentiMusicali.App.Core.Controllers
         public string FiltroLibri { get; set; } = "";
         public string FiltroMarca { get; set; } = "";
 
-        public void ImportaCsvArticoli()
-        {
-            try
-            {
-                using (OpenFileDialog res = new OpenFileDialog())
-                {
-                    res.Title = "Seleziona file da importare";
-                    //Filter
-                    res.Filter = "File csv|*.csv;";
+        //public void ImportaCsvArticoli()
+        //{
+        //    try
+        //    {
+        //        using (OpenFileDialog res = new OpenFileDialog())
+        //        {
+        //            res.Title = "Seleziona file da importare";
+        //            //Filter
+        //            res.Filter = "File csv|*.csv;";
 
-                    //When the user select the file
-                    if (res.ShowDialog() == DialogResult.OK)
-                    {
-                        //Get the file's path
-                        var fileName = res.FileName;
+        //            //When the user select the file
+        //            if (res.ShowDialog() == DialogResult.OK)
+        //            {
+        //                //Get the file's path
+        //                var fileName = res.FileName;
 
-                        using (var curs = new CursorManager())
-                        {
-                            using (StreamReader sr = new StreamReader(fileName, Encoding.Default, true))
-                            {
-                                String line;
-                                bool firstLine = true;
-                                int progress = 1;
-                                // Read and display lines from the file until the end of
-                                // the file is reached.
-                                using (var uof = new UnitOfWork())
-                                {
-                                    while ((line = sr.ReadLine()) != null)
-                                    {
-                                        if (!firstLine)
-                                        {
-                                            progress = ImportLine(line, progress, uof);
-                                        }
-                                        firstLine = false;
-                                    }
-                                    uof.Commit();
-                                }
-                            }
-                        }
-                        EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>(this));
-                        MessageManager.NotificaInfo("Terminata importazione articoli");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionManager.ManageError(ex);
-            }
-        }
+        //                using (var curs = new CursorManager())
+        //                {
+        //                    using (StreamReader sr = new StreamReader(fileName, Encoding.Default, true))
+        //                    {
+        //                        String line;
+        //                        bool firstLine = true;
+        //                        int progress = 1;
+        //                        // Read and display lines from the file until the end of
+        //                        // the file is reached.
+        //                        using (var uof = new UnitOfWork())
+        //                        {
+        //                            while ((line = sr.ReadLine()) != null)
+        //                            {
+        //                                if (!firstLine)
+        //                                {
+        //                                    progress = ImportLine(line, progress, uof);
+        //                                }
+        //                                firstLine = false;
+        //                            }
+        //                            uof.Commit();
+        //                        }
+        //                    }
+        //                }
+        //                EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>(this));
+        //                MessageManager.NotificaInfo("Terminata importazione articoli");
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ExceptionManager.ManageError(ex);
+        //    }
+        //}
 
-        private int ImportLine(string line, int progress, UnitOfWork uof)
-        {
-            var dat = line.Split('§');
-            var cond = enCondizioneArticolo.Nuovo;
-            if (dat[2] == "N")
-            {
-                cond = enCondizioneArticolo.Nuovo;
-            }
-            else if (dat[2] == "U")
-            {
-                cond = enCondizioneArticolo.UsatoGarantito;
-            }
-            else if (dat[2] == "E")
-            {
-                cond = enCondizioneArticolo.ExDemo;
-            }
-            else
-            {
-                throw new Exception("Tipo dato non gestito o mancante nella condizione articolo.");
-            }
-            decimal prezzo = 0;
-            decimal prezzoBarrato = 0;
-            bool prezzoARichiesta = false;
-            var strPrezzo = dat[6];
-            if (strPrezzo == "NC")
-            {
-                prezzoARichiesta = true;
-            }
-            else if (strPrezzo.Contains(";"))
-            {
-                prezzo = decimal.Parse(strPrezzo.Split(';')[0]);
-                prezzoBarrato = decimal.Parse(strPrezzo.Split(';')[1]);
-            }
-            else
-            {
-                if (strPrezzo.Trim().Length > 0)
-                {
-                    prezzo = decimal.Parse(strPrezzo);
-                }
-            }
-            var artNew = (new Articolo()
-            {
-                CategoriaID = int.Parse(dat[1]),
-                Condizione = cond,
+        //private int ImportLine(string line, int progress, UnitOfWork uof)
+        //{
+        //    var dat = line.Split('§');
+        //    var cond = enCondizioneArticolo.Nuovo;
+        //    if (dat[2] == "N")
+        //    {
+        //        cond = enCondizioneArticolo.Nuovo;
+        //    }
+        //    else if (dat[2] == "U")
+        //    {
+        //        cond = enCondizioneArticolo.UsatoGarantito;
+        //    }
+        //    else if (dat[2] == "E")
+        //    {
+        //        cond = enCondizioneArticolo.ExDemo;
+        //    }
+        //    else
+        //    {
+        //        throw new Exception("Tipo dato non gestito o mancante nella condizione articolo.");
+        //    }
+        //    decimal prezzo = 0;
+        //    decimal prezzoBarrato = 0;
+        //    bool prezzoARichiesta = false;
+        //    var strPrezzo = dat[6];
+        //    if (strPrezzo == "NC")
+        //    {
+        //        prezzoARichiesta = true;
+        //    }
+        //    else if (strPrezzo.Contains(";"))
+        //    {
+        //        prezzo = decimal.Parse(strPrezzo.Split(';')[0]);
+                 
+        //    }
+        //    else
+        //    {
+        //        if (strPrezzo.Trim().Length > 0)
+        //        {
+        //            prezzo = decimal.Parse(strPrezzo);
+        //        }
+        //    }
+        //    var artNew = (new Articolo()
+        //    {
+        //        CategoriaID = int.Parse(dat[1]),
+        //        Condizione = cond,
 
-                Titolo = dat[4],
-                Testo = dat[5].Replace("<br>", Environment.NewLine),
-                Prezzo = prezzo,
-                PrezzoARichiesta = prezzoARichiesta,
-                PrezzoBarrato = prezzoBarrato,
-                BoxProposte = int.Parse(dat[9]) == 1 ? true : false
-            });
-            artNew.Strumento.Marca = dat[3];
-            uof.ArticoliRepository.Add(artNew);
-            var foto = dat[7];
-            if (foto.Length > 0)
-            {
-                int ordine = 0;
-                foreach (var item in foto.Split(';'))
-                {
-                    var artFoto = new FotoArticolo()
-                    {
-                        Articolo = artNew,
-                        UrlFoto = item,
-                        Ordine = ordine
-                    };
-                    ordine++;
-                    uof.FotoArticoloRepository.Add(artFoto);
-                }
-            }
+        //        Titolo = dat[4],
+        //        Testo = dat[5].Replace("<br>", Environment.NewLine),
+        //        Prezzo = prezzo,
+                
+                 
+        //    });
+        //    artNew.Strumento.Marca = dat[3];
+        //    uof.ArticoliRepository.Add(artNew);
+        //    var foto = dat[7];
+        //    if (foto.Length > 0)
+        //    {
+        //        int ordine = 0;
+        //        foreach (var item in foto.Split(';'))
+        //        {
+        //            var artFoto = new FotoArticolo()
+        //            {
+        //                Articolo = artNew,
+        //                UrlFoto = item,
+        //                Ordine = ordine
+        //            };
+        //            ordine++;
+        //            uof.FotoArticoloRepository.Add(artFoto);
+        //        }
+        //    }
 
-            return progress;
-        }
+        //    return progress;
+        //}
 
         private void DeleteArticolo(object obj)
         {

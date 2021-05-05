@@ -40,6 +40,13 @@ namespace StrumentiMusicali.Library.Model
                     result.ValidationErrors.Add(item);
                 }
             }
+            if (entityEntry.Entity is RiordinoPeriodi)
+            {
+                foreach (var item in CheckRiordinoPeriodi(entityEntry.Entity as RiordinoPeriodi, entityEntry.State))
+                {
+                    result.ValidationErrors.Add(item);
+                }
+            }
             else if (entityEntry.Entity is Deposito)
             {
                 var deposito = entityEntry.Entity as Deposito;
@@ -134,6 +141,41 @@ namespace StrumentiMusicali.Library.Model
                 }
             }
         }
+        public static List<DbValidationError> CheckRiordinoPeriodi(RiordinoPeriodi riordino, EntityState state)
+        {
+            var list = new List<DbValidationError>();
+
+            if (riordino.TuttoAnno && state != EntityState.Deleted)
+            {
+                riordino.PeriodoSottoScortaInizio = new DateTime(1900, 1, 1);
+
+                riordino.PeriodoSottoScortaFine = new DateTime(1900, 12, 31);
+                
+            }
+            //using (var uof = new UnitOfWork())
+            //{
+            //    var count = uof.RiordinoPeriodiRepository.Find(a => a.ID != riordino.ID && a.TuttoAnno == true
+            //    && riordino.TuttoAnno==true
+            //    ).Count();
+
+            //    if (count > 0 && state != EntityState.Deleted)
+            //    {
+            //        list.Add(
+            //               new System.Data.Entity.Validation.DbValidationError("TuttoAnno",
+            //               "Ci può essere  "));
+            //    }
+
+            //    count = uof.UtentiRepository.Find(a => a.ID != utente.ID && a.AdminUtenti == true).Count();
+            //    if (count + (state != EntityState.Deleted && utente.AdminUtenti ? 1 : 0) == 0)
+            //    {
+            //        list.Add(
+            //            new System.Data.Entity.Validation.DbValidationError("NomeUtente",
+            //            "Deve esserci almeno un amministratore degli utenti"));
+            //    }
+            //}
+
+            return list;
+        }
 
         public static List<DbValidationError> CheckUtenti(Utente utente, EntityState state)
         {
@@ -202,6 +244,7 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<Magazzino>().ToTable("Magazzino");
             modelBuilder.Entity<Articolo>().ToTable("Articoli");
             modelBuilder.Entity<Categoria>().ToTable("Categorie");
+            modelBuilder.Entity<RiordinoPeriodi>().ToTable("RiordinoPeriodi");
 
             modelBuilder.Entity<TipiPagamentoScontrino>().ToTable("TipiPagamentiScontrino");
             modelBuilder.Entity<FotoArticolo>().ToTable("FotoArticoli");
@@ -241,7 +284,7 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<Pagamento>().Property(e => e.ImportoResiduo).HasPrecision(19, 2);
             modelBuilder.Entity<Pagamento>().Property(e => e.ImportoTotale).HasPrecision(19, 2);
             modelBuilder.Entity<Articolo>().Property(e => e.Prezzo).HasPrecision(19, 2);
-            modelBuilder.Entity<Articolo>().Property(e => e.PrezzoBarrato).HasPrecision(19, 2);
+            
 
             modelBuilder.Entity<Categoria>()
            .HasIndex(b => new { b.Nome, b.Codice, b.Reparto })
@@ -272,6 +315,7 @@ namespace StrumentiMusicali.Library.Model
         public virtual DbSet<TipiPagamentoDocumenti> TipiPagamentoDocumenti { get; set; }
 
 
+        public virtual DbSet<RiordinoPeriodi> RiordinoPeriodi { get; set; }
 
         public virtual DbSet<Deposito> Depositi { get; set; }
         public virtual DbSet<Magazzino> Magazzino { get; set; }

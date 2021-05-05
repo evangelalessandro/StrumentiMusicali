@@ -103,13 +103,14 @@ namespace StrumentiMusicali.App
 
         }
 
-        private void AggiungiImpostazioniListiniClienti(RibbonMenuTab tabSetting)
+        private void AggiungiImpostazioniArticoli(RibbonMenuTab tabSetting)
         {
             var panel1 = tabSetting.Add("Impostazioni articoli");
 
             AggiungiPulsanteSetting(panel1, "Nomi listini prezzi", enAmbiente.NomeListiniClientiList);
 
             AggiungiPulsanteSetting(panel1, "Categorie", enAmbiente.CategorieArticoliList);
+            AggiungiPulsanteSetting(panel1, "Periodi riordino", enAmbiente.RiordinoPeriodiList);
 
         }
 
@@ -188,7 +189,7 @@ namespace StrumentiMusicali.App
             };
 
             AggiungiImpostazioniFatture(tabSetting);
-            AggiungiImpostazioniListiniClienti(tabSetting);
+            AggiungiImpostazioniArticoli(tabSetting);
 
         }
 
@@ -234,28 +235,28 @@ namespace StrumentiMusicali.App
                 EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp = ExportMagazzino.TipoExport.PerMarca });
             };
 
-            var pnlImport = tabImportExport.Add("Import");
-            var ribImportCsv = pnlImport.Add("Import csv mercatino", StrumentiMusicali.Core.Properties.ImageIcons.ImportCsv);
-            ribImportCsv.Click += (s, e) =>
-            {
-                EventAggregator.Instance().Publish(new ImportArticoliCSVMercatino());
-            };
-            var ribImport01 = pnlImport.Add("Import Tutti Libri Magazzino", StrumentiMusicali.Core.Properties.ImageIcons.Excel_export);
-            ribImport01.Click += (s, e) =>
-            {
-                using (var mag = new ImportDaExportMagazzino(true))
-                {
-                    mag.ImportFile();
-                }
-            };
-            var ribImport02 = pnlImport.Add("Import Tutti Strumenti Magazzino", StrumentiMusicali.Core.Properties.ImageIcons.Excel_export);
-            ribImport02.Click += (s, e) =>
-            {
-                using (var mag = new ImportDaExportMagazzino(false))
-                {
-                    mag.ImportFile();
-                }
-            };
+            //var pnlImport = tabImportExport.Add("Import");
+            //var ribImportCsv = pnlImport.Add("Import csv mercatino", StrumentiMusicali.Core.Properties.ImageIcons.ImportCsv);
+            //ribImportCsv.Click += (s, e) =>
+            //{
+            //    EventAggregator.Instance().Publish(new ImportArticoliCSVMercatino());
+            //};
+            //var ribImport01 = pnlImport.Add("Import Tutti Libri Magazzino", StrumentiMusicali.Core.Properties.ImageIcons.Excel_export);
+            //ribImport01.Click += (s, e) =>
+            //{
+            //    using (var mag = new ImportDaExportMagazzino(true))
+            //    {
+            //        mag.ImportFile();
+            //    }
+            //};
+            //var ribImport02 = pnlImport.Add("Import Tutti Strumenti Magazzino", StrumentiMusicali.Core.Properties.ImageIcons.Excel_export);
+            //ribImport02.Click += (s, e) =>
+            //{
+            //    using (var mag = new ImportDaExportMagazzino(false))
+            //    {
+            //        mag.ImportFile();
+            //    }
+            //};
 
             //var ribImportFatture = pnlImport.Add("Fatture Access", StrumentiMusicali.Core.Properties.ImageIcons.ImportInvoice);
             //ribImportFatture.Click += (s, e) =>

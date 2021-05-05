@@ -294,6 +294,10 @@
     <Compile Include="Migrations\202105021958371_ListinoPrezzi.Designer.cs">
       <DependentUpon>202105021958371_ListinoPrezzi.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105041540519_OrdineScarico.cs" />
+    <Compile Include="Migrations\202105041540519_OrdineScarico.Designer.cs">
+      <DependentUpon>202105041540519_OrdineScarico.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
@@ -386,6 +390,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105021958371_ListinoPrezzi.resx">
       <DependentUpon>202105021958371_ListinoPrezzi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105041540519_OrdineScarico.resx">
+      <DependentUpon>202105041540519_OrdineScarico.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Script\IndexOptimize.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -27,10 +27,10 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         }
         [CustomUIView(Ordine = 10, Titolo = "Qta sotto cui è da considerare da riordinare", Category = "Riordino")]
         public int SottoScorta { get; set; } = 0;
-        [CustomUIView(Ordine = 11, Titolo = "Inizio periodo di validità di sotto scorta (dd/MM)", Category = "Riordino",DateView = true,MaskDate ="dd/MM")]
-        public DateTime PeriodoSottoScortaInizio { get; set; } = new DateTime(1900,1,1);
-        [CustomUIView(Ordine = 11, Titolo = "Fine periodo di validità di sotto scorta  (dd/MM)", Category = "Riordino",DateView =true, MaskDate = "dd/MM")]
-        public DateTime PeriodoSottoScortaFine { get; set; } = new DateTime(1900, 12, 31);
+        //[CustomUIView(Ordine = 11, Titolo = "Inizio periodo di validità di sotto scorta (dd/MM)", Category = "Riordino",DateView = true,MaskDate ="dd/MM")]
+        //public DateTime PeriodoSottoScortaInizio { get; set; } = new DateTime(1900,1,1);
+        //[CustomUIView(Ordine = 11, Titolo = "Fine periodo di validità di sotto scorta  (dd/MM)", Category = "Riordino",DateView =true, MaskDate = "dd/MM")]
+        //public DateTime PeriodoSottoScortaFine { get; set; } = new DateTime(1900, 12, 31);
         [CustomUIView(Ordine = 11, Titolo = "Ultimo fornitore Acquisto", Category = "Riordino")]
         public string UltimoFornitoreAcquisto { get; set; }
 

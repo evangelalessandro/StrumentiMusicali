@@ -23,3 +23,9 @@ comando nella Console di gestione pacchetti.
 Se vengono effettuate ulteriori modifiche al modello che si desidera includere nella migrazione, 
 è possibile rieseguirne lo scaffolding eseguendo di nuovo il comando 
 'Add-Migration Init'.
+
+
+Una migrazione precedente denominata 'OrdineScarico' è già stata applicata al database di destinazione. 
+Se si intende rieseguire lo scaffolding di 'OrdineScarico', 
+ripristinarlo eseguendo 'Update-Database -TargetMigration 202105031607212_AutomaticMigration', 
+quindi eliminare '202105041747495_OrdineScarico1.cs' ed eseguire nuovamente 'Add-Migration OrdineScarico'.

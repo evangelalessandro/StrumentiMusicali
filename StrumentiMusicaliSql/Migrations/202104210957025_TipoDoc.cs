@@ -22,13 +22,13 @@ namespace StrumentiMusicali.Library.Migrations
 
             Sql("insert into TipiDocumentiFiscali(IDEnum,Codice,Descrizione,DataCreazione,DataUltimaModifica)" +
                 "" +
-                "values( 0,'-','NonSpecificato',getdate(),getdate())," +
-                "(1, 'F', 'FatturaDiCortesia', getdate(), getdate()), " +
-                "(2, 'NC', 'NotaDiCredito', getdate(), getdate()), " +
-                "(4, 'F', 'RicevutaFiscale', getdate(), getdate()), " +
+                "values( 0,'-','Non Specificato',getdate(),getdate())," +
+                "(1, 'F', 'Fattura Di Cortesia', getdate(), getdate()), " +
+                "(2, 'NC', 'Nota Di Credito', getdate(), getdate()), " +
+                "(4, 'F', 'Ricevuta Fiscale', getdate(), getdate()), " +
                 "(3, 'D', 'DDT', getdate(), getdate()), " +
-                 "(5, 'ODQ', 'OrdineAlFornitore', getdate(), getdate()), " +
-                 "(6, 'ODC', 'OrdineDiCarico', getdate(), getdate())  ");
+                 "(5, 'ODQ', 'Ordine Al Fornitore', getdate(), getdate()), " +
+                 "(6, 'ODC', 'Ordine Di Carico', getdate(), getdate())  ");
 
             //SqlResource(Properties.Resource1.SP_NG_SottoScorta);
             

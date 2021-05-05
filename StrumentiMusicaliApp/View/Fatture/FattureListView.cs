@@ -17,7 +17,7 @@ namespace StrumentiMusicali.App.View
             return Controller.GetMenu();
         }
         public FattureListView(ControllerFatturazione controller, enAmbiente ambienteLista, enAmbiente ambienteDettaglio)
-            : base(controller)
+            : base(controller,false,true)
         {
 
             this.onEditItemShowView += FattureListView_onEditItemShowView;

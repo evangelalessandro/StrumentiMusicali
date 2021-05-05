@@ -141,9 +141,9 @@ namespace StrumentiMusicali.App.Core.Controllers
                 using (var uof = new UnitOfWork())
                 {
                     NuovoMovimento(new MovimentoMagazzino()
-                    { ArticoloID = obj.ArticoloID, Deposito = obj.Deposito, Qta = obj.Qta }, uof);
+                    { ArticoloID = obj.ArticoloID, Deposito = obj.Deposito, Qta = obj.Qta,Causale=obj.Causale }, uof);
                     uof.Commit();
-                    MessageManager.NotificaInfo("Aggiunto movimento magazzino");
+                    MessageManager.NotificaInfo("Aggiunto movimento carico magazzino");
                     EventAggregator.Instance().Publish<MovimentiUpdate>(new MovimentiUpdate());
                 }
             }
@@ -201,10 +201,10 @@ namespace StrumentiMusicali.App.Core.Controllers
                 using (var uof = new UnitOfWork())
                 {
                     NuovoMovimento(new MovimentoMagazzino()
-                    { ArticoloID = obj.ArticoloID, Deposito = obj.Deposito, Qta = -obj.Qta }, uof);
+                    { ArticoloID = obj.ArticoloID, Deposito = obj.Deposito, Qta = -obj.Qta, Prezzo=obj.Prezzo ,Causale=obj.Causale }, uof);
                     
                     uof.Commit();
-                    MessageManager.NotificaInfo("Aggiunto movimento magazzino");
+                    MessageManager.NotificaInfo("Aggiunto movimento scarico magazzino");
                     EventAggregator.Instance().Publish<MovimentiUpdate>(new MovimentiUpdate());
                 }
             }

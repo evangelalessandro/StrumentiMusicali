@@ -22,6 +22,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
      */
     internal class ScontrinoLine : ScontrinoLineItem
     {
+        public int Articolo { get; set; }
 
         public decimal Qta { get; set; } = 10.5M;
 

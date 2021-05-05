@@ -317,14 +317,27 @@ namespace StrumentiMusicali.App.View.Utility
             }
             return lt;
         }
+     
+        public static List<T> GetSelectedRows<T>(this GridView dataGrid)
+        {
+            
+            List<T> list = new List<T>();
+            foreach (int i in dataGrid.GetSelectedRows())
+            {
+                list.Add( (T)dataGrid.GetRow(i));
 
-        internal static void InitGridDev(GridView dgvRighe)
+
+            }
+            return list;
+        }
+
+        internal static void InitGridDev(GridView dgvRighe,bool multiSelect=false)
         {
             dgvRighe.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.False;
             dgvRighe.OptionsBehavior.AllowIncrementalSearch = true;
             dgvRighe.OptionsBehavior.Editable = false;
             dgvRighe.OptionsView.ShowAutoFilterRow = true;
-            dgvRighe.OptionsSelection.MultiSelect = false;
+            dgvRighe.OptionsSelection.MultiSelect = multiSelect;
             dgvRighe.OptionsView.RowAutoHeight = true;
             dgvRighe.OptionsView.ColumnAutoWidth = true;
             dgvRighe.OptionsView.BestFitMode = GridBestFitMode.Fast;

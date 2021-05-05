@@ -13,6 +13,6 @@ namespace StrumentiMusicali.Library.Core.Item
         public string RagioneSociale { get; set; }
         public string PIVA { get; set; }
 
-
+        public bool ChiusoSpedito { get; set; }
     }
 }

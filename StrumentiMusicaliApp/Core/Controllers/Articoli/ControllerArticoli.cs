@@ -955,6 +955,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                                a.Titolo.Contains(ricerca)
                               || a.Testo.Contains(ricerca)
+                              || a.CodiceInterno.Contains(ricerca)
                               || a.ArticoloWeb.DescrizioneBreveHtml.Contains(ricerca)
                               || a.ArticoloWeb.DescrizioneHtml.Contains(ricerca)
                               || a.TagImport.Contains(ricerca)

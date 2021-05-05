@@ -18,6 +18,7 @@ using DevExpress.XtraEditors.Repository;
 using StrumentiMusicali.Library.Core.Events.Magazzino;
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Entity.Articoli;
+using StrumentiMusicali.Core.Manager;
 
 namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 {
@@ -76,14 +77,46 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
         {
             Dispose(true);
         }
+        enum enListTipoScontrino
+        {
+            Scontrino,
+            ScontrinoDocScarico,
+            DocScarico
+        }
 
-        public void Init(Control control)
+        private DevExpress.XtraEditors.LookUpEdit cboTipoDoc;
+        public void Init(Control controlParent)
         {
             _gcScontrino = new DevExpress.XtraGrid.GridControl();
             _dgvScontrino = new DevExpress.XtraGrid.Views.Grid.GridView();
             ((System.ComponentModel.ISupportInitialize)(_gcScontrino)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(_dgvScontrino)).BeginInit();
 
+
+            this.cboTipoDoc = new DevExpress.XtraEditors.LookUpEdit();
+            this.cboTipoDoc.Location = new System.Drawing.Point(24, 42);
+            this.cboTipoDoc.Name = "cboTipoDoc";
+            this.cboTipoDoc.Properties.Appearance.Options.UseTextOptions = true;
+            cboTipoDoc.Properties.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.AutoFilter;
+            cboTipoDoc.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+
+            this.cboTipoDoc.Size = new System.Drawing.Size(266, 100);
+
+            this.cboTipoDoc.TabIndex = 0;
+            cboTipoDoc.Dock = DockStyle.Top;
+            controlParent.Controls.Add(cboTipoDoc);
+
+
+
+            cboTipoDoc.Properties.ValueMember = "ID";
+            cboTipoDoc.Properties.DisplayMember = "Descrizione";
+
+
+
+            Splitter splitter = new Splitter();
+            splitter.Dock = DockStyle.Top;
+            controlParent.Controls.Add(splitter);
+            splitter.BringToFront();
             //
             // _gridControlScontrino
             //
@@ -103,8 +136,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             _dgvScontrino.RowStyle += _dgvScontrino_RowStyle;
             _dgvScontrino.Name = "gridView1";
             _dgvScontrino.Appearance.FocusedRow.Font = new System.Drawing.Font("Tahoma", 20, System.Drawing.FontStyle.Bold);
-            control.Controls.Add(_gcScontrino);
-
+            controlParent.Controls.Add(_gcScontrino);
+            _gcScontrino.BringToFront();
             ((System.ComponentModel.ISupportInitialize)(_gcScontrino)).EndInit();
 
             ((System.ComponentModel.ISupportInitialize)(_dgvScontrino)).EndInit();
@@ -146,6 +179,21 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
             _dgvScontrino.Columns["Articolo"].Visible = false;
             _dgvScontrino.CustomDrawCell += _dgvScontrino_CustomDrawCell;
+
+            InitTipoDoc();
+            
+        }
+
+        private void InitTipoDoc()
+        {
+            List<Tuple<int, string>> list = new List<Tuple<int, string>>();
+            list.Add(new Tuple<int, string>((int)enListTipoScontrino.Scontrino, "Scontrino"));
+            list.Add(new Tuple<int, string>((int)enListTipoScontrino.ScontrinoDocScarico, "Scontrino + Doc.Scarico"));
+            list.Add(new Tuple<int, string>((int)enListTipoScontrino.DocScarico, "Doc.Scarico"));
+            cboTipoDoc.Properties.DataSource = list.Select(a => new { ID = a.Item1, Descrizione = a.Item2 }).ToList();
+            cboTipoDoc.Properties.PopulateColumns();
+            //cboTipoDoc.Properties.Columns[0].Visible = false;
+            cboTipoDoc.EditValue = 0;
         }
 
         private void _dgvScontrino_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
@@ -338,7 +386,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             {
 
                 ((INotifyPropertyChanged)item).PropertyChanged -= Newitem_PropertyChanged;
-                if (item.TipoRigaScontrino!=TipoRigaScontrino.Incassato)
+                if (item.TipoRigaScontrino != TipoRigaScontrino.Incassato)
                     ((INotifyPropertyChanged)item).PropertyChanged += Newitem_PropertyChanged;
             }
 
@@ -382,7 +430,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
 
             var incassato = Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Incassato).FirstOrDefault();
-            if (incassato != null 
+            if (incassato != null
                 //&& incassato.PrezzoIvato < datoTotale.PrezzoIvato
                 )
             {
@@ -396,42 +444,51 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             Reffreshlist();
         }
 
-        private void ScriviFile()
+        /// <summary>
+        ///  
+        ///Il file deve contenere le righe di vendita cosi strutturate  :
+
+
+
+        ///       Descrizione : per il tipo di riga V deve sempre esserci , per il resto è opzionale
+        ///       Aliquota Iva : per il tipo di riga V deve sempre esserci , per il resto è opzionale
+        ///       Quantità : per il tipo di riga V deve sempre esserci , per il resto è opzionale
+        ///       Totale : è sempre obbligatoria
+        ///       Tipo Riga(V, T) : è sempre obbligatoria
+        ///       Extra : è sempre opzionale
+
+
+        ///       -V sta per Vendita
+        ///       -T sta per Totale
+        ///       -S sconto e importo
+        ///       Vino Lambrusco; 22 ;1;0,75;2,50;V;
+
+
+
+        ///       Es riga Totale :
+
+
+
+        ///       Totale; ; ; ; 2,50;T;1 Riga con pagamento in contanti
+
+        ///       Totale; ; ; ; 2,50;T;45 Riga con pagamento bancomat
+
+        ///       Totale; ; ; ; 2,50;T;5 Riga con pagamento non riscosso
+        ///
+        /// </summary>
+        private bool ScriviFileScontrino(List<ScontrinoLine> listRighe, bool scaricaGiacenze, SaveEntityManager saveEntity)
         {
 
-            if (!SettingScontrinoValidator.Check())
-                return;
-
-            var listRighe = new List<ScontrinoLine>();
-            for (int i = 0; i < Datasource.Count(); i++)
-            {
-                var a = Datasource[i];
-                if (a.TipoRigaScontrino != TipoRigaScontrino.ScontoIncondizionato
-                    && a.TipoRigaScontrino != TipoRigaScontrino.Incassato)
-                {
-                    listRighe.Add(new ScontrinoLine { Descrizione = a.Descrizione, IvaPerc = a.IvaPerc, Qta = 1, PrezzoIvato = a.PrezzoIvato, TipoRigaScontrino = a.TipoRigaScontrino });
-                }
-                if (a.TipoRigaScontrino == TipoRigaScontrino.Vendita && a.ScontoPerc > 0)
-                {
-                    listRighe.Add(new ScontrinoLine { Descrizione = "Sconto " + a.ScontoPerc.ToString() + "%", IvaPerc = 0, Qta = 1, PrezzoIvato = a.PrezzoIvato * (a.ScontoPerc) / 100, TipoRigaScontrino = TipoRigaScontrino.Sconto });
-                }
-                if (a.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato && a.PrezzoIvato > 0)
-                {
-                    listRighe.Add(new ScontrinoLine { Descrizione = a.Descrizione, IvaPerc = 0, Qta = 1, PrezzoIvato = a.PrezzoIvato, TipoRigaScontrino = TipoRigaScontrino.Sconto });
-                }
-            }
 
 
-
-
-            using (var uof = new UnitOfWork())
+            var uof = saveEntity.UnitOfWork;
             {
                 var list = uof.TipiPagamentoScontrinoRepository.Find(a => a.Enable == true).ToList().Select(a => a.Codice.ToString() + " " + a.Descrizione).ToList();
-                using (var tipiPagamento = new ListViewCustom(list, "Tipo pagamento","Codice lotteria"))
+                using (var tipiPagamento = new ListViewCustom(list, "Tipo pagamento", "Codice lotteria"))
                 {
                     var diag = tipiPagamento.ShowDialog();
                     if (diag != DialogResult.OK)
-                        return;
+                        return false;
                     var pagamento = tipiPagamento.SelectedItem;
                     var codiceLotteria = tipiPagamento.SelectedTextProp;
 
@@ -439,7 +496,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                     {
                         MessageManager.NotificaWarnig("Occorre selezionare il tipo di pagamento");
 
-                        return;
+                        return false;
                     }
                     var tot = listRighe.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Totale).First();
 
@@ -457,20 +514,23 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
 
                     var validator = SettingScontrinoValidator.ReadSetting();
-
-                    var negozio = uof.DepositoRepository.Find(a => a.Principale == true).First();
-                    foreach (var item in Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Vendita & a.Articolo >= 0))
+                    if (scaricaGiacenze)
                     {
+                        var negozio = uof.DepositoRepository.Find(a => a.Principale == true).First();
                         using (var depo = new Core.Controllers.ControllerMagazzino())
                         {
-                            ScaricaQtaMagazzino scarica = new ScaricaQtaMagazzino();
+                            foreach (var item in Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Vendita & a.Articolo >= 0))
+                            {
 
-                            scarica.Qta = 1;
+                                ScaricaQtaMagazzino scarica = new ScaricaQtaMagazzino();
 
-                            scarica.Deposito = negozio.ID;
-                            scarica.ArticoloID = item.Articolo;
-                            EventAggregator.Instance().Publish<ScaricaQtaMagazzino>(scarica);
+                                scarica.Qta = 1;
+                                scarica.Prezzo = item.PrezzoIvato;
+                                scarica.Deposito = negozio.ID;
+                                scarica.ArticoloID = item.Articolo;
+                                EventAggregator.Instance().Publish<ScaricaQtaMagazzino>(scarica);
 
+                            }
                         }
                     }
                     System.IO.File.WriteAllLines(
@@ -479,60 +539,109 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
                     MessageManager.NotificaInfo("Scontrino pubblicato al servizio correttamente!");
 
-                    //EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>(this));
-
-                    RipulisciScontrino(new ScontrinoClear());
-
-
+                    return true;
                 }
             }
         }
         private void StampaScontrino(ScontrinoStampa obj)
         {
-
-            if (!SettingScontrinoValidator.Check())
-                return;
             if (Datasource.Count == 0)
             {
                 MessageManager.NotificaWarnig("Non ci sono articoli da stampare");
                 return;
             }
+            /*cambia riga per salvare il dato*/
             _dgvScontrino.ValidateEditor();
             _dgvScontrino.FocusedRowHandle = 0;
-            
+
             _dgvScontrino.FocusedRowHandle = 1;
 
-            /*
-             Il file deve contenere le righe di vendita cosi strutturate  :
 
 
+            var listRighe = new List<ScontrinoLine>();
+            for (int i = 0; i < Datasource.Count(); i++)
+            {
+                var a = Datasource[i];
+                if (a.TipoRigaScontrino != TipoRigaScontrino.ScontoIncondizionato
+                    && a.TipoRigaScontrino != TipoRigaScontrino.Incassato)
+                {
+                    listRighe.Add(new ScontrinoLine { Articolo = a.Articolo, Descrizione = a.Descrizione, IvaPerc = a.IvaPerc, Qta = 1, PrezzoIvato = a.PrezzoIvato, TipoRigaScontrino = a.TipoRigaScontrino });
+                }
+                if (a.TipoRigaScontrino == TipoRigaScontrino.Vendita && a.ScontoPerc > 0)
+                {
+                    listRighe.Add(new ScontrinoLine { Descrizione = "Sconto " + a.ScontoPerc.ToString() + "%", IvaPerc = 0, Qta = 1, PrezzoIvato = a.PrezzoIvato * (a.ScontoPerc) / 100, TipoRigaScontrino = TipoRigaScontrino.Sconto });
+                }
+                if (a.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato && a.PrezzoIvato > 0)
+                {
+                    listRighe.Add(new ScontrinoLine { Descrizione = a.Descrizione, IvaPerc = 0, Qta = 1, PrezzoIvato = a.PrezzoIvato, TipoRigaScontrino = TipoRigaScontrino.Sconto });
+                }
+            }
+            enListTipoScontrino tipoScontrino = (enListTipoScontrino)cboTipoDoc.EditValue;
+            //enListTipoScontrino tipoScontrino = (enListTipoScontrino)Enum.Parse(typeof(enListTipoScontrino), .ToString());
+            using (var saveEntity = new SaveEntityManager())
+            {
+                if (tipoScontrino == enListTipoScontrino.Scontrino ||
+                    tipoScontrino == enListTipoScontrino.ScontrinoDocScarico)
+                {
+                    if (!SettingScontrinoValidator.Check())
+                        return;
+                    if (!ScriviFileScontrino(listRighe, tipoScontrino == enListTipoScontrino.Scontrino, saveEntity))
+                        return;
 
-                Descrizione : per il tipo di riga V deve sempre esserci , per il resto è opzionale
-                Aliquota Iva : per il tipo di riga V deve sempre esserci , per il resto è opzionale
-                Quantità : per il tipo di riga V deve sempre esserci , per il resto è opzionale
-                Totale : è sempre obbligatoria
-                Tipo Riga (V,T) : è sempre obbligatoria
-                Extra : è sempre opzionale
+                }
+                if (tipoScontrino == enListTipoScontrino.DocScarico ||
+                   tipoScontrino == enListTipoScontrino.ScontrinoDocScarico)
+                {
+                    if (!GeneraOrdineScarico(saveEntity))
+                        return;
+                }
+            }
+            RipulisciScontrino(new ScontrinoClear());
+        }
+
+        private bool GeneraOrdineScarico(SaveEntityManager saveEntity)
+        {
+
+            using (var uof = new UnitOfWork())
+            {
+                var list = uof.ClientiRepository.Select(a => new { a.ID, Descrizione = a.RagioneSociale.Length > 0 ? a.RagioneSociale : a.Cognome + " " + a.Nome, CfPIVA = a.PIVA != null && a.PIVA.Length > 0 ? a.PIVA : a.CodiceFiscale }).ToList();
+
+                using (var clientiList = new ListViewCustom(
+                    new ListViewCustom.settingCombo() { ValueMember = "ID", DisplayMember = "Descrizione", DataSource = list, TitoloCombo = "Cliente" }))
+                {
+                    var diag = clientiList.ShowDialog();
+                    if (diag != DialogResult.OK)
+                        return false;
+                    var cliente = int.Parse(clientiList.SelectedItem);
 
 
-                -V sta per Vendita
-                -T sta per Totale
-                -S sconto e importo
-                Vino Lambrusco ; 22 ;1;0,75;2,50;V;
+                    var listRighe = new List<ScontrinoLine>();
+                    for (int i = 0; i < Datasource.Count(); i++)
+                    {
+                        var a = Datasource[i];
+                        if (a.TipoRigaScontrino != TipoRigaScontrino.ScontoIncondizionato
+                            && a.TipoRigaScontrino != TipoRigaScontrino.Incassato
+                            && a.TipoRigaScontrino != TipoRigaScontrino.Totale)
+                        {
+                            listRighe.Add(new ScontrinoLine
+                            {
+                                Articolo = a.Articolo,
+                                Descrizione = a.Descrizione,
+                                IvaPerc = a.IvaPerc,
+                                Qta = 1,
+                                PrezzoIvato = a.PrezzoIvato - a.PrezzoIvato * (a.ScontoPerc) / 100,
+                                TipoRigaScontrino = a.TipoRigaScontrino
+                            });
+                        }
 
 
+                    }
+                    return ControllerFatturazione.GeneraOrdScarico(listRighe, cliente, saveEntity);
 
-                Es riga Totale :
 
+                }
 
-
-                Totale; ; ; ; 2,50;T;1 Riga con pagamento in contanti
-
-                Totale; ; ; ; 2,50;T;45 Riga con pagamento bancomat
-
-                Totale; ; ; ; 2,50;T;5 Riga con pagamento non riscosso
-            */
-            ScriviFile();
+            }
         }
     }
 }

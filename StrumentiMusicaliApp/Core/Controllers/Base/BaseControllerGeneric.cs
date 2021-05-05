@@ -143,6 +143,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                         Entity = item
                     }, this));
         }
+
+        public List<TBaseItem> SelectedItems { get; set; }
         public TEntity SelectedItem { get; set; }
         public void ShowEditView()
         {

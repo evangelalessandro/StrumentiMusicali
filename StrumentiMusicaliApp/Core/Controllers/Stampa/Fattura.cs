@@ -138,29 +138,15 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
             _excel.Range("Codice").Value = fattura.Codice;
             _excel.Range("Data").Value = fattura.Data;
             _excel.Range("Pagamento").Value = fattura.Pagamento;
-            switch (fattura.TipoDocumento)
+
+            using (var uof=new UnitOfWork())
             {
-                case EnTipoDocumento.FatturaDiCortesia:
-                    _excel.Range("TipoDocumento").Value = "Fattura di cortesia";
-                    break;
+                int enVal = (int)fattura.TipoDocumento;
 
-                case EnTipoDocumento.RicevutaFiscale:
-                    _excel.Range("TipoDocumento").Value = "Ricevuta fiscale";
-                    break;
-
-                case EnTipoDocumento.NotaDiCredito:
-                    _excel.Range("TipoDocumento").Value = "Nota di credito";
-                    break;
-
-                case EnTipoDocumento.DDT:
-                    _excel.Range("TipoDocumento").Value = "DDT";
-                    break;
-                case EnTipoDocumento.OrdineAlFornitore:
-                    _excel.Range("TipoDocumento").Value = "Ordine al fornitore";
-                    break;
-                default:
-                    break;
+                var descr =uof.TipiDocumentoFiscaleRepository.Find(a => a.IDEnum == enVal).Select(a => a.Descrizione).First();
+                _excel.Range("TipoDocumento").Value = descr;
             }
+             
 
             _excel.Range("ClienteRagioneSociale").Value = fattura.ClienteFornitore.RagioneSociale;
             _excel.Range("ClienteIndirizzo").Value = fattura.ClienteFornitore.Indirizzo.IndirizzoConCivico;

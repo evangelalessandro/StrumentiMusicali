@@ -16,36 +16,57 @@ namespace StrumentiMusicali.App.View
         EDTesto _txt = new EDTesto();
 
         public string CaptionText { get; set; }
-        public ListViewCustom(List<string> list, string titolo, string titoloText = "", bool hideListView = false)
+
+        public class settingCombo
+        {
+            public string ValueMember { get; set; } = "";
+            public string DisplayMember { get; set; } = "";
+            public object DataSource { get; set; }
+            public string TitoloCombo { get; set; } = "";
+
+        }
+      
+            public ListViewCustom(settingCombo comboSetting)
+
+        {
+            InitForm(comboSetting);
+        }
+
+        public ListViewCustom(List<string> list, string titoloCombo, string titoloText = "", bool hideListView = false)
+        {
+            settingCombo comboSetting = new settingCombo() { TitoloCombo = titoloCombo, DisplayMember = "", DataSource = list, ValueMember = "" };
+
+            InitForm(comboSetting, titoloText, hideListView);
+
+        }
+
+        private void InitForm(settingCombo comboSetting, string titoloText = "", bool hideListView = false)
         {
             InitializeComponent();
 
+
             this.Font = new Font(this.Font.FontFamily, 24);
             _combo.Controllo.Font = this.Font;
-            _combo.Titolo = titolo;
+            _combo.Titolo = comboSetting.TitoloCombo;
             _combo.Controllo.Properties.Appearance.Font = this.Font;
             _combo.Controllo.Properties.NullText = "Selezionare un elemento";
 
 
-            _combo.Controllo.Properties.ValueMember = "";
-            _combo.Controllo.Properties.DisplayMember = "";
-            _combo.Controllo.Properties.DataSource = list.ToArray();
+            _combo.Controllo.Properties.ValueMember = comboSetting.ValueMember;
+            _combo.Controllo.Properties.DisplayMember = comboSetting.DisplayMember;
+            _combo.Controllo.Properties.DataSource = comboSetting.DataSource;
 
             _combo.Controllo.Properties.AcceptEditorTextAsNewValue = DevExpress.Utils.DefaultBoolean.False;
             _combo.Controllo.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             this.button1.Click += Button1_Click;
-            this.Text = titolo;
+            this.Text = comboSetting.TitoloCombo;
             this.AcceptButton = button1;
 
             CaptionText = titoloText;
 
             if (hideListView)
                 _combo.Hide();
-
         }
-
-
-
 
         private void Button1_Click(object sender, EventArgs e)
         {
@@ -84,11 +105,11 @@ namespace StrumentiMusicali.App.View
 
         private void EnabledButton()
         {
-            
+
             if (_combo.Visible && _combo.Controllo.EditValue != null)
                 button1.Enabled = true;
 
-            if (!string.IsNullOrEmpty(CaptionText) && _txt.ControlToBind.Text.Length>0)
+            if (!string.IsNullOrEmpty(CaptionText) && _txt.ControlToBind.Text.Length > 0)
             {
                 button1.Enabled = true;
             }

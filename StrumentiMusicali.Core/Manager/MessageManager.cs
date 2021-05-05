@@ -23,7 +23,7 @@ namespace StrumentiMusicali.App.Core
             popup.ContentText = info;
             popup.Popup();
             {
-                ShowMessagio(popup);
+                ShowMessage(popup);
             }
         }
         public static string GetMessage(enSaveOperation operation)
@@ -78,11 +78,11 @@ namespace StrumentiMusicali.App.Core
             }
             else
             {
-                ShowMessagio(popup);
+                ShowMessage(popup);
             }
             _logger.Warn(info);
         }
-        private static void ShowMessagio(PopupNotifier popup)
+        private static void ShowMessage(PopupNotifier popup)
         {
             popup.Click += (b, c) =>
             {
@@ -124,7 +124,7 @@ namespace StrumentiMusicali.App.Core
             }
             else
             {
-                ShowMessagio(popup);
+                ShowMessage(popup);
             }
         }
     }

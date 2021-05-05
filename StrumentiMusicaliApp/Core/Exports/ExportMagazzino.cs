@@ -37,8 +37,8 @@ namespace StrumentiMusicali.App.Core.Exports
 
                     var list = uof.ArticoliRepository.Find(a => a.Strumento.Marca.Length > 0)
                     .Select(a => a.Strumento.Marca.ToUpper()).Distinct().OrderBy(a => a).ToList();
-
-                    using (var frmMarche = new ListViewCustom(list,"Marca"))
+                    
+                    using (var frmMarche = new ListViewCustom(new ListViewCustom.settingCombo() { DataSource = list, TitoloCombo = "Marca" }))
                     {
                         frmMarche.ShowDialog();
                         marcaFiltro = frmMarche.SelectedItem;

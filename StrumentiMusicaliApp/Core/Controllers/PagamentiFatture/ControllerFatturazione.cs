@@ -1,5 +1,6 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Controllers.FatturaElett;
+using StrumentiMusicali.App.Core.Controllers.Scontrino;
 using StrumentiMusicali.App.Core.Controllers.Stampa;
 using StrumentiMusicali.App.Core.Fatture;
 using StrumentiMusicali.App.View;
@@ -11,6 +12,7 @@ using StrumentiMusicali.Library.Core;
 
 using StrumentiMusicali.Library.Core.Events.Fatture;
 using StrumentiMusicali.Library.Core.Events.Generics;
+using StrumentiMusicali.Library.Core.Events.Magazzino;
 using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Repo;
@@ -62,7 +64,7 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                 if (EditItem.ID > 0)
                 {
-                    if (saveManager.UnitOfWork.FatturaRepository.Find(a => a.ID == EditItem.ID).Select(a=>a.ChiusaSpedita).First())
+                    if (saveManager.UnitOfWork.FatturaRepository.Find(a => a.ID == EditItem.ID).Select(a => a.ChiusaSpedita).First())
                     {
                         MessageManager.NotificaWarnig("Documento già chiuso, non è possibile modificare altro!");
                         return;
@@ -96,32 +98,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             using (UnitOfWork uof = new UnitOfWork())
             {
 
-                //switch (fattura.TipoDocumento)
-                //{
-                //    case EnTipoDocumento.NonSpecificato:
-                //        return "";
 
-                //    case EnTipoDocumento.FatturaDiCortesia:
-                //    case EnTipoDocumento.RicevutaFiscale:
-                //        prefix = "F";
-                //        break;
-
-                //    case EnTipoDocumento.NotaDiCredito:
-                //        prefix = "NC";
-                //        break;
-
-                //    case EnTipoDocumento.DDT:
-                //        prefix = "D";
-                //        break;
-                //    case EnTipoDocumento.OrdineAlFornitore:
-                //        prefix = "ODQ";
-                //        break;
-                //    case EnTipoDocumento.OrdineDiCarico:
-                //        prefix = "ODC";
-                //        break;
-                //    default:
-                //        break;
-                //}
                 var enumVal = (int)fattura.TipoDocumento;
                 var prefix = uof.TipiDocumentoFiscaleRepository.Find(a => a.IDEnum == enumVal).Select(a => a.Codice).FirstOrDefault();
 
@@ -414,8 +391,8 @@ namespace StrumentiMusicali.App.Core.Controllers
             };
             if (!editItem)
             {
-                var ribGeneraOrdineCarico = pnlStampa.Add("Genera Ordine Carico", StrumentiMusicali.Core.Properties.ImageIcons.OrdineDiCarico, true);
-                ribGeneraOrdineCarico.Click += (a, e) =>
+                pnlStampa.Add("Genera Ordine Carico", StrumentiMusicali.Core.Properties.ImageIcons.OrdineDiCarico, true)
+                    .Click += (a, e) =>
                 {
 
                     GeneraOrdineCarico();
@@ -423,11 +400,19 @@ namespace StrumentiMusicali.App.Core.Controllers
             }
             if (!editItem)
             {
-                var ribGeneraOrdineCarico = pnlStampa.Add("Genera Giacenze da Ordine di carico", StrumentiMusicali.Core.Properties.ImageIcons.OrdineDiCarico, true);
-                ribGeneraOrdineCarico.Click += (a, e) =>
+                pnlStampa.Add("Genera Giacenze da Ordine di carico", StrumentiMusicali.Core.Properties.ImageIcons.OrdineDiCarico, true).Click += (a, e) =>
                 {
 
                     GeneraMovimentiDaOrdineDiCarico();
+                };
+            }
+            if (!editItem)
+            {
+                pnlStampa.Add("Genera Fattura da ordine di Scarico", StrumentiMusicali.Core.Properties.ImageIcons.OrdineDiCarico, true)
+                    .Click += (a, e) =>
+                {
+                    GeneraFatturaDaOrdineScarico();
+
                 };
             }
             var pnlCliente = tab.Add("Anagrafica cliente");
@@ -466,6 +451,111 @@ namespace StrumentiMusicali.App.Core.Controllers
                 }
             };
         }
+        /// <summary>
+        /// generazione fatture da ordine di scarico
+        /// </summary>
+        private void GeneraFatturaDaOrdineScarico()
+        {
+            var fatt = SelectedItem;
+
+
+            if (SelectedItems.Count > 1)
+            {
+                if (!MessageManager.QuestionMessage("Vuoi generare fattura per i documenti selezionati. Vuoi proseguire?"))
+                {
+                    return;
+                }
+            }
+
+            if (!MessageManager.QuestionMessage(@"Generando la fattura, il documento\i di carico non sarà più modificabile. Vuoi proseguire?"))
+            {
+                return;
+            }
+            List<Fattura> list = new List<Fattura>();
+            if (SelectedItems.Count > 1)
+            {
+                list = SelectedItems.Select(a => a.Entity).ToList();
+            }
+            else
+            {
+                list.Add(fatt);
+            }
+            list = list.Where(a => !a.ChiusaSpedita && a.TipoDocumento == EnTipoDocumento.OrdineDiScarico).ToList();
+            if (list.Where(a => !a.ChiusaSpedita).Select(a => a.ClienteFornitoreID).Distinct().Count() > 0)
+            {
+                if (!MessageManager.QuestionMessage("Vuoi generare fattura per i clienti selezionati. " +
+                    "I documenti chiusi e non del tipo 'Ordine di carico' non saranno presi in considerazione. Vuoi proseguire?"))
+                {
+                    return;
+                }
+            }
+
+            if (list.Count() == 0)
+                return;
+            using (var saveEnt = new SaveEntityManager())
+            {
+                bool save = false;
+                var listFatt = new List<Library.Entity.Fattura>();
+
+                foreach (var ordScaricoListFornitore in list.GroupBy(a => a.ClienteFornitoreID).Select(a => new { a.Key, Fatture = a }))
+                {
+                    var fattExt = new Library.Entity.Fattura();
+                    fattExt.ClienteFornitoreID = ordScaricoListFornitore.Key;
+                    fattExt.TipoDocumento = Library.Entity.EnTipoDocumento.FatturaDiCortesia;
+                    fattExt.Data = DateTime.Now;
+                    fattExt.Codice = ControllerFatturazione.CalcolaCodice(fattExt);
+
+                    var fornitore = saveEnt.UnitOfWork.SoggettiRepository.Find(a => a.ID == fattExt.ClienteFornitoreID).Select(a => new { a.RagioneSociale, a.CodiceFiscale, a.PIVA }).FirstOrDefault();
+                    fattExt.RagioneSociale = fornitore.RagioneSociale;
+                    fattExt.PIVA = fornitore.PIVA;
+
+                    saveEnt.UnitOfWork.FatturaRepository.Add(fattExt);
+
+                    saveEnt.SaveEntity("");
+
+                    listFatt.Add(fattExt);
+                    foreach (var ordScarico in ordScaricoListFornitore.Fatture)
+                    {
+
+                        var righeOrdScarico = saveEnt.UnitOfWork.FattureRigheRepository.Find(a => a.FatturaID == ordScarico.ID);
+
+                        foreach (var itemRigaScarico in righeOrdScarico)
+                        {
+
+                            var riga = (new Library.Entity.FatturaRiga()
+                            {
+                                ArticoloID = itemRigaScarico.ArticoloID,
+                                Descrizione = itemRigaScarico.Descrizione,
+                                Qta = itemRigaScarico.Qta,
+                                Fattura = fattExt,
+                                PrezzoUnitario = itemRigaScarico.PrezzoUnitario,
+                                IvaApplicata = itemRigaScarico.IvaApplicata,
+
+                            });
+                            saveEnt.UnitOfWork.FattureRigheRepository.Add(riga);
+                        }
+                        save = true;
+                        /*chiudo l'ordine di scarico originale*/
+                        var ordScarDb = saveEnt.UnitOfWork.FatturaRepository.Find(a => a.ID == ordScarico.ID).First();
+                        ordScarDb.ChiusaSpedita = true;
+                        saveEnt.UnitOfWork.FatturaRepository.Update(ordScarDb);
+                    }
+
+
+                    if (save)
+                        saveEnt.SaveEntity("");
+
+                }
+                foreach (var item in listFatt.Distinct())
+                {
+                    ControllerFatturazione.CalcolaTotali(item);
+                    saveEnt.UnitOfWork.FatturaRepository.Update(item);
+                }
+                if (save)
+                    saveEnt.SaveEntity("Generati gli ordini di acquisto!");
+            }
+
+        }
 
         private void GeneraMovimentiDaOrdineDiCarico()
         {
@@ -493,6 +583,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             using (var saveEnt = new SaveEntityManager())
             {
                 var depositi = saveEnt.UnitOfWork.DepositoRepository.Find(a => a.ID == a.ID).Select(a => new { a.ID, a.NomeDeposito }).ToList();
+
 
                 using (var selezionaDeposito = new ListViewCustom(depositi.Select(a => a.NomeDeposito).ToList(), "Imposta deposito e nome ddt fornitore", "Numero Ddt Fornitore", false))
                 {
@@ -640,6 +731,92 @@ namespace StrumentiMusicali.App.Core.Controllers
                 return true;
             }
         }
+        /// <summary>
+        /// genera l'ordine scarico dalla vendita a banco e scarica le giacenze
+        /// </summary>
+        /// <param name="items"></param>
+        /// <param name="cliente"></param>
+        /// <param name="saveEnt"></param>
+        /// <returns></returns>
+        internal static bool GeneraOrdScarico(List<ScontrinoLine> items, int cliente, SaveEntityManager saveEnt)
+        {
+
+            bool save = false;
+
+            var listFatt = new List<Library.Entity.Fattura>();
+
+            var fattExt = new Library.Entity.Fattura();
+            fattExt.ClienteFornitoreID = cliente;
+            fattExt.TipoDocumento = Library.Entity.EnTipoDocumento.OrdineDiScarico;
+            fattExt.Data = DateTime.Now;
+            fattExt.Codice = ControllerFatturazione.CalcolaCodice(fattExt);
+
+            var fornitore = saveEnt.UnitOfWork.SoggettiRepository.Find(a => a.ID == fattExt.ClienteFornitoreID).Select(a => new { a.RagioneSociale, a.CodiceFiscale, a.PIVA }).FirstOrDefault();
+            fattExt.RagioneSociale = fornitore.RagioneSociale;
+            fattExt.PIVA = fornitore.PIVA;
+
+            saveEnt.UnitOfWork.FatturaRepository.Add(fattExt);
+
+            saveEnt.SaveEntity("");
+
+            listFatt.Add(fattExt);
+
+            var negozio = saveEnt.UnitOfWork.DepositoRepository.Find(a => a.Principale == true).First();
+            using (var depo = new Core.Controllers.ControllerMagazzino())
+            {
+ 
+                foreach (var item in items
+                    .Select(a => new { Qta = a.Qta, a.Articolo, a.Descrizione, a.IvaPerc, a.PrezzoIvato })
+                    .ToList())
+                {
+                    var riga = (new Library.Entity.FatturaRiga()
+                    {
+
+                        ArticoloID = item.Articolo,
+                        Descrizione = item.Descrizione,
+                        Qta = (int)item.Qta,
+                        Fattura = fattExt,
+                        PrezzoUnitario = item.PrezzoIvato,
+                        IvaApplicata = item.IvaPerc.ToString(),
+                    });
+                    saveEnt.UnitOfWork.FattureRigheRepository.Add(riga);
+                    if (item.Articolo > 0)
+                    {
+                        ScaricaQtaMagazzino scarica = new ScaricaQtaMagazzino();
+
+                        scarica.Qta = item.Qta;
+                        scarica.Prezzo = item.PrezzoIvato;
+                        scarica.Deposito = negozio.ID;
+                        scarica.ArticoloID = item.Articolo;
+                        scarica.Causale = "Ordine scarico " + fattExt.Codice;
+
+                        EventAggregator.Instance().Publish<ScaricaQtaMagazzino>(scarica);
+                    }
+                    save = true;
+                }
+
+            }
+            if (save)
+                saveEnt.SaveEntity("");
+            else
+            {
+                MessageManager.NotificaInfo("Non ci sono articoli da ordinare!");
+                return false;
+            }
+
+            foreach (var item in listFatt.Distinct())
+            {
+                ControllerFatturazione.CalcolaTotali(item);
+                saveEnt.UnitOfWork.FatturaRepository.Update(item);
+
+            }
+            if (save)
+                saveEnt.SaveEntity("Generato l'ordine di scarico!");
+
+            return true;
+
+        }
+
         private void GeneraOrdineCarico()
         {
             var fatt = SelectedItem;
@@ -672,8 +849,8 @@ namespace StrumentiMusicali.App.Core.Controllers
                 {
 
                     /*deve cercare gli ordini di carico già fatti, e collegati, e detrarre la qta per vedere se farne di nuovi*/
-                    var evaso = saveEnt.UnitOfWork.FattureRigheRepository.Find(a => a.IdRigaCollegata == item.ID).Select(a => new 
-                    { Qta = a.Fattura.ChiusaSpedita == true ? a.Ricevuti : a.Qta }).Select(a=>a.Qta).DefaultIfEmpty(0).Sum();
+                    var evaso = saveEnt.UnitOfWork.FattureRigheRepository.Find(a => a.IdRigaCollegata == item.ID).Select(a => new
+                    { Qta = a.Fattura.ChiusaSpedita == true ? a.Ricevuti : a.Qta }).Select(a => a.Qta).DefaultIfEmpty(0).Sum();
 
                     if (evaso == item.Qta)
                         continue;
@@ -766,6 +943,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                 using (var uof = new UnitOfWork())
                 {
+                    var tipiDoc = uof.TipiDocumentoFiscaleRepository.Find(a => 1 == 1).Select(a => new { a.IDEnum, a.Descrizione }).ToList();
+
                     list = uof.FatturaRepository.Find(a => datoRicerca == ""
                        || a.RagioneSociale.Contains(datoRicerca)
                         || a.PIVA.Contains(datoRicerca)
@@ -779,7 +958,9 @@ namespace StrumentiMusicali.App.Core.Controllers
                         PIVA = a.PIVA,
                         Codice = a.Codice,
                         RagioneSociale = a.RagioneSociale,
-                        TipoDocumento = Enum.GetName(typeof(EnTipoDocumento), a.TipoDocumento)
+                        TipoDocumento = tipiDoc.Where(b => b.IDEnum == (int)a.TipoDocumento).Select(b => b.Descrizione)
+                        .DefaultIfEmpty("").FirstOrDefault(),
+                        ChiusoSpedito = a.ChiusaSpedita,
                     }).ToList();
                 }
 

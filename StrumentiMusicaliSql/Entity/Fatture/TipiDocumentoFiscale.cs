@@ -1,5 +1,6 @@
 ﻿using StrumentiMusicali.Library.Entity.Base;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StrumentiMusicali.Library.Entity
 {
@@ -7,6 +8,7 @@ namespace StrumentiMusicali.Library.Entity
     {
         
         [Library.Core.CustomHideUI]
+        [Index("TipoDocumentoFiscale_IX_ENUM",IsUnique = true)]
         public int IDEnum { get; set; }
 
         [StringLength(10,  ErrorMessage = "Codice non valido, deve essere da 3 a 50 caratteri", MinimumLength =1)]

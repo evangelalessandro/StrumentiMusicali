@@ -13,6 +13,7 @@ using StrumentiMusicali.Library.Core.interfaces;
 using StrumentiMusicali.Library.Core.Item.Base;
 using StrumentiMusicali.Library.Entity.Base;
 using System;
+using System.Linq;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
@@ -44,9 +45,11 @@ namespace StrumentiMusicali.App.View.BaseControl
 
         }
         public bool InLine { get; private set; }
-        public BaseGridViewGeneric(TController controllerItem, bool inLine = false)
+        public BaseGridViewGeneric(TController controllerItem, bool inLine = false, bool multiSelectRow = false)
         {
             InitializeComponent();
+
+            _multiSelect = multiSelectRow;
 
             InLine = inLine;
 
@@ -67,7 +70,7 @@ namespace StrumentiMusicali.App.View.BaseControl
             };
             controllerItem.RefreshList(null);
 
-            
+
             this.Load += Control_Load;
             if (File.Exists(getLayoutFile()))
             {
@@ -77,8 +80,8 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 
             this.dgvRighe.FocusedRowChanged += DgvMaster_SelectionChanged;
+            this.dgvRighe.SelectionChanged+= DgvMaster_SelectionChanged;
 
-            //this.dgvRighe.FocusedRowChanged += DgvMaster_SelectionChanged;
 
             _selectSub = EventAggregator.Instance().
                 Subscribe<ItemSelected<TBaseItem, TEntity>>(
@@ -233,12 +236,12 @@ namespace StrumentiMusicali.App.View.BaseControl
         }
 
         private Subscription<ItemSelected<TBaseItem, TEntity>> _selectSub;
-
+        private bool _multiSelect;
         private void Control_Load(object sender, EventArgs e)
         {
             EventAggregator.Instance().Subscribe<UpdateList<TEntity>>(RefreshList);
 
-            UtilityView.InitGridDev(dgvRighe);
+            UtilityView.InitGridDev(dgvRighe, _multiSelect);
 
             dgvRighe.OptionsBehavior.Editable = InLine;
 
@@ -300,9 +303,14 @@ namespace StrumentiMusicali.App.View.BaseControl
                 Controller.SelectedItem = null;
 
             }
+            if (_multiSelect)
+                Controller.SelectedItems = dgvRighe.GetSelectedRows<TBaseItem>();
+
             EventAggregator.Instance().Publish(new ItemSelected<TBaseItem, TEntity>(item, Controller));
 
             Controller.UpdateButtonState();
+
+
         }
         public MenuTab GetMenu()
         {
@@ -346,7 +354,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 
         private void RefreshList(UpdateList<TEntity> obj)
         {
-            
+
             ForceUpdateGridAsync();
 
             ForceRefreshSelectItem();

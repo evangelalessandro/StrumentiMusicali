@@ -122,8 +122,9 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
             {
                 Titolo = name,
                 Condizione = enCondizioneArticolo.Nuovo,
-                Testo = name
+                
             };
+            articolo.ArticoloWeb.Testo = name;
             articolo.Iva = 22;
 
             articolo.ArticoloWeb.PrezzoWeb = item.wholesale_price;

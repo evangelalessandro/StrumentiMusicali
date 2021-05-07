@@ -15,5 +15,7 @@ namespace StrumentiMusicali.Library.Entity.Setting
         public string NomeAnagrafica { get; set; } = "Articoli";
 
         public bool AmbientePagamentiRateali { get; set; } = false;
+
+        public  bool AbilitazioneEcommerce { get; set; } = false;
     }
 }

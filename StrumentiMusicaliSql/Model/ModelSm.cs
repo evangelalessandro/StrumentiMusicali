@@ -47,7 +47,7 @@ namespace StrumentiMusicali.Library.Model
                     result.ValidationErrors.Add(item);
                 }
             }
-            
+
             else if (entityEntry.Entity is RiordinoPeriodi)
             {
                 foreach (var item in CheckRiordinoPeriodi(entityEntry.Entity as RiordinoPeriodi, entityEntry.State))
@@ -323,7 +323,8 @@ namespace StrumentiMusicali.Library.Model
            .IsUnique();
 
             modelBuilder.Entity<Articolo>()
-           .HasIndex(b => new { b.CodiceABarre, b.Titolo, b.Testo });
+           .HasIndex(b => new { b.CodiceABarre, b.Titolo, b.CodiceInterno });
+
 
             modelBuilder.Entity<AggiornamentoWebArticolo>()
                 .HasIndex(b => new { b.ArticoloID })

@@ -118,7 +118,7 @@ namespace StrumentiMusicali.App.Core.Exports
                       a.articolo.Note3,
                       a.articolo.NonImponibile,
 
-                      a.articolo.Testo,
+                      
                       a.Libro.Autore,
                       a.Libro.TitoloDelLibro,
                       a.Libro.Edizione,

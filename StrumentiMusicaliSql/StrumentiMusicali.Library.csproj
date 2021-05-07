@@ -316,6 +316,10 @@
     <Compile Include="Migrations\202105071438503_RimozioneMercatico.Designer.cs">
       <DependentUpon>202105071438503_RimozioneMercatico.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105071545515_testoArt.cs" />
+    <Compile Include="Migrations\202105071545515_testoArt.Designer.cs">
+      <DependentUpon>202105071545515_testoArt.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
@@ -423,6 +427,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105071438503_RimozioneMercatico.resx">
       <DependentUpon>202105071438503_RimozioneMercatico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105071545515_testoArt.resx">
+      <DependentUpon>202105071545515_testoArt.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Script\IndexOptimize.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

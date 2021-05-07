@@ -13,13 +13,17 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         [CustomUIView(Ordine = 1, Category = "HTML", MultiLine = 3)]
         [MaxLength(800)]
         public string DescrizioneBreveHtml { get; set; } = "";
-       
+
+        [MaxLength(2000)]
+        [CustomUIView(Width = 500, Ordine = 111, MultiLine = 4, Titolo = "Testo annuncio", Category = "HTML", FunzioneAbilitazione = enFunzioniCheck.Ecommerce)]
+        public string Testo { get; set; }
 
         [CustomUIView(Width = 80, Titolo = "Prezzo per il web iva compresa", Ordine = 30, Category = "Prezzo", Money = true)]
         [Required]
         public decimal PrezzoWeb { get; set; } = 0;
 
-       
+        
+
 
         //[CustomUIView(Width = 60, Ordine = 44, Category = "Prezzo", Money = true)]
         //public bool PrezzoARichiesta { get; set; } = false;

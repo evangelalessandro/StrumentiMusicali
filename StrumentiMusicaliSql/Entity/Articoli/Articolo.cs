@@ -41,7 +41,7 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         //[CustomUIView(Ordine = 6, Category = "Online")]
         //public bool BoxProposte { get; set; }
 
-        [CustomUIView(Ordine = 7, Titolo = "Carica in E-Commerce", Category = "ArticoloWeb")]
+        [CustomUIView(Ordine = 7, Titolo = "Carica in E-Commerce", Category = "ArticoloWeb",FunzioneAbilitazione =enFunzioniCheck.Ecommerce)]
         public bool CaricainECommerce { get; set; } = true;
  
 
@@ -82,7 +82,7 @@ namespace StrumentiMusicali.Library.Entity.Articoli
 
        
 
-        [CustomUIView(Width = 500, Ordine = 3, Titolo = "Titolo annuncio")]
+        [CustomUIView(Width = 500, Ordine = 3, Titolo = "Descrizione articolo (autocomposta)")]
         [MaxLength(100), Required]
         public string Titolo {
             get;
@@ -99,9 +99,7 @@ namespace StrumentiMusicali.Library.Entity.Articoli
             get;
             set;
         }
-        [MaxLength(2000)]
-        [CustomUIView(Width = 500, Ordine = 111, MultiLine = 4, Titolo = "Testo annuncio", Category = "HTML")]
-        public string Testo { get; set; }
+        
 
         [CustomUIView(Ordine = 21, Category = "Note")]
         [MaxLength(100)]
@@ -137,7 +135,8 @@ namespace StrumentiMusicali.Library.Entity.Articoli
             }
             return dato;
         }
-         
+  
+
         [NotMapped]
         [CustomUIView(Width = 80, Ordine = 50, Enable = false, Category = "Magazzino", Titolo = "Quantità in negozio")]
         public int QtaNegozio { get; set; } = 0;
@@ -173,9 +172,9 @@ namespace StrumentiMusicali.Library.Entity.Articoli
                 {
                     titolo = (Strumento.Marca + " " + Strumento.Nome + " " + Strumento.Modello + " " + Strumento.Colore).Trim().Replace("    ", " ").Replace("  ", " ");
                     /*per importazione da web*/
-                    if (titolo.Length==0 &&  Testo !=null && Testo.Length>0)
+                    if (titolo.Length==0 && ArticoloWeb!=null && ArticoloWeb.Testo !=null && ArticoloWeb.Testo.Length>0)
                     {
-                        titolo = Testo;
+                        titolo = ArticoloWeb.Testo;
                     }
                 }
                 return titolo;
@@ -191,6 +190,7 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         [CustomUIView(Ordine = 5, ShowGroupName = false)]
         public virtual StrumentoAcc Strumento { get; set; } = new StrumentoAcc();
 
+        [CustomUIView( FunzioneAbilitazione =enFunzioniCheck.Ecommerce)]
         public virtual ArticoloWeb ArticoloWeb { get; set; } = new ArticoloWeb();
 
     }
@@ -224,11 +224,11 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         [MaxLength(100)]
         public string Modello { get; set; } = "";
 
-        [CustomUIView(Width = 150, Ordine = 40)]
+        [CustomUIView(Width = 150, Ordine = 40, Category = "Riordino")]
         [MaxLength(100)]
         public string CodiceOrdine { get; set; } = "";
 
-        [CustomUIView(Ordine = 50, Combo = TipoDatiCollegati.Rivenditore, ComboLibera = true)]
+        [CustomUIView(Ordine = 50, Combo = TipoDatiCollegati.Rivenditore, ComboLibera = true,Category ="Riordino")]
         [MaxLength(100)]
         public string Rivenditore { get; set; } = "";
 

@@ -418,6 +418,7 @@ namespace StrumentiMusicali.App.View.BaseControl
         List<CopyProp> _listProp = new List<CopyProp>();
         public void BindProp(object objToBind, string prefixText)
         {
+            var setting=StrumentiMusicali.Core.Settings.SettingProgrammaValidator.ReadSetting();
             if (objToBind is INotifyPropertyChanged)
             {
                 (objToBind as INotifyPropertyChanged).PropertyChanged += (a, e) =>
@@ -447,6 +448,7 @@ namespace StrumentiMusicali.App.View.BaseControl
                 {
                     col = _dgvRighe.Columns[item.Name];
                 }
+
                 if (hideAttr != null || !evaluate.VisibleItem(objToBind, item.Name))
                 {
                     if (col != null)
@@ -476,7 +478,17 @@ namespace StrumentiMusicali.App.View.BaseControl
 
                 var widthAttr = (CustomUIViewAttribute)item.GetCustomAttributes(typeof(CustomUIViewAttribute), true).FirstOrDefault();
                 string titolo = GetTitle(item, widthAttr);
-
+                if (widthAttr!=null)
+                {
+                    if (widthAttr.FunzioneAbilitazione==enFunzioniCheck.Ecommerce && !setting.AbilitazioneEcommerce)
+                    {
+                        if (col != null)
+                        {
+                            col.Visible = false;
+                        }
+                        continue;
+                    }
+                }
 
                 EditorRow row = null;
 

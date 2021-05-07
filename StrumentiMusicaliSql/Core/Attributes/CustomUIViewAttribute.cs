@@ -39,6 +39,16 @@ namespace StrumentiMusicali.Library.Core
 
         public bool Percentuale { get; set; } = false;
 
+        public enFunzioniCheck FunzioneAbilitazione
+        { get; set; } = enFunzioniCheck.Tutte;
+
+
+    }
+    public enum enFunzioniCheck
+    {
+        Tutte,
+        Ecommerce
+
     }
     public enum TipoDatiCollegati
     {

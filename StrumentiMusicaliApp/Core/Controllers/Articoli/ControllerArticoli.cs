@@ -647,11 +647,13 @@ namespace StrumentiMusicali.App.Core.Controllers
                         Condizione = itemCurrent.Condizione,
 
                         Prezzo = itemCurrent.Prezzo,
-                        Testo = itemCurrent.Testo,
-                        Titolo = "* " + itemCurrent.Titolo,
+                        
+                       
                         DataUltimaModifica = DateTime.Now,
                         DataCreazione = DateTime.Now
                     });
+                    art.ArticoloWeb.Testo = itemCurrent.ArticoloWeb.Testo;
+                    art.Titolo = "* " + itemCurrent.Titolo;
                     art.Strumento = itemCurrent.Strumento;
                     art.Libro = itemCurrent.Libro;
 
@@ -944,7 +946,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                             datList = datList.Where(a =>
 
                                a.Titolo.Contains(ricerca)
-                              || a.Testo.Contains(ricerca)
+                              
                               || a.CodiceInterno.Contains(ricerca)
                               || a.ArticoloWeb.DescrizioneBreveHtml.Contains(ricerca)
                               || a.ArticoloWeb.DescrizioneHtml.Contains(ricerca)

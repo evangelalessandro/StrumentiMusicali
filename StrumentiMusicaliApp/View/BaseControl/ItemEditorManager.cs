@@ -185,7 +185,9 @@ namespace StrumentiMusicali.App.View.BaseControl
                     case TipoDatiCollegati.RiordinoPeriodi:
                         {
                             var list = uof.RiordinoPeriodiRepository.Find(a => true).ToList()
-                                .Select(a => new { a.ID, a.Descrizione, Periodi= a.PeriodoSottoScortaInizio.ToString(@"dd\MM") + " " + a.PeriodoSottoScortaFine.ToString(@"dd\MM") }).ToList()
+                                .Select(a => new { a.ID, a.Descrizione, Periodi= a.PeriodoSottoScortaInizio.Day.ToString() 
+                                + @"\" + a.PeriodoSottoScortaInizio.ToString("MMM") + " "
+                                + a.PeriodoSottoScortaFine.Day.ToString() + @"\" + a.PeriodoSottoScortaFine.ToString(@"MMM") }).ToList()
                                 .OrderBy(a => a.Descrizione).ToList();
                             newControl.ValueMember = "ID";
                             newControl.DisplayMember= "Descrizione";

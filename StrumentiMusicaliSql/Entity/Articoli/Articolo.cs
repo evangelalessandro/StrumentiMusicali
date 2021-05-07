@@ -29,7 +29,7 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         public int SottoScorta { get; set; } = 0;
 
         [CustomUIView(Width = 200, Ordine = 10, Category = "Riordino",Combo = TipoDatiCollegati.RiordinoPeriodi, Titolo = "Periodo per riordino")]
-        [Required]
+        [Required(ErrorMessage ="Occorre impostare il periodo di riordino")]
         public int RiordinoPeriodiID { get; set; }
 
         [CustomHideUI]
@@ -83,7 +83,7 @@ namespace StrumentiMusicali.Library.Entity.Articoli
        
 
         [CustomUIView(Width = 500, Ordine = 3, Titolo = "Descrizione articolo (autocomposta)")]
-        [MaxLength(100), Required]
+        [MaxLength(100), Required(AllowEmptyStrings =false, ErrorMessage = "Occorre compilare la Descrizione articolo ")]
         public string Titolo {
             get;
             set;

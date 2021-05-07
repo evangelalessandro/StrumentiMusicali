@@ -91,6 +91,13 @@ namespace StrumentiMusicali.Library.Model
                                   "Categoria",
                               "Occorre specificare la categoria "));
                 }
+                if (articolo.RiordinoPeriodiID == 0)
+                {
+                    result.ValidationErrors.Add(
+                              new System.Data.Entity.Validation.DbValidationError(
+                                  "RiordinoPeriodiID",
+                              "Occorre specificare il periodo riordino "));
+                }
             }
             else if (entityEntry.Entity is SettingBackupFtp)
             {

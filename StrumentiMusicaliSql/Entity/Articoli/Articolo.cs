@@ -237,7 +237,7 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         public string Colore { get; set; } = "";
 
 
-        [CustomUIView(Ordine = 70, Titolo = "Nome strumento", Combo = TipoDatiCollegati.NomeStrumento, ComboLibera = true)]
+        [CustomUIView(Ordine = 70, Titolo = "Nome articolo", Combo = TipoDatiCollegati.NomeStrumento, ComboLibera = true)]
         [MaxLength(50)]
         public string Nome { get; set; } = "";
 

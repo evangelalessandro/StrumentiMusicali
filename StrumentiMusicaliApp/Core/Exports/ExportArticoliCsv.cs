@@ -40,71 +40,71 @@ namespace StrumentiMusicali.App.Core.Exports
 
         internal readonly ILogger _logger = ManagerLog.Logger;
 
-        public void InvioArticoli()
-        {
-            _logger.Info("Inizio controlli per invio CSV");
-            using (var controller = new ControllerImmagini())
-            {
-                if (!controller.CheckFolderImmagini())
-                    return;
-            }
-            try
-            {
-                var controller = new BaseController();
-                _settingSito = SettingSitoValidator.ReadSetting();
-                if (string.IsNullOrEmpty(_settingSito.UrlCompletaImmagini))
-                {
-                    MessageManager.NotificaWarnig("Occorre impostare l'url per uploadare le immagini.");
-                    return;
-                }
-                if (string.IsNullOrEmpty(_settingSito.UrlSito))
-                {
-                    MessageManager.NotificaWarnig("Occorre impostare l'url del sito proprio.");
-                    return;
-                }
-                if (string.IsNullOrEmpty(_settingSito.UrlCompletoFileMercatino))
-                {
-                    MessageManager.NotificaWarnig("Occorre impostare l'url per il file del mercatino.");
-                    return;
-                }
-                if (string.IsNullOrEmpty(_settingSito.UrlCompletoFileEcommerce))
-                {
-                    MessageManager.NotificaWarnig("Occorre impostare l'url per il file del e-commerce.");
-                    return;
-                }
-                using (var curs = new CursorManager())
-                {
-                    using (var uof = new UnitOfWork())
-                    {
-                        _logger.Info("Inizio procedura invio CSV");
+        //public void InvioArticoli()
+        //{
+        //    _logger.Info("Inizio controlli per invio CSV");
+        //    using (var controller = new ControllerImmagini())
+        //    {
+        //        if (!controller.CheckFolderImmagini())
+        //            return;
+        //    }
+        //    try
+        //    {
+        //        var controller = new BaseController();
+        //        _settingSito = SettingSitoValidator.ReadSetting();
+        //        if (string.IsNullOrEmpty(_settingSito.UrlCompletaImmagini))
+        //        {
+        //            MessageManager.NotificaWarnig("Occorre impostare l'url per uploadare le immagini.");
+        //            return;
+        //        }
+        //        if (string.IsNullOrEmpty(_settingSito.UrlSito))
+        //        {
+        //            MessageManager.NotificaWarnig("Occorre impostare l'url del sito proprio.");
+        //            return;
+        //        }
+        //        //if (string.IsNullOrEmpty(_settingSito.UrlCompletoFileMercatino))
+        //        //{
+        //        //    MessageManager.NotificaWarnig("Occorre impostare l'url per il file del mercatino.");
+        //        //    return;
+        //        //}
+        //        //if (string.IsNullOrEmpty(_settingSito.UrlCompletoFileEcommerce))
+        //        //{
+        //        //    MessageManager.NotificaWarnig("Occorre impostare l'url per il file del e-commerce.");
+        //        //    return;
+        //        //}
+        //        using (var curs = new CursorManager())
+        //        {
+        //            using (var uof = new UnitOfWork())
+        //            {
+        //                _logger.Info("Inizio procedura invio CSV");
 
-                        List<FotoArticolo> fotoList = uof.FotoArticoloRepository.Find(a => true).ToList();
-                        List<GiacenzaArt> magazzinoGiac = uof.MagazzinoRepository.Find(a => true).GroupBy(a => a.ArticoloID)
-                            .Select(a => new GiacenzaArt { ArticoloId = a.Key, Giacenza = a.Sum(b => b.Qta) }).ToList();
+        //                List<FotoArticolo> fotoList = uof.FotoArticoloRepository.Find(a => true).ToList();
+        //                List<GiacenzaArt> magazzinoGiac = uof.MagazzinoRepository.Find(a => true).GroupBy(a => a.ArticoloID)
+        //                    .Select(a => new GiacenzaArt { ArticoloId = a.Key, Giacenza = a.Sum(b => b.Qta) }).ToList();
 
-                        var fileEcommerce = FileEcommerce(uof, fotoList, magazzinoGiac);
+        //                //var fileEcommerce = FileEcommerce(uof, fotoList, magazzinoGiac);
 
 
-                        UploadNewFoto();
-                        MessageManager.NotificaInfo("Terminato upload nuove foto");
+        //                UploadNewFoto();
+        //                MessageManager.NotificaInfo("Terminato upload nuove foto");
 
-                        var artToUpdate = _fotoToUpload.Select(a => a.ArticoloID).Distinct().ToList();
+        //                var artToUpdate = _fotoToUpload.Select(a => a.ArticoloID).Distinct().ToList();
 
-                        UploadEndRetray(fileEcommerce, _settingSito.UrlCompletoFileEcommerce);
+        //                //UploadEndRetray(fileEcommerce, _settingSito.UrlCompletoFileEcommerce);
 
-                        uof.Commit();
-                    }
-                }
-                _logger.Info(@"Invio CSV\Foto Terminato Correttamente");
+        //                uof.Commit();
+        //            }
+        //        }
+        //        _logger.Info(@"Invio CSV\Foto Terminato Correttamente");
 
-                MessageManager.NotificaInfo("Terminato Invio Articoli");
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex);
-                ExceptionManager.ManageError(ex);
-            }
-        }
+        //        MessageManager.NotificaInfo("Terminato Invio Articoli");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.Error(ex);
+        //        ExceptionManager.ManageError(ex);
+        //    }
+        //}
 
         /// <summary>
         /// Foto da uploadare
@@ -224,17 +224,17 @@ namespace StrumentiMusicali.App.Core.Exports
             sb.Append(Separatore);
         }
 
-        private string FileEcommerce(UnitOfWork uof, List<FotoArticolo> fotoList, List<GiacenzaArt> magazzinoGiac)
-        {
-            List<Articolo> listArticoli = uof.ArticoliRepository.Find(a => a.CaricainECommerce && a.Categoria.Codice >= 0)
-                .Select(a => new { articolo = a, Categoria = a.Categoria }).ToList().Select(a => a.articolo).ToList();
+        //private string FileEcommerce(UnitOfWork uof, List<FotoArticolo> fotoList, List<GiacenzaArt> magazzinoGiac)
+        //{
+        //    List<Articolo> listArticoli = uof.ArticoliRepository.Find(a => a.CaricainECommerce && a.Categoria.Codice >= 0)
+        //        .Select(a => new { articolo = a, Categoria = a.Categoria }).ToList().Select(a => a.articolo).ToList();
 
-            var fileEcommerceContent = ExportFile(listArticoli, magazzinoGiac, fotoList);
-            string fileEcommerce = SaveFileCsv(fileEcommerceContent, _settingSito.SoloNomeFileEcommerce);
-            MessageManager.NotificaInfo("Creato file E-Commerce");
-            _logger.Info("Creato file E-Commerce con '{0}' articoli ", listArticoli.Count.ToString());
-            return fileEcommerce;
-        }
+        //    var fileEcommerceContent = ExportFile(listArticoli, magazzinoGiac, fotoList);
+        //    string fileEcommerce = SaveFileCsv(fileEcommerceContent, _settingSito.SoloNomeFileEcommerce);
+        //    MessageManager.NotificaInfo("Creato file E-Commerce");
+        //    _logger.Info("Creato file E-Commerce con '{0}' articoli ", listArticoli.Count.ToString());
+        //    return fileEcommerce;
+        //}
 
         private string SaveFileCsv(StringBuilder fileEcommerceContent, string nomeFile)
         {

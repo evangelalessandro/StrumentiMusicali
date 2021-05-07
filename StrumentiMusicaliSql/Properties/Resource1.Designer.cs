@@ -191,5 +191,23 @@ namespace StrumentiMusicali.Library.Properties {
                 return ResourceManager.GetString("SpCheckExists", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a IF NOT EXISTS(SELECT 1 FROM Categorie)
+        ///BEGIN
+        ///INSERT INTO Categorie (Reparto, Nome, CategoriaCondivisaCon, Codice, DataCreazione, DataUltimaModifica, PercMaggDaWebaNegozio)
+        ///VALUES(N&apos;Reparto 1&apos;, N&apos;Categoria 1&apos;, N&apos;&apos;, 1, GETDATE(), GETDATE(), 0);
+        ///
+        ///INSERT INTO Categorie (Reparto, Nome, CategoriaCondivisaCon, Codice, DataCreazione, DataUltimaModifica, PercMaggDaWebaNegozio)
+        ///VALUES(N&apos;Reparto 1&apos;, N&apos;Categoria 2&apos;, N&apos;&apos;, 1, GETDATE(), GETDATE(), 0);
+        ///
+        ///
+        ///INSERT INTO Categorie (Reparto, Nome, CategoriaCondivisaCon [stringa troncata]&quot;;.
+        /// </summary>
+        public static string SQLInitCategorie {
+            get {
+                return ResourceManager.GetString("SQLInitCategorie", resourceCulture);
+            }
+        }
     }
 }

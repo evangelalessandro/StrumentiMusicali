@@ -8,6 +8,12 @@ namespace StrumentiMusicali.Library.Migrations
         public override void Up()
         {
             RenameTable(name: "dbo.SettingProgrammas", newName: "SettingProgramma");
+
+            Sql("If not exists(select 1 from Depositi) " +
+                "insert into depositi (NomeDeposito,DataCreazione,DataUltimaModifica,Principale) " +
+                "select 'Deposito 1', getdate(),getdate(),1");
+
+            Sql(Properties.Resource1.SQLInitCategorie);
         }
         
         public override void Down()

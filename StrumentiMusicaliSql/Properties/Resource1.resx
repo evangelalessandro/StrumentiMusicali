@@ -333,4 +333,21 @@ AS
 
 GO</value>
   </data>
+  <data name="SQLInitCategorie" xml:space="preserve">
+    <value>IF NOT EXISTS(SELECT 1 FROM Categorie)
+BEGIN
+INSERT INTO Categorie (Reparto, Nome, CategoriaCondivisaCon, Codice, DataCreazione, DataUltimaModifica, PercMaggDaWebaNegozio)
+VALUES(N'Reparto 1', N'Categoria 1', N'', 1, GETDATE(), GETDATE(), 0);
+
+INSERT INTO Categorie (Reparto, Nome, CategoriaCondivisaCon, Codice, DataCreazione, DataUltimaModifica, PercMaggDaWebaNegozio)
+VALUES(N'Reparto 1', N'Categoria 2', N'', 1, GETDATE(), GETDATE(), 0);
+
+
+INSERT INTO Categorie (Reparto, Nome, CategoriaCondivisaCon, Codice, DataCreazione, DataUltimaModifica, PercMaggDaWebaNegozio)
+VALUES(N'Reparto 2', N'Categoria 3', N'Categoria 1, ', 1, GETDATE(), GETDATE(), 0);
+
+INSERT INTO Categorie (Reparto, Nome, CategoriaCondivisaCon, Codice, DataCreazione, DataUltimaModifica, PercMaggDaWebaNegozio)
+VALUES(N'Reparto 2', N'Categoria 4', N' ', 1, GETDATE(), GETDATE(), 0);
+END</value>
+  </data>
 </root>

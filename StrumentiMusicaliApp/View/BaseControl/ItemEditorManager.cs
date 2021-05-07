@@ -320,6 +320,11 @@ namespace StrumentiMusicali.App.View.BaseControl
 
                 return num;
             }
+            else if (item.PropertyType.FullName.Contains("TimeSpan"))
+            {
+
+                return null;
+            }
             else
             {
 

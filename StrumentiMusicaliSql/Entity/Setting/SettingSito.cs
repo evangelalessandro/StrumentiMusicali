@@ -13,17 +13,7 @@ namespace StrumentiMusicali.Library.Entity.Setting
         [MaxLength(200)]
         public string CartellaLocaleImmagini { get; set; }
 
-        [MaxLength(200)]
-        public string SoloNomeFileMercatino { get; set; }
-
-        [MaxLength(200)]
-        public string SoloNomeFileEcommerce { get; set; }
-
-        [MaxLength(200)]
-        public string UrlCompletoFileMercatino { get; set; }
-
-        [MaxLength(200)]
-        public string UrlCompletoFileEcommerce { get; set; }
+   
 
         public PrestaShopSetting PrestaShopSetting { get; set; } = new PrestaShopSetting();
 

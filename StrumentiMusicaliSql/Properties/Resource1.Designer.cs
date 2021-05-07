@@ -136,9 +136,8 @@ namespace StrumentiMusicali.Library.Properties {
         ///
         ///  SELECT ID AS ArticoloID,
         ///  Titolo AS ArtDescr,
-        ///  SottoScorta,
-        ///  PeriodoSottoScortaInizio,
-        ///  PeriodoSottoScortaFine,
+        ///  SottoScorta 
+        /// 
         ///  ISNULL(TOT, 0) AS Giac
         ///  INTO #tmpArt
         ///  FROM Articoli
@@ -146,7 +145,11 @@ namespace StrumentiMusicali.Library.Properties {
         ///       (SELECT ArticoloID AS ArtGiac, SUM(Qta) TOT
         ///     FROM Magazzino
         ///     GROUP BY ArticoloID) ArtG
-        ///       ON ArtGiac = [stringa troncata]&quot;;.
+        ///       ON ArtGiac = ID
+        ///  WHERE SottoScorta &gt; 0
+        ///
+        ///   
+        ///  DROP TABLE IF  [stringa troncata]&quot;;.
         /// </summary>
         public static string SP_NG_SottoScorta_rev1 {
             get {

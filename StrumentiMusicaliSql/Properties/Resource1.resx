@@ -252,9 +252,8 @@ AS
 
   SELECT ID AS ArticoloID,
   Titolo AS ArtDescr,
-  SottoScorta,
-  PeriodoSottoScortaInizio,
-  PeriodoSottoScortaFine,
+  SottoScorta 
+ 
   ISNULL(TOT, 0) AS Giac
   INTO #tmpArt
   FROM Articoli

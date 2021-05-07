@@ -16,7 +16,7 @@ namespace StrumentiMusicali.Library.Entity.Articoli
 
         [MaxLength(2000)]
         [CustomUIView(Width = 500, Ordine = 111, MultiLine = 4, Titolo = "Testo annuncio", Category = "HTML", FunzioneAbilitazione = enFunzioniCheck.Ecommerce)]
-        public string Testo { get; set; }
+        public string Testo { get; set; } = "";
 
         [CustomUIView(Width = 80, Titolo = "Prezzo per il web iva compresa", Ordine = 30, Category = "Prezzo", Money = true)]
         [Required]

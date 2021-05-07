@@ -19,6 +19,7 @@ using StrumentiMusicali.Library.Core.Events.Magazzino;
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Core.Manager;
+using DevExpress.XtraEditors;
 
 namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 {
@@ -84,7 +85,8 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             DocScarico
         }
 
-        private DevExpress.XtraEditors.LookUpEdit cboTipoDoc;
+        private DevExpress.XtraEditors.LookUpEdit cboTipoDoc=new LookUpEdit();
+        private DevExpress.XtraEditors.LookUpEdit cboListinoPrezzi = new LookUpEdit();
         public void Init(Control controlParent)
         {
             _gcScontrino = new DevExpress.XtraGrid.GridControl();
@@ -92,31 +94,16 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             ((System.ComponentModel.ISupportInitialize)(_gcScontrino)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(_dgvScontrino)).BeginInit();
 
-
-            this.cboTipoDoc = new DevExpress.XtraEditors.LookUpEdit();
-            this.cboTipoDoc.Location = new System.Drawing.Point(24, 42);
-            this.cboTipoDoc.Name = "cboTipoDoc";
-            this.cboTipoDoc.Properties.Appearance.Options.UseTextOptions = true;
-            cboTipoDoc.Properties.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.AutoFilter;
-            cboTipoDoc.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
-
-            this.cboTipoDoc.Size = new System.Drawing.Size(266, 100);
-
-            this.cboTipoDoc.TabIndex = 0;
-            cboTipoDoc.Dock = DockStyle.Top;
-            controlParent.Controls.Add(cboTipoDoc);
-
-
-
-            cboTipoDoc.Properties.ValueMember = "ID";
-            cboTipoDoc.Properties.DisplayMember = "Descrizione";
-
-
+            InitCombo(controlParent, cboTipoDoc);
+            InitCombo(controlParent, cboListinoPrezzi);
 
             Splitter splitter = new Splitter();
             splitter.Dock = DockStyle.Top;
             controlParent.Controls.Add(splitter);
             splitter.BringToFront();
+
+
+
             //
             // _gridControlScontrino
             //
@@ -181,7 +168,26 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             _dgvScontrino.CustomDrawCell += _dgvScontrino_CustomDrawCell;
 
             InitTipoDoc();
+            InitListinoPrezzi();
+        }
+
+        private void InitCombo(Control controlParent, LookUpEdit cbo)
+        {
             
+            cbo.Location = new System.Drawing.Point(24, 42);
+            cbo.Name = "cbo";
+            cbo.Properties.Appearance.Options.UseTextOptions = true;
+            cbo.Properties.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.AutoFilter;
+            cbo.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+
+            cbo.Size = new System.Drawing.Size(266, 100);
+
+            cbo.TabIndex = 0;
+            cbo.Dock = DockStyle.Top;
+            controlParent.Controls.Add(cbo);
+
+            cbo.Properties.ValueMember = "ID";
+            cbo.Properties.DisplayMember = "Descrizione";
         }
 
         private void InitTipoDoc()
@@ -195,7 +201,21 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             //cboTipoDoc.Properties.Columns[0].Visible = false;
             cboTipoDoc.EditValue = 0;
         }
+        private void InitListinoPrezzi()
+        {
+            using (var uof = new UnitOfWork())
+            {
 
+                DateTime now = DateTime.Now;
+                cboListinoPrezzi.Properties.DataSource = uof.ListinoPrezziVenditaNomeRepository.Find(a=>1==1)
+                    .Where(a=>a.DataInizioValidita <= now &&
+                    a.DataFineValidita<= now)
+                    .Select(a => new { ID = a.ID, Descrizione = a.Nome, a.PercentualeVariazione}).ToList();
+
+                cboListinoPrezzi.Properties.PopulateColumns();
+                 
+            }
+        }
         private void _dgvScontrino_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
         {
 

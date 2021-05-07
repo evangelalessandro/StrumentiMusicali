@@ -28,7 +28,7 @@ namespace StrumentiMusicali.App.Core.Controllers.ListiniFornitori
         private Subscription<Save<ListinoPrezziVenditaNome>> _subSave;
 
         public ControllerListinoPrezziNomi(bool gestioneInline)
-            : base(enAmbiente.ListinoPrezziFornitoreList, enAmbiente.ListinoPrezziFornitoreDett, gestioneInline)
+            : base(enAmbiente.NomeListiniClientiList, enAmbiente.NomeListiniClienti, gestioneInline)
         {
 
             SelectedItem = new ListinoPrezziVenditaNome();

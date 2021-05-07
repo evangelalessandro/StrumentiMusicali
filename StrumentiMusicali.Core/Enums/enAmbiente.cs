@@ -43,7 +43,7 @@ namespace StrumentiMusicali.Core.Enum
         Cliente = 14,
 
         ListinoPrezziFornitoreList = 60,
-        [UIAmbienteAttribute(true)]
+        [UIAmbienteAttribute(true,NomeAmbiente ="Listino prezzi fornitore" )]
         ListinoPrezziFornitoreDett = 61,
 
         FattureRigheList = 15,
@@ -95,12 +95,12 @@ namespace StrumentiMusicali.Core.Enum
 
         [UIAmbienteAttribute(false, NomeAmbiente = "Tipi pagamenti scontrino")]
         TipiPagamentiScontrinoList,
-        [UIAmbienteAttribute(false, NomeAmbiente = "Tipo pagamento scontrino")]
+        [UIAmbienteAttribute(true, NomeAmbiente = "Tipo pagamento scontrino")]
         TipiPagamentiScontrino,
 
-        [UIAmbienteAttribute(false, NomeAmbiente = "Nomi listini clienti")]
+        [UIAmbienteAttribute( false, NomeAmbiente = "Nomi listini clienti")]
         NomeListiniClientiList,
-        [UIAmbienteAttribute(false, NomeAmbiente = "Nome listino clienti")]
+        [UIAmbienteAttribute(viewInForm: true, NomeAmbiente = "Nome listino clienti")]
         NomeListiniClienti,
         [UIAmbienteAttribute(false, NomeAmbiente = "Categorie articoli")]
 

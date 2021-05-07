@@ -18,16 +18,16 @@ namespace StrumentiMusicali.Library.Entity.Articoli
 
 
         [CustomUIView(Ordine = 10, Titolo = "Nome listino")]
-        [StringLength(15, ErrorMessage = "Il nome deve essere da 1 a 15 caratteri", MinimumLength = 1)]
+        [StringLength(30, ErrorMessage = "Il nome deve essere da 1 a 30 caratteri", MinimumLength = 1)]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Occorre specificare un nome")]
         [Index(IsClustered = false, IsUnique = true, Order = 1)]
         public string Nome { get; set; }
 
-        [CustomUIView(Ordine = 11, Titolo = "Data inizio validità", DateView = true)]
+        [CustomUIView(Ordine = 11, Titolo = "Data inizio validità", DateTimeView = true)]
         public DateTime DataInizioValidita { get; set; } = DateTime.Now;
 
 
-        [CustomUIView(Ordine = 11, Titolo = "Data fine validità", DateTimeView = true)]
+        [CustomUIView(Ordine = 12, Titolo = "Data fine validità", DateTimeView = true)]
         public DateTime DataFineValidita { get; set; } = DateTime.Now.AddDays(30);
 
         [CustomUIView(Width = 100, Titolo = "Sconto 1 %", Percentuale = true)]

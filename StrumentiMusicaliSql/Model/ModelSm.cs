@@ -40,7 +40,15 @@ namespace StrumentiMusicali.Library.Model
                     result.ValidationErrors.Add(item);
                 }
             }
-            if (entityEntry.Entity is RiordinoPeriodi)
+            else if (entityEntry.Entity is ListinoPrezziVenditaNome)
+            {
+                foreach (var item in CheckListinoPrezziVenditaNome(entityEntry.Entity as ListinoPrezziVenditaNome, entityEntry.State))
+                {
+                    result.ValidationErrors.Add(item);
+                }
+            }
+            
+            else if (entityEntry.Entity is RiordinoPeriodi)
             {
                 foreach (var item in CheckRiordinoPeriodi(entityEntry.Entity as RiordinoPeriodi, entityEntry.State))
                 {
@@ -150,7 +158,7 @@ namespace StrumentiMusicali.Library.Model
                 riordino.PeriodoSottoScortaInizio = new DateTime(1900, 1, 1);
 
                 riordino.PeriodoSottoScortaFine = new DateTime(1900, 12, 31);
-                
+
             }
             //using (var uof = new UnitOfWork())
             //{
@@ -177,6 +185,30 @@ namespace StrumentiMusicali.Library.Model
             return list;
         }
 
+
+        public static List<DbValidationError> CheckListinoPrezziVenditaNome(ListinoPrezziVenditaNome item, EntityState state)
+        {
+            var list = new List<DbValidationError>();
+
+            using (var uof = new UnitOfWork())
+            {
+
+                if (state != EntityState.Deleted)
+                {
+                    if (item.DataInizioValidita > item.DataFineValidita)
+                    {
+                        list.Add(
+                           new System.Data.Entity.Validation.DbValidationError("DataInizioValidita",
+                           "La data inizio è maggiore della fine "));
+                    }
+
+                }
+
+
+            }
+
+            return list;
+        }
         public static List<DbValidationError> CheckUtenti(Utente utente, EntityState state)
         {
             var list = new List<DbValidationError>();
@@ -284,7 +316,7 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<Pagamento>().Property(e => e.ImportoResiduo).HasPrecision(19, 2);
             modelBuilder.Entity<Pagamento>().Property(e => e.ImportoTotale).HasPrecision(19, 2);
             modelBuilder.Entity<Articolo>().Property(e => e.Prezzo).HasPrecision(19, 2);
-            
+
 
             modelBuilder.Entity<Categoria>()
            .HasIndex(b => new { b.Nome, b.Codice, b.Reparto })

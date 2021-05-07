@@ -776,7 +776,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                         Descrizione = item.Descrizione,
                         Qta = (int)item.Qta,
                         Fattura = fattExt,
-                        PrezzoUnitario = item.PrezzoIvato,
+                        PrezzoUnitario =Math.Round( item.PrezzoIvato/(1+((decimal)item.IvaPerc/ (decimal)100)),5,MidpointRounding.ToEven ),
                         IvaApplicata = item.IvaPerc.ToString(),
                     });
                     saveEnt.UnitOfWork.FattureRigheRepository.Add(riga);

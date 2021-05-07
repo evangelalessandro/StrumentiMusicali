@@ -85,7 +85,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             DocScarico
         }
 
-        private DevExpress.XtraEditors.LookUpEdit cboTipoDoc=new LookUpEdit();
+        private DevExpress.XtraEditors.LookUpEdit cboTipoDoc = new LookUpEdit();
         private DevExpress.XtraEditors.LookUpEdit cboListinoPrezzi = new LookUpEdit();
         public void Init(Control controlParent)
         {
@@ -173,13 +173,13 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
         private void InitCombo(Control controlParent, LookUpEdit cbo)
         {
-            
+
             cbo.Location = new System.Drawing.Point(24, 42);
             cbo.Name = "cbo";
             cbo.Properties.Appearance.Options.UseTextOptions = true;
             cbo.Properties.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.AutoFilter;
             cbo.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
-
+            cbo.Properties.NullText = "Nessuna voce selezionata";
             cbo.Size = new System.Drawing.Size(266, 100);
 
             cbo.TabIndex = 0;
@@ -207,15 +207,50 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             {
 
                 DateTime now = DateTime.Now;
-                cboListinoPrezzi.Properties.DataSource = uof.ListinoPrezziVenditaNomeRepository.Find(a=>1==1)
-                    .Where(a=>a.DataInizioValidita <= now &&
-                    a.DataFineValidita<= now)
-                    .Select(a => new { ID = a.ID, Descrizione = a.Nome, a.PercentualeVariazione}).ToList();
+                var list = uof.ListinoPrezziVenditaNomeRepository.Find(a => 1 == 1).ToList();
+                list = list.Where(a => a.DataInizioValidita <= now &&
+                     a.DataFineValidita >= now).ToList();
+
+                var listSel=list.Select(a => new { ID = a.ID, Descrizione = a.Nome, a.PercentualeVariazione }).OrderBy(a=>a.Descrizione).ToList();
+                cboListinoPrezzi.Properties.DataSource = listSel;
+                
 
                 cboListinoPrezzi.Properties.PopulateColumns();
-                 
+                cboListinoPrezzi.EditValueChanged += CboListinoPrezzi_EditValueChanged;
+                if (list.Count == 0)
+                {
+                    cboListinoPrezzi.Properties.NullText = "Nessun listino presente";
+                }
+                else
+                {
+                    cboListinoPrezzi.EditValue = listSel.First().ID;
+                }
             }
         }
+
+
+        private void CboListinoPrezzi_EditValueChanged(object sender, EventArgs e)
+        {
+            var intVal = (int)cboListinoPrezzi.EditValue;
+
+            using (var uof = new UnitOfWork())
+            {
+
+                DateTime now = DateTime.Now;
+                var variazione = uof.ListinoPrezziVenditaNomeRepository.Find(a => a.ID == intVal).
+                    Select(a => a.PercentualeVariazione).DefaultIfEmpty(0).FirstOrDefault();
+                PercentualeVariazioneListinoAttuale = -variazione;
+                foreach (var item in Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Vendita))
+                {
+                    item.ScontoPerc = PercentualeVariazioneListinoAttuale;
+                    
+                }
+
+                Reffreshlist();
+            }
+        }
+        private int PercentualeVariazioneListinoAttuale { get; set; }
+
         private void _dgvScontrino_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
         {
 
@@ -330,9 +365,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                     Descrizione = obj.Articolo.Titolo,
                     PrezzoIvato = obj.Articolo.Prezzo,
                     TipoRigaScontrino = TipoRigaScontrino.Vendita,
+                    ScontoPerc = PercentualeVariazioneListinoAttuale
 
-
-                });
+                }) ;
                 if (obj.Articolo.NonImponibile)
                 {
                     newitem.IvaPerc = 0;
@@ -351,7 +386,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                     PrezzoIvato = 1,
                     TipoRigaScontrino = TipoRigaScontrino.Vendita,
                     IvaPerc = 22,
-
+                    ScontoPerc = PercentualeVariazioneListinoAttuale
                 });
             }
 
@@ -432,7 +467,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             {
                 if (item.ScontoPerc != 0)
                 {
-                    tot = tot + (item.PrezzoIvato / ((decimal)100.0) * (((decimal)100) - Math.Abs(item.ScontoPerc)));
+                    tot = tot + (item.PrezzoIvato / ((decimal)100.0) * (((decimal)100) - (item.ScontoPerc)));
                 }
                 else
                 {
@@ -545,7 +580,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                                 ScaricaQtaMagazzino scarica = new ScaricaQtaMagazzino();
 
                                 scarica.Qta = 1;
-                                scarica.Prezzo = item.PrezzoIvato;
+                                scarica.Prezzo = item.PrezzoIvato - item.PrezzoIvato * (item.ScontoPerc) / 100;
                                 scarica.Deposito = negozio.ID;
                                 scarica.ArticoloID = item.Articolo;
                                 EventAggregator.Instance().Publish<ScaricaQtaMagazzino>(scarica);
@@ -587,9 +622,14 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                 {
                     listRighe.Add(new ScontrinoLine { Articolo = a.Articolo, Descrizione = a.Descrizione, IvaPerc = a.IvaPerc, Qta = 1, PrezzoIvato = a.PrezzoIvato, TipoRigaScontrino = a.TipoRigaScontrino });
                 }
-                if (a.TipoRigaScontrino == TipoRigaScontrino.Vendita && a.ScontoPerc > 0)
+                if (a.TipoRigaScontrino == TipoRigaScontrino.Vendita && a.ScontoPerc != 0)
                 {
-                    listRighe.Add(new ScontrinoLine { Descrizione = "Sconto " + a.ScontoPerc.ToString() + "%", IvaPerc = 0, Qta = 1, PrezzoIvato = a.PrezzoIvato * (a.ScontoPerc) / 100, TipoRigaScontrino = TipoRigaScontrino.Sconto });
+                    var descr = "Sconto " + a.ScontoPerc.ToString() + "%";
+                    if (a.ScontoPerc<0)
+                    {
+                        descr = "Maggiorazione " + Math.Abs( a.ScontoPerc).ToString() + "%";
+                    }
+                    listRighe.Add(new ScontrinoLine { Descrizione = descr, IvaPerc = 0, Qta = 1, PrezzoIvato = a.PrezzoIvato * (a.ScontoPerc) / 100, TipoRigaScontrino = TipoRigaScontrino.Sconto });
                 }
                 if (a.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato && a.PrezzoIvato > 0)
                 {

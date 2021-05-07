@@ -57,8 +57,10 @@ namespace StrumentiMusicali.Core.Ambienti
                     return "Strumento";
 
                 case enAmbiente.StrumentiList:
-                    return "Gestione Strumenti";
-
+                    {
+                        var setting = Settings.SettingProgrammaValidator.ReadSetting();
+                    return "Gestione " + setting.NomeAnagrafica;
+                    }
                 case enAmbiente.LibriDetail:
                     return "Libro";
 

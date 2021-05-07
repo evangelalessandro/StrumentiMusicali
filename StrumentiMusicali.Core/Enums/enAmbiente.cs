@@ -114,6 +114,9 @@ namespace StrumentiMusicali.Core.Enum
 
         [UIAmbienteAttribute(true, NomeAmbiente = "Periodo Riordino")]
         RiordinoPeriodi,
+        
+        [UIAmbienteAttribute(true, NomeAmbiente = "Impostazioni programma")]
+        SettingProgramma,
     }
 
 

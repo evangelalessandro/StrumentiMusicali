@@ -21,5 +21,7 @@ namespace StrumentiMusicali.Library.Entity
 
         public bool Magazzino { get; set; }
 
+        
+
     }
 }

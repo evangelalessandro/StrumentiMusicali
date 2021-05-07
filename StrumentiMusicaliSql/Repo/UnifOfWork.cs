@@ -208,6 +208,19 @@ select @db
                 return _SettingScontrino;
             }
         }
+        private Repository<SettingProgramma> _SettingProgrammaRepository;
+
+        public IRepository<SettingProgramma> SettingProgrammaRepository
+        {
+            get
+            {
+                if (_SettingProgrammaRepository == null)
+                {
+                    _SettingProgrammaRepository = new Repository<SettingProgramma>(dbContext);
+                }
+                return _SettingProgrammaRepository;
+            }
+        }
 
         private Repository<SettingSito> _SettingSitoRepository;
 

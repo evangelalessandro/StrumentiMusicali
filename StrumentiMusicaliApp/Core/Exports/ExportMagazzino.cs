@@ -59,7 +59,8 @@ namespace StrumentiMusicali.App.Core.Exports
                     a.Articolo.Categoria,
                     articolo = a.Articolo,
                     a.CodiceArticoloEcommerce,
-                    a.Articolo.Strumento
+                    a.Articolo.Strumento,
+                    a.Articolo.RiordinoPeriodi
                 }).ToList();
 
                 var qta = uof.MagazzinoRepository.Find(a => true)
@@ -129,7 +130,8 @@ namespace StrumentiMusicali.App.Core.Exports
                       a.articolo.ArticoloWeb.DescrizioneHtml,
                       a.articolo.Iva,
                       a.articolo.ArticoloWeb.PrezzoWeb,
-
+                      a.articolo.SottoScorta,
+                      PeriodoSottoScorta= a.articolo.RiordinoPeriodi.Descrizione,
                       a.CodiceArticoloEcommerce
                       ,
                       a.articolo.DataUltimaModifica

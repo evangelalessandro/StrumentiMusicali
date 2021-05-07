@@ -94,7 +94,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             {
                 artController.TestoRicerca = ricercaText;
                 var viewRicercaArt = new View.Articoli.ArticoliListView(artController);
-                
+
 
                 this.ShowView(viewRicercaArt, artController.Ambiente, artController, true, true);
 
@@ -369,7 +369,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             var tabFirst = GetMenu().Tabs[0];
             var pnl = tabFirst.Pannelli.First();
 
-            
+
             if (ModalitaController == enModalitaArticolo.Ricerca
                 || ModalitaController == enModalitaArticolo.SelezioneSingola)
             {
@@ -416,15 +416,16 @@ namespace StrumentiMusicali.App.Core.Controllers
                     EventAggregator.Instance().Publish<ScontrinoAddEvents>(new ScontrinoAddEvents()
                     {
                         Articolo = this.SelectedItem
-                    }) ;
-                };
-                pnlS.Add("Aggiungi generico", StrumentiMusicali.Core.Properties.ImageIcons.Add, true).Click += (a, e) =>
-                {
-                    EventAggregator.Instance().Publish<ScontrinoAddEvents>(new ScontrinoAddEvents()
-                    {
-                        
                     });
                 };
+                if (SettingScontrinoValidator.ReadSetting().ArticoloGenerico)
+                    pnlS.Add("Aggiungi generico", StrumentiMusicali.Core.Properties.ImageIcons.Add, true).Click += (a, e) =>
+                    {
+                        EventAggregator.Instance().Publish<ScontrinoAddEvents>(new ScontrinoAddEvents()
+                        {
+
+                        });
+                    };
                 //pnlS.Add("Aggiungi sconto", StrumentiMusicali.Core.Properties.ImageIcons.Sconto_64, true).Click += (a, e) =>
                 //{
                 //    EventAggregator.Instance().Publish<ScontrinoAddScontoEvents>(new ScontrinoAddScontoEvents()
@@ -553,14 +554,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             }
         }
 
-        public void InvioArticoli()
-        {
-            using (var export = new Exports.ExportArticoliCsv())
-            {
-                export.InvioArticoli();
-            }
-        }
-
+       
         ~ControllerArticoli()
         {
             var dato = this.ReadSetting(enAmbiente.StrumentiList);
@@ -651,7 +645,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                     {
                         CategoriaID = itemCurrent.Categoria.ID,
                         Condizione = itemCurrent.Condizione,
-                        
+
                         Prezzo = itemCurrent.Prezzo,
                         Testo = itemCurrent.Testo,
                         Titolo = "* " + itemCurrent.Titolo,
@@ -761,7 +755,7 @@ namespace StrumentiMusicali.App.Core.Controllers
         //    else if (strPrezzo.Contains(";"))
         //    {
         //        prezzo = decimal.Parse(strPrezzo.Split(';')[0]);
-                 
+
         //    }
         //    else
         //    {
@@ -778,8 +772,8 @@ namespace StrumentiMusicali.App.Core.Controllers
         //        Titolo = dat[4],
         //        Testo = dat[5].Replace("<br>", Environment.NewLine),
         //        Prezzo = prezzo,
-                
-                 
+
+
         //    });
         //    artNew.Strumento.Marca = dat[3];
         //    uof.ArticoliRepository.Add(artNew);

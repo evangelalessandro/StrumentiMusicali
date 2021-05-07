@@ -10,7 +10,8 @@ namespace StrumentiMusicali.Library.Entity.Setting
         [CustomUIView(Ordine = 20,Titolo ="Cartella destinazione")]
         public string FolderDestinazione { get; set; } = "";
 
-         
+        [CustomUIView(Ordine = 21, Titolo = "Pulsante per inserire articolo generico, non anagrafico")]
+        public bool ArticoloGenerico { get; set; } = true;
     }
 
 }

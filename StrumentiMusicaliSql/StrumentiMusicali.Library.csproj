@@ -76,7 +76,6 @@
     <Compile Include="Core\Events\Articoli\ArticoloSconta.cs" />
     <Compile Include="Core\Events\Articoli\ImportArticoliMulino.cs" />
     <Compile Include="Core\Events\Articoli\ImportMagExcel.cs" />
-    <Compile Include="Core\Events\Articoli\InvioArticoliCSV.cs" />
     <Compile Include="Core\Events\Base\FilterControllerEvent.cs" />
     <Compile Include="Core\Events\Base\FilterEvent.cs" />
     <Compile Include="Core\Events\Fatture\FatturaCambiaTipoDoc.cs" />
@@ -140,6 +139,7 @@
     <Compile Include="Core\LoginData.cs" />
     <Compile Include="Core\MessageException.cs" />
     <Compile Include="Core\Settings\SettingBackupFtpValidator.cs" />
+    <Compile Include="Entity\Altro\ParametriProgramma.cs" />
     <Compile Include="Entity\Altro\TipiPagamentoScontrino.cs" />
     <Compile Include="Entity\Altro\SchedulerJob.cs" />
     <Compile Include="Entity\Articoli\Articolo.cs" />
@@ -172,6 +172,7 @@
     <Compile Include="Entity\Fatture\TipiDocumentoFiscale.cs" />
     <Compile Include="Entity\Fatture\TipiPagamentoDocumenti.cs" />
     <Compile Include="Entity\Setting\SettingScontrino.cs" />
+    <Compile Include="Entity\Setting\SettingProgramma.cs" />
     <Compile Include="Entity\Setting\WooCommerceSetting.cs" />
     <Compile Include="Entity\Setting\PrestaShopSetting.cs" />
     <Compile Include="Entity\Setting\SettingBackupFtp.cs" />
@@ -307,6 +308,10 @@
     <Compile Include="Migrations\202105051332158_Art.Designer.cs">
       <DependentUpon>202105051332158_Art.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105071219207_SettingProgramma.cs" />
+    <Compile Include="Migrations\202105071219207_SettingProgramma.Designer.cs">
+      <DependentUpon>202105071219207_SettingProgramma.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
@@ -408,6 +413,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105051332158_Art.resx">
       <DependentUpon>202105051332158_Art.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105071219207_SettingProgramma.resx">
+      <DependentUpon>202105071219207_SettingProgramma.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Script\IndexOptimize.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

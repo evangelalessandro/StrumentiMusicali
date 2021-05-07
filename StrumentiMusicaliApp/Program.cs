@@ -32,7 +32,8 @@ namespace StrumentiMusicali.App
                 {
                     if (createdNew)
                     {
-                       
+                        StrumentiMusicali.Core.Settings.SettingProgrammaValidator.ReadSetting();
+
 
                         using (var controller = new ControllerMaster())
                         {
@@ -45,17 +46,7 @@ namespace StrumentiMusicali.App
                     }
                 }
             }
-            else
-            {
-                /*invio articoli csv*/
-                if (args[0] == "INVIO")
-                {
-                    using (var controller = new ControllerMaster())
-                    {
-                        EventAggregator.Instance().Publish<InvioArticoliCSV>(new InvioArticoliCSV());
-                    }
-                }
-            }
+             
         }
          
     }

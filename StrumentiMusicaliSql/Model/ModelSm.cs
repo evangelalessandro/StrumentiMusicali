@@ -370,6 +370,7 @@ namespace StrumentiMusicali.Library.Model
 
         public virtual DbSet<Utente> Utenti { get; set; }
         public virtual DbSet<SettingSito> SettingSito { get; set; }
+        public virtual DbSet<SettingProgramma> SettingProgramma { get; set; }
 
         public virtual DbSet<SettingScontrino> SettingScontrino { get; set; }
         public virtual DbSet<DatiIntestazioneStampaFattura> DatiIntestazioneStampaFattura { get; set; }

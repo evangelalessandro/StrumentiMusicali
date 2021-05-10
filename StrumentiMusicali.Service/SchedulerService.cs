@@ -91,6 +91,8 @@ namespace StrumentiMusicali.Service
             catch (Exception ex)
             {
                 eventLog1.WriteEntry("Error InitScheduler." + ex.Message);
+                ManagerLog.Logger.Error(ex, "InitScheduler Error");
+
 
             }
         }

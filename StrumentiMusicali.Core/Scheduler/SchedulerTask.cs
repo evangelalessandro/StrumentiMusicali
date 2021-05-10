@@ -11,13 +11,17 @@ namespace StrumentiMusicali.Core.Scheduler
     {
         public void Init()
         {
+
+
+
             var obj = IocContainerSingleton.GetContainer;
             ManagerLog.Logger.Info("Init Scheduler");
-            JobManager.AddJob<BackupDbJob>(a => a.ToRunOnceAt(20, 0).AndEvery(1).Days());
+            JobManager.AddJob<BackupDbJob>(a => a.ToRunNow().AndEvery(12).Hours());
+            //JobManager.AddJob<BackupDbJob>(a => a.ToRunEvery(1).Minutes());
             JobManager.AddJob<IndexOptimizeJob>(a => a.ToRunEvery(12).Hours());
-            JobManager.AddJob<UpdateWebPrestaJob>(a => a.ToRunEvery(1).Minutes());
-            JobManager.AddJob<UpdateLocalStockPrestaJob>(a => a.ToRunEvery(1).Minutes());
-            JobManager.AddJob<UpdateLocalStockWooJob>(a => a.ToRunEvery(1).Minutes());
+            //JobManager.AddJob<UpdateWebPrestaJob>(a => a.ToRunEvery(1).Minutes());
+            //JobManager.AddJob<UpdateLocalStockPrestaJob>(a => a.ToRunEvery(1).Minutes());
+            //JobManager.AddJob<UpdateLocalStockWooJob>(a => a.ToRunEvery(1).Minutes());
             JobManager.Stop();
 
             InitDbRecord();
@@ -28,10 +32,11 @@ namespace StrumentiMusicali.Core.Scheduler
             timer.Interval = 15000;
             timer.Start();
             timer.Elapsed += Timer_Elapsed;
-            
+
             AttachEvents();
 
             ManagerLog.Logger.Info("Fine Init Scheduler");
+
         }
 
         private static void AttachEvents()
@@ -62,6 +67,7 @@ namespace StrumentiMusicali.Core.Scheduler
             };
             JobManager.JobException += (o) =>
             {
+                
                 ManagerLog.Logger.Error(o.Exception, "Job " + o.Name);
 
                 using (var uof = new UnitOfWork())
@@ -115,7 +121,14 @@ namespace StrumentiMusicali.Core.Scheduler
 
         private void InitDbRecord()
         {
-            var list = JobManager.AllSchedules.ToList().Select(a=>new { a.Name, a.NextRun }).Distinct().ToList();
+            UpdateNextRun();
+
+            ReadUpdateDb();
+        }
+
+        private static void UpdateNextRun()
+        {
+            var list = JobManager.AllSchedules.ToList().Select(a => new { a.Name, a.NextRun }).Distinct().ToList();
             using (var uof = new UnitOfWork())
             {
 
@@ -127,7 +140,7 @@ namespace StrumentiMusicali.Core.Scheduler
                         item = new Library.Entity.Altro.SchedulerJob();
                         item.Nome = o.Name;
                     }
-                    item.ProssimoAvvio = list.Where(a=>a.Name==o.Name).Min(a=>a.NextRun);
+                    item.ProssimoAvvio = list.Where(a => a.Name == o.Name).Min(a => a.NextRun);
                     if (item.ID == 0)
                     {
                         item.Errore = "";
@@ -142,8 +155,6 @@ namespace StrumentiMusicali.Core.Scheduler
                     uof.Commit();
                 }
             }
-
-            ReadUpdateDb();
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
@@ -160,17 +171,20 @@ namespace StrumentiMusicali.Core.Scheduler
                 {
                     var schedItem = JobManager.GetSchedule(item.Nome);
 
-                    if (item.Enabled)
+                    if (schedItem!=null)
                     {
-                        if (schedItem.Disabled)
+                        if (item.Enabled)
                         {
-                            schedItem.Enable();
+                            if (schedItem.Disabled)
+                            {
+                                schedItem.Enable();
+                            }
                         }
-                    }
-                    else
-                    {
-                        if (!schedItem.Disabled)
-                            schedItem.Disable();
+                        else
+                        {
+                            if (!schedItem.Disabled)
+                                schedItem.Disable();
+                        }
                     }
                 }
             }

@@ -13,6 +13,8 @@ namespace StrumentiMusicali.ftpBackup.Backup
         {
             try
             {
+                ManagerLog.Logger.Info("BackupJob inizio");
+
                 var hours = (SettingBackupFtpValidator.ReadSetting().UltimoBackup - DateTime.Now).TotalHours;
                 if (Math.Abs(hours) < 8)
                     return;

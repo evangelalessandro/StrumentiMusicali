@@ -33,13 +33,9 @@ namespace StrumentiMusicali.App.Core.Controllers
             : base()
         {
             
-            EventAggregator.Instance().Subscribe<ApriAmbiente>(Apri);
-            EventAggregator.Instance().Subscribe<ImportArticoliCSVMercatino>(ImportaCsvArticoli);
-            EventAggregator.Instance().Subscribe<ImportaFattureAccess>(ImportaFatture);
-            EventAggregator.Instance().Subscribe<ImportArticoliMulino>(ImportArticoliMulinoExcel);
+            EventAggregator.Instance().Subscribe<ApriAmbiente>(Apri); 
             EventAggregator.Instance().Subscribe<ImportMagExcel>(ImportMagExcel);
-
-            EventAggregator.Instance().Subscribe<InvioArticoliCSV>(InvioArCSV);
+             
             EventAggregator.Instance().Subscribe<ExportMagazzino>(ExportMag);
 
             Application.ThreadException += Application_ThreadException;
@@ -65,13 +61,6 @@ namespace StrumentiMusicali.App.Core.Controllers
             }
         }
 
-        private void ImportArticoliMulinoExcel(ImportArticoliMulino obj)
-        {
-            using (var import = new ImportCavalloPazzoExcel())
-            {
-                import.ImportFile();
-            }
-        }
 
         public void ShowMainView()
         {
@@ -114,28 +103,9 @@ namespace StrumentiMusicali.App.Core.Controllers
                 return;
             }
         }
-
-        private void InvioArCSV(InvioArticoliCSV obj)
-        {
-            using (var controllerArt = new ControllerArticoli(ControllerArticoli.enModalitaArticolo.Tutto))
-            {
-                controllerArt.InvioArticoli();
-            }
-        }
-
-        private void ImportaFatture(ImportaFattureAccess obj)
-        {
-           
-                ControllerFatturazione.ImportaFatture();
-        }
-
-        private void ImportaCsvArticoli(ImportArticoliCSVMercatino obj)
-        {
-            using (var controllerArt = new ControllerArticoli(ControllerArticoli.enModalitaArticolo.Tutto))
-            {
-                controllerArt.ImportaCsvArticoli();
-            }
-        }
+         
+   
+ 
 
         private void Apri(ApriAmbiente obj)
         {

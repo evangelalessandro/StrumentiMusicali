@@ -96,7 +96,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             {
                 artController.TestoRicerca = ricercaText;
                 var viewRicercaArt = new View.Articoli.ArticoliListView(artController);
-                
+
 
                 this.ShowView(viewRicercaArt, artController.Ambiente, artController, true, true);
 
@@ -323,6 +323,14 @@ namespace StrumentiMusicali.App.Core.Controllers
         {
             if (!MessageManager.QuestionMessage(string.Format(@"Sei sicuro di volere applicare questo sconto su tutti i {0} articoli visualizzati nella lista?", DataSource.Count())))
                 return;
+
+
+            if (obj.Acquisto == false && obj.Vendita == false && obj.Web == false)
+            {
+                MessageManager.NotificaWarnig(@"Occorre selezionare almeno un prezzo da variare");
+                return;
+            }
+
             if (DataSource.Count() > 100)
             {
                 if (!MessageManager.QuestionMessage(string.Format(@"Sei veramente sicuro di volere applicare questo sconto su tutti i {0} articoli  visualizzati nella lista?", DataSource.Count())))
@@ -332,10 +340,27 @@ namespace StrumentiMusicali.App.Core.Controllers
             using (var saveEnt = new SaveEntityManager())
             {
                 var list = DataSource.Select(a => a.ID).ToList();
-                foreach (var item in saveEnt.UnitOfWork.ArticoliRepository.Find(a => list.Contains(a.ID)).ToList())
+                foreach (var item in saveEnt.UnitOfWork.ArticoliRepository.Find(a => list.Contains(a.ID)).Select(a => new { a.ArticoloWeb, a })
+                    .ToList().Select(a => a.a).ToList())
                 {
-                    item.Prezzo += item.Prezzo * obj.Percentuale / (decimal)100;
-                    _logger.Info("Applicato sconto su articolo codice {0}, nuovo prezzo ", item.ID, item.Prezzo.ToString("C2"));
+                    if (obj.Vendita && item.Prezzo>0)
+                    {
+                        item.Prezzo += item.Prezzo * obj.Percentuale / (decimal)100;
+                        _logger.Info("Applicato sconto su articolo codice {0}, nuovo prezzo vendita {1} ", item.ID, item.Prezzo.ToString("C2"));
+                    }
+                    if (obj.Acquisto && item.PrezzoAcquisto>0)
+                    {
+                        item.PrezzoAcquisto += item.PrezzoAcquisto * obj.Percentuale / (decimal)100;
+                        _logger.Info("Applicato sconto su articolo codice {0}, nuovo prezzo acq {1}", item.ID, item.PrezzoAcquisto.ToString("C2"));
+                    }
+                    if (obj.Web && item.ArticoloWeb.PrezzoWeb>0)
+                    {
+                        item.ArticoloWeb.PrezzoWeb += item.ArticoloWeb.PrezzoWeb * obj.Percentuale / (decimal)100;
+                        _logger.Info("Applicato sconto su articolo codice {0}, nuovo prezzo web {1}", item.ID, item.ArticoloWeb.PrezzoWeb.ToString("C2"));
+
+                    }
+
+
                     saveEnt.UnitOfWork.ArticoliRepository.Update(item);
                 }
                 if (saveEnt.SaveEntity("Variazione applicata con successo"))
@@ -371,7 +396,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             var tabFirst = GetMenu().Tabs[0];
             var pnl = tabFirst.Pannelli.First();
 
-            
+
             if (ModalitaController == enModalitaArticolo.Ricerca
                 || ModalitaController == enModalitaArticolo.SelezioneSingola)
             {
@@ -418,13 +443,13 @@ namespace StrumentiMusicali.App.Core.Controllers
                     EventAggregator.Instance().Publish<ScontrinoAddEvents>(new ScontrinoAddEvents()
                     {
                         Articolo = this.SelectedItem
-                    }) ;
+                    });
                 };
                 pnlS.Add("Aggiungi generico", Properties.Resources.Add, true).Click += (a, e) =>
                 {
                     EventAggregator.Instance().Publish<ScontrinoAddEvents>(new ScontrinoAddEvents()
                     {
-                        
+
                     });
                 };
                 //pnlS.Add("Aggiungi sconto", Properties.Resources.Sconto_64, true).Click += (a, e) =>
@@ -554,14 +579,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                 ShowView(view, enAmbiente.ArticoloSconto);
             }
         }
-
-        public void InvioArticoli()
-        {
-            using (var export = new Exports.ExportArticoliCsv())
-            {
-                export.InvioArticoli();
-            }
-        }
+         
 
         ~ControllerArticoli()
         {
@@ -653,13 +671,9 @@ namespace StrumentiMusicali.App.Core.Controllers
                     {
                         CategoriaID = itemCurrent.Categoria.ID,
                         Condizione = itemCurrent.Condizione,
-                        BoxProposte = itemCurrent.BoxProposte,
                         Prezzo = itemCurrent.Prezzo,
-                        PrezzoARichiesta = itemCurrent.PrezzoARichiesta,
-                        PrezzoBarrato = itemCurrent.PrezzoBarrato,
                         Testo = itemCurrent.Testo,
-                        Titolo = "* " + itemCurrent.Titolo,
-                        UsaAnnuncioTurbo = itemCurrent.UsaAnnuncioTurbo,
+                        Titolo = "* " + itemCurrent.Titolo, 
                         DataUltimaModifica = DateTime.Now,
                         DataCreazione = DateTime.Now
                     });
@@ -684,131 +698,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         public string FiltroLibri { get; set; } = "";
         public string FiltroMarca { get; set; } = "";
-
-        public void ImportaCsvArticoli()
-        {
-            try
-            {
-                using (OpenFileDialog res = new OpenFileDialog())
-                {
-                    res.Title = "Seleziona file da importare";
-                    //Filter
-                    res.Filter = "File csv|*.csv;";
-
-                    //When the user select the file
-                    if (res.ShowDialog() == DialogResult.OK)
-                    {
-                        //Get the file's path
-                        var fileName = res.FileName;
-
-                        using (var curs = new CursorManager())
-                        {
-                            using (StreamReader sr = new StreamReader(fileName, Encoding.Default, true))
-                            {
-                                String line;
-                                bool firstLine = true;
-                                int progress = 1;
-                                // Read and display lines from the file until the end of
-                                // the file is reached.
-                                using (var uof = new UnitOfWork())
-                                {
-                                    while ((line = sr.ReadLine()) != null)
-                                    {
-                                        if (!firstLine)
-                                        {
-                                            progress = ImportLine(line, progress, uof);
-                                        }
-                                        firstLine = false;
-                                    }
-                                    uof.Commit();
-                                }
-                            }
-                        }
-                        EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>(this));
-                        MessageManager.NotificaInfo("Terminata importazione articoli");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionManager.ManageError(ex);
-            }
-        }
-
-        private int ImportLine(string line, int progress, UnitOfWork uof)
-        {
-            var dat = line.Split('§');
-            var cond = enCondizioneArticolo.Nuovo;
-            if (dat[2] == "N")
-            {
-                cond = enCondizioneArticolo.Nuovo;
-            }
-            else if (dat[2] == "U")
-            {
-                cond = enCondizioneArticolo.UsatoGarantito;
-            }
-            else if (dat[2] == "E")
-            {
-                cond = enCondizioneArticolo.ExDemo;
-            }
-            else
-            {
-                throw new Exception("Tipo dato non gestito o mancante nella condizione articolo.");
-            }
-            decimal prezzo = 0;
-            decimal prezzoBarrato = 0;
-            bool prezzoARichiesta = false;
-            var strPrezzo = dat[6];
-            if (strPrezzo == "NC")
-            {
-                prezzoARichiesta = true;
-            }
-            else if (strPrezzo.Contains(";"))
-            {
-                prezzo = decimal.Parse(strPrezzo.Split(';')[0]);
-                prezzoBarrato = decimal.Parse(strPrezzo.Split(';')[1]);
-            }
-            else
-            {
-                if (strPrezzo.Trim().Length > 0)
-                {
-                    prezzo = decimal.Parse(strPrezzo);
-                }
-            }
-            var artNew = (new Articolo()
-            {
-                CategoriaID = int.Parse(dat[1]),
-                Condizione = cond,
-
-                Titolo = dat[4],
-                Testo = dat[5].Replace("<br>", Environment.NewLine),
-                Prezzo = prezzo,
-                PrezzoARichiesta = prezzoARichiesta,
-                PrezzoBarrato = prezzoBarrato,
-                BoxProposte = int.Parse(dat[9]) == 1 ? true : false
-            });
-            artNew.Strumento.Marca = dat[3];
-            uof.ArticoliRepository.Add(artNew);
-            var foto = dat[7];
-            if (foto.Length > 0)
-            {
-                int ordine = 0;
-                foreach (var item in foto.Split(';'))
-                {
-                    var artFoto = new FotoArticolo()
-                    {
-                        Articolo = artNew,
-                        UrlFoto = item,
-                        Ordine = ordine
-                    };
-                    ordine++;
-                    uof.FotoArticoloRepository.Add(artFoto);
-                }
-            }
-
-            return progress;
-        }
-
+         
+         
         private void DeleteArticolo(object obj)
         {
             try

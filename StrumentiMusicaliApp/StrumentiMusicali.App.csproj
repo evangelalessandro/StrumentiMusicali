@@ -175,13 +175,10 @@
     <Compile Include="Core\Events\Scontrino\ScontrinoStampa.cs" />
     <Compile Include="Core\Events\Tab\GetNewTab.cs" />
     <Compile Include="Core\Events\Tab\RemoveNewTab.cs" />
-    <Compile Include="Core\Exports\ExportArticoliCsv.cs" />
     <Compile Include="Core\Exports\ExportMagazzino.cs" />
     <Compile Include="Core\Controllers\FatturaElett\FattElettronica.cs" />
     <Compile Include="Core\Controllers\FatturaElett\FatturaHeader.cs" />
     <Compile Include="Core\Imports\BaseImportExcel.cs" />
-    <Compile Include="Core\Imports\ImportFatture.cs" />
-    <Compile Include="Core\Imports\ImportCavalloPazzoExcel.cs" />
     <Compile Include="Core\Imports\ImportDaExportMagazzino.cs" />
     <Compile Include="Core\Imports\ImportMagazziniExcel.cs" />
     <Compile Include="Core\Item\LogItem.cs" />

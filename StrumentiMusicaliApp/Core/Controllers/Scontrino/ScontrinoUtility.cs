@@ -271,7 +271,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                 }
                 else
                 {
-                    newitem.IvaPerc = obj.Articolo.ArticoloWeb.Iva;
+                    newitem.IvaPerc = obj.Articolo.Iva;
                 }
             }
             else

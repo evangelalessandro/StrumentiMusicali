@@ -124,7 +124,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
                 Condizione = enCondizioneArticolo.Nuovo,
                 Testo = name
             };
-            articolo.ArticoloWeb.Iva = 22;
+            articolo.Iva = 22;
 
             articolo.ArticoloWeb.PrezzoWeb = item.wholesale_price;
             if (articolo.ArticoloWeb.PrezzoWeb == 0)
@@ -167,7 +167,6 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
             articolo.ArticoloWeb.DescrizioneHtml = item.description.FirstOrDefault().Value;
             articolo.ArticoloWeb.DescrizioneBreveHtml = item.description_short.FirstOrDefault().Value;
 
-            articolo.CaricaInMercatino = false;
             articolo.CaricainECommerce = false;
 
             uof.ArticoliRepository.Add(articolo);

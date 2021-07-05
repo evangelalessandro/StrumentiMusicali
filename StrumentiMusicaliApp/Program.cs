@@ -22,38 +22,25 @@ namespace StrumentiMusicali.App
         {
             GridLocalizer.Active = new ItalianGridLocalizer();
             //Localizer.Active = new GermanEditorsLocalizer();
-            if (args == null || args.Length == 0 || string.IsNullOrEmpty(args[0]))
+            bool createdNew = true;
+            using (Mutex mutex = new Mutex(true, BaseController.MainName, out createdNew))
             {
-                bool createdNew = true;
-                using (Mutex mutex = new Mutex(true, BaseController.MainName, out createdNew))
+                if (createdNew)
                 {
-                    if (createdNew)
-                    {
-                         
-                        using (var controller = new ControllerMaster())
-                        {
-                            controller.ShowMainView();
-                        }
-                    }
-                    else
-                    {
-                        ProcessUtils.SetFocusToPreviousInstance(BaseController.MainName);
-                    }
-                }
-            }
-            else
-            {
-                /*invio articoli csv*/
-                if (args[0] == "INVIO")
-                {
+
                     using (var controller = new ControllerMaster())
                     {
-                        EventAggregator.Instance().Publish<InvioArticoliCSV>(new InvioArticoliCSV());
+                        controller.ShowMainView();
                     }
                 }
+                else
+                {
+                    ProcessUtils.SetFocusToPreviousInstance(BaseController.MainName);
+                }
             }
+
         }
-         
+
     }
 
     public static class ProcessUtils

@@ -117,7 +117,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
 
         private void SetDataItemWeb(ArticoloBase artDb, UnitOfWork uof, product artWeb)
         {
-            artWeb.price = Math.Round(artDb.ArticoloDb.ArticoloWeb.PrezzoWeb * 100 / (100 + artDb.ArticoloDb.ArticoloWeb.Iva), 6, MidpointRounding.ToEven);
+            artWeb.price = Math.Round(artDb.ArticoloDb.ArticoloWeb.PrezzoWeb * 100 / (100 + artDb.ArticoloDb.Iva), 6, MidpointRounding.ToEven);
             artWeb.name.Clear();
             artWeb.AddName(new Bukimedia.PrestaSharp.Entities.AuxEntities.language(1, artDb.ArticoloDb.Titolo));
             artWeb.link_rewrite.Clear();

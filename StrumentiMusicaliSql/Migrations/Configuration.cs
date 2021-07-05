@@ -10,7 +10,7 @@ namespace StrumentiMusicali.Library.Migrations
 		public Configuration()
 		{
 			AutomaticMigrationsEnabled = true;
-			AutomaticMigrationDataLossAllowed = false;
+			AutomaticMigrationDataLossAllowed = true;
 		}
 
 		protected override void Seed(StrumentiMusicali.Library.Model.ModelSm context)
@@ -20,7 +20,7 @@ namespace StrumentiMusicali.Library.Migrations
 			//  You can use the DbSet<T>.AddOrUpdate() helper extension method
 			//  to avoid creating duplicate seed data.
 
-			InitCategories(context);
+			//InitCategories(context);
 			InitTipiPagamenti(context);
 		}
 

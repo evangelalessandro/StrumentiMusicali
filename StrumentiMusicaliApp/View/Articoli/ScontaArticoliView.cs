@@ -18,6 +18,10 @@ namespace StrumentiMusicali.App.View.Articoli
         {
             InitializeComponent();
             _controllerArticoli = controllerArticoli;
+            chkTipiPrezzi.Items.Add("Vendita",true);
+            chkTipiPrezzi.Items.Add("Acquisto", true);
+            chkTipiPrezzi.Items.Add("Web", true);
+
 
         }
 
@@ -50,9 +54,18 @@ namespace StrumentiMusicali.App.View.Articoli
 
         private void RibCrea_Click(object sender, EventArgs e)
         {
+
+            
             this.Validate();
             EventAggregator.Instance().Publish(new ArticoloSconta(
-                numericUpDown1.Value, _controllerArticoli));
+                numericUpDown1.Value, _controllerArticoli)
+            { Vendita= chkTipiPrezzi.GetItemCheckState(0)==CheckState.Checked
+            ,
+                Acquisto= chkTipiPrezzi.GetItemCheckState(1) == CheckState.Checked,
+                Web= chkTipiPrezzi.GetItemCheckState(2) == CheckState.Checked,
+
+
+            });
             RaiseClose();
         }
 

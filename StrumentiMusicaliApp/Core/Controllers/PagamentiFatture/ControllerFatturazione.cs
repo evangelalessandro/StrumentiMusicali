@@ -1,7 +1,6 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
 using StrumentiMusicali.App.Core.Controllers.FatturaElett;
 using StrumentiMusicali.App.Core.Controllers.Stampa;
-using StrumentiMusicali.App.Core.Fatture;
 using StrumentiMusicali.App.View;
 using StrumentiMusicali.App.View.Settings;
 using StrumentiMusicali.Core.Manager;
@@ -197,36 +196,7 @@ namespace StrumentiMusicali.App.Core.Controllers
             ShowDettaglio();
         }
 
-        public static void ImportaFatture()
-        {
-            try
-            {
-                using (OpenFileDialog res = new OpenFileDialog())
-                {
-                    res.Title = "Seleziona file da importare";
-                    //Filter
-                    res.Filter = "File access|*.mdb|Tutti i file|*.*";
-
-                    res.Multiselect = false;
-                    //When the user select the file
-                    if (res.ShowDialog() == DialogResult.OK)
-                    {
-                        using (var dat = new CursorManager())
-                        {
-                            using (var importa = new ImportFatture())
-                            {
-                                importa.ImportAccessDB(res.FileName);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionManager.ManageError(ex);
-            }
-        }
-
+        
         internal void StampaFattura(Fattura fattura)
         {
             _logger.Info("Avvio stampa");

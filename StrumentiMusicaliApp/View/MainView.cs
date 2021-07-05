@@ -146,11 +146,7 @@ namespace StrumentiMusicali.App
         {
             var tabImportExport = _menuTab.Add(@"Import\Export");
             var pnlExport = tabImportExport.Add("Export");
-            var ribInvio = pnlExport.Add("Invio Articoli", Properties.Resources.Upload);
-            ribInvio.Click += (s, e) =>
-            {
-                EventAggregator.Instance().Publish(new InvioArticoliCSV());
-            };
+            
             var ribExport1 = pnlExport.Add("Export Tutti libri Magazzino", Properties.Resources.Excel_export);
             ribExport1.Click += (s, e) =>
             {
@@ -173,28 +169,23 @@ namespace StrumentiMusicali.App
                 EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp = ExportMagazzino.TipoExport.PerMarca });
             };
 
-            var pnlImport = tabImportExport.Add("Import");
-            var ribImportCsv = pnlImport.Add("Import csv mercatino", Properties.Resources.ImportCsv);
-            ribImportCsv.Click += (s, e) =>
-            {
-                EventAggregator.Instance().Publish(new ImportArticoliCSVMercatino());
-            };
-            var ribImport01 = pnlImport.Add("Import Tutti Libri Magazzino", Properties.Resources.Excel_export);
-            ribImport01.Click += (s, e) =>
-            {
-                using (var mag = new ImportDaExportMagazzino(true))
-                {
-                    mag.ImportFile();
-                }
-            };
-            var ribImport02 = pnlImport.Add("Import Tutti Strumenti Magazzino", Properties.Resources.Excel_export);
-            ribImport02.Click += (s, e) =>
-            {
-                using (var mag = new ImportDaExportMagazzino(false))
-                {
-                    mag.ImportFile();
-                }
-            };
+            //var pnlImport = tabImportExport.Add("Import");
+            //var ribImport01 = pnlImport.Add("Import Tutti Libri Magazzino", Properties.Resources.Excel_export);
+            //ribImport01.Click += (s, e) =>
+            //{
+            //    using (var mag = new ImportDaExportMagazzino(true))
+            //    {
+            //        mag.ImportFile();
+            //    }
+            //};
+            //var ribImport02 = pnlImport.Add("Import Tutti Strumenti Magazzino", Properties.Resources.Excel_export);
+            //ribImport02.Click += (s, e) =>
+            //{
+            //    using (var mag = new ImportDaExportMagazzino(false))
+            //    {
+            //        mag.ImportFile();
+            //    }
+            //};
 
             //var ribImportFatture = pnlImport.Add("Fatture Access", Properties.Resources.ImportInvoice);
             //ribImportFatture.Click += (s, e) =>

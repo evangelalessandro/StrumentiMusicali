@@ -24,15 +24,10 @@ namespace StrumentiMusicali.Library.Entity.Articoli
             UpdateTitolo = Titolo;
 
         }
-
-        [CustomUIView(Ordine = 6, Category = "Online")]
-        public bool BoxProposte { get; set; }
-
+         
         [CustomUIView(Ordine = 7, Titolo = "Carica in E-Commerce", Category = "Online")]
         public bool CaricainECommerce { get; set; } = true;
-        [CustomUIView(Ordine = 8, Titolo = "Carica in Mercatino", Category = "Online")]
-        public bool CaricaInMercatino { get; set; } = true;
-
+         
         [CustomUIView(Width = 350, Ordine = 1, Combo = TipoDatiCollegati.Categorie, Titolo = "Categoria")]
         [Required]
         public int CategoriaID { get; set; }
@@ -55,11 +50,14 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         [Required]
         public bool NonImponibile { get; set; } = false;
 
-        [CustomUIView(Width = 60, Ordine = 44, Category = "Prezzo", Money = true)]
-        public bool PrezzoARichiesta { get; set; } = false;
+        [CustomUIView(Width = 50, Titolo = "Percentuale iva", Ordine = 42, Category = "Prezzo")]
+        public decimal Iva { get; set; } = 22;
 
-        [CustomUIView(Width = 60, Ordine = 45, Category = "Prezzo", Money = true)]
-        public decimal PrezzoBarrato { get; set; } = 0;
+        //[CustomUIView(Width = 60, Ordine = 44, Category = "Prezzo", Money = true)]
+        //public bool PrezzoARichiesta { get; set; } = false;
+
+        //[CustomUIView(Width = 60, Ordine = 45, Category = "Prezzo", Money = true)]
+        //public decimal PrezzoBarrato { get; set; } = 0;
 
         [CustomUIView(Width = 80, Ordine = 40, Category = "Prezzo", Money = true)]
         public decimal PrezzoAcquisto { get; set; } = 0;
@@ -74,9 +72,7 @@ namespace StrumentiMusicali.Library.Entity.Articoli
             get;
             set;
         }
-
-        [CustomUIView(Ordine = 5, Category = "Online")]
-        public bool UsaAnnuncioTurbo { get; set; }
+         
 
         [CustomUIView(Ordine = 20, Category = "Note")]
         [MaxLength(100)]

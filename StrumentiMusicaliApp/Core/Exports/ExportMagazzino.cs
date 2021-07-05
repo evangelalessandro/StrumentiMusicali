@@ -127,7 +127,7 @@ namespace StrumentiMusicali.App.Core.Exports
                       a.Libro.Settore,
                       a.articolo.ArticoloWeb.DescrizioneBreveHtml,
                       a.articolo.ArticoloWeb.DescrizioneHtml,
-                      a.articolo.ArticoloWeb.Iva,
+                      a.articolo.Iva,
                       a.articolo.ArticoloWeb.PrezzoWeb,
 
                       a.CodiceArticoloEcommerce

@@ -18,8 +18,8 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         [Required]
         public decimal PrezzoWeb { get; set; } = 0;
 
-        [CustomUIView(Width = 50, Titolo = "Percentuale iva", Ordine = 35, Category = "Prezzo")]
-        public decimal Iva { get; set; } = 22;
+        //[CustomUIView(Width = 50, Titolo = "Percentuale iva", Ordine = 35, Category = "Prezzo")]
+        //public decimal Iva { get; set; } = 22;
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

@@ -74,15 +74,11 @@
     <Compile Include="Core\Events\Articoli\ArticoloMerge.cs" />
     <Compile Include="Core\Events\Articoli\ArticoloDuplicate.cs" />
     <Compile Include="Core\Events\Articoli\ArticoloSconta.cs" />
-    <Compile Include="Core\Events\Articoli\ImportArticoliCSVMercatino.cs" />
-    <Compile Include="Core\Events\Articoli\ImportArticoliMulino.cs" />
     <Compile Include="Core\Events\Articoli\ImportMagExcel.cs" />
-    <Compile Include="Core\Events\Articoli\InvioArticoliCSV.cs" />
     <Compile Include="Core\Events\Base\FilterControllerEvent.cs" />
     <Compile Include="Core\Events\Base\FilterEvent.cs" />
     <Compile Include="Core\Events\Fatture\FatturaCambiaTipoDoc.cs" />
     <Compile Include="Core\Events\Fatture\FattureUpdate.cs" />
-    <Compile Include="Core\Events\Fatture\ImportaFattureAccess.cs" />
     <Compile Include="Core\Events\Generics\Add.cs" />
     <Compile Include="Core\Events\Generics\AddPriority.cs" />
     <Compile Include="Core\Events\Generics\ApriAmbiente.cs" />
@@ -265,6 +261,14 @@
     <Compile Include="Migrations\202103311355236_Scontrino.Designer.cs">
       <DependentUpon>202103311355236_Scontrino.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202107051458141_FixArticoloAnag.cs" />
+    <Compile Include="Migrations\202107051458141_FixArticoloAnag.Designer.cs">
+      <DependentUpon>202107051458141_FixArticoloAnag.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202107051520030_FixArticoloAnag_2.cs" />
+    <Compile Include="Migrations\202107051520030_FixArticoloAnag_2.Designer.cs">
+      <DependentUpon>202107051520030_FixArticoloAnag_2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
@@ -293,6 +297,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103311355236_Scontrino.resx">
       <DependentUpon>202103311355236_Scontrino.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107051458141_FixArticoloAnag.resx">
+      <DependentUpon>202107051458141_FixArticoloAnag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107051520030_FixArticoloAnag_2.resx">
+      <DependentUpon>202107051520030_FixArticoloAnag_2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Script\IndexOptimize.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

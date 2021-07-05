@@ -10,5 +10,12 @@ namespace StrumentiMusicali.Library.Core.Events.Articoli
             Percentuale = valorePerc;
         }
         public decimal Percentuale { get; private set; }
+
+        public bool Vendita { get; set; }
+        public bool Acquisto{ get; set; }
+
+        public bool Web { get; set; }
+
     }
+
 }

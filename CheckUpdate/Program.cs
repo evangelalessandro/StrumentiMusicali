@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace CheckUpdate
+namespace UpdaterApplication
 {
     static class Program
     {
@@ -13,8 +13,7 @@ namespace CheckUpdate
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            MessageBox.Show("Controllo aggiornamenti, premere ok e attendere!", "Attenzione", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+          
             Application.Run(new Form1());
         }
     }

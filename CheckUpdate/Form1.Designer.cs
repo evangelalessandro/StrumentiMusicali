@@ -1,4 +1,4 @@
-﻿namespace CheckUpdate
+﻿namespace UpdaterApplication
 {
     partial class Form1
     {

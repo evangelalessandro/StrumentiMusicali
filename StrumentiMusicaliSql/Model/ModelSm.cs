@@ -63,7 +63,7 @@ namespace StrumentiMusicali.Library.Model
                 {
                     articolo.UpdateTitolo = "";
                 }
-                if (articolo.NonImponibile==true)
+                if (articolo.NonImponibile == true)
                 {
                     articolo.Iva = 0;
                 }
@@ -206,7 +206,7 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<FotoArticolo>().ToTable("FotoArticoli");
 
             //modelBuilder.Entity<OrdineWeb>().ToTable("OrdiniWeb");
- 
+
             modelBuilder.Entity<Fattura>().ToTable("Fatture");
             modelBuilder.Entity<FatturaRiga>().ToTable("FattureRighe");
 
@@ -218,6 +218,10 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<ArticoloImportato>().ToTable("ArticoliImportatiDalWeb");
             modelBuilder.Entity<Cliente>().ToTable("Clienti");
             modelBuilder.Entity<FattureGenerateInvio>().ToTable("FattureGenerate");
+            modelBuilder.Entity<SettingPostazioni>().ToTable("UPD_SettingPostazione");
+
+            
+            modelBuilder.Entity<Postazione>().ToTable("UPD_Postazioni");
             modelBuilder.Entity<SettingDocumentiPagamenti>().ToTable("SettingDocumentiPagamenti");
             modelBuilder.Entity<Pagamento>().Property(e => e.ImportoRata).HasPrecision(19, 2);
             modelBuilder.Entity<Pagamento>().Property(e => e.ImportoResiduo).HasPrecision(19, 2);
@@ -229,8 +233,8 @@ namespace StrumentiMusicali.Library.Model
            .IsUnique();
 
             modelBuilder.Entity<Articolo>()
-           .HasIndex(b => new { b.CodiceABarre, b.Titolo, b.Testo});
-           
+           .HasIndex(b => new { b.CodiceABarre, b.Titolo, b.Testo });
+
             modelBuilder.Entity<AggiornamentoWebArticolo>()
                 .HasIndex(b => new { b.ArticoloID })
                 .IsUnique();
@@ -238,7 +242,7 @@ namespace StrumentiMusicali.Library.Model
         //public virtual DbSet<OrdineWeb> OrdineWeb { get; set; }
         public virtual DbSet<ArticoloImportato> ArticoloImportato { get; set; }
 
-        
+
         public virtual DbSet<RepartoWeb> RepartoWeb { get; set; }
         public virtual DbSet<CategoriaWeb> CategoriaWeb { get; set; }
         public virtual DbSet<SchedulerJob> SchedulerJob { get; set; }
@@ -249,6 +253,7 @@ namespace StrumentiMusicali.Library.Model
         public virtual DbSet<Magazzino> Magazzino { get; set; }
         public virtual DbSet<Articolo> Articoli { get; set; }
 
+        public virtual DbSet<Postazione> Postazioni { get; set; }
         public virtual DbSet<Fattura> Fatture { get; set; }
         public virtual DbSet<FatturaRiga> FattureRighe { get; set; }
 
@@ -258,6 +263,7 @@ namespace StrumentiMusicali.Library.Model
 
         public virtual DbSet<SettingBackupFtp> SettingBackupFtp { get; set; }
 
+        public virtual DbSet<SettingPostazioni> SettingPostazioni { get; set; }
         public virtual DbSet<Cliente> Clienti { get; set; }
 
         public virtual DbSet<Utente> Utenti { get; set; }

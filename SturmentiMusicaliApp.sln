@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.Library",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.App", "StrumentiMusicaliApp\StrumentiMusicali.App.csproj", "{E6A4D0F6-DC39-431E-A562-AC0C4465BEA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckUpdate", "CheckUpdate\CheckUpdate.csproj", "{8195E64E-272F-42F2-972D-67831CC83CD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdaterApplication", "CheckUpdate\UpdaterApplication.csproj", "{8195E64E-272F-42F2-972D-67831CC83CD7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.ftpBackup", "StrumentiMusicali.ftpBackup\StrumentiMusicali.ftpBackup.csproj", "{0E29B767-416D-421E-98F6-A8EED7C7CB6F}"
 	ProjectSection(ProjectDependencies) = postProject

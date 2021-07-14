@@ -133,6 +133,7 @@
     <Compile Include="Core\LoginData.cs" />
     <Compile Include="Core\MessageException.cs" />
     <Compile Include="Core\Settings\SettingBackupFtpValidator.cs" />
+    <Compile Include="Entity\Altro\Postazioni.cs" />
     <Compile Include="Entity\Altro\TipiPagamentoScontrino.cs" />
     <Compile Include="Entity\Altro\SchedulerJob.cs" />
     <Compile Include="Entity\Articoli\Articolo.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="Entity\Articoli\Magazzino.cs" />
     <Compile Include="Entity\Fatture\FatturaRiga.cs" />
     <Compile Include="Entity\Setting\SettingScontrino.cs" />
+    <Compile Include="Entity\Setting\SettingPostazioni.cs" />
     <Compile Include="Entity\Setting\WooCommerceSetting.cs" />
     <Compile Include="Entity\Setting\PrestaShopSetting.cs" />
     <Compile Include="Entity\Setting\SettingBackupFtp.cs" />
@@ -269,6 +271,14 @@
     <Compile Include="Migrations\202107051520030_FixArticoloAnag_2.Designer.cs">
       <DependentUpon>202107051520030_FixArticoloAnag_2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202107141735135_UPD_MANAGER.cs" />
+    <Compile Include="Migrations\202107141735135_UPD_MANAGER.Designer.cs">
+      <DependentUpon>202107141735135_UPD_MANAGER.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202107141753068_UPD_MANAGER1.cs" />
+    <Compile Include="Migrations\202107141753068_UPD_MANAGER1.Designer.cs">
+      <DependentUpon>202107141753068_UPD_MANAGER1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
@@ -279,6 +289,9 @@
     <Compile Include="Repo\IRepository.cs" />
     <Compile Include="Repo\Repository.cs" />
     <Compile Include="Repo\UnifOfWork.cs" />
+    <Content Include="Script\CheckUpdate.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="Categorie\20170605.5 - MercatinoMusicale - Elenco Categorie.xls" />
@@ -303,6 +316,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202107051520030_FixArticoloAnag_2.resx">
       <DependentUpon>202107051520030_FixArticoloAnag_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107141735135_UPD_MANAGER.resx">
+      <DependentUpon>202107141735135_UPD_MANAGER.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107141753068_UPD_MANAGER1.resx">
+      <DependentUpon>202107141753068_UPD_MANAGER1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Script\IndexOptimize.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

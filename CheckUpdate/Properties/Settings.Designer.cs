@@ -43,25 +43,6 @@ namespace UpdaterApplication.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\fastcode13042017\\Source\\Repos\\StrumentiMusicali\\StrumentiMusicaliApp\\bin" +
-            "\\Debug")]
-        public string CartellaServer {
-            get {
-                return ((string)(this["CartellaServer"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\fastcode13042017\\Desktop\\PRova")]
-        public string CartellaLocale {
-            get {
-                return ((string)(this["CartellaLocale"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("StrumentiMusicali.App.exe")]
         public string ApplicazioneDaAprire {
             get {
@@ -75,6 +56,24 @@ namespace UpdaterApplication.Properties {
         public string SottoCartelle {
             get {
                 return ((string)(this["SottoCartelle"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\evang\\source\\repos\\StrumentiMusicali\\Bin")]
+        public string CartellaServer {
+            get {
+                return ((string)(this["CartellaServer"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\evang\\OneDrive\\Desktop\\PRova")]
+        public string CartellaLocale {
+            get {
+                return ((string)(this["CartellaLocale"]));
             }
         }
     }

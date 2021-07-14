@@ -1,6 +1,6 @@
 ﻿namespace UpdaterApplication
 {
-    partial class Form1
+    partial class Main
     {
         /// <summary>
         /// Variabile di progettazione necessaria.

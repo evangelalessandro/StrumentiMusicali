@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Windows.Forms;
 
 namespace UpdaterApplication
@@ -13,8 +15,15 @@ namespace UpdaterApplication
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-          
-            Application.Run(new Form1());
+
+            using (var checkup = new CheckUpdateFn())
+            {
+                if (checkup.ToUpdate())
+                    Application.Run(new Main());
+                else
+                    checkup.StartDestinationApplication();
+
+            }
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -16,10 +18,15 @@ namespace UpdaterApplication
         private BackgroundWorker _background;
         public CheckUpdateFn()
         {
-            ServerRemoto = UpdaterApplication.Properties.Settings.Default.CartellaServer;
-            CartellaLocale = UpdaterApplication.Properties.Settings.Default.CartellaLocale;
-            TipoFile = UpdaterApplication.Properties.Settings.Default.tipoFile;
+
+
             FileDaAprireAlTermine = UpdaterApplication.Properties.Settings.Default.ApplicazioneDaAprire;
+            CartellaLocale = UpdaterApplication.Properties.Settings.Default.CartellaLocale;
+        }
+        public void StartUpdate()
+        {
+            ServerRemoto = UpdaterApplication.Properties.Settings.Default.CartellaServer;
+            TipoFile = UpdaterApplication.Properties.Settings.Default.tipoFile;
             CartelleDaIncludere = UpdaterApplication.Properties.Settings.Default.SottoCartelle;
 
             _background = new BackgroundWorker();
@@ -30,6 +37,8 @@ namespace UpdaterApplication
             _background.RunWorkerAsync();
         }
         public event EventHandler<string> UpdateText;
+        public event EventHandler<string> CloseForm;
+
         public string CartellaLocale { get; set; }
         public string CartelleDaIncludere { get; set; }
         public string FileDaAprireAlTermine { get; set; }
@@ -42,7 +51,7 @@ namespace UpdaterApplication
             _background = null;
         }
 
-        public void StartApplication()
+        public void StartDestinationApplication()
         {
             Process.Start(Path.Combine(CartellaLocale
               , FileDaAprireAlTermine));
@@ -52,11 +61,58 @@ namespace UpdaterApplication
 
         private void _background_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            MessageBox.Show("Attendere l'apertura dell'applicazione STRUMENTI MUSICALI!", "Attenzione", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            if (e.Error==null)
+            {
+                ImpostaComeAggiornata();
 
-            StartApplication();
+                if (CloseForm != null)
+                    CloseForm(this, "");
+                StartDestinationApplication();
+            }
+            else
+            {
+
+                if (CloseForm != null)
+                    CloseForm(this, "");
+            }
+            
 
         }
+        public bool ToUpdate()
+        {
+            using (var sqlCommand = GetSqlComm("UPD_CHECKUPDATE"))
+            {
+                sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@pNomePostazione", Environment.MachineName);
+                var val = sqlCommand.ExecuteScalar();
+                if (val.Equals("UPDATED"))
+                {
+
+                    return false;
+                }
+            }
+            return true;
+        }
+        private SqlCommand GetSqlComm(string spName)
+        {
+            var connString = ConfigurationManager.ConnectionStrings["ModelSm"].ConnectionString;
+            var sqlConn = new SqlConnection(connString);
+
+            sqlConn.Open();
+            return new SqlCommand(spName, sqlConn);
+
+
+        }
+        private void ImpostaComeAggiornata()
+        {
+            using (var sqlCommand = GetSqlComm("UPD_UPDATED"))
+            {
+                sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@pNomePostazione", Environment.MachineName);
+                sqlCommand.ExecuteNonQuery();
+            }
+        }
+
 
         private void Background_DoWork(object sender, DoWorkEventArgs e)
         {

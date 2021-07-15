@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>StrumentiMusicali.Service</RootNamespace>
     <AssemblyName>StrumentiMusicali.Service</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -27,6 +27,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -96,12 +97,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StrumentiMusicali.Core\StrumentiMusicali.Core.csproj">
-      <Project>{a1245fd2-f94b-4916-a0de-f192610f55c3}</Project>
-      <Name>StrumentiMusicali.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.6.1 %28x86 e x64%29</ProductName>
@@ -115,8 +110,14 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NLog">
-      <Version>4.7.0</Version>
+      <Version>4.7.10</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StrumentiMusicali.Core\StrumentiMusicali.Core.csproj">
+      <Project>{a1245fd2-f94b-4916-a0de-f192610f55c3}</Project>
+      <Name>StrumentiMusicali.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

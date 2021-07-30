@@ -290,6 +290,7 @@
     <Compile Include="Repo\IRepository.cs" />
     <Compile Include="Repo\Repository.cs" />
     <Compile Include="Repo\UnifOfWork.cs" />
+    <Compile Include="Utility\EnumAttributi.cs" />
     <Content Include="Script\CheckUpdate.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

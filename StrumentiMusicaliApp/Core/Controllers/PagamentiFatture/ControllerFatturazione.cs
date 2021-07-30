@@ -83,33 +83,23 @@ namespace StrumentiMusicali.App.Core.Controllers
         {
             var fattura = EditItem;
             var prefix = "";
+            var tipo =
+                Library.Utility.EnumAttributi.GetAttribute<TipoDocFiscaleAttribute>(fattura.TipoDocumento);
+
             switch (fattura.TipoDocumento)
             {
                 case EnTipoDocumento.NonSpecificato:
                     return "";
 
-                case EnTipoDocumento.FatturaDiCortesia:
-                case EnTipoDocumento.RicevutaFiscale:
-                    prefix = "F";
-                    break;
 
-                case EnTipoDocumento.NotaDiCredito:
-                    prefix = "NC";
-                    break;
 
-                case EnTipoDocumento.DDT:
-                    prefix = "D";
-                    break;
-
-                default:
-                    break;
-            }
+            };
+            prefix = tipo.PreCodice;
+             
 
             using (UnitOfWork uof = new UnitOfWork())
             {
-                var list = new List<EnTipoDocumento>();
-                list.Add(EnTipoDocumento.FatturaDiCortesia);
-                list.Add(EnTipoDocumento.RicevutaFiscale);
+                var list = UtilityTipoDoc.CodiciNonDuplicabili();
 
                 var codiceList = uof.FatturaRepository.Find(a => a.Data.Year == fattura.Data.Year).ToList();
 

@@ -138,19 +138,20 @@ namespace StrumentiMusicali.App.View
 
         private void FillTipoDocumenti()
         {
-            var listItem = new List<EnTipoDocumento>();
-            listItem.Add((EnTipoDocumento.NonSpecificato));
-            listItem.Add(EnTipoDocumento.DDT);
-            listItem.Add(EnTipoDocumento.FatturaDiCortesia);
-            listItem.Add(EnTipoDocumento.RicevutaFiscale);
+             
+            var listItem = Enum.GetValues(typeof(EnTipoDocumento)).Cast<EnTipoDocumento>().Select(a => new
+            {
+                enumVal = a,
+                attrib =
+               ((EnTipoDocumento)a).GetAttrTipoFiscaleAttr()
+            }).ToList();
 
-            listItem.Add(EnTipoDocumento.NotaDiCredito);
 
             cboTipoDocumento.DataSource = listItem.Select(a =>
                     new
                     {
-                        ID = a,
-                        Descrizione = UtilityView.GetTextSplitted(a.ToString())
+                        ID = a.enumVal,
+                        Descrizione = a.attrib.Descrizione
                     }
                     ).ToList();
             cboTipoDocumento.DisplayMember = "Descrizione";

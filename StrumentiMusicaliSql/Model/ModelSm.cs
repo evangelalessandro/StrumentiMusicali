@@ -167,8 +167,11 @@ namespace StrumentiMusicali.Library.Model
         {
             using (var uof = new UnitOfWork())
             {
-                var count = uof.FatturaRepository.Find(a => a.ID != fattura.ID && a.Codice == fattura.Codice
-                && (a.TipoDocumento == EnTipoDocumento.FatturaDiCortesia || a.TipoDocumento == EnTipoDocumento.RicevutaFiscale)).Count();
+
+                var list = UtilityTipoDoc.CodiciNonDuplicabili();
+
+                 var count = uof.FatturaRepository.Find(a => a.ID != fattura.ID && a.Codice == fattura.Codice
+                && (list.Contains( a.TipoDocumento))).Count();
 
                 if (count > 0)
                 {
@@ -176,7 +179,10 @@ namespace StrumentiMusicali.Library.Model
                             new System.Data.Entity.Validation.DbValidationError("Codice",
                             "Deve essere univoco il codice. Questo codice è già usato " + fattura.Codice));
                 }
-                if ((fattura.TipoDocumento == EnTipoDocumento.FatturaDiCortesia || fattura.TipoDocumento == EnTipoDocumento.RicevutaFiscale) && string.IsNullOrEmpty(fattura.Pagamento))
+                var attr= Utility.EnumAttributi.GetAttribute < TipoDocFiscaleAttribute >(fattura.TipoDocumento);
+                
+
+                if (attr!= null && (attr.PagamentoObbligatorio) && string.IsNullOrEmpty(fattura.Pagamento))
                 {
                     result.ValidationErrors.Add(
                             new System.Data.Entity.Validation.DbValidationError("Pagamento",

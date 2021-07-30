@@ -50,18 +50,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
         }
         public const bool ModalitàAForm = false;
-        public static T GetAttribute<T>(Enum enumValue) where T : Attribute
-        {
-            if (enumValue == null)
-            {
-                throw new ArgumentNullException();
-            }
-            var member = enumValue.GetType().GetMember(enumValue.ToString()).FirstOrDefault();
-            return (T)member?.GetCustomAttributes(typeof(T), false).FirstOrDefault();
-        }
+        
         public void ShowView(UserControl view, enAmbiente ambiente, BaseController controller = null, bool disposeForm = true, bool forceFormView = false)
         {
-            var attr = GetAttribute<UIAmbienteAttribute>(ambiente);
+            var attr = StrumentiMusicali.Library.Utility.EnumAttributi.GetAttribute<UIAmbienteAttribute>(ambiente);
 
             if (ModalitàAForm || (attr != null && attr.OnlyViewInForm) || forceFormView)
             {
@@ -83,7 +75,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
         private void AggiungiTab(UserControl view, enAmbiente ambiente, BaseController controller, bool disposeForm)
         {
-            var attr = GetAttribute<UIAmbienteAttribute>(ambiente);
+            var attr = StrumentiMusicali.Library.Utility.EnumAttributi.GetAttribute<UIAmbienteAttribute>(ambiente);
 
             var currentAlreadyPresentItem = AmbientiAttivi.Where(a => a.Ambiente == ambiente).DefaultIfEmpty(
                 (enAmbiente.NonSpecificato, null, null)).FirstOrDefault();

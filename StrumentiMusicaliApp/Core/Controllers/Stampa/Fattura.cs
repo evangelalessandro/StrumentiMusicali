@@ -49,9 +49,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
             decimal importoIvaTot = 0;
             decimal imponibileIVaTot = 0;
             var rigaIniziale = 1;
-            if (fattura.TipoDocumento == EnTipoDocumento.FatturaDiCortesia ||
-                fattura.TipoDocumento == EnTipoDocumento.RicevutaFiscale ||
-                fattura.TipoDocumento == EnTipoDocumento.NotaDiCredito)
+            if (fattura.TipoDocumento.GetAttrTipoFiscaleAttr().ScriviRigheETotaliStampa)
             {
                 foreach (var item in righeFatt.Where(a => a.Importo > 0 && a.IvaApplicata.Length > 0).GroupBy(a => a.IvaApplicata).OrderBy(a => a.Key))
                 {
@@ -101,28 +99,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Stampa
             _excel.Range("Codice").Value = fattura.Codice;
             _excel.Range("Data").Value = fattura.Data;
             _excel.Range("Pagamento").Value = fattura.Pagamento;
-            switch (fattura.TipoDocumento)
-            {
-                case EnTipoDocumento.FatturaDiCortesia:
-                    _excel.Range("TipoDocumento").Value = "Fattura di cortesia";
-                    break;
 
-                case EnTipoDocumento.RicevutaFiscale:
-                    _excel.Range("TipoDocumento").Value = "Ricevuta fiscale";
-                    break;
+            _excel.Range("TipoDocumento").Value = fattura.TipoDocumento.GetAttrTipoFiscaleAttr().Descrizione;
 
-                case EnTipoDocumento.NotaDiCredito:
-                    _excel.Range("TipoDocumento").Value = "Nota di credito";
-                    break;
-
-                case EnTipoDocumento.DDT:
-                    _excel.Range("TipoDocumento").Value = "DDT";
-                    break;
-
-                default:
-                    break;
-            }
-
+             
             _excel.Range("ClienteRagioneSociale").Value = fattura.Cliente.RagioneSociale;
             _excel.Range("ClienteIndirizzo").Value = fattura.Cliente.Indirizzo.IndirizzoConCivico;
             _excel.Range("ClienteCap").Value = fattura.Cliente.Indirizzo.Cap;

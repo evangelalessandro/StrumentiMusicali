@@ -417,7 +417,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                 }
                 if (a.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato && a.PrezzoIvato > 0)
                 {
-                    listRighe.Add(new ScontrinoLine { Descrizione = a.Descrizione, IvaPerc = 0, Qta = 1, PrezzoIvato = a.PrezzoIvato, TipoRigaScontrino = TipoRigaScontrino.Sconto });
+                    listRighe.Add(new ScontrinoLine { Descrizione = a.Descrizione.Substring(0,23), IvaPerc = 0, Qta = 1, PrezzoIvato = a.PrezzoIvato, TipoRigaScontrino = TipoRigaScontrino.Sconto });
                 }
             }
 

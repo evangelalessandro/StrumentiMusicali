@@ -10,6 +10,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace StrumentiMusicali.Library.Repo
 {
@@ -145,5 +146,17 @@ namespace StrumentiMusicali.Library.Repo
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        public async Task<IEnumerable<T>> GetAll()
+        {
+            return await dbContext.Set<T>().ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetWhere(Expression<Func<T, bool>> predicate)
+        {
+            return await dbContext.Set<T>().Where(predicate).ToListAsync();
+        }
+         
+        
     }
 }

@@ -74,7 +74,23 @@ namespace StrumentiMusicali.Library.View.Enums
         [UIAmbienteAttribute(false)]
         Scheduler = 130,
         [UIAmbienteAttribute(true)]
-        SchedulerDetail = 131
+        SchedulerDetail = 131,
+
+
+        [UIAmbienteAttribute(false)]
+        RegistratoreCassaReparti = 200,
+        [UIAmbienteAttribute(false)]
+        RegistratoreCassaGruppi = 201,
+
+
+        [UIAmbienteAttribute(false)]
+        CategoriaArticoli = 300,
+        [UIAmbienteAttribute(true)]
+        CategoriaArticoliDettaglio = 301,
+        [UIAmbienteAttribute(false)]
+        GruppoCodiceRegCassaArticoli=305,
+            [UIAmbienteAttribute(true)]
+        GruppoCodiceRegCassaArticoliDettaglio = 306,
     }
 
 

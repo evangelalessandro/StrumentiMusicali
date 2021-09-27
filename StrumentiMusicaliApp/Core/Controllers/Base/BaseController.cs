@@ -553,7 +553,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                     return "Pagamento";
                 case enAmbiente.RicercaArticolo:
                     return "Ricerca articolo";
-
+                case enAmbiente.RegistratoreCassaGruppi:
+                    return "Gruppi registratore di cassa";
+                case enAmbiente.RegistratoreCassaReparti:
+                    return "Reparti registratore di cassa";
                 default:
                     return "NIENTE DI IMPOSTATO";
 
@@ -627,6 +630,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                     break;
                 case enAmbiente.DepositoList:
                     frm.Icon = UtilityView.GetIco(Properties.Resources.Depositi);
+                    break;
+                case enAmbiente.RegistratoreCassaReparti:
+                case enAmbiente.RegistratoreCassaGruppi:
+                    frm.Icon = UtilityView.GetIco(Properties.Resources.RegistratoreDiCassa);
                     break;
                 default:
                     break;

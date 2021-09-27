@@ -18,6 +18,8 @@ using StrumentiMusicali.Library.Core.Events.Fatture;
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Altro;
+using StrumentiMusicali.Library.Entity.Articoli;
+using StrumentiMusicali.Library.Entity.RegistratoreDiCassa;
 using StrumentiMusicali.Library.Repo;
 using StrumentiMusicali.Library.View.Enums;
 using System;
@@ -32,10 +34,10 @@ namespace StrumentiMusicali.App.Core.Controllers
         public ControllerMaster()
             : base()
         {
-            
-            EventAggregator.Instance().Subscribe<ApriAmbiente>(Apri); 
+
+            EventAggregator.Instance().Subscribe<ApriAmbiente>(Apri);
             EventAggregator.Instance().Subscribe<ImportMagExcel>(ImportMagExcel);
-             
+
             EventAggregator.Instance().Subscribe<ExportMagazzino>(ExportMag);
 
             Application.ThreadException += Application_ThreadException;
@@ -103,9 +105,9 @@ namespace StrumentiMusicali.App.Core.Controllers
                 return;
             }
         }
-         
-   
- 
+
+
+
 
         private void Apri(ApriAmbiente obj)
         {
@@ -230,6 +232,36 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                 case enAmbiente.SettingStampa:
                     ApriSettingStampaFattura();
+                    break;
+                case enAmbiente.CategoriaArticoli:
+                    {
+                        var controllercat = new ControllerCategorie();
+
+                        var viewCat = new BaseGridViewGeneric<CategoriaItem, ControllerCategorie, Categoria>(controllercat);
+
+                        this.ShowView(viewCat, obj.TipoEnviroment, controllercat);
+                    }
+                    break;
+                case enAmbiente.RegistratoreCassaReparti:
+                    {
+                        var controllercat = new ControllerRegistratoreDiCassaReparti();
+
+                        var viewCat = new BaseGridViewGeneric<RegistratoreDiCassaRepartiItem, ControllerRegistratoreDiCassaReparti,
+                            RegistratoreDiCassaReparti>(controllercat);
+
+                        this.ShowView(viewCat, obj.TipoEnviroment, controllercat);
+                    }
+
+                    break;
+                case enAmbiente.RegistratoreCassaGruppi:
+                    {
+                        var controllercat = new ControllerGruppoCodiceRegCassa();
+
+                        var viewCat = new BaseGridViewGeneric<GruppoCodiceRegCassaItem, ControllerGruppoCodiceRegCassa, 
+                            GruppoCodiceRegCassa>(controllercat);
+
+                        this.ShowView(viewCat, obj.TipoEnviroment, controllercat);
+                    }
                     break;
 
                 case enAmbiente.Main:
@@ -426,7 +458,7 @@ namespace StrumentiMusicali.App.Core.Controllers
         {
         }
 
-        
+
 
         private void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {

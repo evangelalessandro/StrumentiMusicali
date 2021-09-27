@@ -22,7 +22,7 @@ namespace StrumentiMusicali.Library.Core.Item
                 PIVA= item.CodiceFiscale;
             }
             RagioneSociale = item.RagioneSociale;
-            if (RagioneSociale.Length == 0)
+            if (string.IsNullOrEmpty( RagioneSociale))
             {
                 RagioneSociale = item.Cognome + " " + item.Nome;
             }

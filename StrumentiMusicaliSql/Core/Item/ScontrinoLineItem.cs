@@ -10,9 +10,17 @@ namespace StrumentiMusicali.Library.Core.Item
         public int Articolo { get; set; }
         public string Descrizione { get; set; }
         public decimal IvaPerc { get; set; }
+
+        public int Reparto { get; set; }
+
+        public int Qta { get; set; }
+
+
         public decimal PrezzoIvato { get; set; }
 
         public int ScontoPerc { get; set; } = 0;
+
+        
 
         //public event PropertyChangedEventHandler PropertyChanged;
 

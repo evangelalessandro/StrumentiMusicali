@@ -20,8 +20,7 @@ namespace StrumentiMusicali.App
         [STAThread]
         private static void Main(string[] args)
         {
-            GridLocalizer.Active = new ItalianGridLocalizer();
-            //Localizer.Active = new GermanEditorsLocalizer();
+            GridLocalizer.Active = new ItalianGridLocalizer(); 
             bool createdNew = true;
             using (Mutex mutex = new Mutex(true, BaseController.MainName, out createdNew))
             {

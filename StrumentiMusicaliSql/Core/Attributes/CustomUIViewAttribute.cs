@@ -49,7 +49,8 @@ namespace StrumentiMusicali.Library.Core
         Rivenditore,
         Colore,
         NomeStrumento,
-        LibroAutore
+        LibroAutore,
+        GruppoCodiceRegCassa
     }
 
 

@@ -3,6 +3,8 @@ using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Altro;
 using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Entity.Ecomm;
+using StrumentiMusicali.Library.Entity.RegistratoreDiCassa;
+using StrumentiMusicali.Library.Entity.Scontrino;
 using StrumentiMusicali.Library.Entity.Setting;
 using StrumentiMusicali.Library.Model;
 using System;
@@ -57,8 +59,10 @@ select @db
             return serverName;
         }
 
-        public IRepository<Categoria> CategorieRepository {
-            get {
+        public IRepository<Categoria> CategorieRepository
+        {
+            get
+            {
                 if (_CategorieRepository == null)
                 {
                     _CategorieRepository = new Repository<Categoria>(dbContext);
@@ -82,8 +86,10 @@ select @db
 
         private Repository<CategoriaWeb> _CategorieWebRepository;
 
-        public IRepository<CategoriaWeb> CategorieWebRepository {
-            get {
+        public IRepository<CategoriaWeb> CategorieWebRepository
+        {
+            get
+            {
                 if (_CategorieWebRepository == null)
                 {
                     _CategorieWebRepository = new Repository<CategoriaWeb>(dbContext);
@@ -93,8 +99,10 @@ select @db
         }
         private Repository<ArticoloImportato> _ArticoloImportatoWebRepository;
 
-        public IRepository<ArticoloImportato> ArticoloImportatoWebRepository {
-            get {
+        public IRepository<ArticoloImportato> ArticoloImportatoWebRepository
+        {
+            get
+            {
                 if (_ArticoloImportatoWebRepository == null)
                 {
                     _ArticoloImportatoWebRepository = new Repository<ArticoloImportato>(dbContext);
@@ -103,11 +111,13 @@ select @db
             }
         }
 
-        
+
         private Repository<RepartoWeb> _RepartoWebRepository;
 
-        public IRepository<RepartoWeb> RepartoWebRepository {
-            get {
+        public IRepository<RepartoWeb> RepartoWebRepository
+        {
+            get
+            {
                 if (_RepartoWebRepository == null)
                 {
                     _RepartoWebRepository = new Repository<RepartoWeb>(dbContext);
@@ -118,8 +128,10 @@ select @db
 
         private Repository<DatiMittente> _DatiMittenteRepository;
 
-        public IRepository<DatiMittente> DatiMittenteRepository {
-            get {
+        public IRepository<DatiMittente> DatiMittenteRepository
+        {
+            get
+            {
                 if (_DatiMittenteRepository == null)
                 {
                     _DatiMittenteRepository = new Repository<DatiMittente>(dbContext);
@@ -144,8 +156,10 @@ select @db
 
         private Repository<DatiIntestazioneStampaFattura> _DatiIntestazioneStampaFatturaRepository;
 
-        public IRepository<DatiIntestazioneStampaFattura> DatiIntestazioneStampaFatturaRepository {
-            get {
+        public IRepository<DatiIntestazioneStampaFattura> DatiIntestazioneStampaFatturaRepository
+        {
+            get
+            {
                 if (_DatiIntestazioneStampaFatturaRepository == null)
                 {
                     _DatiIntestazioneStampaFatturaRepository = new Repository<DatiIntestazioneStampaFattura>(dbContext);
@@ -167,11 +181,40 @@ select @db
                 return _SettingScontrino;
             }
         }
+        private Repository<ScontrinoTestata> _ScontrinoTestataRepository;
+
+        public IRepository<ScontrinoTestata> ScontrinoTestataRepository
+        {
+            get
+            {
+                if (_ScontrinoTestataRepository == null)
+                {
+                    _ScontrinoTestataRepository = new Repository<ScontrinoTestata>(dbContext);
+                }
+                return _ScontrinoTestataRepository;
+            }
+        }
+
+        private Repository<ScontrinoRighe> _ScontrinoRigheRepository;
+
+        public IRepository<ScontrinoRighe> ScontrinoRigheRepository
+        {
+            get
+            {
+                if (_ScontrinoRigheRepository == null)
+                {
+                    _ScontrinoRigheRepository = new Repository<ScontrinoRighe>(dbContext);
+                }
+                return _ScontrinoRigheRepository;
+            }
+        }
 
         private Repository<SettingSito> _SettingSitoRepository;
 
-        public IRepository<SettingSito> SettingSitoRepository {
-            get {
+        public IRepository<SettingSito> SettingSitoRepository
+        {
+            get
+            {
                 if (_SettingSitoRepository == null)
                 {
                     _SettingSitoRepository = new Repository<SettingSito>(dbContext);
@@ -182,8 +225,10 @@ select @db
 
         private Repository<SettingDocumentiPagamenti> _SettingDocumentiPagamentiRepository;
 
-        public IRepository<SettingDocumentiPagamenti> SettingDocumentiPagamentiRepository {
-            get {
+        public IRepository<SettingDocumentiPagamenti> SettingDocumentiPagamentiRepository
+        {
+            get
+            {
                 if (_SettingDocumentiPagamentiRepository == null)
                 {
                     _SettingDocumentiPagamentiRepository = new Repository<SettingDocumentiPagamenti>(dbContext);
@@ -194,8 +239,10 @@ select @db
 
         private Repository<SettingBackupFtp> _SettingBackupFtpRepository;
 
-        public IRepository<SettingBackupFtp> SettingBackupFtpRepository {
-            get {
+        public IRepository<SettingBackupFtp> SettingBackupFtpRepository
+        {
+            get
+            {
                 if (_SettingBackupFtpRepository == null)
                 {
                     _SettingBackupFtpRepository = new Repository<SettingBackupFtp>(dbContext);
@@ -206,8 +253,10 @@ select @db
 
         private Repository<FattureGenerateInvio> _FattureGenerateInvioRepository;
 
-        public IRepository<FattureGenerateInvio> FattureGenerateInvioRepository {
-            get {
+        public IRepository<FattureGenerateInvio> FattureGenerateInvioRepository
+        {
+            get
+            {
                 if (_FattureGenerateInvioRepository == null)
                 {
                     _FattureGenerateInvioRepository = new Repository<FattureGenerateInvio>(dbContext);
@@ -218,8 +267,10 @@ select @db
 
         private Repository<Utente> _Utenti;
 
-        public IRepository<Utente> UtentiRepository {
-            get {
+        public IRepository<Utente> UtentiRepository
+        {
+            get
+            {
                 if (_Utenti == null)
                 {
                     _Utenti = new Repository<Utente>(dbContext);
@@ -230,8 +281,10 @@ select @db
 
         private Repository<PagamentoDocumenti> _PagamentoDocumentiRepository;
 
-        public IRepository<PagamentoDocumenti> PagamentoDocumentiRepository {
-            get {
+        public IRepository<PagamentoDocumenti> PagamentoDocumentiRepository
+        {
+            get
+            {
                 if (_PagamentoDocumentiRepository == null)
                 {
                     _PagamentoDocumentiRepository = new Repository<PagamentoDocumenti>(dbContext);
@@ -239,11 +292,13 @@ select @db
                 return _PagamentoDocumentiRepository;
             }
         }
-         
+
         private Repository<Pagamento> _PagamentoRepository;
 
-        public IRepository<Pagamento> PagamentoRepository {
-            get {
+        public IRepository<Pagamento> PagamentoRepository
+        {
+            get
+            {
                 if (_PagamentoRepository == null)
                 {
                     _PagamentoRepository = new Repository<Pagamento>(dbContext);
@@ -254,8 +309,10 @@ select @db
 
         private Repository<Deposito> _DepositoRepository;
 
-        public IRepository<Deposito> DepositoRepository {
-            get {
+        public IRepository<Deposito> DepositoRepository
+        {
+            get
+            {
                 if (_DepositoRepository == null)
                 {
                     _DepositoRepository = new Repository<Deposito>(dbContext);
@@ -266,8 +323,10 @@ select @db
 
         private Repository<Magazzino> _MagazzinoRepository;
 
-        public IRepository<Magazzino> MagazzinoRepository {
-            get {
+        public IRepository<Magazzino> MagazzinoRepository
+        {
+            get
+            {
                 if (_MagazzinoRepository == null)
                 {
                     _MagazzinoRepository = new Repository<Magazzino>(dbContext);
@@ -278,8 +337,10 @@ select @db
 
         private Repository<AggiornamentoWebArticolo> _AggiornamentoWebArticoloRepository;
 
-        public IRepository<AggiornamentoWebArticolo> AggiornamentoWebArticoloRepository {
-            get {
+        public IRepository<AggiornamentoWebArticolo> AggiornamentoWebArticoloRepository
+        {
+            get
+            {
                 if (_AggiornamentoWebArticoloRepository == null)
                 {
                     _AggiornamentoWebArticoloRepository = new Repository<AggiornamentoWebArticolo>(dbContext);
@@ -290,8 +351,10 @@ select @db
 
         private Repository<Articolo> _ArticoliRepository;
 
-        public IRepository<Articolo> ArticoliRepository {
-            get {
+        public IRepository<Articolo> ArticoliRepository
+        {
+            get
+            {
                 if (_ArticoliRepository == null)
                 {
                     _ArticoliRepository = new Repository<Articolo>(dbContext);
@@ -300,10 +363,41 @@ select @db
             }
         }
 
+
+
+        private Repository<RegistratoreDiCassaReparti> _RegistratoreDiCassaRepository;
+
+        public IRepository<RegistratoreDiCassaReparti> RegistratoreDiCassaRepository
+        {
+            get
+            {
+                if (_RegistratoreDiCassaRepository == null)
+                {
+                    _RegistratoreDiCassaRepository = new Repository<RegistratoreDiCassaReparti>(dbContext);
+                }
+                return _RegistratoreDiCassaRepository;
+            }
+        }
+
+        private Repository<GruppoCodiceRegCassa> _GruppoCodiceRegCassaRepository;
+
+        public IRepository<GruppoCodiceRegCassa> GruppoCodiceRegCassaRepository
+        {
+            get
+            {
+                if (_GruppoCodiceRegCassaRepository == null)
+                {
+                    _GruppoCodiceRegCassaRepository = new Repository<GruppoCodiceRegCassa>(dbContext);
+                }
+                return _GruppoCodiceRegCassaRepository;
+            }
+        }
         private Repository<Fattura> _FatturaRepository;
 
-        public IRepository<Fattura> FatturaRepository {
-            get {
+        public IRepository<Fattura> FatturaRepository
+        {
+            get
+            {
                 if (_FatturaRepository == null)
                 {
                     _FatturaRepository = new Repository<Fattura>(dbContext);
@@ -326,8 +420,10 @@ select @db
 
         private Repository<Cliente> _ClientiRepository;
 
-        public IRepository<Cliente> ClientiRepository {
-            get {
+        public IRepository<Cliente> ClientiRepository
+        {
+            get
+            {
                 if (_ClientiRepository == null)
                 {
                     _ClientiRepository = new Repository<Cliente>(dbContext);
@@ -338,8 +434,10 @@ select @db
 
         private Repository<FatturaRiga> _FattureRigheRepository;
 
-        public IRepository<FatturaRiga> FattureRigheRepository {
-            get {
+        public IRepository<FatturaRiga> FattureRigheRepository
+        {
+            get
+            {
                 if (_FattureRigheRepository == null)
                 {
                     _FattureRigheRepository = new Repository<FatturaRiga>(dbContext);
@@ -362,8 +460,10 @@ select @db
 
         private Repository<SchedulerJob> _SchedulerJobRepository;
 
-        public IRepository<SchedulerJob> SchedulerJobRepository {
-            get {
+        public IRepository<SchedulerJob> SchedulerJobRepository
+        {
+            get
+            {
                 if (_SchedulerJobRepository == null)
                 {
                     _SchedulerJobRepository = new Repository<SchedulerJob>(dbContext);
@@ -374,8 +474,10 @@ select @db
 
         private Repository<FotoArticolo> _FotoArticoloRepository;
 
-        public IRepository<FotoArticolo> FotoArticoloRepository {
-            get {
+        public IRepository<FotoArticolo> FotoArticoloRepository
+        {
+            get
+            {
                 if (_FotoArticoloRepository == null)
                 {
                     _FotoArticoloRepository = new Repository<FotoArticolo>(dbContext);
@@ -387,8 +489,10 @@ select @db
         private Repository<EventLog> _EventLogRepository;
 
         //Accessors for each private repository, creates repository if null
-        public IRepository<EventLog> EventLogRepository {
-            get {
+        public IRepository<EventLog> EventLogRepository
+        {
+            get
+            {
                 if (_EventLogRepository == null)
                 {
                     _EventLogRepository = new Repository<EventLog>(dbContext);

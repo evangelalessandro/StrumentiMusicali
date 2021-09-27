@@ -340,6 +340,15 @@ namespace StrumentiMusicali.App.View.BaseControl
                             newControl.PopulateColumns();
                         }
                         break;
+                    case TipoDatiCollegati.GruppoCodiceRegCassa:
+                        {
+                            var list = uof.GruppoCodiceRegCassaRepository.Find(a => true).Select(a => new { a.ID, Descrizione = a.GruppoRaggruppamento}).OrderBy(a => a.Descrizione).ToList();
+                            newControl.ValueMember = "ID";
+                            newControl.DisplayMember = "Descrizione";
+                            newControl.DataSource = (list);
+                            newControl.PopulateColumns();
+                        }
+                        break;
                     case TipoDatiCollegati.Rivenditore:
                         {
                             var list = uof.ArticoliRepository.Find(a => true).Select(a => a.Strumento.Rivenditore.Trim()).Distinct().OrderBy(a => a).ToList();

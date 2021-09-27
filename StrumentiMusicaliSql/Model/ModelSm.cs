@@ -2,6 +2,8 @@ using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Altro;
 using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Entity.Ecomm;
+using StrumentiMusicali.Library.Entity.RegistratoreDiCassa;
+using StrumentiMusicali.Library.Entity.Scontrino;
 using StrumentiMusicali.Library.Entity.Setting;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -207,6 +209,11 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<Magazzino>().ToTable("Magazzino");
             modelBuilder.Entity<Articolo>().ToTable("Articoli");
             modelBuilder.Entity<Categoria>().ToTable("Categorie");
+            modelBuilder.Entity<ScontrinoTestata>().ToTable("ScontrinoTestate");
+            modelBuilder.Entity<ScontrinoRighe>().ToTable("ScontrinoRighe");
+
+            modelBuilder.Entity<RegistratoreDiCassaReparti>().ToTable("RegistratoreDiCassaReparti");
+            modelBuilder.Entity<GruppoCodiceRegCassa>().ToTable("RegistratoreDiCassaGruppo");
 
             modelBuilder.Entity<TipiPagamentoScontrino>().ToTable("TipiPagamentiScontrino");
             modelBuilder.Entity<FotoArticolo>().ToTable("FotoArticoli");
@@ -256,6 +263,10 @@ namespace StrumentiMusicali.Library.Model
         public virtual DbSet<AggiornamentoWebArticolo> AggiornamentoWebs { get; set; }
 
         public virtual DbSet<Deposito> Depositi { get; set; }
+
+
+        public virtual DbSet<GruppoCodiceRegCassa> GruppoCodiceRegCassa { get; set; }
+        public virtual DbSet<RegistratoreDiCassaReparti> RegistratoreDiCassaReparti { get; set; }
         public virtual DbSet<Magazzino> Magazzino { get; set; }
         public virtual DbSet<Articolo> Articoli { get; set; }
 
@@ -278,6 +289,11 @@ namespace StrumentiMusicali.Library.Model
         public virtual DbSet<SettingScontrino> SettingScontrino { get; set; }
         public virtual DbSet<DatiIntestazioneStampaFattura> DatiIntestazioneStampaFattura { get; set; }
         public virtual DbSet<DatiMittente> DatiMittenteFattura { get; set; }
+
+        public virtual DbSet<ScontrinoRighe> ScontrinoRighe { get; set; }
+
+        public virtual DbSet<ScontrinoTestata> ScontrinoTestata { get; set; }
+
 
         public virtual DbSet<TipiPagamentoScontrino> TipiPagamentoScontrino { get; set; }
 

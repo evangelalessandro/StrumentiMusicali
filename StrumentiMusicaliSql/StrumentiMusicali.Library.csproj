@@ -121,6 +121,8 @@
     <Compile Include="Core\Item\Base\BaseItem.cs" />
     <Compile Include="Core\Item\Base\BaseItemID.cs" />
     <Compile Include="Core\Item\Base\CurrentItem.cs" />
+    <Compile Include="Core\Item\RegistratoreDiCassaRepartiItem.cs" />
+    <Compile Include="Core\Item\GruppoCodiceRegCassaItem.cs" />
     <Compile Include="Core\Item\CategoriaItem.cs" />
     <Compile Include="Core\Item\ClientiItem.cs" />
     <Compile Include="Core\Item\DepositoItem.cs" />
@@ -160,6 +162,10 @@
     <Compile Include="Entity\Articoli\FotoArticolo.cs" />
     <Compile Include="Entity\Articoli\Magazzino.cs" />
     <Compile Include="Entity\Fatture\FatturaRiga.cs" />
+    <Compile Include="Entity\RegistratoreDiCassa\GruppoCodiceRegCassa.cs" />
+    <Compile Include="Entity\RegistratoreDiCassa\RegistratoreDiCassa.cs" />
+    <Compile Include="Entity\Scontrino\ScontrinoTestata.cs" />
+    <Compile Include="Entity\Scontrino\ScontrinoRighe.cs" />
     <Compile Include="Entity\Setting\SettingScontrino.cs" />
     <Compile Include="Entity\Setting\SettingPostazioni.cs" />
     <Compile Include="Entity\Setting\WooCommerceSetting.cs" />
@@ -280,6 +286,18 @@
     <Compile Include="Migrations\202107141753068_UPD_MANAGER1.Designer.cs">
       <DependentUpon>202107141753068_UPD_MANAGER1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202109241447088_RegistratoreDiCassa.cs" />
+    <Compile Include="Migrations\202109241447088_RegistratoreDiCassa.Designer.cs">
+      <DependentUpon>202109241447088_RegistratoreDiCassa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109241503166_RegistratoreDiCassa1.cs" />
+    <Compile Include="Migrations\202109241503166_RegistratoreDiCassa1.Designer.cs">
+      <DependentUpon>202109241503166_RegistratoreDiCassa1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109241507548_RegistratoreDiCassa2.cs" />
+    <Compile Include="Migrations\202109241507548_RegistratoreDiCassa2.Designer.cs">
+      <DependentUpon>202109241507548_RegistratoreDiCassa2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
@@ -327,6 +345,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202107141753068_UPD_MANAGER1.resx">
       <DependentUpon>202107141753068_UPD_MANAGER1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109241447088_RegistratoreDiCassa.resx">
+      <DependentUpon>202109241447088_RegistratoreDiCassa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109241503166_RegistratoreDiCassa1.resx">
+      <DependentUpon>202109241503166_RegistratoreDiCassa1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109241507548_RegistratoreDiCassa2.resx">
+      <DependentUpon>202109241507548_RegistratoreDiCassa2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Script\IndexOptimize.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

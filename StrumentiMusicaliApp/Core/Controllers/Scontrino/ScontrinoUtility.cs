@@ -18,6 +18,9 @@ using DevExpress.XtraEditors.Repository;
 using StrumentiMusicali.Library.Core.Events.Magazzino;
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Entity.Articoli;
+using StrumentiMusicali.Library.Entity.Scontrino;
+using StrumentiMusicali.Core.Manager;
+using StrumentiMusicali.Library.Entity.RegistratoreDiCassa;
 
 namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 {
@@ -25,6 +28,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
     {
         private DevExpress.XtraGrid.Views.Grid.GridView _dgvScontrino;
         private DevExpress.XtraGrid.GridControl _gcScontrino;
+
+        private BackgroundWorker _workerCheckScontrini = new BackgroundWorker();
+        private Timer _timer = new Timer();
         public ScontrinoUtility()
         {
             EventAggregator.Instance().Subscribe<ScontrinoAddEvents>(AggiungiArticolo);
@@ -32,6 +38,32 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             EventAggregator.Instance().Subscribe<ScontrinoRemoveLineEvents>(ScontrinoRemoveLine);
             EventAggregator.Instance().Subscribe<ScontrinoClear>(RipulisciScontrino);
             EventAggregator.Instance().Subscribe<ScontrinoStampa>(StampaScontrino);
+
+            _workerCheckScontrini.DoWork += _workerCheckScontrini_DoWork;
+            _workerCheckScontrini.RunWorkerCompleted += _workerCheckScontrini_RunWorkerCompleted;
+
+
+            _timer.Interval = 7000;
+            _timer.Enabled = true;
+            _timer.Tick += Timer_Tick;
+        }
+
+        private void _workerCheckScontrini_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+            _timer.Enabled = EsistonoScontriniDaElaborare;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            _timer.Enabled = false;
+            _workerCheckScontrini.RunWorkerAsync();
+        }
+
+        private void _workerCheckScontrini_DoWork(object sender, DoWorkEventArgs e)
+        {
+            CheckScontrini();
+
         }
 
         private void ScontrinoRemoveLine(ScontrinoRemoveLineEvents obj)
@@ -142,6 +174,22 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             col.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             col.DisplayFormat.FormatString = "{0:n0} %";
 
+
+            var rpReparto = new RepositoryItemLookUpEdit();
+            _gcScontrino.RepositoryItems.Add(rpReparto);
+
+            _dgvScontrino.Columns["Reparto"].OptionsColumn.AllowEdit = true;
+            _dgvScontrino.Columns["Reparto"].ColumnEdit = rpReparto;
+
+            using (var uof=new UnitOfWork())
+            {
+                rpReparto.DisplayMember = "NomeReparto";
+                rpReparto.ValueMember = "CodicePerRegistratoreDiCassa";
+                rpReparto.DataSource = uof.RegistratoreDiCassaRepository.Find(a => 1 == 1).Select(a =>new { a.CodicePerRegistratoreDiCassa, a.NomeReparto }).ToList();
+                
+            }
+           
+
             _dgvScontrino.Columns["TipoRigaScontrino"].Visible = false;
 
             _dgvScontrino.Columns["Articolo"].Visible = false;
@@ -219,13 +267,13 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             {
                 if ((line.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato))
                 {
-                    if (focusCol == "ScontoPerc" || focusCol == "IvaPerc")
+                    if (focusCol == "ScontoPerc" || focusCol == "IvaPerc" || focusCol == "Reparto")
                         e.Cancel = true;
                 }
             }
             if ((line.TipoRigaScontrino == TipoRigaScontrino.Incassato))
             {
-                if (focusCol != "PrezzoIvato")
+                if (focusCol != "PrezzoIvato" && focusCol != "Reparto")
                     e.Cancel = true;
 
             }
@@ -262,7 +310,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                     Descrizione = obj.Articolo.Titolo,
                     PrezzoIvato = obj.Articolo.Prezzo,
                     TipoRigaScontrino = TipoRigaScontrino.Vendita,
-
+                    Qta = 1
 
                 });
                 if (obj.Articolo.NonImponibile)
@@ -281,12 +329,18 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                     Articolo = -1,
                     Descrizione = "Generico",
                     PrezzoIvato = 1,
+                    Qta=1,
                     TipoRigaScontrino = TipoRigaScontrino.Vendita,
                     IvaPerc = 22,
 
                 });
             }
 
+            var reparto = CalcolaRepartoCassa(newitem.Articolo, newitem.IvaPerc);
+            if (reparto!=null)
+            {
+                newitem.Reparto = reparto.CodicePerRegistratoreDiCassa;
+            }
             Datasource.Insert(0, newitem);
             if (Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Vendita).Count() > 0)
             {
@@ -338,7 +392,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             {
 
                 ((INotifyPropertyChanged)item).PropertyChanged -= Newitem_PropertyChanged;
-                if (item.TipoRigaScontrino!=TipoRigaScontrino.Incassato)
+                if (item.TipoRigaScontrino != TipoRigaScontrino.Incassato)
                     ((INotifyPropertyChanged)item).PropertyChanged += Newitem_PropertyChanged;
             }
 
@@ -356,20 +410,70 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             if (Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Vendita).Count() == 0)
             {
                 Datasource.Clear();
-
             }
+
+            foreach (var item in Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Vendita && a.Articolo > 0))
+            {
+                using (var uof = new UnitOfWork())
+                {
+                    var articolo = item.Articolo;
+
+                    var giacenza = uof.MagazzinoRepository.Find(a => articolo == (a.ArticoloID) && a.Deposito.Principale == true)
+                              .Select(a => new { a.ArticoloID, a.Qta }).GroupBy(a => new { a.ArticoloID })
+                              .Select(a => new { Sum = a.Sum(b => b.Qta) }).ToList();
+
+
+
+                    var giacNegozio = giacenza.DefaultIfEmpty(new { Sum = 0 }).FirstOrDefault().Sum;
+
+                    giacNegozio-= Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Vendita &&
+                    a.Articolo == articolo).Sum(a=>a.Qta);
+
+                    if (giacNegozio<0)
+                    {
+                        item.Qta = item.Qta-1;
+
+                        MessageManager.NotificaWarnig("Quantità in negozio non sufficiente!");
+                        return;
+                    }
+
+                }
+            }
+            //if (obj.Articolo != null)
+            //{
+            //    using (var uof = new UnitOfWork())
+            //    {
+            //        var giacenza = uof.MagazzinoRepository.Find(a => obj.Articolo.ID == (a.ArticoloID) && a.Deposito.Principale == true)
+            //                  .Select(a => new { a.ArticoloID, a.Qta }).GroupBy(a => new { a.ArticoloID })
+            //                  .Select(a => new { Sum = a.Sum(b => b.Qta) }).ToList();
+
+
+
+            //        var giacNegozio = giacenza.DefaultIfEmpty(new { Sum = 0 }).FirstOrDefault().Sum - Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Vendita &&
+            //        a.Articolo == obj.Articolo.ID).Count();
+
+            //        if (giacNegozio == 0)
+            //        {
+            //            MessageManager.NotificaWarnig("Quantità in negozio non sufficiente!");
+            //            return;
+            //        }
+
+            //    }
+            //}
+
             var datoTotale = Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Totale).FirstOrDefault();
             decimal tot = 0;
             foreach (var item in Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Vendita))
             {
-                if (item.ScontoPerc != 0)
-                {
-                    tot = tot + (item.PrezzoIvato / ((decimal)100.0) * (((decimal)100) - Math.Abs(item.ScontoPerc)));
-                }
-                else
-                {
-                    tot = tot + item.PrezzoIvato;
-                }
+                if (item.Qta > 0)
+                    if (item.ScontoPerc != 0)
+                    {
+                        tot = tot + ((item.PrezzoIvato * item.Qta) / ((decimal)100.0) * (((decimal)100) - Math.Abs(item.ScontoPerc)));
+                    }
+                    else
+                    {
+                        tot = tot + (item.PrezzoIvato * item.Qta);
+                    }
 
             }
             var scontoFinale = Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato).FirstOrDefault();
@@ -382,7 +486,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
 
             var incassato = Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Incassato).FirstOrDefault();
-            if (incassato != null 
+            if (incassato != null
                 //&& incassato.PrezzoIvato < datoTotale.PrezzoIvato
                 )
             {
@@ -409,25 +513,26 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                 if (a.TipoRigaScontrino != TipoRigaScontrino.ScontoIncondizionato
                     && a.TipoRigaScontrino != TipoRigaScontrino.Incassato)
                 {
-                    listRighe.Add(new ScontrinoLine { Descrizione = a.Descrizione, IvaPerc = a.IvaPerc, Qta = 1, PrezzoIvato = a.PrezzoIvato, TipoRigaScontrino = a.TipoRigaScontrino });
+                    listRighe.Add(new ScontrinoLine { Descrizione = a.Descrizione, IvaPerc = a.IvaPerc, Qta = a.Qta, PrezzoIvato = a.PrezzoIvato, TipoRigaScontrino = a.TipoRigaScontrino });
                 }
                 if (a.TipoRigaScontrino == TipoRigaScontrino.Vendita && a.ScontoPerc > 0)
                 {
-                    listRighe.Add(new ScontrinoLine { Descrizione = "Sconto " + a.ScontoPerc.ToString() + "%", IvaPerc = 0, Qta = 1, PrezzoIvato = a.PrezzoIvato * (a.ScontoPerc) / 100, TipoRigaScontrino = TipoRigaScontrino.Sconto });
+                    listRighe.Add(new ScontrinoLine { Descrizione = "Sconto " + a.ScontoPerc.ToString() + "%", IvaPerc = 0, Qta = 1, PrezzoIvato = (a.Qta * a.PrezzoIvato) * (a.ScontoPerc) / 100, TipoRigaScontrino = TipoRigaScontrino.Sconto });
                 }
                 if (a.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato && a.PrezzoIvato > 0)
                 {
-                    listRighe.Add(new ScontrinoLine { Descrizione = a.Descrizione.Substring(0,23), IvaPerc = 0, Qta = 1, PrezzoIvato = a.PrezzoIvato, TipoRigaScontrino = TipoRigaScontrino.Sconto });
+                    listRighe.Add(new ScontrinoLine { Descrizione = a.Descrizione, IvaPerc = 0, Qta = 1, PrezzoIvato = a.PrezzoIvato, TipoRigaScontrino = TipoRigaScontrino.Sconto });
                 }
             }
 
 
 
-
-            using (var uof = new UnitOfWork())
+            using (SaveEntityManager save = new SaveEntityManager())
             {
+                var uof = save.UnitOfWork;
+
                 var list = uof.TipiPagamentoScontrinoRepository.Find(a => a.Enable == true).ToList().Select(a => a.Codice.ToString() + " " + a.Descrizione).ToList();
-                using (var tipiPagamento = new ListViewCustom(list, "Tipo pagamento",true))
+                using (var tipiPagamento = new ListViewCustom(list, "Tipo pagamento", true))
                 {
                     var diag = tipiPagamento.ShowDialog();
                     if (diag != DialogResult.OK)
@@ -454,39 +559,199 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                         tot.CodiceLotteria = codiceLotteria;
                     }
                     var content = listRighe.Select(a => a.ToString()).ToList().ToArray();
-
-
-                    var validator = SettingScontrinoValidator.ReadSetting();
-
-                    var negozio = uof.DepositoRepository.Find(a => a.Principale == true).First();
-                    foreach (var item in Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Vendita & a.Articolo >= 0))
-                    {
-                        using (var depo = new Core.Controllers.ControllerMagazzino())
-                        {
-                            ScaricaQtaMagazzino scarica = new ScaricaQtaMagazzino();
-
-                            scarica.Qta = 1;
-
-                            scarica.Deposito = negozio.ID;
-                            scarica.ArticoloID = item.Articolo;
-                            EventAggregator.Instance().Publish<ScaricaQtaMagazzino>(scarica);
-
-                        }
-                    }
-                    System.IO.File.WriteAllLines(
-                          System.IO.Path.Combine(validator.FolderDestinazione, DateTime.Now.Ticks.ToString() + ".txt"), content);
-
+                    SalvaScontrino(save, uof, content);
 
                     MessageManager.NotificaInfo("Scontrino pubblicato al servizio correttamente!");
 
-                    //EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>(this));
 
                     RipulisciScontrino(new ScontrinoClear());
 
+                    _workerCheckScontrini.RunWorkerAsync();
 
                 }
             }
         }
+        public bool EsistonoScontriniDaElaborare { get; set; } = false;
+        /// <summary>
+        /// Controlla se ci sono degli scontrini che hanno cambiato stato
+        /// 
+        /// Elaborati
+        /// Annullati
+        /// InErrore
+        /// </summary>
+        private void CheckScontrini()
+        {
+            EsistonoScontriniDaElaborare = false;
+            var validator = SettingScontrinoValidator.ReadSetting();
+
+            using (SaveEntityManager save = new SaveEntityManager())
+            {
+                var uof = save.UnitOfWork;
+                var nomePostazione = Environment.MachineName;
+                var scontrini = uof.ScontrinoTestataRepository.Find(a => a.NomePostazione == nomePostazione).ToList()
+                    .Where(a => a.StatoElaborazione == enStatoElaborato.DaElaborare).ToList();
+                using (var depo = new ControllerMagazzino())
+                {
+                    foreach (var scontrino in scontrini)
+                    {
+                        if (!System.IO.File.Exists(scontrino.NomeFile))
+                        {
+                            var file = System.IO.Path.Combine(
+                                       System.IO.Path.Combine(validator.FolderDestinazione, @"Elaborati")
+                                       , System.IO.Path.GetFileName(scontrino.NomeFile));
+
+                            /*se è negli elaborati decurto giacenza*/
+                            if (System.IO.File.Exists(file
+
+                               ))
+                            {
+                                ScaricaScontrino(uof, scontrino);
+                            }
+                            else
+                            //if (System.IO.File.Exists(
+
+                            //    System.IO.Path.Combine(
+                            //           System.IO.Path.Combine(validator.FolderDestinazione, @"\Annullati\")
+                            //           , System.IO.Path.GetFileName(scontrino.NomeFile)))
+                            //    ||
+                            //          (System.IO.File.Exists(
+
+                            //    System.IO.Path.Combine(
+                            //           System.IO.Path.Combine(validator.FolderDestinazione, @"\InErrore\")
+                            //           , System.IO.Path.GetFileName(scontrino.NomeFile))))
+                            //)
+                            {
+                                var scontrUPDATE = uof.ScontrinoTestataRepository.Find(a => a.ID == scontrino.ID).FirstOrDefault();
+
+                                scontrUPDATE.StatoElaborazione = enStatoElaborato.InErrore;
+                                scontrUPDATE.DataErrore = DateTime.Now;
+                                uof.Commit();
+
+                            }
+
+                        }
+                        else
+                        {
+                            EsistonoScontriniDaElaborare = true;
+                        }
+                    }
+                }
+
+
+            }
+
+        }
+
+        private static void ScaricaScontrino(UnitOfWork uof, ScontrinoTestata scontrino)
+        {
+            foreach (var rigaSContrino in uof.ScontrinoRigheRepository.Find(a =>
+            a.ScontrinoTestataID == scontrino.ID
+            && a.ArticoloID > 0))
+            {
+
+                ScaricaQtaMagazzino scarica = new ScaricaQtaMagazzino();
+
+                scarica.Qta = rigaSContrino.Quantita;
+                
+                scarica.Deposito = scontrino.Deposito;
+                scarica.ArticoloID = rigaSContrino.ArticoloID;
+                EventAggregator.Instance().Publish<ScaricaQtaMagazzino>(scarica);
+
+            }
+            var scontrUPDATE = uof.ScontrinoTestataRepository.Find(a => a.ID == scontrino.ID).FirstOrDefault();
+
+            scontrUPDATE.StatoElaborazione = enStatoElaborato.Elaborato;
+            scontrUPDATE.DataConfermaSuccesso = DateTime.Now;
+            uof.Commit();
+
+        }
+        private RegistratoreDiCassaReparti  CalcolaRepartoCassa(int articoloId,decimal iva)
+        {
+            using (var uof = new UnitOfWork())
+            {
+                var gruppoCassa = uof.ArticoliRepository.Find(a => a.ID == articoloId)
+                    .Select(a =>new {articoloIva= a.Iva, a.NonImponibile, a.Categoria.GruppoCodiceRegCassa.GruppoRaggruppamento})
+                    .FirstOrDefault();
+                if (gruppoCassa!=null)
+                {
+                    var list = uof.RegistratoreDiCassaRepository.Find(a => a.GruppoCodiceRegCassa.GruppoRaggruppamento 
+                    == gruppoCassa.GruppoRaggruppamento).ToList();
+                    if (list.Count == 1)
+                        return list.First();
+
+                    var listSpecifico = list.Where(a => gruppoCassa.articoloIva != 22 && a.Iva != 22).FirstOrDefault();
+                    if (listSpecifico != null)
+                    {
+                        return listSpecifico;
+                    }
+
+                    if (gruppoCassa.NonImponibile==false)
+                    {
+                         listSpecifico = list.Where(a => a.Iva == gruppoCassa.articoloIva).FirstOrDefault();
+                        if (listSpecifico!=null)
+                        {
+                            return listSpecifico;
+                        }
+                       
+
+                    }
+                   
+                }
+
+
+                var listItem = uof.RegistratoreDiCassaRepository.Find(a => a.Iva == iva).FirstOrDefault();
+                if (listItem!=null)
+                    return listItem;
+                listItem = uof.RegistratoreDiCassaRepository.Find(a => a.Iva != iva).FirstOrDefault();
+                if (listItem != null)
+                    return listItem;
+                return null;
+
+            }
+        }
+
+        private void SalvaScontrino(SaveEntityManager save, UnitOfWork uof, string[] content)
+        {
+            var validator = SettingScontrinoValidator.ReadSetting();
+
+            var negozio = uof.DepositoRepository.Find(a => a.Principale == true).First();
+
+
+            var nomeFile = System.IO.Path.Combine(validator.FolderDestinazione, DateTime.Now.Ticks.ToString() + ".txt");
+
+            System.IO.File.WriteAllLines(
+                  nomeFile, content);
+
+
+            var scontrino = new ScontrinoTestata();
+            scontrino.NomeFile = nomeFile;
+            scontrino.Deposito = negozio.ID;
+            scontrino.NomePostazione = Environment.MachineName;
+            scontrino.StatoElaborazione = Library.Entity.Scontrino.enStatoElaborato.DaElaborare;
+            scontrino.Totale = Datasource.FindAll(a => a.TipoRigaScontrino == TipoRigaScontrino.Totale).First().PrezzoIvato;
+            uof.ScontrinoTestataRepository.Add(scontrino);
+            uof.Commit();
+
+            foreach (var item in Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Vendita))
+            {
+
+                ScontrinoRighe riga = new ScontrinoRighe();
+                riga.ArticoloID = item.Articolo;
+                riga.ArticoloDescrizione = item.Descrizione;
+                riga.PrezzoIvato = item.PrezzoIvato;
+                riga.IvaPerc = item.IvaPerc;
+                riga.Quantita = item.Qta;
+                riga.ScontrinoTestataID = scontrino.ID;
+                riga.ArticoloDescrizione = item.Descrizione;
+                uof.ScontrinoRigheRepository.Add(riga);
+
+
+            }
+
+
+            save.SaveEntity("Scontrino salvato");
+        }
+
         private void StampaScontrino(ScontrinoStampa obj)
         {
 
@@ -499,7 +764,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             }
             _dgvScontrino.ValidateEditor();
             _dgvScontrino.FocusedRowHandle = 0;
-            
+
             _dgvScontrino.FocusedRowHandle = 1;
 
             /*

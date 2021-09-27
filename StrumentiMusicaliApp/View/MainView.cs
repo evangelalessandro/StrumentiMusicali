@@ -83,8 +83,26 @@ namespace StrumentiMusicali.App
                 AggiungiTabLog();
 
                 AggiungiComandiImportExport();
+
+                AggiungiRegistratoreCassa();
             }
             return _menuTab;
+        }
+
+        private void AggiungiRegistratoreCassa()
+        {
+            var tabImportExport = _menuTab.Add(@"Registratore di cassa");
+            var panel1 = tabImportExport.Add("Principale");
+            var rib2 = panel1.Add("Categorie", Properties.Resources.RegistratoreDiCassa);
+            rib2.Click += (s, e) =>
+            {
+                EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.RegistratoreCassaGruppi));
+            };
+            rib2 = panel1.Add("Reparti", Properties.Resources.RegistratoreDiCassa);
+            rib2.Click += (s, e) =>
+            {
+                EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.RegistratoreCassaReparti));
+            };
         }
 
         private void AggiungiImpostazioni()
@@ -128,6 +146,11 @@ namespace StrumentiMusicali.App
             rib7.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingScontrino));
+            };
+            rib7 = panel1.Add("Categorie Articoli", Properties.Resources.Settings);
+            rib7.Click += (s, e) =>
+            {
+                EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.CategoriaArticoli));
             };
         }
 

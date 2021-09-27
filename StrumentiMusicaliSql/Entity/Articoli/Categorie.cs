@@ -1,5 +1,6 @@
 ﻿using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Entity.Base;
+using StrumentiMusicali.Library.Entity.RegistratoreDiCassa;
 using System.ComponentModel.DataAnnotations;
 
 namespace StrumentiMusicali.Library.Entity.Articoli
@@ -13,6 +14,16 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         public string Nome { get; set; }
         public string CategoriaCondivisaCon { get; set; }
         public int Codice { get; set; }
+
+
+
+        [CustomUIView(Width = 350, Ordine = 1, Combo = TipoDatiCollegati.GruppoCodiceRegCassa, Titolo = "Gruppo Codice Registratore di Cassa",
+            Category = "Registratore di cassa")]
+        public int? GruppoCodiceRegCassaID { get; set; }
+
+        [CustomHideUI]
+        public virtual GruppoCodiceRegCassa GruppoCodiceRegCassa { get; set; }
+
 
         [CustomUIView(Width = 80, Titolo = "Maggiorazione percentuale da prezzo acquisto a prezzo web", Ordine = 30,
             Category = "Prezzo")]

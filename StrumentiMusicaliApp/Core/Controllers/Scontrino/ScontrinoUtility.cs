@@ -596,14 +596,14 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                     {
                         if (!System.IO.File.Exists(scontrino.NomeFile))
                         {
-                            var file = System.IO.Path.Combine(
-                                       System.IO.Path.Combine(validator.FolderDestinazione, @"Elaborati")
-                                       , System.IO.Path.GetFileName(scontrino.NomeFile));
+                            //var file = System.IO.Path.Combine(
+                            //           System.IO.Path.Combine(validator.FolderDestinazione, @"Elaborati")
+                            //           ,);
+
+                            var count=System.IO.Directory.GetFiles(System.IO.Path.Combine(validator.FolderDestinazione, @"Elaborati"), "*_" + System.IO.Path.GetFileName(scontrino.NomeFile));
 
                             /*se è negli elaborati decurto giacenza*/
-                            if (System.IO.File.Exists(file
-
-                               ))
+                            if (count.Length>0)
                             {
                                 ScaricaScontrino(uof, scontrino);
                             }

@@ -600,7 +600,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                             //           System.IO.Path.Combine(validator.FolderDestinazione, @"Elaborati")
                             //           ,);
 
-                            var count=System.IO.Directory.GetFiles(System.IO.Path.Combine(validator.FolderDestinazione, @"Elaborati"), "*_" + System.IO.Path.GetFileName(scontrino.NomeFile));
+                            var path = System.IO.Path.Combine(validator.FolderDestinazione, @"Elaborati");
+                            var fileName = "*_" + System.IO.Path.GetFileName(scontrino.NomeFile);
+                            var count=System.IO.Directory.GetFiles(path, fileName);
 
                             /*se è negli elaborati decurto giacenza*/
                             if (count.Length>0)
@@ -608,18 +610,6 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                                 ScaricaScontrino(uof, scontrino);
                             }
                             else
-                            //if (System.IO.File.Exists(
-
-                            //    System.IO.Path.Combine(
-                            //           System.IO.Path.Combine(validator.FolderDestinazione, @"\Annullati\")
-                            //           , System.IO.Path.GetFileName(scontrino.NomeFile)))
-                            //    ||
-                            //          (System.IO.File.Exists(
-
-                            //    System.IO.Path.Combine(
-                            //           System.IO.Path.Combine(validator.FolderDestinazione, @"\InErrore\")
-                            //           , System.IO.Path.GetFileName(scontrino.NomeFile))))
-                            //)
                             {
                                 var scontrUPDATE = uof.ScontrinoTestataRepository.Find(a => a.ID == scontrino.ID).FirstOrDefault();
 
@@ -642,8 +632,13 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
         }
 
-        private static void ScaricaScontrino(UnitOfWork uof, ScontrinoTestata scontrino)
+        private  void ScaricaScontrino(UnitOfWork uof, ScontrinoTestata scontrino)
         {
+            if (_gcScontrino.InvokeRequired == true)
+            {
+                _gcScontrino.Invoke(new MethodInvoker(() => { ScaricaScontrino(uof, scontrino); }));
+                return;
+            }
             foreach (var rigaSContrino in uof.ScontrinoRigheRepository.Find(a =>
             a.ScontrinoTestataID == scontrino.ID
             && a.ArticoloID > 0))
@@ -657,7 +652,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                 scarica.ArticoloID = rigaSContrino.ArticoloID;
                 EventAggregator.Instance().Publish<ScaricaQtaMagazzino>(scarica);
 
+                 
             }
+
             var scontrUPDATE = uof.ScontrinoTestataRepository.Find(a => a.ID == scontrino.ID).FirstOrDefault();
 
             scontrUPDATE.StatoElaborazione = enStatoElaborato.Elaborato;

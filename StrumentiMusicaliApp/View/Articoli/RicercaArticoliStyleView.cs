@@ -2,6 +2,7 @@
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Generics;
+using StrumentiMusicali.Library.Core.Events.Magazzino;
 using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -26,10 +27,13 @@ namespace StrumentiMusicali.App.View.Articoli
         protected override void Dispose(bool disposing)
         {
             _UpdateList.Dispose();
-
+            EventAggregator.Instance().UnSbscribe<MovimentiUpdate>(_subMovArticolo);
+            _subMovArticolo.Dispose();
+            
             base.Dispose(disposing);
 
         }
+        Subscription<MovimentiUpdate> _subMovArticolo;
         private Core.MenuRibbon.MenuTab _menu = null;
         public RicercaArticoliStyleView(Core.Controllers.ControllerArticoli controllerArticoli)
             : base()
@@ -44,7 +48,15 @@ namespace StrumentiMusicali.App.View.Articoli
 
             _UpdateList = EventAggregator.Instance().Subscribe<UpdateList<Articolo>>(UpdateArt);
 
+            _subMovArticolo = EventAggregator.Instance().Subscribe<MovimentiUpdate>(UpdateArticolo);
+
         }
+
+        private void UpdateArticolo(MovimentiUpdate obj)
+        {
+            AggiornaDatiArticolo();
+        }
+
         private Subscription<UpdateList<Articolo>> _UpdateList;
         private void UpdateArt(UpdateList<Articolo> obj)
         {

@@ -42,6 +42,9 @@ namespace StrumentiMusicali.App.Core.Controllers
         private Subscription<ImageSelected<FotoArticolo>> sub10;
         private Subscription<ArticoloMerge> sub11;
 
+        private Subscription<MovimentiUpdate> subMovArticolo;
+
+        
         public enum enModalitaArticolo
         {
             Tutto = 0,
@@ -68,9 +71,21 @@ namespace StrumentiMusicali.App.Core.Controllers
 
             sub11 = EventAggregator.Instance().Subscribe<ArticoloMerge>(MergeArticolo);
 
+            subMovArticolo = EventAggregator.Instance().Subscribe<MovimentiUpdate>(UpdateArticolo);
+
             AggiungiComandiMenu();
 
             SetKeyImageListUI();
+        }
+
+        private void UpdateArticolo(MovimentiUpdate obj)
+        {
+            if (DataSource.Where(a=>a.ID==obj.ArticoloId).Count()>0)
+            {
+
+                EventAggregator.Instance().Publish<UpdateList<Articolo>>(new UpdateList<Articolo>(this));
+            }
+
         }
 
         private void MergeArticolo(ArticoloMerge obj)
@@ -383,10 +398,12 @@ namespace StrumentiMusicali.App.Core.Controllers
             EventAggregator.Instance().UnSbscribe(sub5);
             EventAggregator.Instance().UnSbscribe(sub6);
             EventAggregator.Instance().UnSbscribe(sub8);
-
+            EventAggregator.Instance().UnSbscribe(sub8);
             EventAggregator.Instance().UnSbscribe(_orderImage);
             EventAggregator.Instance().UnSbscribe(_subAddImage);
+            EventAggregator.Instance().UnSbscribe(subMovArticolo);
 
+            
             _controllerImmagini.Dispose();
             _controllerImmagini = null;
         }

@@ -173,7 +173,8 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                         uof.Commit();
                         MessageManager.NotificaInfo("Aggiunto movimento magazzino");
-                        EventAggregator.Instance().Publish<MovimentiUpdate>(new MovimentiUpdate());
+                        EventAggregator.Instance().Publish<MovimentiUpdate>(new MovimentiUpdate() 
+                        { ArticoloId = movimento.ArticoloID });
                     }
                 }
             }

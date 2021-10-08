@@ -56,7 +56,12 @@ namespace StrumentiMusicali.ftpBackup.Backup
                     }
                 }
                 if (fileNewFile == "")
+                {
+
+                    _logger.Warn( "non trovato il file: " + fileNewFile + " da mandare al ftp");
                     return false;
+                }
+
                 if (FtpSend(fileNewFile))
                 {
                     ClearOldFile(setting);

@@ -557,6 +557,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                     return "Gruppi registratore di cassa";
                 case enAmbiente.RegistratoreCassaReparti:
                     return "Reparti registratore di cassa";
+                case enAmbiente.CategoriaArticoli:
+                case enAmbiente.CategoriaArticoliDettaglio:
+                    return "Categorie";
                 default:
                     return "NIENTE DI IMPOSTATO";
 

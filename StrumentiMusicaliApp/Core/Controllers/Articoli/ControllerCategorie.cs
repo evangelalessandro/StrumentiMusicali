@@ -18,11 +18,11 @@ namespace StrumentiMusicali.App.Core.Controllers
     public class ControllerCategorie : BaseControllerGeneric<Categoria, CategoriaItem>,
         IDisposable//, INotifyPropertyChanged
     {
-        private Subscription<Add<Utente>> _selectSub;
+        private Subscription<Add<Categoria>> _selectSub;
 
-        private Subscription<Remove<Utente>> _subRemove;
+        private Subscription<Remove<Categoria>> _subRemove;
 
-        private Subscription<Save<Utente>> _subSave;
+        private Subscription<Save<Categoria>> _subSave;
 
 
         public ControllerCategorie()
@@ -32,12 +32,12 @@ namespace StrumentiMusicali.App.Core.Controllers
             SelectedItem = new Categoria();
 
 
-            _selectSub = EventAggregator.Instance().Subscribe<Add<Utente>>((a) =>
+            _selectSub = EventAggregator.Instance().Subscribe<Add<Categoria>>((a) =>
             {
                 EditItem = new Categoria() { Nome = "Nome cat" };
                 ShowEditView();
             });
-            _subRemove = EventAggregator.Instance().Subscribe<Remove<Utente>>((a) =>
+            _subRemove = EventAggregator.Instance().Subscribe<Remove<Categoria>>((a) =>
             {
                 if (!MessageManager.QuestionMessage("Sei sicuro di volere eliminare la riga selezionata?"))
                     return;
@@ -64,7 +64,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                     }
                 }
             });
-            _subSave = EventAggregator.Instance().Subscribe<Save<Utente>>((a) =>
+            _subSave = EventAggregator.Instance().Subscribe<Save<Categoria>>((a) =>
            {
                Save(null);
            });
@@ -143,10 +143,13 @@ namespace StrumentiMusicali.App.Core.Controllers
 
 
 
-        private void Save(Save<Utente> obj)
+        private void Save(Save<Categoria> obj)
         {
             using (var saveManager = new SaveEntityManager())
             {
+
+                EditItem.GruppoCodiceRegCassa = null;
+
                 var uof = saveManager.UnitOfWork;
                 if (((EditItem).ID > 0))
                 {

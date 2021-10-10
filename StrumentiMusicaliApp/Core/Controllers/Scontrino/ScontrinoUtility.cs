@@ -341,6 +341,10 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             {
                 newitem.Reparto = reparto.CodicePerRegistratoreDiCassa;
             }
+            else
+            {
+
+            }
             Datasource.Insert(0, newitem);
             if (Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Vendita).Count() > 0)
             {
@@ -678,32 +682,30 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                     if (list.Count == 1)
                         return list.First();
 
-                    var listSpecifico = list.Where(a => gruppoCassa.articoloIva != 22 && a.Iva != 22).FirstOrDefault();
-                    if (listSpecifico != null)
+                    if (list.Where(a => a.Iva == gruppoCassa.articoloIva).Count() == 1)
                     {
-                        return listSpecifico;
+                        return list.Where(a => a.Iva == gruppoCassa.articoloIva).First();
+                    }
+                    
+                    
+                    var listItemS= list.Where(a => gruppoCassa.articoloIva != 22 && a.Iva != 22).ToList();
+                    if (listItemS.Count()==1)
+                    {
+                        return listItemS.First();
                     }
 
-                    if (gruppoCassa.NonImponibile==false)
-                    {
-                         listSpecifico = list.Where(a => a.Iva == gruppoCassa.articoloIva).FirstOrDefault();
-                        if (listSpecifico!=null)
-                        {
-                            return listSpecifico;
-                        }
-                       
-
-                    }
+                     
                    
                 }
 
 
-                var listItem = uof.RegistratoreDiCassaRepository.Find(a => a.Iva == iva).FirstOrDefault();
-                if (listItem!=null)
-                    return listItem;
-                listItem = uof.RegistratoreDiCassaRepository.Find(a => a.Iva != iva).FirstOrDefault();
-                if (listItem != null)
-                    return listItem;
+                var listItem = uof.RegistratoreDiCassaRepository.Find(a => a.Iva == iva).ToList();
+                if (listItem.Count()==1)
+                    return listItem.First();
+                listItem = uof.RegistratoreDiCassaRepository.Find(a => a.Iva != iva).ToList();
+                if (listItem.Count() == 1)
+                    return listItem.First();
+                MessageManager.NotificaWarnig("Non trovata categoria cassa!");
                 return null;
 
             }

@@ -12,6 +12,7 @@
                 _Deposito = value;
             }
         }
+        public string Note { get; set; }
         public int ArticoloID { get; set; }
     }
 }

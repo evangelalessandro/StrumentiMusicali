@@ -16,6 +16,7 @@ using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Articoli;
 using StrumentiMusicali.Library.Core.Events.Fatture;
 using StrumentiMusicali.Library.Core.Events.Generics;
+using StrumentiMusicali.Library.Core.Item;
 using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Altro;
 using StrumentiMusicali.Library.Entity.Articoli;
@@ -204,6 +205,15 @@ namespace StrumentiMusicali.App.Core.Controllers
                     var viewDep = new DepositiListView(controllerDep);
 
                     this.ShowView(viewDep, obj.TipoEnviroment, controllerDep);
+                    break;
+                case enAmbiente.MovimentiMagazzino:
+                    var mag = new ControllerMovimentiMagazzino();
+
+                    var viewMag = new BaseGridViewGeneric<MovimentoItemView, 
+                        ControllerMovimentiMagazzino, Magazzino>(mag);
+
+
+                    this.ShowView(viewMag, obj.TipoEnviroment, mag);
                     break;
 
                 case enAmbiente.SettingFatture:

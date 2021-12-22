@@ -22,7 +22,7 @@ namespace StrumentiMusicali.Library.Entity
 
         public decimal PrezzoAcquisto { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(150)]
         public string Note { get; set; } = "";
 
         public bool OperazioneWeb { get; set; } = false;

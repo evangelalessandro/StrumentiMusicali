@@ -30,6 +30,7 @@ namespace StrumentiMusicali.Library.Entity.Scontrino
     {
         DaElaborare,
         Elaborato,
-        InErrore
+        InErrore,
+        AnnullatoUtente
     }
 }

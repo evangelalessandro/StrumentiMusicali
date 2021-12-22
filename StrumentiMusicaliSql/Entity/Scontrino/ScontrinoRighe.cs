@@ -16,11 +16,11 @@ namespace StrumentiMusicali.Library.Entity.Scontrino
         public virtual ScontrinoTestata ScontrinoTestata { get; set; }
 
         [CustomHideUIAttribute]
-        [Required]
-        public int ArticoloID { get; set; }
+        //[Required]
+        public System.Nullable<int> ArticoloID { get; set; }
 
         [CustomHideUIAttribute]
-        public virtual Articolo Articolo { get; set; }
+        public virtual   Articolo Articolo { get; set; }
 
         public string ArticoloDescrizione { get; set; }
         public bool  ArticoloGenerico { get; set; }
@@ -28,5 +28,7 @@ namespace StrumentiMusicali.Library.Entity.Scontrino
         public decimal PrezzoIvato { get; set; }
         public int Quantita{ get; set; }
         public decimal IvaPerc { get; set; }
+
+        public int Reparto { get; set; } = 0;
     }
 }

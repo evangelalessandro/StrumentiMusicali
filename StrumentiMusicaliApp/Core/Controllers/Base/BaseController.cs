@@ -560,8 +560,20 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                 case enAmbiente.CategoriaArticoli:
                 case enAmbiente.CategoriaArticoliDettaglio:
                     return "Categorie";
-                default:
-                    return "NIENTE DI IMPOSTATO";
+                case enAmbiente.NonSpecificato:
+                    break;
+                case enAmbiente.PagamentoDocumenti:
+                    break;
+                case enAmbiente.SchedulerDetail:
+                    break;
+                case enAmbiente.GruppoCodiceRegCassaArticoli:
+                    break;
+                case enAmbiente.GruppoCodiceRegCassaArticoliDettaglio:
+                    break;
+                case enAmbiente.MovimentiMagazzino:
+                    return "Movimenti Magazzino";
+                    
+                
 
             }
             return "NIENTE DI IMPOSTATO";
@@ -630,6 +642,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                     break;
                 case enAmbiente.Deposito:
                     frm.Icon = UtilityView.GetIco(Properties.Resources.Depositi);
+                    break;
+                case enAmbiente.MovimentiMagazzino:
+                    frm.Icon = UtilityView.GetIco(Properties.Resources.WareHouse);
                     break;
                 case enAmbiente.DepositoList:
                     frm.Icon = UtilityView.GetIco(Properties.Resources.Depositi);

@@ -85,8 +85,22 @@ namespace StrumentiMusicali.App
                 AggiungiComandiImportExport();
 
                 AggiungiRegistratoreCassa();
+
+                AggiungiMovimenti();
             }
             return _menuTab;
+        }
+
+        private void AggiungiMovimenti()
+        {
+            var tabImportExport = _menuTab.Add(@"Movimenti");
+            var panel1 = tabImportExport.Add("Principale");
+            var rib2 = panel1.Add("Movimenti", Properties.Resources.WareHouse);
+            rib2.Click += (s, e) =>
+            {
+                EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.MovimentiMagazzino));
+            };
+            
         }
 
         private void AggiungiRegistratoreCassa()

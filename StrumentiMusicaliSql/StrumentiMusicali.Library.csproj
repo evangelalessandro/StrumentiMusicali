@@ -121,6 +121,7 @@
     <Compile Include="Core\Item\Base\BaseItem.cs" />
     <Compile Include="Core\Item\Base\BaseItemID.cs" />
     <Compile Include="Core\Item\Base\CurrentItem.cs" />
+    <Compile Include="Core\Item\MovimentoItemView.cs" />
     <Compile Include="Core\Item\RegistratoreDiCassaRepartiItem.cs" />
     <Compile Include="Core\Item\GruppoCodiceRegCassaItem.cs" />
     <Compile Include="Core\Item\CategoriaItem.cs" />

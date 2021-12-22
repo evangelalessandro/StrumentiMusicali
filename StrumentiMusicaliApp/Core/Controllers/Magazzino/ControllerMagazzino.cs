@@ -168,8 +168,9 @@ namespace StrumentiMusicali.App.Core.Controllers
                         {
                             ArticoloID = movimento.ArticoloID,
                             DepositoID = movimento.Deposito,
+                            Note = movimento.Note,
                             Qta = (int)movimento.Qta
-                        });
+                        }); 
 
                         uof.Commit();
                         MessageManager.NotificaInfo("Aggiunto movimento magazzino");
@@ -187,7 +188,7 @@ namespace StrumentiMusicali.App.Core.Controllers
         private void ScaricaMagazzino(ScaricaQtaMagazzino obj)
         {
             NuovoMovimento(new MovimentoMagazzino()
-            { ArticoloID = obj.ArticoloID, Deposito = obj.Deposito, Qta = -obj.Qta });
+            { ArticoloID = obj.ArticoloID, Deposito = obj.Deposito, Qta = -obj.Qta,Note=obj.Note });
         }
 
         public void RaiseSave()

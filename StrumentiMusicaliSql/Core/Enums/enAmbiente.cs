@@ -91,6 +91,11 @@ namespace StrumentiMusicali.Library.View.Enums
         GruppoCodiceRegCassaArticoli=305,
             [UIAmbienteAttribute(true)]
         GruppoCodiceRegCassaArticoliDettaglio = 306,
+
+
+        [UIAmbienteAttribute(true)]
+        MovimentiMagazzino = 310,
+
     }
 
 

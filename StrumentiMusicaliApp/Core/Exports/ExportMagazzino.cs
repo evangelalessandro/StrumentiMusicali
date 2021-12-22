@@ -22,13 +22,20 @@ namespace StrumentiMusicali.App.Core.Exports
             TuttoLibri,
             TuttoStrumenti,
             SoloLibriMancanti,
-            PerMarca
+            PerMarca,
+            Scontrini
         }
         public ExportMagazzino()
         {
         }
         public void Stampa()
         {
+
+            if (TipoExp == TipoExport.Scontrini)
+            {
+                ReportScontrini();
+                return;
+            }
             string marcaFiltro = "";
             if (TipoExp == TipoExport.PerMarca)
             {
@@ -38,7 +45,7 @@ namespace StrumentiMusicali.App.Core.Exports
                     var list = uof.ArticoliRepository.Find(a => a.Strumento.Marca.Length > 0)
                     .Select(a => a.Strumento.Marca.ToUpper()).Distinct().OrderBy(a => a).ToList();
 
-                    using (var frmMarche = new ListViewCustom(list,"Marca"))
+                    using (var frmMarche = new ListViewCustom(list, "Marca"))
                     {
                         frmMarche.ShowDialog();
                         marcaFiltro = frmMarche.SelectedItem;
@@ -223,6 +230,41 @@ namespace StrumentiMusicali.App.Core.Exports
             _excel.SaveAs(newfile);
             Process.Start(newfile);
         }
+
+        private void ReportScontrini()
+        {
+            _excel = new ClosedXML.Excel.XLWorkbook();
+
+
+            using (var uof = new UnitOfWork())
+            {
+                var listToExport = uof.ScontrinoTestataRepository.Find(a => true).Select(a => new
+                {
+                    a.ID,
+                    a.NomePostazione,
+                    a.DataCreazione,
+                    StatoElab = a.StatoElaborazione.ToString(),
+                    a.Totale,
+                    a.NomeFile,
+                    a.DataUltimaModifica,
+                    a.DataConfermaSuccesso
+
+                }).OrderByDescending(a=>a.DataCreazione ).ToList();
+
+
+                DataTable dt = null;
+
+                dt = ToDataTable(listToExport.ToList());
+
+
+                _excel.AddWorksheet(dt, "Generale");
+            }
+
+            var newfile = Path.Combine(System.IO.Path.GetTempPath(), TipoExp.ToString() + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_Magazzino.xlsx");
+            _excel.SaveAs(newfile);
+            Process.Start(newfile);
+        }
+
         public DataTable ToDataTable<T>(IList<T> data)
         {
             PropertyDescriptorCollection props =

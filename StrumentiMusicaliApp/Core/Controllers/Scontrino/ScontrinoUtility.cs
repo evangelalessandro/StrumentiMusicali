@@ -637,16 +637,26 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             //var file = System.IO.Path.Combine(
             //           System.IO.Path.Combine(validator.FolderDestinazione, @"Elaborati")
             //           ,);
-            if (
-                MessageManager.QuestionMessage(
-                    "Confermi la stampa dello scontrino da " + scontrino.Totale.ToString("C2")))
+            var artT = "";
+            foreach (var rigaSContrino in uof.ScontrinoRigheRepository.Find(a =>
+           a.ScontrinoTestataID == scontrino.ID))
             {
-                var path = System.IO.Path.Combine(validator.FolderDestinazione, @"Elaborati");
-                var fileName = "*_" + System.IO.Path.GetFileName(scontrino.NomeFile);
-                var count = System.IO.Directory.GetFiles(path, fileName);
+                artT = artT + rigaSContrino.ArticoloDescrizione + "\t" + rigaSContrino.Quantita.ToString() + "\r\n"; ;
 
-                /*se è negli elaborati decurto giacenza*/
-                if (count.Length > 0)
+            }
+
+
+            var path = System.IO.Path.Combine(validator.FolderDestinazione, @"Elaborati");
+            var fileName = "*_" + System.IO.Path.GetFileName(scontrino.NomeFile);
+            var count = System.IO.Directory.GetFiles(path, fileName);
+
+            /*se è negli elaborati decurto giacenza*/
+            if (count.Length > 0)
+            {
+                if (
+               MessageManager.QuestionMessage(
+                   "Confermi la stampa dello scontrino da " + scontrino.Totale.ToString("C2") 
+                   + " con " + "\r\n" + artT))
                 {
                     ScaricaScontrino(uof, scontrino);
                 }
@@ -654,7 +664,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                 {
                     var scontrUPDATE = uof.ScontrinoTestataRepository.Find(a => a.ID == scontrino.ID).FirstOrDefault();
 
-                    scontrUPDATE.StatoElaborazione = enStatoElaborato.InErrore;
+                    scontrUPDATE.StatoElaborazione = enStatoElaborato.AnnullatoUtente;
                     scontrUPDATE.DataErrore = DateTime.Now;
                     uof.Commit();
 
@@ -664,11 +674,12 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             {
                 var scontrUPDATE = uof.ScontrinoTestataRepository.Find(a => a.ID == scontrino.ID).FirstOrDefault();
 
-                scontrUPDATE.StatoElaborazione = enStatoElaborato.AnnullatoUtente;
+                scontrUPDATE.StatoElaborazione = enStatoElaborato.InErrore;
                 scontrUPDATE.DataErrore = DateTime.Now;
                 uof.Commit();
 
             }
+
         }
 
         private void ScaricaScontrino(UnitOfWork uof, ScontrinoTestata scontrino)
@@ -680,7 +691,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             }
             foreach (var rigaSContrino in uof.ScontrinoRigheRepository.Find(a =>
             a.ScontrinoTestataID == scontrino.ID
-            && a.ArticoloID.HasValue  && a.ArticoloID > 0 ))
+            && a.ArticoloID.HasValue && a.ArticoloID > 0))
             {
 
                 ScaricaQtaMagazzino scarica = new ScaricaQtaMagazzino();

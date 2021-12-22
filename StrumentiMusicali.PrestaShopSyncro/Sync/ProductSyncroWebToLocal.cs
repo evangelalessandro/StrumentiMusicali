@@ -220,7 +220,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
                 _productFactory.Update(item);
 
             }
-            catch (Exception exT)
+            catch 
             {
                 try
                 {
@@ -228,7 +228,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
                     _productFactory.Update(item);
 
                 }
-                catch (Exception ex)
+                catch 
                 {
                      
                 }

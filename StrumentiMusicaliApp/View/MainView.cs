@@ -184,27 +184,29 @@ namespace StrumentiMusicali.App
             var tabImportExport = _menuTab.Add(@"Import\Export");
             var pnlExport = tabImportExport.Add("Export");
             
-            var ribExport1 = pnlExport.Add("Export Tutti libri Magazzino", Properties.Resources.Excel_export);
-            ribExport1.Click += (s, e) =>
+              pnlExport.Add("Export Tutti libri Magazzino", Properties.Resources.Excel_export).Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp = ExportMagazzino.TipoExport.TuttoLibri });
             };
-            var ribExport12 = pnlExport.Add("Export Tutti Strumenti Magazzino", Properties.Resources.Excel_export);
-            ribExport12.Click += (s, e) =>
+            pnlExport.Add("Export Tutti Strumenti Magazzino", Properties.Resources.Excel_export).Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp = ExportMagazzino.TipoExport.TuttoStrumenti});
             };
             var pnlExport2 = tabImportExport.Add("Elenco Mancanti");
-            var ribExport2 = pnlExport2.Add("Libri(Betta)", Properties.Resources.Excel_export);
-            ribExport2.Click += (s, e) =>
+            pnlExport2.Add("Libri(Betta)", Properties.Resources.Excel_export).Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp = ExportMagazzino.TipoExport.SoloLibriMancanti });
             };
-            var ribExport3 = pnlExport2.Add("X marca (Luca)", Properties.Resources.Excel_export);
-            ribExport3.Click += (s, e) =>
+            pnlExport2.Add("X marca (Luca)", Properties.Resources.Excel_export).Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp = ExportMagazzino.TipoExport.PerMarca });
             };
+            var pnlExport3 = tabImportExport.Add("Scontrini");
+            pnlExport3.Add("Scontrini", Properties.Resources.Excel_export).Click += (s, e) =>
+            {
+                EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp = ExportMagazzino.TipoExport.Scontrini });
+            };
+
 
             //var pnlImport = tabImportExport.Add("Import");
             //var ribImport01 = pnlImport.Add("Import Tutti Libri Magazzino", Properties.Resources.Excel_export);

@@ -129,5 +129,21 @@ namespace StrumentiMusicali.Library.Properties {
                 return ResourceManager.GetString("SpCheckExists", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a INSERT INTO CONF_CodiciABarre (CodiceABarre, Azione, Descrizione, DataCreazione, DataUltimaModifica, CodiceIva)
+        ///SELECT CONCAT(N&apos;99999&apos; , a.ID), N&apos;ArticoloGenerico&apos;+ NomeReparto, N&apos;Articolo Generico &apos; + NomeReparto, GETDATE()
+        ///, GETDATE(),a.CodicePerRegistratoreDiCassa
+        ///FROM RegistratoreDiCassaReparti a
+        ///
+        ///
+        ///INSERT INTO CONF_CodiciABarre (CodiceABarre, Azione, Descrizione, DataCreazione, DataUltimaModifica, CodiceIva)
+        ///SELECT CONCAT(N&apos;999990&apos; , 1), N&apos;StampaScontrinoContanti&apos;, N&apos;Stampa Scontrino Contanti&apos;, G [stringa troncata]&quot;;.
+        /// </summary>
+        internal static string sqlCodiciABarre {
+            get {
+                return ResourceManager.GetString("sqlCodiciABarre", resourceCulture);
+            }
+        }
     }
 }

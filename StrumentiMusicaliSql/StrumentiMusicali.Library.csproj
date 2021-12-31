@@ -137,6 +137,7 @@
     <Compile Include="Core\LoginData.cs" />
     <Compile Include="Core\MessageException.cs" />
     <Compile Include="Core\Settings\SettingBackupFtpValidator.cs" />
+    <Compile Include="Entity\Altro\CodiciABarre.cs" />
     <Compile Include="Entity\Altro\Postazioni.cs" />
     <Compile Include="Entity\Altro\TipiPagamentoScontrino.cs" />
     <Compile Include="Entity\Altro\SchedulerJob.cs" />
@@ -299,6 +300,10 @@
     <Compile Include="Migrations\202109241507548_RegistratoreDiCassa2.Designer.cs">
       <DependentUpon>202109241507548_RegistratoreDiCassa2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202112291339366_CodiciABarre.cs" />
+    <Compile Include="Migrations\202112291339366_CodiciABarre.Designer.cs">
+      <DependentUpon>202112291339366_CodiciABarre.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ModelSm.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
@@ -355,6 +360,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202109241507548_RegistratoreDiCassa2.resx">
       <DependentUpon>202109241507548_RegistratoreDiCassa2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112291339366_CodiciABarre.resx">
+      <DependentUpon>202112291339366_CodiciABarre.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Script\IndexOptimize.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

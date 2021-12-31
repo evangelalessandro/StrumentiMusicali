@@ -92,12 +92,14 @@ namespace StrumentiMusicali.App.Core.Controllers
                 }
             }
             using (var mainView = new MainView(this))
-            {
+            { 
                 mainView.Disposed += MainView_Disposed;
 
                 this.ShowView(mainView, enAmbiente.Main);
             }
         }
+
+        
 
         private void MainView_Disposed(object sender, EventArgs e)
         {

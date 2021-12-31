@@ -31,10 +31,13 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
         private BackgroundWorker _workerCheckScontrini = new BackgroundWorker();
         private Timer _timer = new Timer();
+
+
         public ScontrinoUtility()
         {
             EventAggregator.Instance().Subscribe<ScontrinoAddEvents>(AggiungiArticolo);
 
+            EventAggregator.Instance().Subscribe<ScontrinoAutoAdd>(AutoAdd);
             EventAggregator.Instance().Subscribe<ScontrinoRemoveLineEvents>(ScontrinoRemoveLine);
             EventAggregator.Instance().Subscribe<ScontrinoClear>(RipulisciScontrino);
             EventAggregator.Instance().Subscribe<ScontrinoStampa>(StampaScontrino);
@@ -47,6 +50,71 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             _timer.Enabled = true;
             _timer.Tick += Timer_Tick;
         }
+        public static bool GestisciCodiciABarre(string valoreRicerca)
+        {
+            using (var uof = new UnitOfWork())
+            {
+
+                if (ScontrinoUtility.AggiungiAutomaticamente)
+                {
+                    ManagerLog.Logger.Info("Codice a barre:" + valoreRicerca);
+
+                    var itemCod = uof.CodiciABarreRepository.Find(a => a.CodiceABarre == valoreRicerca).
+                                FirstOrDefault();
+
+                    if (itemCod != null)
+                    {
+                        ManagerLog.Logger.Info("** Trovato codice a barre personalizzato: " + itemCod.Azione);
+
+                        if (itemCod.Azione.StartsWith("ArticoloGenerico", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            EventAggregator.Instance().Publish<ScontrinoAddEvents>(new ScontrinoAddEvents()
+                            {
+                                CategoriaIvaDefault = itemCod.CodiceIva
+                            });
+
+                            return true;
+                        }
+                        else if (itemCod.Azione.Equals("StampaScontrinoContanti", StringComparison.InvariantCultureIgnoreCase))
+                        {
+
+                            EventAggregator.Instance().Publish<ScontrinoStampa>(new ScontrinoStampa()
+                            {
+                                TipoStampa = enTipoStampa.Contanti
+                            });
+
+                            return true;
+                        }
+                        else if (itemCod.Azione.Equals("StampaScontrinoCarte", StringComparison.InvariantCultureIgnoreCase))
+                        {
+
+                            EventAggregator.Instance().Publish<ScontrinoStampa>(new ScontrinoStampa()
+                            {
+                                TipoStampa = enTipoStampa.Carte
+                            });
+
+                            return true;
+                        }
+                        else if (itemCod.Azione.Equals("StampaScontrino", StringComparison.InvariantCultureIgnoreCase))
+                        {
+
+                            EventAggregator.Instance().Publish<ScontrinoStampa>(new ScontrinoStampa()
+                            {
+
+                            });
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        }
+        private void AutoAdd(ScontrinoAutoAdd obj)
+        {
+            AggiungiAutomaticamente = !AggiungiAutomaticamente;
+        }
+        public static bool AggiungiAutomaticamente { get; set; } = true;
+
 
         private void _workerCheckScontrini_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -72,19 +140,22 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             {
 
                 var row = (ScontrinoLineItem)_dgvScontrino.GetRow(_dgvScontrino.FocusedRowHandle);
-                if (row.TipoRigaScontrino == TipoRigaScontrino.Totale
-                    || row.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato)
+                if (row != null)
                 {
-                    MessageManager.NotificaInfo("Non si elimina il totale o lo sconto");
-                    return;
+                    if (row.TipoRigaScontrino == TipoRigaScontrino.Totale
+                        || row.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato)
+                    {
+                        MessageManager.NotificaInfo("Non si elimina il totale o lo sconto");
+                        return;
+                    }
+
+
+                    Datasource.Remove(row);
+
+
+
+                    this.Reffreshlist();
                 }
-
-
-                Datasource.Remove(row);
-
-
-
-                this.Reffreshlist();
             }
             catch (Exception ex)
             {
@@ -332,18 +403,16 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                     Qta = 1,
                     TipoRigaScontrino = TipoRigaScontrino.Vendita,
                     IvaPerc = 22,
-
+                    Reparto = obj.CategoriaIvaDefault
                 });
             }
-
-            var reparto = CalcolaRepartoCassa(newitem.Articolo, newitem.IvaPerc);
-            if (reparto != null)
-            {
-                newitem.Reparto = reparto.CodicePerRegistratoreDiCassa;
-            }
-            else
-            {
-
+            if (newitem.Articolo>=0)
+            { 
+                var reparto = CalcolaRepartoCassa(newitem.Articolo, newitem.IvaPerc);
+                if (reparto != null)
+                {
+                    newitem.Reparto = reparto.CodicePerRegistratoreDiCassa;
+                }
             }
             Datasource.Insert(0, newitem);
             if (Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Vendita).Count() > 0)
@@ -504,7 +573,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             Reffreshlist();
         }
 
-        private void ScriviFile()
+        private void ScriviFile(enTipoStampa tipoStampa)
         {
 
             if (!SettingScontrinoValidator.Check())
@@ -542,15 +611,36 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             {
                 var uof = save.UnitOfWork;
 
-                var list = uof.TipiPagamentoScontrinoRepository.Find(a => a.Enable == true).ToList().Select(a => a.Codice.ToString() + " " + a.Descrizione).ToList();
-                using (var tipiPagamento = new ListViewCustom(list, "Tipo pagamento", true))
+                var listTipiPagamento = uof.TipiPagamentoScontrinoRepository.Find(a => a.Enable == true).ToList()
+                    .Select(a => a.Codice.ToString() + " " + a.Descrizione).ToList();
+                using (var tipiPagamento = new ListViewCustom(listTipiPagamento, "Tipo pagamento", true))
                 {
-                    var diag = tipiPagamento.ShowDialog();
-                    if (diag != DialogResult.OK)
-                        return;
                     var pagamento = tipiPagamento.SelectedItem;
                     var codiceLotteria = tipiPagamento.SelectedTextProp;
 
+                    if (tipoStampa == enTipoStampa.Generico)
+                    {
+                        var diag = tipiPagamento.ShowDialog();
+                        if (diag != DialogResult.OK)
+                            return;
+                        pagamento = tipiPagamento.SelectedItem;
+                        codiceLotteria = tipiPagamento.SelectedTextProp;
+
+                    }
+                    else
+                    {
+                        codiceLotteria = "";
+                        if (tipoStampa==enTipoStampa.Contanti)
+                        {
+                            pagamento=listTipiPagamento.Where(a => a.Contains("Contanti")).First();
+                        }
+                        else   if (tipoStampa == enTipoStampa.Carte)
+                        {
+                            pagamento = listTipiPagamento.Where(a => a.Contains("Pagamento Elettronico")).First();
+                        }
+
+                    }
+                    
                     if (string.IsNullOrEmpty(pagamento))
                     {
                         MessageManager.NotificaWarnig("Occorre selezionare il tipo di pagamento");
@@ -641,7 +731,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             foreach (var rigaSContrino in uof.ScontrinoRigheRepository.Find(a =>
            a.ScontrinoTestataID == scontrino.ID))
             {
-                artT = artT + rigaSContrino.ArticoloDescrizione + "\t" + rigaSContrino.Quantita.ToString() + "\r\n"; ;
+                artT = artT + rigaSContrino.ArticoloDescrizione + "\t quantità:" + rigaSContrino.Quantita.ToString() + "\r\n"; ;
 
             }
 
@@ -655,7 +745,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             {
                 if (
                MessageManager.QuestionMessage(
-                   "Confermi la stampa dello scontrino da " + scontrino.Totale.ToString("C2") 
+                   "Confermi la stampa dello scontrino da " + scontrino.Totale.ToString("C2")
                    + " con " + "\r\n" + artT))
                 {
                     ScaricaScontrino(uof, scontrino);
@@ -810,6 +900,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
         private void StampaScontrino(ScontrinoStampa obj)
         {
 
+
             if (!SettingScontrinoValidator.Check())
                 return;
             if (Datasource.Count == 0)
@@ -852,7 +943,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
                 Totale; ; ; ; 2,50;T;5 Riga con pagamento non riscosso
             */
-            ScriviFile();
+            ScriviFile(obj.TipoStampa);
         }
     }
 }

@@ -201,12 +201,15 @@ namespace StrumentiMusicali.App
             {
                 EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp = ExportMagazzino.TipoExport.PerMarca });
             };
-            var pnlExport3 = tabImportExport.Add("Scontrini");
-            pnlExport3.Add("Scontrini", Properties.Resources.Excel_export).Click += (s, e) =>
+            tabImportExport.Add("Scontrini").Add("Scontrini", Properties.Resources.Excel_export).Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp = ExportMagazzino.TipoExport.Scontrini });
             };
 
+            tabImportExport.Add("Movmenti Magazzino").Add("Movimenti", Properties.Resources.Excel_export).Click += (s, e) =>
+            {
+                EventAggregator.Instance().Publish(new ExportMagazzino() { TipoExp = ExportMagazzino.TipoExport.MovimentiMagazzino });
+            };
 
             //var pnlImport = tabImportExport.Add("Import");
             //var ribImport01 = pnlImport.Add("Import Tutti Libri Magazzino", Properties.Resources.Excel_export);

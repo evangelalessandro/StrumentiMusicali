@@ -171,6 +171,7 @@
     <Compile Include="Core\Controllers\Magazzino\ControllerClienti.cs" />
     <Compile Include="Core\Controllers\PagamentiFatture\ControllerRigheFatture.cs" />
     <Compile Include="Core\Controllers\Stampa\Pagamento.cs" />
+    <Compile Include="Core\Events\Scontrino\ScontrinoAutoAdd.cs" />
     <Compile Include="Core\Events\Scontrino\ScontrinoRemoveLineEvents.cs" />
     <Compile Include="Core\Events\Scontrino\ScontrinoAddScontoEvents.cs" />
     <Compile Include="Core\Events\Scontrino\ScontrinoAddEvents.cs" />

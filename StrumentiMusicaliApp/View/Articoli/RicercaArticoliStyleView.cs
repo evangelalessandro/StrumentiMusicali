@@ -1,5 +1,7 @@
 ﻿using StrumentiMusicali.App.Core;
 using StrumentiMusicali.App.Core.Controllers;
+using StrumentiMusicali.App.Core.Controllers.Scontrino;
+using StrumentiMusicali.App.Core.Events.Scontrino;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Generics;
 using StrumentiMusicali.Library.Core.Events.Magazzino;
@@ -29,7 +31,7 @@ namespace StrumentiMusicali.App.View.Articoli
             _UpdateList.Dispose();
             EventAggregator.Instance().UnSbscribe<MovimentiUpdate>(_subMovArticolo);
             _subMovArticolo.Dispose();
-            
+
             base.Dispose(disposing);
 
         }
@@ -82,13 +84,21 @@ namespace StrumentiMusicali.App.View.Articoli
             {
                 rtcNote.Clear();
                 var valoreRicerca = txtRicerca.Text;
+
+                if (ScontrinoUtility.GestisciCodiciABarre(valoreRicerca))
+                {
+                    txtRicerca.Text = "";
+                    _menu.ApplyValidation(true);
+                    return;
+                }
                 var item = uof.ArticoliRepository.Find(a => a.CodiceABarre == valoreRicerca).
-                    FirstOrDefault();
+                FirstOrDefault();
                 txtRicerca.Text = "";
                 _menu.ApplyValidation((item != null));
 
                 if (item == null)
                 {
+
                     MessageManager.NotificaInfo("Non è stato trovato nessun articolo per codice a barre");
 
 
@@ -105,6 +115,16 @@ namespace StrumentiMusicali.App.View.Articoli
                         _controllerArticoli.EditItem = null;
                         _controllerArticoli.SelectedItem = null;
                         return;
+                    }
+                }
+                else
+                {
+                    if (ScontrinoUtility.AggiungiAutomaticamente)
+                    {
+                        EventAggregator.Instance().Publish<ScontrinoAddEvents>(new ScontrinoAddEvents()
+                        {
+                            Articolo = item
+                        });
                     }
                 }
                 _controllerArticoli.EditItem = item;

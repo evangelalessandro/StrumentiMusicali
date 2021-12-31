@@ -233,7 +233,8 @@ namespace StrumentiMusicali.Library.Model
             modelBuilder.Entity<FattureGenerateInvio>().ToTable("FattureGenerate");
             modelBuilder.Entity<SettingPostazioni>().ToTable("UPD_SettingPostazione");
 
-            
+
+            modelBuilder.Entity<CodiciABarre>().ToTable("CONF_CodiciABarre");
             modelBuilder.Entity<Postazione>().ToTable("UPD_Postazioni");
             modelBuilder.Entity<SettingDocumentiPagamenti>().ToTable("SettingDocumentiPagamenti");
             modelBuilder.Entity<Pagamento>().Property(e => e.ImportoRata).HasPrecision(19, 2);
@@ -269,6 +270,7 @@ namespace StrumentiMusicali.Library.Model
         public virtual DbSet<RegistratoreDiCassaReparti> RegistratoreDiCassaReparti { get; set; }
         public virtual DbSet<Magazzino> Magazzino { get; set; }
         public virtual DbSet<Articolo> Articoli { get; set; }
+        public virtual DbSet<CodiciABarre> CodiciABarre { get; set; }
 
         public virtual DbSet<Postazione> Postazioni { get; set; }
         public virtual DbSet<Fattura> Fatture { get; set; }

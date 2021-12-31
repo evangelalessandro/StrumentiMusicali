@@ -23,14 +23,19 @@ namespace StrumentiMusicali.App.Core.Exports
             TuttoStrumenti,
             SoloLibriMancanti,
             PerMarca,
-            Scontrini
+            Scontrini,
+            MovimentiMagazzino
         }
         public ExportMagazzino()
         {
         }
         public void Stampa()
         {
-
+            if (TipoExp == TipoExport.MovimentiMagazzino)
+            {
+                ReportMovimentiMagazzino();
+                return;
+            }
             if (TipoExp == TipoExport.Scontrini)
             {
                 ReportScontrini();
@@ -226,11 +231,40 @@ namespace StrumentiMusicali.App.Core.Exports
                 _excel.AddWorksheet(dt, "Generale");
             }
 
-            var newfile = Path.Combine(System.IO.Path.GetTempPath(), TipoExp.ToString() + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_Magazzino.xlsx");
-            _excel.SaveAs(newfile);
-            Process.Start(newfile);
+            EsportaEApriReport();
         }
+        private void ReportMovimentiMagazzino()
+        {
+            _excel = new ClosedXML.Excel.XLWorkbook();
 
+
+            using (var uof = new UnitOfWork())
+            {
+                var listToExport = uof.MagazzinoRepository.Find(a => true).Select(a => new
+                {
+                    a.ID,
+                    a.Deposito.NomeDeposito,
+                    Articolo = a.Articolo.Titolo,
+                    a.Articolo.Categoria.Reparto,
+                    Categoria=a.Articolo.Categoria.Nome,
+                    a.DataCreazione,
+                    a.Note,
+                    a.Qta,
+                    a.OperazioneWeb,
+                }).OrderByDescending(a => a.DataCreazione).ToList();
+
+
+
+                DataTable dt = null;
+
+                dt = ToDataTable(listToExport.ToList());
+
+
+                _excel.AddWorksheet(dt, "Generale");
+            }
+
+            EsportaEApriReport();
+        }
         private void ReportScontrini()
         {
             _excel = new ClosedXML.Excel.XLWorkbook();
@@ -248,18 +282,41 @@ namespace StrumentiMusicali.App.Core.Exports
                     a.NomeFile,
                     a.DataUltimaModifica,
                     a.DataConfermaSuccesso
+                }).OrderByDescending(a => a.DataCreazione).ToList();
 
-                }).OrderByDescending(a=>a.DataCreazione ).ToList();
+                var reg=uof.RegistratoreDiCassaRepository.Find(a => true).ToList();
+
+                var listToExportRighe = uof.ScontrinoRigheRepository.Find(a => true).Select(a => new
+                {
+                    a.ID,
+                    a.ArticoloDescrizione,
+                    a.IvaPerc,
+                    a.PrezzoIvato,
+                    a.Quantita,
+                    reg.Find(b=>b.CodicePerRegistratoreDiCassa==a.Reparto).NomeReparto,
+                    a.ScontrinoTestataID
+                }).OrderByDescending(a => a.ID).ToList();
+
+
+                var tot = from a in listToExport
+                          join b in listToExportRighe
+                          on a.ID equals b.ScontrinoTestataID
+                          select new { a.ID,a.DataConfermaSuccesso,a.DataCreazione,a.DataUltimaModifica,a.NomePostazione,a.StatoElab, TotaleEuro= a.Totale,a.NomeFile, b.ArticoloDescrizione,b.IvaPerc,b.NomeReparto,b.PrezzoIvato,b.Quantita };
 
 
                 DataTable dt = null;
 
-                dt = ToDataTable(listToExport.ToList());
+                dt = ToDataTable(tot.OrderByDescending(a=>a.ID).ToList());
 
 
                 _excel.AddWorksheet(dt, "Generale");
             }
 
+            EsportaEApriReport();
+        }
+
+        private void EsportaEApriReport()
+        {
             var newfile = Path.Combine(System.IO.Path.GetTempPath(), TipoExp.ToString() + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_Magazzino.xlsx");
             _excel.SaveAs(newfile);
             Process.Start(newfile);

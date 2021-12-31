@@ -83,7 +83,19 @@ select @db
                 return _TipiPagamentoScontrinoRepository;
             }
         }
+        private Repository<CodiciABarre> _CodiciABarreRepository;
 
+        public IRepository<CodiciABarre> CodiciABarreRepository
+        {
+            get
+            {
+                if (_CodiciABarreRepository == null)
+                {
+                    _CodiciABarreRepository = new Repository<CodiciABarre>(dbContext);
+                }
+                return _CodiciABarreRepository;
+            }
+        }
         private Repository<CategoriaWeb> _CategorieWebRepository;
 
         public IRepository<CategoriaWeb> CategorieWebRepository

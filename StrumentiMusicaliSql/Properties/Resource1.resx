@@ -159,4 +159,21 @@ WHERE object_id = OBJECT_ID(N'[dbo].[sp_Backup]') AND type in (N'P', N'PC'))
 else 
   select 0</value>
   </data>
+  <data name="sqlCodiciABarre" xml:space="preserve">
+    <value>INSERT INTO CONF_CodiciABarre (CodiceABarre, Azione, Descrizione, DataCreazione, DataUltimaModifica, CodiceIva)
+SELECT CONCAT(N'99999' , a.ID), N'ArticoloGenerico'+ NomeReparto, N'Articolo Generico ' + NomeReparto, GETDATE()
+, GETDATE(),a.CodicePerRegistratoreDiCassa
+FROM RegistratoreDiCassaReparti a
+
+
+INSERT INTO CONF_CodiciABarre (CodiceABarre, Azione, Descrizione, DataCreazione, DataUltimaModifica, CodiceIva)
+SELECT CONCAT(N'999990' , 1), N'StampaScontrinoContanti', N'Stampa Scontrino Contanti', GETDATE()
+, GETDATE(),0
+UNION
+SELECT CONCAT(N'999990' , 2), N'StampaScontrinoCarte', N'Stampa Scontrino Carte', GETDATE()
+, GETDATE(),0
+UNION
+SELECT CONCAT(N'999990' , 3), N'StampaScontrino', N'Stampa Scontrino', GETDATE()
+, GETDATE(),0</value>
+  </data>
 </root>

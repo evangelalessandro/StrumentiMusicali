@@ -1,4 +1,5 @@
 ﻿using StrumentiMusicali.App.Core.Controllers.Base;
+using StrumentiMusicali.App.Core.Controllers.Scontrino;
 using StrumentiMusicali.App.Core.Events;
 using StrumentiMusicali.App.Core.Events.Scontrino;
 using StrumentiMusicali.App.Core.MenuRibbon;
@@ -469,6 +470,18 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                     });
                 };
+                var btn = pnlS.Add("Aggiungi automaticamente", Properties.Resources.Add, true);
+                btn.Click += (a, e) =>
+                {
+                    EventAggregator.Instance().Publish<ScontrinoAutoAdd>(new ScontrinoAutoAdd()
+                    {
+                        
+                    });
+                    btn.Checked = ScontrinoUtility.AggiungiAutomaticamente;
+                };
+                btn.Checked = true;
+               
+
                 //pnlS.Add("Aggiungi sconto", Properties.Resources.Sconto_64, true).Click += (a, e) =>
                 //{
                 //    EventAggregator.Instance().Publish<ScontrinoAddScontoEvents>(new ScontrinoAddScontoEvents()
@@ -833,6 +846,9 @@ namespace StrumentiMusicali.App.Core.Controllers
             {
                 using (CursorManager cursorManager = new CursorManager())
                 {
+                    if (ScontrinoUtility.GestisciCodiciABarre(TestoRicerca))
+                        return;
+
                     var datoRicerca = TestoRicerca.Split(' ').ToList();
 
                     List<ArticoloItem> list = new List<ArticoloItem>();
@@ -858,6 +874,8 @@ namespace StrumentiMusicali.App.Core.Controllers
                             );//.Select(a=>new { a, a.Categoria }).ToList().Select(a=>a.a).ToList();
 
                         var listRicerche = datoRicerca.Where(a => a.Length > 0).ToList();
+
+                   
 
                         foreach (var ricerca in listRicerche)
                         {
@@ -929,6 +947,15 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                     }
                     DataSource = new View.Utility.MySortableBindingList<ArticoloItem>(list);
+
+                    if (DataSource.Count()==1 && ScontrinoUtility.AggiungiAutomaticamente
+                        && TestoRicerca==DataSource.First().CodiceABarre)
+                    {
+                        EventAggregator.Instance().Publish<ScontrinoAddEvents>(new ScontrinoAddEvents()
+                        {
+                            Articolo = list.First().Entity
+                        }) ;
+                    }
                     if (ClearRicerca)
                     {
                         TestoRicerca = "";

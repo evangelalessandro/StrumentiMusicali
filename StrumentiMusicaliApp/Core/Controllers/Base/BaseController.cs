@@ -261,7 +261,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
         private static List<Form> _PreviusForm = new List<Form>();
 
 
-        ScontrinoUtility _scontrinoUtility;
+        private ScontrinoUtility _scontrinoUtility;
         private void SetDocManager(Form frm)
         {
             DockManager dm = new DockManager();

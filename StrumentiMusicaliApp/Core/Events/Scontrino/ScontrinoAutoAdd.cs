@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace StrumentiMusicali.App.Core.Events.Scontrino
 {
-    public class ScontrinoAddEvents
+    public class ScontrinoAutoAdd
     {
-        public Articolo Articolo { get; set; }
 
-        public int CategoriaIvaDefault { get; set; } = -1;
     }
 }

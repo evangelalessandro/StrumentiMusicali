@@ -91,7 +91,7 @@ namespace StrumentiMusicali.Library.Model
                         && old.BackupSetting.FolderLocalServer != newValue.BackupSetting.FolderLocalServer
                         && newValue.BackupSetting.FolderLocalServer.Length > 0)
                     {
-                        AddDeviceBackup(this.Database.Connection.ConnectionString, newValue);
+                        CheckBackup(this.Database.Connection.ConnectionString);
                     }
                 }
             }
@@ -105,35 +105,22 @@ namespace StrumentiMusicali.Library.Model
             }
         }
 
-        private static void AddDeviceBackup(string connectionString, SettingBackupFtp a)
+        private static void CheckBackup(string connectionString)
         {
-            /*se è cambiata la cartella locale per il backup aggiorno il device backup*/
 
-            if (a.BackupSetting.FolderLocalServer.Length > 0)
+
+            using (var connection = new SqlConnection(connectionString))
             {
-                if (!a.BackupSetting.FolderLocalServer.EndsWith(@"\"))
+
+                var command1 = new SqlCommand(Properties.Resource1.SpCheckExists, connection);
+                if ((int)command1.ExecuteScalar() == 0)
                 {
-                    a.BackupSetting.FolderLocalServer += @"\";
-                }
-
-                using (var connection = new SqlConnection(connectionString))
-                {
-                    var command = new SqlCommand(Properties.Resource1.AddDeviceBackup, connection);
-                    command.Parameters.AddWithValue("@p0", "BACKUP_NegozioSM");
-                    command.Parameters.AddWithValue("@p1", a.BackupSetting.FolderLocalServer);
-                    connection.Open();
-
-                    command.ExecuteNonQuery();
-
-                    var command1 = new SqlCommand(Properties.Resource1.SpCheckExists, connection);
-                    if ((int)command1.ExecuteScalar() == 0)
-                    {
-                        var command2 = new SqlCommand(Properties.Resource1.SpBackup, connection);
-                        command2.CommandType = System.Data.CommandType.Text;
-                        command2.ExecuteNonQuery();
-                    }
+                    var command2 = new SqlCommand(Properties.Resource1.SpBackup, connection);
+                    command2.CommandType = System.Data.CommandType.Text;
+                    command2.ExecuteNonQuery();
                 }
             }
+
         }
 
         public static List<DbValidationError> CheckUtenti(Utente utente, EntityState state)
@@ -172,8 +159,8 @@ namespace StrumentiMusicali.Library.Model
 
                 var list = UtilityTipoDoc.CodiciNonDuplicabili();
 
-                 var count = uof.FatturaRepository.Find(a => a.ID != fattura.ID && a.Codice == fattura.Codice
-                && (list.Contains( a.TipoDocumento))).Count();
+                var count = uof.FatturaRepository.Find(a => a.ID != fattura.ID && a.Codice == fattura.Codice
+               && (list.Contains(a.TipoDocumento))).Count();
 
                 if (count > 0)
                 {
@@ -181,10 +168,10 @@ namespace StrumentiMusicali.Library.Model
                             new System.Data.Entity.Validation.DbValidationError("Codice",
                             "Deve essere univoco il codice. Questo codice è già usato " + fattura.Codice));
                 }
-                var attr= Utility.EnumAttributi.GetAttribute < TipoDocFiscaleAttribute >(fattura.TipoDocumento);
-                
+                var attr = Utility.EnumAttributi.GetAttribute<TipoDocFiscaleAttribute>(fattura.TipoDocumento);
 
-                if (attr!= null && (attr.PagamentoObbligatorio) && string.IsNullOrEmpty(fattura.Pagamento))
+
+                if (attr != null && (attr.PagamentoObbligatorio) && string.IsNullOrEmpty(fattura.Pagamento))
                 {
                     result.ValidationErrors.Add(
                             new System.Data.Entity.Validation.DbValidationError("Pagamento",

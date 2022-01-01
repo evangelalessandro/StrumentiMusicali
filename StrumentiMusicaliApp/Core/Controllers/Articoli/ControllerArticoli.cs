@@ -847,7 +847,12 @@ namespace StrumentiMusicali.App.Core.Controllers
                 using (CursorManager cursorManager = new CursorManager())
                 {
                     if (ScontrinoUtility.GestisciCodiciABarre(TestoRicerca))
+                    {
+                        TestoRicerca = "";
+
                         return;
+
+                    }
 
                     var datoRicerca = TestoRicerca.Split(' ').ToList();
 

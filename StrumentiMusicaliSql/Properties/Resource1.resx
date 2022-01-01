@@ -133,24 +133,51 @@ exec sp_addumpdevice N'disk', @name, @pathFile</value>
     <value>..\script\indexoptimize.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="SpBackup" xml:space="preserve">
-    <value>create  procedure dbo.sp_Backup
+    <value>
+ALTER  OR CREATE procedure [dbo].[sp_Backup]
 as
 
 SET XACT_ABORT ON
 declare @name nvarchar(50) ='BACKUP_NegozioSM'
 
+
+DECLARE @folder nvarchar(MAX)
+
+SELECT @folder =BackupSetting_FolderLocalServer FROM SettingBackupFtp 
+
+IF right(@folder ,1)='\'
+BEGIN
+  SELECT @folder =@folder + '\'
+END
+
+
+DELETE EventLogs WHERE DataCreazione&lt;GETDATE()-15
  
+SELECT @folder =@folder +'Negozio.bak'
+
+IF EXISTS (SELECT NULL
+               FROM   sys.backup_devices
+               WHERE  [Name] = @name
+                      AND [Type] = 2)            -- 2 = 'Disk'; see MSDN
+EXEC master.dbo.sp_dropdevice @logicalname = N'BACKUP_NegozioSM'
+
+
+
+
+EXEC master.dbo.Sp_addumpdevice
+    @devtype = N'disk',
+    @logicalname =@name,
+    @physicalname = @folder 
 
 
 BACKUP DATABASE [NegozioSM] TO [BACKUP_NegozioSM] WITH  INIT ,  NOUNLOAD ,  
-NAME = N'Backup di NegozioSM',  SKIP ,  STATS = 10,COMPRESSION,  NOFORMAT 
+NAME = N'Backup di NegozioSM',  SKIP ,  STATS = 10,  NOFORMAT 
 
 DECLARE @i INT
 select @i = position from msdb..backupset 
 where database_name='NegozioSM'and type!='F' 
 and backup_set_id=(select max(backup_set_id) from msdb..backupset where database_name='NegozioSM')
-RESTORE VERIFYONLY FROM  [BACKUP_NegozioSM]  WITH FILE = @i
-</value>
+RESTORE VERIFYONLY FROM  [BACKUP_NegozioSM]  WITH FILE = @i</value>
   </data>
   <data name="SpCheckExists" xml:space="preserve">
     <value>IF EXISTS (SELECT * FROM sys.objects 

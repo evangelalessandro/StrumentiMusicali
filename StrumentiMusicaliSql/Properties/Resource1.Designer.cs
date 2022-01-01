@@ -93,23 +93,32 @@ namespace StrumentiMusicali.Library.Properties {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a create  procedure dbo.sp_Backup
+        ///   Cerca una stringa localizzata simile a 
+        ///ALTER  OR CREATE procedure [dbo].[sp_Backup]
         ///as
         ///
         ///SET XACT_ABORT ON
         ///declare @name nvarchar(50) =&apos;BACKUP_NegozioSM&apos;
         ///
+        ///
+        ///DECLARE @folder nvarchar(MAX)
+        ///
+        ///SELECT @folder =BackupSetting_FolderLocalServer FROM SettingBackupFtp 
+        ///
+        ///IF right(@folder ,1)=&apos;\&apos;
+        ///BEGIN
+        ///  SELECT @folder =@folder + &apos;\&apos;
+        ///END
+        ///
+        ///
+        ///DELETE EventLogs WHERE DataCreazione&lt;GETDATE()-15
         /// 
+        ///SELECT @folder =@folder +&apos;Negozio.bak&apos;
         ///
-        ///
-        ///BACKUP DATABASE [NegozioSM] TO [BACKUP_NegozioSM] WITH  INIT ,  NOUNLOAD ,  
-        ///NAME = N&apos;Backup di NegozioSM&apos;,  SKIP ,  STATS = 10,COMPRESSION,  NOFORMAT 
-        ///
-        ///DECLARE @i INT
-        ///select @i = position from msdb..backupset 
-        ///where database_name=&apos;NegozioSM&apos;and type!=&apos;F&apos; 
-        ///and backup_set_id=(select max(backup_set_id) from msdb..backupset where database_name=&apos;NegozioSM&apos;)
-        ///RESTORE VERIFYONLY FROM  [BACKUP_N [stringa troncata]&quot;;.
+        ///IF EXISTS (SELECT NULL
+        ///               FROM   sys.backup_devices
+        ///               WHERE  [Name] = @name
+        ///      [stringa troncata]&quot;;.
         /// </summary>
         internal static string SpBackup {
             get {

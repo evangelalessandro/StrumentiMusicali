@@ -103,6 +103,16 @@ namespace StrumentiMusicali.App.Properties {
         /// <summary>
         ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap BackupDatabase {
+            get {
+                object obj = ResourceManager.GetObject("BackupDatabase", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Cancella_scontrino_64 {
             get {
                 object obj = ResourceManager.GetObject("Cancella_scontrino_64", resourceCulture);

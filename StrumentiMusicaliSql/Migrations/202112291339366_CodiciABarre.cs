@@ -23,7 +23,7 @@ namespace StrumentiMusicali.Library.Migrations
                 .Index(t => t.CodiceABarre, unique: true);
 
             Sql(Properties.Resource1.sqlCodiciABarre);
-            
+            Sql(Properties.Resource1.SpBackup);   
         }
         
         public override void Down()

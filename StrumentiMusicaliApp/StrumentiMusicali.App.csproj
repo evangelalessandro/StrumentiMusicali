@@ -836,6 +836,7 @@
     <None Include="Resources\CancellaRiga_scontrino.png" />
     <None Include="Resources\Cancella_scontrino_64.png" />
     <None Include="Resources\RegistratoreDiCassa.png" />
+    <None Include="Resources\BackupDatabase.png" />
     <Content Include="Resources\StrumentoMusicale.ico" />
     <None Include="Resources\WareHouse.png" />
     <Content Include="StrumentoMusicale.ico" />

@@ -1,4 +1,5 @@
 ﻿using NLog;
+using StrumentiMusicali.App.Core;
 using StrumentiMusicali.Library.Entity.Setting;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -21,20 +22,39 @@ namespace StrumentiMusicali.ftpBackup.Backup
             _logger.Warn("Inizio lettura parametri setting backup ");
 
             var setting = Library.Core.Settings.SettingBackupFtpValidator.ReadSetting();
-
+            string message = "";
             try
             {
                 /*legge il file e lo rinomina con data creazione Backup_yyyymmdd.bak */
                 if (!System.IO.Directory.Exists(setting.BackupSetting.NetworkFolder))
                 {
-                    _logger.Warn("La cartella di backup di rete non è accessibile: " + setting.BackupSetting.NetworkFolder);
+                    message = "La cartella di backup di rete non è accessibile: " + setting.BackupSetting.NetworkFolder;
+                    _logger.Warn(message);
+                    if (Environment.UserInteractive)
+                    {
+                        MessageManager.NotificaWarnig(message);
+                    }
                     return false;
                 }
                 /*se presente lo rinomina*/
                 var file = Path.Combine(setting.BackupSetting.NetworkFolder, BACKUP_NAME);
                 var fileNewFile = "";
-                if (System.IO.File.Exists(file))
+                if (!System.IO.File.Exists(file))
                 {
+
+                    message = "file non trovato : " + file;
+                    _logger.Warn(message);
+                    if (Environment.UserInteractive)
+                    {
+                        MessageManager.NotificaWarnig(message);
+                    }
+                    return false;
+                }
+                else
+                {
+                    message = "file trovato : " + file;
+                    _logger.Warn(message);
+
                     var data = new DateTime();
                     var fileTest = new FileInfo(file);
                     {
@@ -46,7 +66,16 @@ namespace StrumentiMusicali.ftpBackup.Backup
                     {
                         System.IO.File.Delete(fileNewFile);
                     }
+
                     System.IO.File.Move(file, Path.Combine(setting.BackupSetting.NetworkFolder, fileNewFile));
+
+                    message = "file spostato : " + Path.Combine(setting.BackupSetting.NetworkFolder, fileNewFile);
+                    _logger.Warn(message);
+
+                    if (Environment.UserInteractive)
+                    {
+                        MessageManager.NotificaInfo(message);
+                    }
 
                     setting.UltimoBackup = DateTime.Now;
                     using (var uof = new UnitOfWork())
@@ -54,18 +83,15 @@ namespace StrumentiMusicali.ftpBackup.Backup
                         uof.SettingBackupFtpRepository.Update(setting);
                         uof.Commit();
                     }
-                }
-                if (fileNewFile == "")
-                {
 
-                    _logger.Warn( "non trovato il file: " + fileNewFile + " da mandare al ftp");
-                    return false;
+                     
+
+                    if (FtpSend(fileNewFile))
+                    {
+                        ClearOldFile(setting);
+                    }
                 }
 
-                if (FtpSend(fileNewFile))
-                {
-                    ClearOldFile(setting);
-                }
             }
             catch (Exception ex)
             {

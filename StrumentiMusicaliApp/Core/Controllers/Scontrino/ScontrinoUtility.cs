@@ -338,7 +338,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             {
                 if ((line.TipoRigaScontrino == TipoRigaScontrino.ScontoIncondizionato))
                 {
-                    if (focusCol == "ScontoPerc" || focusCol == "IvaPerc" || focusCol == "Reparto")
+                    if (focusCol == "ScontoPerc" || focusCol == "IvaPerc" || focusCol == "Reparto" || focusCol == "Qta")
                         e.Cancel = true;
                 }
             }
@@ -531,7 +531,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
             //            return;
             //        }
 
-            //    }
+            //    }ca
             //}
 
             var datoTotale = Datasource.Where(a => a.TipoRigaScontrino == TipoRigaScontrino.Totale).FirstOrDefault();

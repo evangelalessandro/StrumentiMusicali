@@ -134,7 +134,7 @@ exec sp_addumpdevice N'disk', @name, @pathFile</value>
   </data>
   <data name="SpBackup" xml:space="preserve">
     <value>
-ALTER  OR CREATE procedure [dbo].[sp_Backup]
+CREATE OR ALTER  procedure [dbo].[sp_Backup]
 as
 
 SET XACT_ABORT ON

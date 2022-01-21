@@ -19,7 +19,7 @@ namespace StrumentiMusicali.Library.Properties {
     // tramite uno strumento quale ResGen o Visual Studio.
     // Per aggiungere o rimuovere un membro, modificare il file con estensione ResX ed eseguire nuovamente ResGen
     // con l'opzione /str oppure ricompilare il progetto VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resource1 {
@@ -94,7 +94,7 @@ namespace StrumentiMusicali.Library.Properties {
         
         /// <summary>
         ///   Cerca una stringa localizzata simile a 
-        ///ALTER  OR CREATE procedure [dbo].[sp_Backup]
+        ///CREATE OR ALTER  procedure [dbo].[sp_Backup]
         ///as
         ///
         ///SET XACT_ABORT ON

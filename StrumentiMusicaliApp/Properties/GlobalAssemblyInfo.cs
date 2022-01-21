@@ -31,4 +31,4 @@ using System.Runtime.InteropServices;
 // usando l'asterisco '*' come illustrato di seguito:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.2021.12.31")]
-[assembly: AssemblyFileVersion(version: "1.2021.12.31")]
+[assembly: AssemblyFileVersion(version: "1.2022.01.20")]

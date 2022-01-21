@@ -262,6 +262,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
 
             _dgvScontrino.Columns["TipoRigaScontrino"].Visible = false;
+            _dgvScontrino.Columns["IvaPerc"].Visible = false;
 
             _dgvScontrino.Columns["Articolo"].Visible = false;
             _dgvScontrino.CustomDrawCell += _dgvScontrino_CustomDrawCell;
@@ -586,6 +587,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                 if (a.TipoRigaScontrino != TipoRigaScontrino.ScontoIncondizionato
                     && a.TipoRigaScontrino != TipoRigaScontrino.Incassato)
                 {
+                    if (a.Reparto==0 && a.TipoRigaScontrino == TipoRigaScontrino.Vendita)
+                    {
+                        MessageManager.NotificaWarnig("Occorre impostare il tipo di reparto per l'articolo '" + a.Descrizione + "'");
+                        return;
+                    }
                     listRighe.Add(new ScontrinoLine
                     {
                         Descrizione = a.Descrizione,

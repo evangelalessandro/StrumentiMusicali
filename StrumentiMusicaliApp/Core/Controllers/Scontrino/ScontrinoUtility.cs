@@ -262,7 +262,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
 
             _dgvScontrino.Columns["TipoRigaScontrino"].Visible = false;
-            //_dgvScontrino.Columns["IvaPerc"].Visible = false;
+            _dgvScontrino.Columns["IvaPerc"].Visible = false;
 
             _dgvScontrino.Columns["Articolo"].Visible = false;
             _dgvScontrino.CustomDrawCell += _dgvScontrino_CustomDrawCell;

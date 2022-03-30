@@ -150,7 +150,7 @@ namespace StrumentiMusicali.Library.Entity.Articoli
                 }
                 else
                 {
-                    titolo = (Strumento.Marca + " " + Strumento.Nome + " " + Strumento.Modello + " " + Strumento.Colore).Trim().Replace("    ", " ").Replace("  ", " ");
+                    titolo = (Strumento.Marca + " " + Strumento.Modello + " " + Strumento.Nome + " " + Strumento.Colore).Trim().Replace("    ", " ").Replace("  ", " ");
                     /*per importazione da web*/
                     if (titolo.Length==0 &&  Testo !=null && Testo.Length>0)
                     {

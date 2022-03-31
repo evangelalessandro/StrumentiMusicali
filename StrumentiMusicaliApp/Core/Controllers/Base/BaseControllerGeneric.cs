@@ -126,8 +126,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
             }
             // free native resources if there are any.
         }
-
-        internal void RiselezionaSelezionato()
+        internal void RiselezionaID(TEntity SelectedItem )
         {
             var item = (TEntity)SelectedItem;
             EventAggregator.Instance().Publish<UpdateList<TEntity>>(new UpdateList<TEntity>(this));
@@ -138,6 +137,11 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
                         ID = item.ID,
                         Entity = item
                     }, this));
+        }
+        internal void RiselezionaSelezionato()
+        {
+            var item = (TEntity)SelectedItem;
+            RiselezionaID(item);
         }
         public TEntity SelectedItem { get; set; }
         public void ShowEditView()

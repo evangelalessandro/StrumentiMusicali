@@ -169,6 +169,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 
         public void RicercaRefresh()
         {
+            var index = dgvRighe.TopRowIndex;
             Controller.RefreshList(null);
 
             gridControl1.DataSource = Controller.DataSource;
@@ -176,6 +177,16 @@ namespace StrumentiMusicali.App.View.BaseControl
             dgvRighe.RefreshData();
 
             ForceRefreshSelectItem();
+
+            try
+            {
+                dgvRighe.TopRowIndex = index;
+            }
+            catch
+            {
+
+
+            }
         }
         private string getLayoutFile()
         {
@@ -290,6 +301,8 @@ namespace StrumentiMusicali.App.View.BaseControl
 
         private void EditItemView()
         {
+            var index = dgvRighe.TopRowIndex;
+
             bool skipView = false;
             var itemSelected = UtilityView.GetCurrentItemSelected<TBaseItem>(dgvRighe);
             if (onEditItemShowView != null)
@@ -312,13 +325,23 @@ namespace StrumentiMusicali.App.View.BaseControl
             FormatGrid();
             if (itemSelected != null)
                 dgvRighe.SelezionaRiga(itemSelected.ID);
+
+            try
+            {
+                dgvRighe.TopRowIndex = index;
+            }
+            catch
+            {
+
+
+            }
         }
 
 
 
 
         private void RefreshList(UpdateList<TEntity> obj)
-        {
+        { 
             Controller.RefreshList(obj);
 
             ForceUpdateGridAsync();
@@ -337,12 +360,22 @@ namespace StrumentiMusicali.App.View.BaseControl
 
         private void ForceUpdateGridAsync()
         {
+            var index = dgvRighe.TopRowIndex;
             this.Invalidate();
-
+            
             gridControl1.DataSource = Controller.DataSource;
-
+            
             dgvRighe.RefreshData();
-            //dgvRighe.Update();
+            try
+            {
+                dgvRighe.TopRowIndex = index;
+            }
+            catch 
+            {
+
+                
+            }
+             
 
         }
 

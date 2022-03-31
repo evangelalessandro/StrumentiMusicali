@@ -463,14 +463,14 @@ namespace StrumentiMusicali.App.Core.Controllers
                         Articolo = this.SelectedItem
                     });
                 };
-                pnlS.Add("Aggiungi generico", Properties.Resources.Add, true).Click += (a, e) =>
+                pnlS.Add("Aggiungi generico", Properties.Resources.Add, false).Click += (a, e) =>
                 {
                     EventAggregator.Instance().Publish<ScontrinoAddEvents>(new ScontrinoAddEvents()
                     {
 
                     });
                 };
-                var btn = pnlS.Add("Aggiungi automaticamente", Properties.Resources.Add, true);
+                var btn = pnlS.Add("Aggiungi automaticamente", Properties.Resources.Add, false);
                 btn.Click += (a, e) =>
                 {
                     EventAggregator.Instance().Publish<ScontrinoAutoAdd>(new ScontrinoAutoAdd()
@@ -489,14 +489,14 @@ namespace StrumentiMusicali.App.Core.Controllers
 
                 //    });
                 //};
-                pnlS.Add("Rimuovi riga", Properties.Resources.CancellaRiga_scontrino, true).Click += (a, e) =>
+                pnlS.Add("Rimuovi riga", Properties.Resources.CancellaRiga_scontrino, false).Click += (a, e) =>
                 {
                     EventAggregator.Instance().Publish<ScontrinoRemoveLineEvents>(new ScontrinoRemoveLineEvents()
                     {
 
                     });
                 };
-                pnlS.Add("Stampa", Properties.Resources.PrintScontrino_48, true).Click += (a, e) =>
+                pnlS.Add("Stampa", Properties.Resources.PrintScontrino_48, false).Click += (a, e) =>
                 {
                     EventAggregator.Instance().Publish<ScontrinoStampa>(new ScontrinoStampa());
                 };
@@ -519,9 +519,10 @@ namespace StrumentiMusicali.App.Core.Controllers
                         {
                             using (var view = new View.ScaricoMagazzinoView(depo))
                             {
+                                var item = SelectedItem;
                                 ShowView(view, enAmbiente.Magazzino, depo, true, true);
 
-                                RiselezionaSelezionato();
+                                RiselezionaID(item);
                             }
                         }
                     };
@@ -545,8 +546,10 @@ namespace StrumentiMusicali.App.Core.Controllers
                             }
                             scarica.Deposito = principale.ID;
                             scarica.ArticoloID = SelectedItem.ID;
+                            var item = SelectedItem;
                             EventAggregator.Instance().Publish<ScaricaQtaMagazzino>(scarica);
-                            RiselezionaSelezionato();
+                            
+                            RiselezionaID(item);
                         }
                     }
                 };
@@ -569,8 +572,9 @@ namespace StrumentiMusicali.App.Core.Controllers
                             }
                             carica.Deposito = principale.ID;
                             carica.ArticoloID = SelectedItem.ID;
+                            var item = SelectedItem;
                             EventAggregator.Instance().Publish<CaricaQtaMagazzino>(carica);
-                            RiselezionaSelezionato();
+                            RiselezionaID(item);
                         }
                     }
                 };
@@ -951,6 +955,8 @@ namespace StrumentiMusicali.App.Core.Controllers
                         GC.SuppressFinalize(giacenza);
 
                     }
+
+                    
                     DataSource = new View.Utility.MySortableBindingList<ArticoloItem>(list);
 
                     if (DataSource.Count()==1 && ScontrinoUtility.AggiungiAutomaticamente

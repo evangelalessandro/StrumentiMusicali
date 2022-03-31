@@ -54,6 +54,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
         {
             using (var uof = new UnitOfWork())
             {
+                valoreRicerca = valoreRicerca.Trim();
 
                 if (ScontrinoUtility.AggiungiAutomaticamente)
                 {
@@ -611,7 +612,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                 }
             }
 
-
+            MessageManager.NotificaInfo("Inizio stampa");
 
             using (SaveEntityManager save = new SaveEntityManager())
             {
@@ -626,6 +627,9 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
                     if (tipoStampa == enTipoStampa.Generico)
                     {
+
+                        MessageManager.NotificaInfo("Stampa lotteria");
+
                         var diag = tipiPagamento.ShowDialog();
                         if (diag != DialogResult.OK)
                             return;
@@ -639,10 +643,15 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
                         if (tipoStampa==enTipoStampa.Contanti)
                         {
                             pagamento=listTipiPagamento.Where(a => a.Contains("Contanti")).First();
+
+                            MessageManager.NotificaInfo("Stampa contanti");
+
                         }
                         else   if (tipoStampa == enTipoStampa.Carte)
                         {
                             pagamento = listTipiPagamento.Where(a => a.Contains("Pagamento Elettronico")).First();
+
+                            MessageManager.NotificaInfo("Stampa pagamento elettronico");
                         }
 
                     }
@@ -905,7 +914,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Scontrino
 
         private void StampaScontrino(ScontrinoStampa obj)
         {
-
+            MessageManager.NotificaInfo("Stampa StampaScontrino inizio");
 
             if (!SettingScontrinoValidator.Check())
                 return;

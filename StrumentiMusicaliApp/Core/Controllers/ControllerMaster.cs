@@ -474,7 +474,18 @@ namespace StrumentiMusicali.App.Core.Controllers
 
         private void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
+            
             _logger.Error(e.Exception, "Application_ThreadException", null);
+
+            try
+            {
+                StrumentiMusicali.Core.Manager.ExceptionManager.ManageError(e.Exception);
+            }
+            catch 
+            {
+
+            }
+            
         }
     }
 }

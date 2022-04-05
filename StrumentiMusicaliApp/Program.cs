@@ -1,6 +1,8 @@
 ﻿using DevExpress.XtraGrid.Localization;
+using StrumentiMusicali.App.Core;
 using StrumentiMusicali.App.Core.Controllers;
 using StrumentiMusicali.App.Core.Controllers.Base;
+using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.Core.Scheduler;
 using StrumentiMusicali.Library.Core;
 using StrumentiMusicali.Library.Core.Events.Articoli;
@@ -9,6 +11,7 @@ using System;
 
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace StrumentiMusicali.App
 {
@@ -20,6 +23,18 @@ namespace StrumentiMusicali.App
         [STAThread]
         private static void Main(string[] args)
         {
+             
+
+            // Set the unhandled exception mode to force all Windows Forms errors to go through
+            // our handler.
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+
+            // Add the event handler for handling non-UI thread exceptions to the event.
+            AppDomain.CurrentDomain.UnhandledException +=
+                new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+
+           
+
             GridLocalizer.Active = new ItalianGridLocalizer(); 
             bool createdNew = true;
             using (Mutex mutex = new Mutex(true, BaseController.MainName, out createdNew))
@@ -39,7 +54,14 @@ namespace StrumentiMusicali.App
             }
 
         }
+ 
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            MessageManager.NotificaError("Si è verificato un errore nell'ultima operazione !", null);
 
+            ManagerLog.Logger.Error(e.ExceptionObject.ToString());
+        }
+         
     }
 
     public static class ProcessUtils

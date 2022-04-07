@@ -341,12 +341,44 @@ namespace StrumentiMusicali.App.View.BaseControl
 
 
         private void RefreshList(UpdateList<TEntity> obj)
-        { 
+        {
+            var index = dgvRighe.TopRowIndex;
+            var focusRow = dgvRighe.FocusedRowHandle;
+            var selectItem = Controller.SelectedItem;
+            var indexRowData= this.dgvRighe.GetDataSourceRowIndex(focusRow);
+
+            var current = dgvRighe.GetRow(dgvRighe.FocusedRowHandle);
+            var item = (TBaseItem)current;
+
             Controller.RefreshList(obj);
 
             ForceUpdateGridAsync();
 
+            var newcurrent = dgvRighe.GetRow(dgvRighe.FocusedRowHandle);
+            var newItem = (TBaseItem)newcurrent;
+            
+            
             ForceRefreshSelectItem();
+
+            if (newItem!=null)
+            if (Controller.DataSource.Count>0 && item.ID != newItem.ID)
+            {
+                try
+                {
+                    dgvRighe.FocusedRowHandle = focusRow;
+                    /*se all'ultima riga, vado indietro di uno*/
+                    if (dgvRighe.FocusedRowHandle != focusRow)
+                        dgvRighe.FocusedRowHandle = focusRow - 1;
+
+                    DgvMaster_SelectionChanged(gridControl1, null);
+                }
+                catch 
+                {
+
+                    
+                }
+            }
+            
 
         }
 

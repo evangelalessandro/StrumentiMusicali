@@ -229,6 +229,7 @@ namespace StrumentiMusicali.App.Core.Controllers.Base
 
             ribDelete.Click += (a, e) =>
               {
+                  
                   EventAggregator.Instance().Publish(new Remove<TEntity>(this));
               };
             ribEdit.Click += (a, e) =>

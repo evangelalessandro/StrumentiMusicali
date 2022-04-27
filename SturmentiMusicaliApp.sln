@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29102.190
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.Library", "StrumentiMusicaliSql\StrumentiMusicali.Library.csproj", "{114B9DB5-6A31-4D89-BBB8-7AE7DD1A25C6}"
 EndProject
@@ -31,6 +31,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.WooCommerceSyncro", "StrumentiMusicali.WoocCommerceSyncro\StrumentiMusicali.WooCommerceSyncro.csproj", "{E6A3FAAD-A1F0-40D8-8D90-DAC7752C243C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.EcommerceBaseSyncro", "StrumentiMusicali.EcommerceBaseSyncro\StrumentiMusicali.EcommerceBaseSyncro.csproj", "{F1DA812F-EA83-44F5-A6B7-B6410B109FE2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DD5317D4-F1FA-49C4-A873-E37F212AF529}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

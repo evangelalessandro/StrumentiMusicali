@@ -14,7 +14,7 @@ namespace StrumentiMusicali.Library.Core
             Titolo = articolo.Titolo;
             Marca = articolo.Strumento != null && articolo.Strumento.Marca != null ? articolo.Strumento.Marca : "";
             CodiceABarre = articolo.CodiceABarre;
-            //CaricaInEcommerce = articolo.CaricainECommerce;
+            Ecommerce = articolo.CaricainECommerce;
             //CaricaInMercatino = articolo.CaricaInMercatino;
             Categoria = articolo.Categoria.Nome;
             Reparto = articolo.Categoria.Reparto;
@@ -32,7 +32,8 @@ namespace StrumentiMusicali.Library.Core
             //DataCreazione = articolo.DataCreazione;
             //DataModifica = articolo.DataUltimaModifica;
         }
-
+        public bool Ecommerce { get; set; }
+    
         public string Reparto { get; set; }
         public string Categoria { get; set; }
         public string Titolo { get; set; }

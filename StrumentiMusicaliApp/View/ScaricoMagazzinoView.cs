@@ -191,7 +191,7 @@ namespace StrumentiMusicali.App.View
                     .Select(a => new
                     {
                         a.ID,
-                        Descrizione = a.Titolo + " " + a.Testo + " " + a.Categoria.Nome,
+                        Descrizione = a.Titolo + " " + a.Categoria.Nome,
                         Categoria = a.Categoria.Nome,
                         a.Categoria.Reparto
                     }

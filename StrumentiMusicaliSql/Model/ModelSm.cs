@@ -234,7 +234,7 @@ namespace StrumentiMusicali.Library.Model
            .IsUnique();
 
             modelBuilder.Entity<Articolo>()
-           .HasIndex(b => new { b.CodiceABarre, b.Titolo, b.Testo });
+           .HasIndex(b => new { b.CodiceABarre, b.Titolo });
 
             modelBuilder.Entity<AggiornamentoWebArticolo>()
                 .HasIndex(b => new { b.ArticoloID })

@@ -8,8 +8,10 @@ namespace StrumentiMusicali.Library.Core
         {
         }
 
+        
         public int Width { get; set; } = 200;
 
+        public bool HTMLViewer { get; set; } = false;
         public bool Money { get; set; } = false;
         public int MultiLine { get; set; } = 0;
 

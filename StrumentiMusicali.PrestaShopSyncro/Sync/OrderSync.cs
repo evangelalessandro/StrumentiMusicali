@@ -65,7 +65,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
 
                 var stock = _StockAvailableFactory.Get(prodotto.associations.stock_availables.First().id);
                 var aggiornamento = uof.AggiornamentoWebArticoloRepository.
-                    Find(a => a.CodiceArticoloEcommerce == idProdotto.ToString()).FirstOrDefault();
+                    Find(a => a.Articolo.ArticoloWeb.CodiceArticoloWeb == idProdotto).FirstOrDefault();
                 /*è nullo solo se l'articolo è nel web ma non in locale*/
                 if (aggiornamento == null)
                     continue;
@@ -102,7 +102,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
                             {
                                 ArticoloID = aggiornamento.ArticoloID,
                                 Aggiornamento = aggiornamento,
-                                CodiceArticoloEcommerce = aggiornamento.CodiceArticoloEcommerce,
+                                CodiceArticoloEcommerce = aggiornamento.Articolo.ArticoloWeb.CodiceArticoloWeb,
                                 ArticoloDb = aggiornamento.Articolo
                             }, uof, true);
                         }

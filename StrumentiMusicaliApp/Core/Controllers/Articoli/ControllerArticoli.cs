@@ -167,18 +167,18 @@ namespace StrumentiMusicali.App.Core.Controllers
                 var aggList = save.UnitOfWork.AggiornamentoWebArticoloRepository.Find(a => a.ArticoloID == baseItem.ID ||
                   a.ArticoloID == secondItem.ID).ToList();
 
-                var baseAgg = aggList.Where(a => a.ArticoloID == baseItem.ID).First();
-                var secondAgg = aggList.Where(a => a.ArticoloID != baseItem.ID).First();
+                //var baseAgg = aggList.Where(a => a.ArticoloID == baseItem.ID).First();
+                //var secondAgg = aggList.Where(a => a.ArticoloID != baseItem.ID).First();
 
-                if (string.IsNullOrEmpty(baseAgg.CodiceArticoloEcommerce))
-                {
-                    /*scambio l'eventuale codice dell'articolo nell'ecommerce*/
-                    baseAgg.CodiceArticoloEcommerce = secondAgg.CodiceArticoloEcommerce;
-                    secondAgg.CodiceArticoloEcommerce = "";
+                //if (string.IsNullOrEmpty(baseAgg.CodiceArticoloEcommerce))
+                //{
+                //    /*scambio l'eventuale codice dell'articolo nell'ecommerce*/
+                //    baseAgg.CodiceArticoloEcommerce = secondAgg.CodiceArticoloEcommerce;
+                //    secondAgg.CodiceArticoloEcommerce = "";
 
-                    save.UnitOfWork.AggiornamentoWebArticoloRepository.Update(baseAgg);
-                    save.UnitOfWork.AggiornamentoWebArticoloRepository.Update(secondAgg);
-                }
+                //    save.UnitOfWork.AggiornamentoWebArticoloRepository.Update(baseAgg);
+                //    save.UnitOfWork.AggiornamentoWebArticoloRepository.Update(secondAgg);
+                //}
 
                 save.SaveEntity(enSaveOperation.Unione);
                 MessageManager.NotificaInfo("Le eventuali giacenze vanno spostate manualmente");
@@ -706,7 +706,7 @@ namespace StrumentiMusicali.App.Core.Controllers
                         CategoriaID = itemCurrent.Categoria.ID,
                         Condizione = itemCurrent.Condizione,
                         Prezzo = itemCurrent.Prezzo,
-                        Testo = itemCurrent.Testo,
+                        
                         Titolo = "* " + itemCurrent.Titolo, 
                         DataUltimaModifica = DateTime.Now,
                         DataCreazione = DateTime.Now
@@ -891,7 +891,6 @@ namespace StrumentiMusicali.App.Core.Controllers
                             datList = datList.Where(a =>
 
                                a.Titolo.Contains(ricerca)
-                              || a.Testo.Contains(ricerca)
                               || a.ArticoloWeb.DescrizioneBreveHtml.Contains(ricerca)
                               || a.ArticoloWeb.DescrizioneHtml.Contains(ricerca)
                               || a.TagImport.Contains(ricerca)

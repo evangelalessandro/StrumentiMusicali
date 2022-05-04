@@ -55,20 +55,20 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
         private List<ArticoloBase> UpdateProducts(UnitOfWork uof)
         {
             DateTime dataLettura = DateTime.Now;
-            var listaArt = uof.AggiornamentoWebArticoloRepository.Find(a => (a.Articolo.CaricainECommerce
-                && a.DataUltimoAggiornamentoWeb < a.Articolo.DataUltimaModifica
-               && (a.Articolo.Categoria.Codice >= 0
-                    || a.Articolo.Condizione == enCondizioneArticolo.ExDemo
-                    || a.Articolo.Condizione == enCondizioneArticolo.UsatoGarantito)
+			var listaArt = uof.AggiornamentoWebArticoloRepository.Find(a => (a.Articolo.CaricainECommerce
+				&& a.DataUltimoAggiornamentoWeb < a.Articolo.DataUltimaModifica
+			   && (a.Articolo.Categoria.Codice >= 0
+					|| a.Articolo.Condizione == enCondizioneArticolo.ExDemo
+					|| a.Articolo.Condizione == enCondizioneArticolo.UsatoGarantito)
 
-               && a.Articolo.ArticoloWeb.PrezzoWeb > 0) || a.ForzaAggiornamento == true)
-              .Select(a => new ArticoloBase
-              {
-                  ArticoloDb = a.Articolo,
-                  Aggiornamento = a,
-                  ArticoloID = a.Articolo.ID,
-                  CodiceArticoloEcommerce = a.CodiceArticoloEcommerce
-              }).ToList()
+			   && a.Articolo.ArticoloWeb.PrezzoWeb > 0) || a.ForzaAggiornamento == true)
+			  .Select(a => new ArticoloBase
+			  {
+				  ArticoloDb = a.Articolo,
+				  Aggiornamento = a,
+				  ArticoloID = a.Articolo.ID,
+				  CodiceArticoloEcommerce = a.Articolo.ArticoloWeb.CodiceArticoloWeb
+			  }).ToList()
               .Where(a => Math.Abs((a.Aggiornamento.DataUltimoAggiornamentoWeb - a.ArticoloDb.DataUltimaModifica).TotalSeconds) > 10)
               .ToList();
             foreach (var item in listaArt.Take(10))
@@ -83,9 +83,9 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
             using (var uof = new UnitOfWork())
             {
                 product artWeb = new product();
-                if (!string.IsNullOrEmpty(artDb.Aggiornamento.CodiceArticoloEcommerce))
+                if ((artDb.CodiceArticoloEcommerce)>0)
                 {
-                    artWeb = _productFactory.Get(long.Parse(artDb.Aggiornamento.CodiceArticoloEcommerce));
+                    artWeb = _productFactory.Get((artDb.CodiceArticoloEcommerce));
                 }
                 ManagerLog.Logger.Info("Caricamento in corso dell'articolo '" + artDb.ArticoloDb.Titolo + "' ID=" + artDb.ArticoloID + "  nel web");
                 SetDataItemWeb(artDb, uof, artWeb);
@@ -101,7 +101,6 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
                         _productFactory.Update(artWeb);
                     }
                     artDb.Aggiornamento.DataUltimoAggiornamentoWeb = dataLettura;
-                    artDb.Aggiornamento.CodiceArticoloEcommerce = artWeb.id.Value.ToString();
                     artDb.Aggiornamento.Link = artWeb.link_rewrite.First().Value.ToString();
 
                     uof.AggiornamentoWebArticoloRepository.Update(artDb.Aggiornamento);

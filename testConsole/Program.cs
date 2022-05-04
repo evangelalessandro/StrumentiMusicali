@@ -1,9 +1,7 @@
 ﻿using NLog;
 using NLog.Targets; 
 using System;
-//using WooCommerceNET;
-//using WooCommerceNET.WooCommerce.v3;
-//using WooCommerceNET.WooCommerce.v3.Extension;
+ 
  
 namespace testConsole
 {
@@ -13,32 +11,32 @@ namespace testConsole
         {
             //TestLog();
 
-            TestWoocommerce();
+            TestPresta();
 
             Console.WriteLine("Fine");
             Console.Read();
         }
 
-        private static void TestWoocommerce()
+        private static void TestPresta()
         {
 
 
 
-            //StrumentiMusicali.WooCommerceSyncro.Sync.CategorySync sync = new StrumentiMusicali.WooCommerceSyncro.Sync.CategorySync();
-            //sync.AllineaCategorieReparti();
+			//StrumentiMusicali.WooCommerceSyncro.Sync.CategorySync sync = new StrumentiMusicali.WooCommerceSyncro.Sync.CategorySync();
+			//sync.AllineaCategorieReparti();
 
-            while (true)
-            {
-                
-            
-                var sync = new StrumentiMusicali.WooCommerceSyncro.Sync.OrderSync();
-                sync.UpdateFromWeb();
+			//        while (true)
+			//        {
 
-                var sync2 = new StrumentiMusicali.WooCommerceSyncro.Sync.ProductSyncroLocalToWeb();
-                sync2.AggiornaWeb();
-                System.Threading.Thread.Sleep(15000);
-            }
-        }
+
+			var sync = new StrumentiMusicali.PrestaShopSyncro.Sync.ProductSyncroWebToLocal();
+			sync.SaveLocalFromSite();
+
+			//            //var sync2 = new StrumentiMusicali.WooCommerceSyncro.Sync.ProductSyncroLocalToWeb();
+			//            //sync2.AggiornaWeb();
+			//            System.Threading.Thread.Sleep(15000);
+			//        }
+		}
 
         private static void TestLog()
         {

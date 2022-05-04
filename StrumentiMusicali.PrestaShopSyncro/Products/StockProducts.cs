@@ -35,7 +35,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
             var stock = _syncroBasePresta._StockAvailableFactory.Get(newArtWeb.associations.stock_availables.First().id);
             var qta = stock.quantity;
             var updated =UpdateStockArt(ref qta, artDb, uof, forzaUpdate);
-            if (updated && stock.quantity != qta)
+            if (updated && stock.quantity != qta && Environment.MachineName!="EVANGALE")
             {
                 stock.quantity = qta;
 
@@ -48,7 +48,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
         public override bool UpdateStockArt(ArticoloBase artDb, UnitOfWork uof)
         {
 
-            if (!string.IsNullOrEmpty(artDb.CodiceArticoloEcommerce))
+            if ((artDb.CodiceArticoloEcommerce>0))
             {
                 product artWeb = _syncroBasePresta.GetProdWebFromCodartEcommerce(artDb);
 

@@ -70,7 +70,7 @@ namespace StrumentiMusicali.App.Core.Exports
                     a.Articolo.Libro,
                     a.Articolo.Categoria,
                     articolo = a.Articolo,
-                    a.CodiceArticoloEcommerce,
+                    a.Articolo.ArticoloWeb.CodiceArticoloWeb,
                     a.Articolo.Strumento
                 }).ToList();
 
@@ -129,7 +129,7 @@ namespace StrumentiMusicali.App.Core.Exports
                       a.articolo.Note3,
                       a.articolo.NonImponibile,
 
-                      a.articolo.Testo,
+                      
                       a.Libro.Autore,
                       a.Libro.TitoloDelLibro,
                       a.Libro.Edizione,
@@ -142,7 +142,7 @@ namespace StrumentiMusicali.App.Core.Exports
                       a.articolo.Iva,
                       a.articolo.ArticoloWeb.PrezzoWeb,
 
-                      a.CodiceArticoloEcommerce
+                      a.articolo.ArticoloWeb.CodiceArticoloWeb
                       ,
                       a.articolo.DataUltimaModifica
                   }

@@ -62,9 +62,9 @@ namespace StrumentiMusicali.Library.Entity.Articoli
         [CustomUIView(Width = 80, Ordine = 40, Category = "Prezzo", Money = true)]
         public decimal PrezzoAcquisto { get; set; } = 0;
 
-        [MaxLength(2000)]
-        [CustomUIView(Width = 500, Ordine = 111, MultiLine = 4, Titolo = "Testo annuncio", Category = "Online")]
-        public string Testo { get; set; }
+        //[MaxLength(2000)]
+        //[CustomUIView(Width = 500, Ordine = 111, MultiLine = 4, Titolo = "Testo annuncio", Category = "Online")]
+        //public string Testo { get; set; }
 
         [CustomUIView(Width = 500, Ordine = 3, Titolo = "Titolo annuncio")]
         [MaxLength(100), Required]
@@ -151,11 +151,7 @@ namespace StrumentiMusicali.Library.Entity.Articoli
                 else
                 {
                     titolo = (Strumento.Marca + " " + Strumento.Modello + " " + Strumento.Nome + " " + Strumento.Colore).Trim().Replace("    ", " ").Replace("  ", " ");
-                    /*per importazione da web*/
-                    if (titolo.Length==0 &&  Testo !=null && Testo.Length>0)
-                    {
-                        titolo = Testo;
-                    }
+                     
                 }
                 return titolo;
             }

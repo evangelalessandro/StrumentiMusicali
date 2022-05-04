@@ -60,7 +60,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
             var aggiornamentoWebs = base.ListArt(uof,false);
             foreach (var artDb in aggiornamentoWebs)
             {
-                if (!string.IsNullOrEmpty(artDb.CodiceArticoloEcommerce))
+                if ((artDb.CodiceArticoloEcommerce)>0)
                 {
                     product artWeb = _syncroBasePresta.GetProdWebFromCodartEcommerce(artDb);
 

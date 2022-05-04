@@ -16,7 +16,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.BaseClass
         protected string _autKey = "";
         internal product GetProdWebFromCodartEcommerce(ArticoloBase artDb)
         {
-            return _productFactory.Get(long.Parse(artDb.CodiceArticoloEcommerce));
+            return _productFactory.Get((artDb.CodiceArticoloEcommerce));
         }
         public SyncroBasePresta()
             :base()
@@ -28,26 +28,29 @@ namespace StrumentiMusicali.PrestaShopSyncro.BaseClass
             var config = ConfigurationManager.OpenExeConfiguration(
                 Assembly.GetExecutingAssembly().Location);
             CheckModeDebug(config);
-            if (config.AppSettings.Settings["Test"].Value == "1")
-            {
-                _url = config.AppSettings.Settings["UrlPrestaShop"].Value;
-                _autKey = config.AppSettings.Settings["AutKey"].Value;
+            //if (config.AppSettings.Settings["Test"].Value == "1")
+            //{
+            //    _url = config.AppSettings.Settings["UrlPrestaShop"].Value;
+            //    _autKey = config.AppSettings.Settings["AutKey"].Value;
 
-                //StrumentiMusicali.Core.Manager.ManagerLog.Logger.Info("TEST _url ");
-                //StrumentiMusicali.Core.Manager.ManagerLog.Logger.Info(_url);
+            //    //StrumentiMusicali.Core.Manager.ManagerLog.Logger.Info("TEST _url ");
+            //    //StrumentiMusicali.Core.Manager.ManagerLog.Logger.Info(_url);
             
-            }
+            //}
 
             _imageFactory = new ImageFactory(_url, _autKey, "");
             _StockAvailableFactory = new StockAvailableFactory(_url, _autKey, "");
             _productFactory = new ProductFactory(_url, _autKey, "");
             _categoriesFact = new CategoryFactory(_url, _autKey, "");
             _taxRuleGroupFact = new TaxRuleGroupFactory(_url, _autKey, "");
-        }
+			_taxFact = new TaxFactory(_url, _autKey, "");
+
+		}
         
         private static bool _checkedDebugMode = false;
         private static void CheckModeDebug(Configuration config)
         {
+			return;
             if (_checkedDebugMode)
                 return;
             _checkedDebugMode = true;
@@ -96,8 +99,9 @@ namespace StrumentiMusicali.PrestaShopSyncro.BaseClass
         }
 
         internal TaxRuleGroupFactory _taxRuleGroupFact = null;
+		internal TaxFactory _taxFact = null;
 
-        internal CategoryFactory _categoriesFact = null;
+		internal CategoryFactory _categoriesFact = null;
         internal StockAvailableFactory _StockAvailableFactory = null;
         internal ImageFactory _imageFactory = null;
         internal ProductFactory _productFactory = null;
@@ -117,11 +121,11 @@ namespace StrumentiMusicali.PrestaShopSyncro.BaseClass
                 _StockAvailableFactory = null;
                 _imageFactory = null;
                 _productFactory = null;
+				_taxFact = null;
+				// TODO: liberare risorse non gestite (oggetti non gestiti) ed eseguire sotto l'override di un finalizzatore.
+				// TODO: impostare campi di grandi dimensioni su Null.
 
-                // TODO: liberare risorse non gestite (oggetti non gestiti) ed eseguire sotto l'override di un finalizzatore.
-                // TODO: impostare campi di grandi dimensioni su Null.
-
-                disposedValue = true;
+				disposedValue = true;
             }
         }
 

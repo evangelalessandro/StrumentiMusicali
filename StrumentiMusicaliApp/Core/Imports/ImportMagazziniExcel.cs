@@ -92,12 +92,11 @@ namespace StrumentiMusicali.App.Core.Imports
                             articolo.Prezzo = 0;
                         }
 
-                        articolo.Testo = (item.DescrBreve);
+                        
                         articolo.Note1 = (item.Note);
                         articolo.Strumento.Colore = (item.Colore);
                         articolo.Titolo = item.Marca + " " + item.Modello + " " + item.DescrBreve + " " + item.Colore;
                         articolo.Titolo = articolo.Titolo.Trim();
-                        articolo.Testo = articolo.Titolo;
                         articolo.TagImport = "ExcelMagazzini " + nomeDeposito;
 
                         try

@@ -13,9 +13,16 @@
 			Sql("update CATEGORIE  " +
 				" set REPARTO = REPLACE(REPARTO, '/', '|')   " +
 				",    NOME    = REPLACE(NOME   , '/', '|')");
-        }
-        
-        public override void Down()
+			Sql("update CATEGORIE  " +
+				" set REPARTO = 'DJ' " +
+				"where Reparto = 'DJ Equipment'");
+			Sql("update CATEGORIE  " +
+				" set REPARTO = 'Live' " +
+				"where Reparto = 'Live Equipment'");
+
+		}
+
+		public override void Down()
         {
             AddColumn("dbo.Articoli", "Testo", c => c.String(maxLength: 2000));
             DropIndex("dbo.Articoli", new[] { "CodiceABarre", "Titolo" });

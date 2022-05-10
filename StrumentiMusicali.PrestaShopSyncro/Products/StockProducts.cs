@@ -37,8 +37,10 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
             var updated =UpdateStockArt(ref qta, artDb, uof, forzaUpdate);
             if (updated && stock.quantity != qta && Environment.MachineName!="EVANGALE")
             {
-                stock.quantity = qta;
+				_logger.Info("Ecomm: Prod_id:" + newArtWeb.id + " name: " + artDb.ArticoloDb.Titolo + "| giacenza vecchia:" + stock.quantity.ToString() + " nuova giacenze : " + qta.ToString());
 
+				stock.quantity = qta;
+				
                 _syncroBasePresta._StockAvailableFactory.Update(stock);
                 return true;
             }

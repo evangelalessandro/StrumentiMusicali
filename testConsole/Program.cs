@@ -9,7 +9,7 @@ namespace testConsole
     {
         static void Main(string[] args)
         {
-            //TestLog();
+            TestLog();
 
             TestPresta();
 
@@ -18,27 +18,23 @@ namespace testConsole
         }
 
         private static void TestPresta()
-        {
+		{
+			//AggiornaLocaleDaWeb();
+
+			var sync = new StrumentiMusicali.PrestaShopSyncro.Sync.ProductSyncroLocalToWeb();
+			sync.AggiornaWeb();
 
 
-
-			//StrumentiMusicali.WooCommerceSyncro.Sync.CategorySync sync = new StrumentiMusicali.WooCommerceSyncro.Sync.CategorySync();
-			//sync.AllineaCategorieReparti();
-
-			//        while (true)
-			//        {
-
-
-			var sync = new StrumentiMusicali.PrestaShopSyncro.Sync.ProductSyncroWebToLocal();
-			sync.SaveLocalFromSite();
-
-			//            //var sync2 = new StrumentiMusicali.WooCommerceSyncro.Sync.ProductSyncroLocalToWeb();
-			//            //sync2.AggiornaWeb();
-			//            System.Threading.Thread.Sleep(15000);
-			//        }
 		}
 
-        private static void TestLog()
+		private static void AggiornaLocaleDaWeb()
+		{
+			var sync = new StrumentiMusicali.PrestaShopSyncro.Sync.ProductSyncroWebToLocal();
+			sync.SaveLocalFromSite();
+			 
+		}
+
+		private static void TestLog()
         {
             var target = new ColoredConsoleTarget();
             //target.ClassName = typeof(ControllerMaster).AssemblyQualifiedName;

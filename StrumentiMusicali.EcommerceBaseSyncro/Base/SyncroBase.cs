@@ -1,4 +1,6 @@
-﻿using StrumentiMusicali.Library.Entity.Ecomm;
+﻿using NLog;
+using StrumentiMusicali.Core.Manager;
+using StrumentiMusicali.Library.Entity.Ecomm;
 using StrumentiMusicali.Library.Entity.Enums;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -11,7 +13,7 @@ namespace StrumentiMusicali.EcommerceBaseSyncro.Base
 {
 	public abstract class SyncroBase
 	{
-
+		public readonly ILogger _logger = ManagerLog.Logger;
 		public static void SalvaAggiornamento(UnitOfWork uof, AggiornamentoWebArticolo aggiornamento)
 		{
 			if (aggiornamento.ID == 0)

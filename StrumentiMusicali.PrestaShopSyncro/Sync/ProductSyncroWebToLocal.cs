@@ -93,9 +93,9 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
 							{
 								if (articolo.ArticoloWeb.CodiceArticoloWeb > 0)
 									continue;
-								Console.WriteLine("avvio salvataggio per codice articolo web:" + codice);
+								AddLog("ECOMM: salvataggio per codice articolo web:" + codice);
 								SaveProduct(uof, item, name, listCategories, articolo);
-								Console.WriteLine("Salvato nuovo articolo dal web:" + name);
+								AddLog("Salvato nuovo articolo dal web:" + name);
 								continue;
 							}
 							else
@@ -103,35 +103,17 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
 								continue;
 							}
 						}
-						//if (articolo == null)
-						//{
-						//	try
-						//	{
-
-						//		Console.WriteLine("avvio salvataggio per codice articolo web:" + codice);
-						//		SaveProduct(uof, item, name, listCategories);
-						//		Console.WriteLine("Salvato nuovo articolo dal web:" + name);
-						//		count++;
-						//	}
-						//	catch (Exception ex)
-						//	{
-						//		Console.WriteLine("Errore:" + ex.Message);
-
-						//		Console.WriteLine("Vuoi continuare ? Y/N");
-						//		if (Console.ReadLine().ToUpperInvariant() != "Y")
-						//		{
-						//			return count;
-						//		}
-						//	}
-						//}
-						//else
-						//{
-						//	Console.WriteLine("Articolo già presente per codice:" + name);
-						//}
+						 
 					}
 				}
 			}
 			return count;
+		}
+		private void AddLog(string message)
+		{
+			
+			_logger.Info(message);
+
 		}
 
 		#region Immagini
@@ -194,14 +176,16 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
 			var prezzo = Math.Round(item.price * (100 + iva) / 100);
 			if (articolo.ArticoloWeb.PrezzoWeb != prezzo)
 			{
-				Console.WriteLine("Aggiornato prezzo web in gestionale: da " + articolo.ArticoloWeb.PrezzoWeb.ToString() + " a " + prezzo);
+
+				AddLog("Aggiornato prezzo web in gestionale: da " + articolo.ArticoloWeb.PrezzoWeb.ToString() + " a " + prezzo);
 				articolo.ArticoloWeb.PrezzoWeb = prezzo;
 			}
+			articolo.CaricainECommerce = true;
 
-			//	/*categoria non specificato*/
-			//	articolo.CategoriaID = 239;
+		   //	/*categoria non specificato*/
+		   //	articolo.CategoriaID = 239;
 
-			var categEcommerceList = listCategories.Where(a => item.associations.categories.Select(b => b.id).Contains(a.id.Value)).ToList()
+		   var categEcommerceList = listCategories.Where(a => item.associations.categories.Select(b => b.id).Contains(a.id.Value)).ToList()
 				.Select(a=>a.name.First().Value).ToList();
 			var findCat = false;
 			foreach (var categEcommerce in categEcommerceList)
@@ -246,15 +230,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
 				ArticoloDb = agg.Articolo
 			}, uof, true);
 
-			//if (articoloToJoin == null)
-			//{
-			//	var depoPrinc = uof.DepositoRepository.Find(a => a.Principale == true).First();
-
-			//	uof.MagazzinoRepository.Add(new Library.Entity.Magazzino()
-			//	{ ArticoloID = articolo.ID, DepositoID = depoPrinc.ID, Qta = 1, PrezzoAcquisto = 0 });
-
-			//	uof.Commit();
-			//}
+		 
 
 			if (immagini.Count() > 0 && !ImageArticoloSave.AddImageFiles(
 				new ImageArticoloAddFiles(articolo, immagini, new ControllerFake())))
@@ -262,26 +238,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
 
 
 
-			//try
-			//{
-			//	item.reference = articolo.ID.ToString();
-			//	_productFactory.Update(item);
-
-			//}
-			//catch
-			//{
-			//	try
-			//	{
-			//		item.position_in_category = 0;
-			//		_productFactory.Update(item);
-
-			//	}
-			//	catch
-			//	{
-
-			//	}
-
-			//}
+		 
 
 		}
 

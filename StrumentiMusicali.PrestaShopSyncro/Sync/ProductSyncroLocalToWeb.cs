@@ -1,6 +1,7 @@
 ﻿using Bukimedia.PrestaSharp.Entities;
 using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.EcommerceBaseSyncro;
+using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Entity.Enums;
 using StrumentiMusicali.Library.Repo;
 using StrumentiMusicali.PrestaShopSyncro.BaseClass;
@@ -29,7 +30,9 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
                 {
                     groupsync.AllineaCategorieReparti();
                 }
+			 
                 var listArt = UpdateProducts(uof);
+				return;
 
                 using (var stockPr = new StockProducts(this))
                 {
@@ -55,8 +58,8 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
         private List<ArticoloBase> UpdateProducts(UnitOfWork uof)
         {
             DateTime dataLettura = DateTime.Now;
-			var listaArt = uof.AggiornamentoWebArticoloRepository.Find(a => (a.Articolo.CaricainECommerce
-				&& a.DataUltimoAggiornamentoWeb < a.Articolo.DataUltimaModifica
+			var listaArt = uof.AggiornamentoWebArticoloRepository.Find(a => a.Articolo.CaricainECommerce
+				&& (a.DataUltimoAggiornamentoWeb < a.Articolo.DataUltimaModifica
 			   && (a.Articolo.Categoria.Codice >= 0
 					|| a.Articolo.Condizione == enCondizioneArticolo.ExDemo
 					|| a.Articolo.Condizione == enCondizioneArticolo.UsatoGarantito)
@@ -95,7 +98,14 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
                     if (!artWeb.id.HasValue)
                     {
                         artWeb = _productFactory.Add(artWeb);
-                    }
+
+						var art= uof.ArticoliRepository.Find(a => a.ID == artDb.ArticoloID).First();
+						art.ArticoloWeb.CodiceArticoloWeb = artWeb.id.Value;
+						uof.ArticoliRepository.Update(art);
+						uof.Commit();
+						artDb.Aggiornamento.Articolo = art;
+						artDb.CodiceArticoloEcommerce = art.ArticoloWeb.CodiceArticoloWeb;
+					}
                     else
                     {
                         _productFactory.Update(artWeb);
@@ -109,7 +119,9 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+
+					ManagerLog.Logger.Error(ex, " ID=" + artDb.ArticoloID);
+					throw ex;
                 }
             }
         }
@@ -201,10 +213,11 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
             artWeb.state = 1;
             artWeb.visibility = "both";
             artWeb.minimal_quantity = 1;
-            artWeb.reference = artDb.ArticoloID.ToString();
+            //artWeb.reference = artDb.ArticoloID.ToString();
 
+			
 
-        }
+		}
 
     }
 }

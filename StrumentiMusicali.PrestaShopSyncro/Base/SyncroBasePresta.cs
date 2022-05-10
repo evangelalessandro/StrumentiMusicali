@@ -1,5 +1,7 @@
 ﻿using Bukimedia.PrestaSharp.Entities;
 using Bukimedia.PrestaSharp.Factories;
+using NLog;
+using StrumentiMusicali.Core.Manager;
 using StrumentiMusicali.EcommerceBaseSyncro;
 using StrumentiMusicali.Library.Entity.Setting;
 using StrumentiMusicali.Library.Repo;
@@ -14,7 +16,8 @@ namespace StrumentiMusicali.PrestaShopSyncro.BaseClass
     {
         protected string _url = "";
         protected string _autKey = "";
-        internal product GetProdWebFromCodartEcommerce(ArticoloBase artDb)
+		internal readonly ILogger _logger = ManagerLog.Logger;
+		internal product GetProdWebFromCodartEcommerce(ArticoloBase artDb)
         {
             return _productFactory.Get((artDb.CodiceArticoloEcommerce));
         }

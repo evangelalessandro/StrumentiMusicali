@@ -27,8 +27,14 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
             {
                 long rootCateg = listCategories.Where(a => a.is_root_category == 1).First().id.Value;
 
-                //legge da db le categorie e i reparti
-                foreach (var categDb in uof.CategorieRepository.Find(a => a.Codice > 0)
+				var listName = listCategories.Select(a => new { categoria = a.name.First().Value, id_parent=a.id_parent, a.id }).ToList();
+
+				var list= listName.Select(a => new {  Reparto = listName.Where(b => b.id.Value == a.id_parent).Select(b=>b.categoria).FirstOrDefault(),Categoria= a.categoria, a.id })
+					.OrderBy(a=>a.Reparto).ThenBy(a=>a.Categoria).ToList();
+
+
+				//legge da db le categorie e i reparti
+				foreach (var categDb in uof.CategorieRepository.Find(a => a.Codice > 0)
                     .Select(a => new { a.Reparto, NomeCateg = a.Nome, a.ID })
                     .OrderBy(a => a.Reparto).OrderBy(a => a.NomeCateg).ToList())
                 {
@@ -42,7 +48,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
                     {
                         /*controllo che non esista già la categoria dentro al reparto nel ecomm*/
                         var existsCateg = listCategories.Where(a => a.id_parent == repartoWeb.id)
-                            .Where(a => a.name.First().Value == categDb.NomeCateg).FirstOrDefault();
+                            .Where(a => string.Compare( a.name.First().Value , categDb.NomeCateg,true)==0).FirstOrDefault();
                         if (existsCateg == null)
                         {
                             var newCateg = AggiungiCategoriaWeb(categRepartoWebId, categDb.NomeCateg);
@@ -51,7 +57,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
                             { CategoriaID = categDb.ID, CodiceWeb = newCateg.id.Value });
                             uof.Commit();
 
-                            ManagerLog.Logger.Info("Aggiunta categoria web: " + categDb.NomeCateg);
+                            ManagerLog.Logger.Info("Aggiunta categoria web: " + categDb.Reparto + " "   + categDb.NomeCateg);
                         }
                         else
                         {
@@ -63,8 +69,8 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
                                 { CategoriaID = categDb.ID, CodiceWeb = existsCateg.id.Value });
                                 uof.Commit();
                             }
-                            else
-                            {
+                            else if (categWebDb.CodiceWeb != existsCateg.id.Value)
+							{
                                 categWebDb.CodiceWeb = existsCateg.id.Value;
                                 uof.CategorieWebRepository.Update(categWebDb);
                                 uof.Commit();

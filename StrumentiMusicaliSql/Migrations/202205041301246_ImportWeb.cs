@@ -13,6 +13,9 @@
 			Sql("update CATEGORIE  " +
 				" set REPARTO = REPLACE(REPARTO, '/', '|')   " +
 				",    NOME    = REPLACE(NOME   , '/', '|')");
+			Sql("UPDATE Articoli " + 
+				"set CaricainECommerce = 0  ");
+
 			Sql("update CATEGORIE  " +
 				" set REPARTO = 'DJ' " +
 				"where Reparto = 'DJ Equipment'");

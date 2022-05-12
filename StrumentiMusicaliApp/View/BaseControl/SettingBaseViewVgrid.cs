@@ -36,8 +36,10 @@ namespace StrumentiMusicali.App.View.BaseControl
 					RefreshAllProp();
 				};
 			}
-			var listProp = UtilityProp.GetProperties(objToBind).OrderBy(a =>
-			{
+			var listProp = UtilityProp.GetProperties(objToBind)
+				.OrderBy(a =>
+				{
+				 
 				var sel = (CustomUIViewAttribute)a.GetCustomAttributes(typeof(CustomUIViewAttribute), true).FirstOrDefault();
 				if (sel == null || sel.Ordine == 0)
 				{
@@ -149,7 +151,7 @@ namespace StrumentiMusicali.App.View.BaseControl
 			if (prefixText.Length > 0)
 			{
 				var categoryContained = this.vGrid.Rows.Where(a => a is CategoryRow
-				&& a.Properties.Caption == prefixText).FirstOrDefault();
+				&& a.Properties.Caption.Trim() == prefixText.Trim()).FirstOrDefault();
 
 				if (categoryContained == null)
 				{

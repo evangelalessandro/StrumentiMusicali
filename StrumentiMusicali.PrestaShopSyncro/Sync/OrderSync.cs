@@ -91,14 +91,19 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
 							int depositoId = depoPrinc.ID;
 							if (qta>0 && giacenza.Where(a => a.Deposito.ID == depositoId && a.Sum>0).Count() == 0)
 							{
-								depositoId = giacenza.Where(a => a.Sum > 0).First().Deposito.ID;
+								if (giacenza.Where(a => a.Sum > 0).Count() > 0)
+								{
 
+									depositoId = giacenza.Where(a => a.Sum > 0).First().Deposito.ID;
+								}
 							}
 							var qtaMov = -1;
 							if (qta < 0)
 							{
 								qtaMov = +1;
 							}
+
+							_logger.Warn("Aggiornamento da web giacenza " + qtaMov.ToString() + " per articolo ArticoloID:" + aggiornamento.ArticoloID.ToString());
 							///se c'è stata una vendita allora aggiungo un movimento di magazzino
 							uof.MagazzinoRepository.Add(new Library.Entity.Magazzino()
 							{
@@ -110,8 +115,9 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
 								OperazioneWeb = true
 							});
 							qta = qta + qtaMov;
-						}
 
+						}
+						
 						aggiornamento.GiacenzaMagazzinoWebInDataAggWeb = stock.quantity;
 						aggiornamento.DataUltimoAggMagazzinoWeb = dataAgg;
 						aggiornamento.DataUltimoAggMagazzino = dataAgg;
@@ -120,12 +126,12 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
 
 						if (forzaUpdateGiacenza)
 						{
-
+							_logger.Warn("Forza giacenza locale per articolo ArticoloID:" + aggiornamento.ArticoloID.ToString());
 							stockProd.UpdateStockArt(prodotto, new ArticoloBase()
 							{
 								ArticoloID = aggiornamento.ArticoloID,
 								Aggiornamento = aggiornamento,
-								CodiceArticoloEcommerce = aggiornamento.Articolo.ArticoloWeb.CodiceArticoloWeb,
+								CodiceArticoloEcommerce = idProdotto,
 								ArticoloDb = aggiornamento.Articolo
 							}, uof, true);
 						}

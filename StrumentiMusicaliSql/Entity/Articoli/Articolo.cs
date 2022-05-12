@@ -25,7 +25,7 @@ namespace StrumentiMusicali.Library.Entity.Articoli
 
         }
          
-        [CustomUIView(Ordine = 7, Titolo = "Carica in E-Commerce", Category = "Online")]
+        [CustomUIView(Ordine = 100, Titolo = "Carica in E-Commerce", Category = "[Articolo Web]")]
         public bool CaricainECommerce { get; set; } = true;
          
         [CustomUIView(Width = 350, Ordine = 1, Combo = TipoDatiCollegati.Categorie, Titolo = "Categoria")]

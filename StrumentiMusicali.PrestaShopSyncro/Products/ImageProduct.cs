@@ -57,7 +57,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
 
         public List<ArticoloBase> UpdateImages(UnitOfWork uof)
         {
-            var aggiornamentoWebs = base.ListArt(uof,false);
+            var aggiornamentoWebs = base.ListArt(uof,false,true);
             foreach (var artDb in aggiornamentoWebs)
             {
                 if ((artDb.CodiceArticoloEcommerce)>0)
@@ -65,7 +65,7 @@ namespace StrumentiMusicali.PrestaShopSyncro.Products
                     product artWeb = _syncroBasePresta.GetProdWebFromCodartEcommerce(artDb);
 
                     UpdateImage(artDb, artWeb, uof);
-
+					_logger.Debug("Aggiornate immagini articolo web :" + artDb.CodiceArticoloEcommerce);
                 }
             }
             return aggiornamentoWebs;

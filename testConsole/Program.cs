@@ -1,5 +1,6 @@
 ﻿using NLog;
-using NLog.Targets; 
+using NLog.Targets;
+using StrumentiMusicali.PrestaShopSyncro.Job;
 using System;
  
  
@@ -13,16 +14,19 @@ namespace testConsole
 
             TestPresta();
 
-            Console.WriteLine("Fine");
-            Console.Read();
+            //Console.WriteLine("Fine");
+            //Console.Read();
         }
 
         private static void TestPresta()
 		{
+			SyncStockFromWeb job=new SyncStockFromWeb();
+			job.Exec();
+
 			//AggiornaLocaleDaWeb();
 
-			var sync = new StrumentiMusicali.PrestaShopSyncro.Sync.ProductSyncroLocalToWeb();
-			sync.AggiornaWeb();
+			//var sync = new StrumentiMusicali.PrestaShopSyncro.Sync.ProductSyncroLocalToWeb();
+			//sync.AggiornaWeb();
 
 
 		}

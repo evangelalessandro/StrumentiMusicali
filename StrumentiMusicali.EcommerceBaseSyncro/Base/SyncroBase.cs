@@ -34,14 +34,14 @@ namespace StrumentiMusicali.EcommerceBaseSyncro.Base
 		/// <returns></returns>
 		public List<ArticoloBase> ListArt(UnitOfWork uof, bool stock, bool foto = false)
 		{
-			var dati = uof.AggiornamentoWebArticoloRepository.Find(a => (a.Articolo.CaricainECommerce
+			var dati = uof.AggiornamentoWebArticoloRepository.Find(a => a.Articolo.CaricainECommerce
 
-									 && (a.Articolo.Categoria.Codice >= 0
+									 && (((a.Articolo.Categoria.Codice >= 0
 						|| a.Articolo.Condizione == enCondizioneArticolo.ExDemo
 						|| a.Articolo.Condizione == enCondizioneArticolo.UsatoGarantito)
 							   && a.Articolo.ArticoloWeb.PrezzoWeb > 0
 							   )
-							   || a.ForzaAggiornamento == true).
+							   || a.ForzaAggiornamento == true)).
 							  Select(a => new ArticoloBase
 							  {
 								  CodiceArticoloEcommerce =
@@ -50,6 +50,11 @@ namespace StrumentiMusicali.EcommerceBaseSyncro.Base
 								  Aggiornamento = a,
 								  ArticoloDb = a.Articolo
 							  }).ToList();
+			if (stock || foto)
+			{
+				dati = dati.Where(a => a.CodiceArticoloEcommerce > 0)
+								.ToList();
+			}
 			if (stock)
 			{
 				dati = dati.Where(a => Math.Abs((a.Aggiornamento.DataUltimoAggMagazzino - a.Aggiornamento.DataUltimoAggMagazzinoWeb)
@@ -57,18 +62,21 @@ namespace StrumentiMusicali.EcommerceBaseSyncro.Base
 								 || a.Aggiornamento.ForzaAggiornamento == true)
 								.ToList();
 			}
-			else
+			else if (foto)
 			{
-
-				dati = dati.Where(a => Math.Abs((a.Aggiornamento.DataUltimoAggiornamentoWeb - a.ArticoloDb.DataUltimaModifica).TotalSeconds) > 10
-						|| (foto && Math.Abs((a.Aggiornamento.DataUltimoAggFotoWeb - a.Aggiornamento.DataUltimoAggFoto).TotalSeconds) > 10)
+				dati = dati.Where(a => (foto && Math.Abs((a.Aggiornamento.DataUltimoAggFotoWeb - a.Aggiornamento.DataUltimoAggFoto).TotalSeconds) > 10)
 
 					|| a.Aggiornamento.ForzaAggiornamento == true).ToList();
-
 			}
+			else
+			{ 
+				dati = dati.Where(a => Math.Abs((a.Aggiornamento.DataUltimoAggiornamentoWeb - a.ArticoloDb.DataUltimaModifica).TotalSeconds) > 10
+					|| a.Aggiornamento.ForzaAggiornamento == true).ToList();
+			}
+
 
 			return dati;
 		}
-	}
+}
 }
 

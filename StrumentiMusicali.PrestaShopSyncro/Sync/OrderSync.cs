@@ -10,105 +10,128 @@ using System.Linq;
 
 namespace StrumentiMusicali.PrestaShopSyncro.Sync
 {
-    internal class OrderSync : BaseClass.SyncroBasePresta
-    {
-        public void UpdateFromWeb(bool onlyOne=false)
-        {
-            var _orderFact = new OrderFactory(_url, _autKey, "");
+	internal class OrderSync : BaseClass.SyncroBasePresta
+	{
+		public void UpdateFromWeb(bool onlyOne = false)
+		{
+			var _orderFact = new OrderFactory(_url, _autKey, "");
 
-            var setting = SettingSitoValidator.ReadSetting();
+			var setting = SettingSitoValidator.ReadSetting();
 
-            DateTime StartDate = setting.PrestaShopSetting.DataUltimoOrdineGiacenza;
-            if (StartDate.Year == 1900)
-            {
-                Core.Manager.ManagerLog.Logger.Warn(@"Occorre impostare la data ultimo ordine
+			DateTime StartDate = setting.PrestaShopSetting.DataUltimoOrdineGiacenza;
+			if (StartDate.Year == 1900)
+			{
+				Core.Manager.ManagerLog.Logger.Warn(@"Occorre impostare la data ultimo ordine
                     giacenza nei settaggi per il sito prestashop");
-                return;
-            }
-            DateTime EndDate = DateTime.Now.AddDays(1);
-            Dictionary<string, string> filter = new Dictionary<string, string>();
-            string dFrom = string.Format("{0:yyyy-MM-dd HH:mm:ss}", StartDate);
-            string dTo = string.Format("{0:yyyy-MM-dd HH:mm:ss}", EndDate);
-            filter.Add("date_upd", "[" + dFrom + "," + dTo + "]");
+				return;
+			}
+			DateTime EndDate = DateTime.Now.AddDays(1);
+			Dictionary<string, string> filter = new Dictionary<string, string>();
+			string dFrom = string.Format("{0:yyyy-MM-dd HH:mm:ss}", StartDate);
+			string dTo = string.Format("{0:yyyy-MM-dd HH:mm:ss}", EndDate);
+			filter.Add("date_upd", "[" + dFrom + "," + dTo + "]");
 
-            var orders = _orderFact.GetByFilter(filter, "date_upd_ASC", null);
+			var orders = _orderFact.GetByFilter(filter, "date_upd_ASC", null);
 
-            if (orders.Count() == 0)
-            {
-                /*Non ci sono aggiornamenti*/
-                return;
-            }
-            var maxUpdate = orders.Select(a => a.date_upd).ToList()
-                .Select(a => DateTime.Parse(a)).Max(a => a);
+			if (orders.Count() == 0)
+			{
+				Core.Manager.ManagerLog.Logger.Info(@"Non ci sono aggiornamenti di ordini da " + StartDate.ToString() + " ad adesso.");
+				/*Non ci sono aggiornamenti*/
+				return;
+			}
+			Core.Manager.ManagerLog.Logger.Info(@"Presenza ordini da " + StartDate.ToString() + " ad adesso.");
+			var maxUpdate = orders.Select(a => a.date_upd).ToList()
+				.Select(a => DateTime.Parse(a)).Max(a => a);
 
-            var righe = orders.SelectMany(a => a.associations.order_rows)
-                .Where(a => a.product_id.HasValue).Select(a => a.product_id.Value).Distinct().ToList();
+			var righe = orders.SelectMany(a => a.associations.order_rows)
+				.Where(a => a.product_id.HasValue).Select(a => a.product_id.Value).Distinct().ToList();
 
-            using (var uof = new UnitOfWork())
-            {
-                var depoPrinc = uof.DepositoRepository.Find(a => a.Principale == true).First();
+			using (var uof = new UnitOfWork())
+			{
+				var depoPrinc = uof.DepositoRepository.Find(a => a.Principale == true).First();
 
-                UpdateProdotti(righe, uof, depoPrinc);
-                /*rileggo il dato per essere sicuro che sia atomica la transazione*/
-                setting = SettingSitoValidator.ReadSetting();
-                setting.PrestaShopSetting.DataUltimoOrdineGiacenza = maxUpdate.AddSeconds(1);
-                uof.SettingSitoRepository.Update(setting);
-                uof.Commit();
-            }
-        }
+				UpdateProdotti(righe, uof, depoPrinc);
+				/*rileggo il dato per essere sicuro che sia atomica la transazione*/
+				setting = SettingSitoValidator.ReadSetting();
+				setting.PrestaShopSetting.DataUltimoOrdineGiacenza = maxUpdate.AddSeconds(1);
+				uof.SettingSitoRepository.Update(setting);
+				uof.Commit();
+			}
+		}
 
-        private void UpdateProdotti(List<long> prodotti, UnitOfWork uof, Deposito depoPrinc)
-        {
-            foreach (var idProdotto in prodotti)
-            {
-                var prodotto = _productFactory.Get(idProdotto);
+		private void UpdateProdotti(List<long> prodotti, UnitOfWork uof, Deposito depoPrinc)
+		{
+			foreach (var idProdotto in prodotti)
+			{
+				var prodotto = _productFactory.Get(idProdotto);
 
-                var stock = _StockAvailableFactory.Get(prodotto.associations.stock_availables.First().id);
-                var aggiornamento = uof.AggiornamentoWebArticoloRepository.
-                    Find(a => a.Articolo.ArticoloWeb.CodiceArticoloWeb == idProdotto).FirstOrDefault();
-                /*è nullo solo se l'articolo è nel web ma non in locale*/
-                if (aggiornamento == null)
-                    continue;
-                if (aggiornamento.GiacenzaMagazzinoWebInDataAggWeb != stock.quantity)
-                {
-                    using (var stockProd = new StockProducts(this))
-                    {
-                        var qtaStockLocale = StockProducts.CalcolaStock(new ArticoloBase() { ArticoloID = aggiornamento.ArticoloID });
-                        var forzaUpdateGiacenza = (aggiornamento.GiacenzaMagazzinoWebInDataAggWeb != qtaStockLocale);
-                         
+				var stock = _StockAvailableFactory.Get(prodotto.associations.stock_availables.First().id);
+				var aggiornamento = uof.AggiornamentoWebArticoloRepository.
+					Find(a => a.Articolo.ArticoloWeb.CodiceArticoloWeb == idProdotto).FirstOrDefault();
+				/*è nullo solo se l'articolo è nel web ma non in locale*/
+				if (aggiornamento == null)
+					continue;
+				if (aggiornamento.GiacenzaMagazzinoWebInDataAggWeb != stock.quantity)
+				{
+					using (var stockProd = new StockProducts(this))
+					{
+						var qtaStockLocale = StockProducts.CalcolaStock(new ArticoloBase() { ArticoloID = aggiornamento.ArticoloID });
+						var forzaUpdateGiacenza = (aggiornamento.GiacenzaMagazzinoWebInDataAggWeb != qtaStockLocale);
 
-                        var dataAgg = DateTime.Now;
-                        ///se c'è stata una vendita allora aggiungo un movimento di magazzino
-                        uof.MagazzinoRepository.Add(new Library.Entity.Magazzino()
-                        {
-                            ArticoloID = aggiornamento.ArticoloID,
-                            DepositoID = depoPrinc.ID,
-                            Qta = -(aggiornamento.GiacenzaMagazzinoWebInDataAggWeb - stock.quantity),
-                            PrezzoAcquisto = 0,
-                            Note = aggiornamento.GiacenzaMagazzinoWebInDataAggWeb > stock.quantity ? "Vendita web Annullata" : "Vendita web Annullata",
-                            OperazioneWeb = true
-                        });
 
-                        aggiornamento.GiacenzaMagazzinoWebInDataAggWeb = stock.quantity;
-                        aggiornamento.DataUltimoAggMagazzinoWeb = dataAgg;
-                        aggiornamento.DataUltimoAggMagazzino = dataAgg;
-                        uof.AggiornamentoWebArticoloRepository.Update(aggiornamento);
-                        uof.Commit();
+						var giacenza = uof.MagazzinoRepository.Find(a => aggiornamento.ArticoloID.Equals(a.ArticoloID))
+										.Select(a => new { a.Qta, a.Deposito }).GroupBy(a => new { a.Deposito })
+										.Select(a => new { Sum = a.Sum(b => b.Qta), Deposito = a.Key.Deposito }).ToList();
 
-                        if (forzaUpdateGiacenza)
-                        {
+						var dataAgg = DateTime.Now;
 
-                            stockProd.UpdateStockArt(prodotto, new ArticoloBase()
-                            {
-                                ArticoloID = aggiornamento.ArticoloID,
-                                Aggiornamento = aggiornamento,
-                                CodiceArticoloEcommerce = aggiornamento.Articolo.ArticoloWeb.CodiceArticoloWeb,
-                                ArticoloDb = aggiornamento.Articolo
-                            }, uof, true);
-                        }
-                    }
-                }
-            }
-        }
-    }
+						var qta = (aggiornamento.GiacenzaMagazzinoWebInDataAggWeb - stock.quantity);
+						while (qta!= 0)
+						{
+							int depositoId = depoPrinc.ID;
+							if (qta>0 && giacenza.Where(a => a.Deposito.ID == depositoId && a.Sum>0).Count() == 0)
+							{
+								depositoId = giacenza.Where(a => a.Sum > 0).First().Deposito.ID;
+
+							}
+							var qtaMov = -1;
+							if (qta < 0)
+							{
+								qtaMov = +1;
+							}
+							///se c'è stata una vendita allora aggiungo un movimento di magazzino
+							uof.MagazzinoRepository.Add(new Library.Entity.Magazzino()
+							{
+								ArticoloID = aggiornamento.ArticoloID,
+								DepositoID = depositoId,
+								Qta = qtaMov,
+								PrezzoAcquisto = 0,
+								Note = qtaMov<0 ? "Vendita web" : "Vendita web Annullata",
+								OperazioneWeb = true
+							});
+							qta = qta + qtaMov;
+						}
+
+						aggiornamento.GiacenzaMagazzinoWebInDataAggWeb = stock.quantity;
+						aggiornamento.DataUltimoAggMagazzinoWeb = dataAgg;
+						aggiornamento.DataUltimoAggMagazzino = dataAgg;
+						uof.AggiornamentoWebArticoloRepository.Update(aggiornamento);
+						uof.Commit();
+
+						if (forzaUpdateGiacenza)
+						{
+
+							stockProd.UpdateStockArt(prodotto, new ArticoloBase()
+							{
+								ArticoloID = aggiornamento.ArticoloID,
+								Aggiornamento = aggiornamento,
+								CodiceArticoloEcommerce = aggiornamento.Articolo.ArticoloWeb.CodiceArticoloWeb,
+								ArticoloDb = aggiornamento.Articolo
+							}, uof, true);
+						}
+					}
+				}
+			}
+		}
+	}
 }

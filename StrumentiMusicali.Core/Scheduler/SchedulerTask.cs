@@ -17,11 +17,9 @@ namespace StrumentiMusicali.Core.Scheduler
             var obj = IocContainerSingleton.GetContainer;
             ManagerLog.Logger.Info("Init Scheduler");
             JobManager.AddJob<BackupDbJob>(a => a.ToRunNow().AndEvery(12).Hours());
-            //JobManager.AddJob<BackupDbJob>(a => a.ToRunEvery(1).Minutes());
             JobManager.AddJob<IndexOptimizeJob>(a => a.ToRunEvery(12).Hours());
-            //JobManager.AddJob<UpdateWebPrestaJob>(a => a.ToRunEvery(1).Minutes());
-            //JobManager.AddJob<UpdateLocalStockPrestaJob>(a => a.ToRunEvery(1).Minutes());
-            //JobManager.AddJob<UpdateLocalStockWooJob>(a => a.ToRunEvery(1).Minutes());
+            JobManager.AddJob<UpdateWebPrestaJob>(a => a.ToRunEvery(5).Minutes());
+            JobManager.AddJob<UpdateLocalStockPrestaJob>(a => a.ToRunEvery(2).Minutes());
             JobManager.Stop();
 
             InitDbRecord();

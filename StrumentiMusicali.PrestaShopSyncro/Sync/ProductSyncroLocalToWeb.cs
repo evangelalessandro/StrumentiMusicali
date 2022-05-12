@@ -12,52 +12,55 @@ using System.Linq;
 
 namespace StrumentiMusicali.PrestaShopSyncro.Sync
 {
-    public class ProductSyncroLocalToWeb : SyncroBasePresta
-    {
-        public ProductSyncroLocalToWeb()
-            :base()
-        {
+	public class ProductSyncroLocalToWeb : SyncroBasePresta
+	{
+		public ProductSyncroLocalToWeb()
+			: base()
+		{
 
-        }
-        /// <summary>
-        /// Tutti gli articoli che sono con il flag CaricainECommerce e
-        /// </summary>
-        public void AggiornaWeb()
-        {
-            using (var uof = new UnitOfWork())
-            {
-                using (var groupsync = new CategorySync())
-                {
-                    groupsync.AllineaCategorieReparti();
-                }
-			 
-                var listArt = UpdateProducts(uof);
-				return;
+		}
+		/// <summary>
+		/// Tutti gli articoli che sono con il flag CaricainECommerce e
+		/// </summary>
+		public void AggiornaWeb()
+		{
+			using (var uof = new UnitOfWork())
+			{
+				using (var groupsync = new CategorySync())
+				{
+					using (var imgPr = new ImageProduct(this))
+					{
+						using (var stockPr = new StockProducts(this))
+						{
+							var gruppi =groupsync.AllineaCategorieReparti();
 
-                using (var stockPr = new StockProducts(this))
-                {
-                    var listStockArt = stockPr.UpdateStock(uof);
+							var listArt = UpdateProducts(uof, gruppi);
 
-                    listArt.AddRange(listStockArt);
-                }
-                using (var imgPr = new ImageProduct(this))
-                {
-                    listArt.AddRange(imgPr.UpdateImages(uof));
-                }
-                var listArtId = listArt.FindAll(a => a.Aggiornamento.ForzaAggiornamento == true).Select(a => a.ArticoloID).Distinct().ToList();
+							var listStockArt = stockPr.UpdateStock(uof);
 
-                var aggToFix = uof.AggiornamentoWebArticoloRepository.Find(a => listArtId.Contains(a.ArticoloID) && a.ForzaAggiornamento).ToList();
-                foreach (var item in aggToFix)
-                {
-                    uof.AggiornamentoWebArticoloRepository.Update(item);
-                }
-                uof.Commit();
-            }
-        }
+							listArt.AddRange(listStockArt);
 
-        private List<ArticoloBase> UpdateProducts(UnitOfWork uof)
-        {
-            DateTime dataLettura = DateTime.Now;
+							listArt.AddRange(imgPr.UpdateImages(uof));
+
+							var listArtId = listArt.FindAll(a => a.Aggiornamento.ForzaAggiornamento == true).Select(a => a.ArticoloID).Distinct().ToList();
+
+							var aggToFix = uof.AggiornamentoWebArticoloRepository.Find(a => listArtId.Contains(a.ArticoloID) && a.ForzaAggiornamento).ToList();
+							foreach (var item in aggToFix)
+							{
+								uof.AggiornamentoWebArticoloRepository.Update(item);
+							}
+							uof.Commit();
+						}
+
+					}
+				}
+				
+			}
+		}
+
+		private List<ArticoloBase> UpdateProducts(UnitOfWork uof, List<category> gruppi)
+		{
+			DateTime dataLettura = DateTime.Now;
 			var listaArt = uof.AggiornamentoWebArticoloRepository.Find(a => a.Articolo.CaricainECommerce
 				&& (a.DataUltimoAggiornamentoWeb < a.Articolo.DataUltimaModifica
 			   && (a.Articolo.Categoria.Codice >= 0
@@ -72,152 +75,175 @@ namespace StrumentiMusicali.PrestaShopSyncro.Sync
 				  ArticoloID = a.Articolo.ID,
 				  CodiceArticoloEcommerce = a.Articolo.ArticoloWeb.CodiceArticoloWeb
 			  }).ToList()
-              .Where(a => Math.Abs((a.Aggiornamento.DataUltimoAggiornamentoWeb - a.ArticoloDb.DataUltimaModifica).TotalSeconds) > 10)
-              .ToList();
-            foreach (var item in listaArt.Take(10))
-            {
-                UpdateProduct(item, dataLettura);
-            }
-            return listaArt;
-        }
+			  .Where(a => Math.Abs((a.Aggiornamento.DataUltimoAggiornamentoWeb - a.ArticoloDb.DataUltimaModifica).TotalSeconds) > 10)
+			  .ToList();
+			foreach (var item in listaArt.Take(10))
+			{
+				UpdateProduct(item, dataLettura,gruppi);
+			}
+			return listaArt;
+		}
 
-        private void UpdateProduct(ArticoloBase artDb, DateTime dataLettura)
-        {
-            using (var uof = new UnitOfWork())
-            {
-                product artWeb = new product();
-                if ((artDb.CodiceArticoloEcommerce)>0)
-                {
-                    artWeb = _productFactory.Get((artDb.CodiceArticoloEcommerce));
-                }
-                ManagerLog.Logger.Info("Caricamento in corso dell'articolo '" + artDb.ArticoloDb.Titolo + "' ID=" + artDb.ArticoloID + "  nel web");
-                SetDataItemWeb(artDb, uof, artWeb);
+		private void UpdateProduct(ArticoloBase artDb, DateTime dataLettura, List<category> gruppi)
+		{
+			using (var uof = new UnitOfWork())
+			{
+				product artWeb = new product();
+				if ((artDb.CodiceArticoloEcommerce) > 0)
+				{
+					artWeb = _productFactory.Get((artDb.CodiceArticoloEcommerce));
+				}
+				ManagerLog.Logger.Info("Caricamento in corso dell'articolo '" + artDb.ArticoloDb.Titolo + "' ID=" + artDb.ArticoloID + "  nel web");
+				SetDataItemWeb(artDb, uof, artWeb, gruppi);
 
-                try
-                {
-                    if (!artWeb.id.HasValue)
-                    {
-                        artWeb = _productFactory.Add(artWeb);
+				try
+				{
+					if (!artWeb.id.HasValue)
+					{
+						artWeb = _productFactory.Add(artWeb);
 
-						var art= uof.ArticoliRepository.Find(a => a.ID == artDb.ArticoloID).First();
+						var art = uof.ArticoliRepository.Find(a => a.ID == artDb.ArticoloID).First();
 						art.ArticoloWeb.CodiceArticoloWeb = artWeb.id.Value;
 						uof.ArticoliRepository.Update(art);
 						uof.Commit();
 						artDb.Aggiornamento.Articolo = art;
 						artDb.CodiceArticoloEcommerce = art.ArticoloWeb.CodiceArticoloWeb;
 					}
-                    else
-                    {
-                        _productFactory.Update(artWeb);
-                    }
-                    artDb.Aggiornamento.DataUltimoAggiornamentoWeb = dataLettura;
-                    artDb.Aggiornamento.Link = artWeb.link_rewrite.First().Value.ToString();
+					else
+					{
+						try
+						{
+							_logger.Debug("Posizione in categoria " + artWeb.position_in_category.Value.ToString());
+							_productFactory.Update(artWeb);
+						}
+						catch (Exception ex)
+						{
+							const string msg = "Non puoi impostare una posizione più grande del numero totale dei prodotti nella categoria, meno 1 (la numerazione inizia da 0";
+							if (ex.Message.Contains(msg))
+							{
+								artWeb.position_in_category = 0;
+								_productFactory.Update(artWeb);
+							}
+							
 
-                    uof.AggiornamentoWebArticoloRepository.Update(artDb.Aggiornamento);
-                    uof.Commit();
+						}
+						
+					}
+					artDb.Aggiornamento.DataUltimoAggiornamentoWeb = dataLettura;
+					artDb.Aggiornamento.Link = artWeb.link_rewrite.First().Value.ToString();
 
-                }
-                catch (Exception ex)
-                {
+					uof.AggiornamentoWebArticoloRepository.Update(artDb.Aggiornamento);
+					uof.Commit();
+
+				}
+				catch (Exception ex)
+				{
 
 					ManagerLog.Logger.Error(ex, " ID=" + artDb.ArticoloID);
 					throw ex;
-                }
-            }
-        }
+				}
+			}
+		}
 
-        private void SetDataItemWeb(ArticoloBase artDb, UnitOfWork uof, product artWeb)
-        {
-            artWeb.price = Math.Round(artDb.ArticoloDb.ArticoloWeb.PrezzoWeb * 100 / (100 + artDb.ArticoloDb.Iva), 6, MidpointRounding.ToEven);
-            artWeb.name.Clear();
-            artWeb.AddName(new Bukimedia.PrestaSharp.Entities.AuxEntities.language(1, artDb.ArticoloDb.Titolo));
-            artWeb.link_rewrite.Clear();
-            artWeb.AddLinkRewrite(new Bukimedia.PrestaSharp.Entities.AuxEntities.language(1, artDb.ArticoloDb.Titolo));
-            artWeb.active = 1;
-            artWeb.condition = "new";
-            artWeb.show_condition = 1;
-            //*iva al 22%*//
-            artWeb.id_tax_rules_group = 1;
-            switch (artDb.ArticoloDb.Condizione)
-            {
-                case enCondizioneArticolo.Nuovo:
-                    artWeb.condition = "new";
-                    break;
+		private void SetDataItemWeb(ArticoloBase artDb, UnitOfWork uof, product artWeb, List<category> gruppi)
+		{
+			artWeb.price = Math.Round(artDb.ArticoloDb.ArticoloWeb.PrezzoWeb * 100 / (100 + artDb.ArticoloDb.Iva), 6, MidpointRounding.ToEven);
+			artWeb.name.Clear();
+			artWeb.AddName(new Bukimedia.PrestaSharp.Entities.AuxEntities.language(1, artDb.ArticoloDb.Titolo));
+			artWeb.link_rewrite.Clear();
+			artWeb.AddLinkRewrite(new Bukimedia.PrestaSharp.Entities.AuxEntities.language(1, artDb.ArticoloDb.Titolo));
+			artWeb.active = 1;
+			artWeb.condition = "new";
+			artWeb.show_condition = 1;
+			//*iva al 22%*//
+			artWeb.id_tax_rules_group = 1;
+			switch (artDb.ArticoloDb.Condizione)
+			{
+				case enCondizioneArticolo.Nuovo:
+					artWeb.condition = "new";
+					break;
 
-                case enCondizioneArticolo.ExDemo:
-                    artWeb.condition = "used"; //refurbished
-                    break;
+				case enCondizioneArticolo.ExDemo:
+					artWeb.condition = "refurbished"; //refurbished
+					break;
 
-                case enCondizioneArticolo.UsatoGarantito:
-                    artWeb.condition = "used";
-                    break;
+				case enCondizioneArticolo.UsatoGarantito:
+					artWeb.condition = "used";
+					break;
 
-                case enCondizioneArticolo.NonSpecificato:
-                    break;
-
-                default:
-                    break;
-            }
-            artWeb.show_price = 1;
-            string reparto = "";
-            if (
-                artDb.ArticoloDb.Condizione == enCondizioneArticolo.ExDemo
-                    || artDb.ArticoloDb.Condizione == enCondizioneArticolo.UsatoGarantito)
-            {
-
-                if (artDb.ArticoloDb.Condizione == enCondizioneArticolo.ExDemo)
-                {
-                    reparto = CategorySync.ExDemo;
-                }
-                else if (artDb.ArticoloDb.Condizione == enCondizioneArticolo.UsatoGarantito)
-                {
-                    reparto = CategorySync.Usato;
-                }
-                artWeb.id_category_default = uof.RepartoWebRepository.Find(a =>
-                        a.Reparto == reparto).FirstOrDefault().CodiceWeb;
-
-                artWeb.associations.categories.Clear();
-
-                artWeb.associations.categories.Add(
-                    new Bukimedia.PrestaSharp.Entities.AuxEntities.category(
-                    artWeb.id_category_default.Value));
-
-            }
-            else
-            {
-                artWeb.id_category_default = uof.CategorieWebRepository.Find(a => a.CategoriaID == artDb.ArticoloDb.CategoriaID).FirstOrDefault().CodiceWeb;
-
-                var categDb = uof.CategorieRepository.Find(a => a.ID == artDb.ArticoloDb.CategoriaID).First();
-
-                var listaCateg = uof.CategorieWebRepository.Find(a => a.Categoria.Nome == categDb.Nome).Select(a => a.CodiceWeb).ToList();
-
-                artWeb.associations.categories.Clear();
-                foreach (var item in listaCateg)
-                {
-                    artWeb.associations.categories.Add(new Bukimedia.PrestaSharp.Entities.AuxEntities.category(item));
-                }
-            }
-            if (string.IsNullOrEmpty(artDb.ArticoloDb.ArticoloWeb.DescrizioneHtml))
-                artDb.ArticoloDb.ArticoloWeb.DescrizioneHtml = "";
-            artWeb.description.Clear();
-            artWeb.description.Add(new Bukimedia.PrestaSharp.Entities.AuxEntities.language(1,
-            artDb.ArticoloDb.ArticoloWeb.DescrizioneHtml));
-
-            if (string.IsNullOrEmpty(artDb.ArticoloDb.ArticoloWeb.DescrizioneBreveHtml))
-                artDb.ArticoloDb.ArticoloWeb.DescrizioneBreveHtml = "";
-            artWeb.description_short.Clear();
-            artWeb.description_short.Add(new Bukimedia.PrestaSharp.Entities.AuxEntities.language(1,
-                artDb.ArticoloDb.ArticoloWeb.DescrizioneBreveHtml));
-            artWeb.available_for_order = 1;
-            artWeb.New = 0;
-            artWeb.state = 1;
-            artWeb.visibility = "both";
-            artWeb.minimal_quantity = 1;
-            //artWeb.reference = artDb.ArticoloID.ToString();
-
+				default:
+					break;
+			}
+			artWeb.show_price = 1;
 			
+			string reparto = "";
+			if (
+				artDb.ArticoloDb.Condizione == enCondizioneArticolo.ExDemo
+					|| artDb.ArticoloDb.Condizione == enCondizioneArticolo.UsatoGarantito)
+			{
+
+				if (artDb.ArticoloDb.Condizione == enCondizioneArticolo.ExDemo)
+				{
+					reparto = CategorySync.ExDemo;
+				}
+				else if (artDb.ArticoloDb.Condizione == enCondizioneArticolo.UsatoGarantito)
+				{
+					reparto = CategorySync.Usato;
+				}
+				artWeb.id_category_default = uof.RepartoWebRepository.Find(a =>
+						a.Reparto == reparto).FirstOrDefault().CodiceWeb;
+
+				artWeb.associations.categories.Clear();
+
+				artWeb.associations.categories.Add(
+					new Bukimedia.PrestaSharp.Entities.AuxEntities.category(
+					artWeb.id_category_default.Value));
+
+				
+			}
+			else
+			{
+				artWeb.id_category_default = uof.CategorieWebRepository.Find(a => a.CategoriaID == artDb.ArticoloDb.CategoriaID).FirstOrDefault().CodiceWeb;
+
+				var categDb = uof.CategorieRepository.Find(a => a.ID == artDb.ArticoloDb.CategoriaID).First();
+
+				var listaCateg = uof.CategorieWebRepository.Find(a => a.Categoria.Nome == categDb.Nome).Select(a => a.CodiceWeb).ToList();
+
+				artWeb.associations.categories.Clear();
+				foreach (var item in listaCateg)
+				{
+					artWeb.associations.categories.Add(new Bukimedia.PrestaSharp.Entities.AuxEntities.category(item));
+				}
+			}
+			if (artWeb.position_in_category > 0)
+			{
+				var cat= gruppi.Where(a => a.id.Value == artWeb.id_category_default).FirstOrDefault();
+				if (cat!=null && cat.associations.products.Count()-1<artWeb.position_in_category)
+				{
+					artWeb.position_in_category = 0;
+				}
+			}
+			if (string.IsNullOrEmpty(artDb.ArticoloDb.ArticoloWeb.DescrizioneHtml))
+				artDb.ArticoloDb.ArticoloWeb.DescrizioneHtml = "";
+			artWeb.description.Clear();
+			artWeb.description.Add(new Bukimedia.PrestaSharp.Entities.AuxEntities.language(1,
+			artDb.ArticoloDb.ArticoloWeb.DescrizioneHtml));
+
+			if (string.IsNullOrEmpty(artDb.ArticoloDb.ArticoloWeb.DescrizioneBreveHtml))
+				artDb.ArticoloDb.ArticoloWeb.DescrizioneBreveHtml = "";
+			artWeb.description_short.Clear();
+			artWeb.description_short.Add(new Bukimedia.PrestaSharp.Entities.AuxEntities.language(1,
+				artDb.ArticoloDb.ArticoloWeb.DescrizioneBreveHtml));
+			artWeb.available_for_order = 1;
+			artWeb.New = 0;
+			artWeb.state = 1;
+			artWeb.visibility = "both";
+			artWeb.minimal_quantity = 1;
+			//artWeb.reference = artDb.ArticoloID.ToString();
+
+
 
 		}
 
-    }
+	}
 }

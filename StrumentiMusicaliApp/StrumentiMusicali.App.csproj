@@ -1,20 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E6A4D0F6-DC39-431E-A562-AC0C4465BEA4}</ProjectGuid>
+    <TargetFramework>net481</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>StrumentiMusicali.App</RootNamespace>
-    <AssemblyName>StrumentiMusicali.App</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -30,29 +18,14 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>portable</DebugType>
-    <Optimize>false</Optimize>
     <OutputPath>..\Bin\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <DefineConstants></DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>StrumentoMusicale.ico</ApplicationIcon>
@@ -81,186 +54,78 @@
       <DeploymentContent>true</DeploymentContent>
       <Link>Devepress_Ref\%(Filename)%(Extension)</Link>
     </Content>
-    <Reference Include="DevExpress.Pdf.v20.2.Core">
-    </Reference>
-    <Reference Include="DevExpress.Office.v20.2.Core">
-    </Reference>
-    <Reference Include="DevExpress.RichEdit.v20.2.Core">
-    </Reference>
-    <Reference Include="DevExpress.RichEdit.v20.2.Export">
-    </Reference>
-    <Reference Include="DevExpress.Printing.v20.2.Core">
-    </Reference>
-    <Reference Include="DevExpress.Data.v20.2">
-    </Reference>
+    <Reference Include="DevExpress.Pdf.v20.2.Core"></Reference>
+    <Reference Include="DevExpress.Office.v20.2.Core"></Reference>
+    <Reference Include="DevExpress.RichEdit.v20.2.Core"></Reference>
+    <Reference Include="DevExpress.RichEdit.v20.2.Export"></Reference>
+    <Reference Include="DevExpress.Printing.v20.2.Core"></Reference>
+    <Reference Include="DevExpress.Data.v20.2"></Reference>
     <Reference Include="DevExpress.Sparkline.v20.2.Core, Version=20.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Data.Desktop.v20.2">
-    </Reference>
-    <Reference Include="DevExpress.Utils.v20.2">
-    </Reference>
+    <Reference Include="DevExpress.Data.Desktop.v20.2"></Reference>
+    <Reference Include="DevExpress.Utils.v20.2"></Reference>
     <Reference Include="DevExpress.Xpo.v20.2, Version=20.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraBars.v20.2">
-    </Reference>
-    <Reference Include="DevExpress.XtraBars.v20.2.Design">
-    </Reference>
-    <Reference Include="DevExpress.Charts.v20.2.Core">
-    </Reference>
-    <Reference Include="DevExpress.XtraCharts.v20.2.Wizard">
-    </Reference>
-    <Reference Include="DevExpress.XtraCharts.v20.2">
-    </Reference>
-    <Reference Include="DevExpress.XtraCharts.v20.2.Design">
-    </Reference>
+    <Reference Include="DevExpress.XtraBars.v20.2"></Reference>
+    <Reference Include="DevExpress.XtraBars.v20.2.Design"></Reference>
+    <Reference Include="DevExpress.Charts.v20.2.Core"></Reference>
+    <Reference Include="DevExpress.XtraCharts.v20.2.Wizard"></Reference>
+    <Reference Include="DevExpress.XtraCharts.v20.2"></Reference>
+    <Reference Include="DevExpress.XtraCharts.v20.2.Design"></Reference>
     <Reference Include="DevExpress.XtraGrid.v20.2, Version=20.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v20.2, Version=20.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraPrinting.v20.2">
-    </Reference>
-    <Reference Include="DevExpress.XtraCharts.v20.2.UI">
-    </Reference>
-    <Reference Include="DevExpress.XtraEditors.v20.2">
-    </Reference>
-    <Reference Include="DevExpress.XtraEditors.v20.2.Design">
-    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v20.2"></Reference>
+    <Reference Include="DevExpress.XtraCharts.v20.2.UI"></Reference>
+    <Reference Include="DevExpress.XtraEditors.v20.2"></Reference>
+    <Reference Include="DevExpress.XtraEditors.v20.2.Design"></Reference>
     <Reference Include="DevExpress.XtraVerticalGrid.v20.2, Version=20.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Design" />
-    <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Windows.Forms.Ribbon">
       <HintPath>..\..\..\..\Downloads\System.Windows.Forms.Ribbon.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Controllers\Articoli\ControllerCategorie.cs" />
-    <Compile Include="Core\Controllers\Base\BaseControllerGeneric.cs" />
-    <Compile Include="Core\Controllers\Base\BaseController.cs" />
-    <Compile Include="Core\Controllers\Articoli\ControllerArticoli.cs" />
-    <Compile Include="Core\Controllers\Magazzino\ControllerMovimentiMagazzino.cs" />
-    <Compile Include="Core\Controllers\RegCassa\ControllerRegistratoreDiCassaReparti.cs" />
-    <Compile Include="Core\Controllers\RegCassa\ControllerGruppoCodiceRegCassa.cs" />
-    <Compile Include="Core\Controllers\Scontrino\ScontrinoLine.cs" />
-    <Compile Include="Core\Controllers\Scontrino\ScontrinoUtility.cs" />
-    <Compile Include="Core\Controllers\Vari\ControllerScheduler.cs" />
-    <Compile Include="Core\Controllers\PagamentiFatture\ControllerPagamenti.cs" />
-    <Compile Include="Core\Controllers\PagamentiFatture\ControllerPagamentiDocumenti.cs" />
-    <Compile Include="Core\Controllers\Vari\ControllerUtenti.cs" />
-    <Compile Include="Core\Controllers\Magazzino\ControllerDepositi.cs" />
-    <Compile Include="Core\Controllers\PagamentiFatture\ControllerFatturazione.cs" />
-    <Compile Include="Core\Controllers\Articoli\ControllerImmagini.cs" />
-    <Compile Include="Core\Controllers\Vari\ControllerLog.cs" />
-    <Compile Include="Core\Controllers\Magazzino\ControllerMagazzino.cs" />
-    <Compile Include="Core\Controllers\Magazzino\ControllerClienti.cs" />
-    <Compile Include="Core\Controllers\PagamentiFatture\ControllerRigheFatture.cs" />
-    <Compile Include="Core\Controllers\Stampa\Pagamento.cs" />
-    <Compile Include="Core\Events\Scontrino\ScontrinoAutoAdd.cs" />
-    <Compile Include="Core\Events\Scontrino\ScontrinoRemoveLineEvents.cs" />
-    <Compile Include="Core\Events\Scontrino\ScontrinoAddScontoEvents.cs" />
-    <Compile Include="Core\Events\Scontrino\ScontrinoAddEvents.cs" />
-    <Compile Include="Core\Events\Scontrino\ScontrinoClear.cs" />
-    <Compile Include="Core\Events\Scontrino\ScontrinoStampa.cs" />
-    <Compile Include="Core\Events\Tab\GetNewTab.cs" />
-    <Compile Include="Core\Events\Tab\RemoveNewTab.cs" />
-    <Compile Include="Core\Exports\ExportMagazzino.cs" />
-    <Compile Include="Core\Controllers\FatturaElett\FattElettronica.cs" />
-    <Compile Include="Core\Controllers\FatturaElett\FatturaHeader.cs" />
-    <Compile Include="Core\Imports\BaseImportExcel.cs" />
-    <Compile Include="Core\Imports\ImportDaExportMagazzino.cs" />
-    <Compile Include="Core\Imports\ImportMagazziniExcel.cs" />
-    <Compile Include="Core\Item\LogItem.cs" />
-    <Compile Include="Core\Controllers\Stampa\Fattura.cs" />
-    <Compile Include="Core\Controllers\ControllerMaster.cs" />
-    <Compile Include="Core\Item\SchedulerItem.cs" />
-    <Compile Include="Core\MenuRibbon\RibbonButton.cs" />
-    <Compile Include="CustomComponents\DateTimePickerBinding.cs" />
-    <Compile Include="CustomComponents\TabCustom.cs">
+    <Compile Update="CustomComponents\TabCustom.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomComponents\TabCustom.Designer.cs">
-      <DependentUpon>TabCustom.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Localization_it.cs" />
-    <Compile Include="Settings\UserSettings.cs" />
-    <Compile Include="View\Articoli\RicercaArticoliStyleView.cs">
+    <Compile Update="View\Articoli\RicercaArticoliStyleView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\BaseControl\SettingBaseViewVgrid.cs">
+    <Compile Update="View\BaseControl\SettingBaseViewVgrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\EditorListImmagini.cs">
+    <Compile Update="View\EditorListImmagini.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\EditorListImmagini.Designer.cs">
-      <DependentUpon>EditorListImmagini.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Singoli\ListViewCustom.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\Singoli\ListViewCustom.Designer.cs">
-      <DependentUpon>ListViewCustom.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\PagamentiListView.cs">
+    <Compile Update="View\PagamentiListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\BaseControl\ElementiDettaglio\EDCombo.cs">
+    <Compile Update="View\BaseControl\ElementiDettaglio\EDCombo.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\BaseControl\ElementiDettaglio\EDCombo.Designer.cs">
-      <DependentUpon>EDCombo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Login\CambioPassword.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\Login\CambioPassword.designer.cs">
-      <DependentUpon>CambioPassword.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Login\LoginForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\Login\LoginForm.designer.cs">
-      <DependentUpon>LoginForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Pagamenti\PagamentiDocumentiView.cs">
+    <Compile Update="View\Pagamenti\PagamentiDocumentiView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Pagamenti\PagamentiDocumentiView.Designer.cs">
-      <DependentUpon>PagamentiDocumentiView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\UtentiListView.cs">
+    <Compile Update="View\UtentiListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Articoli\ScontaArticoliView.cs">
+    <Compile Update="View\Articoli\ScontaArticoliView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Articoli\ScontaArticoliView.Designer.cs">
-      <DependentUpon>ScontaArticoliView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\DepositiListView.cs">
+    <Compile Update="View\DepositiListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\LogViewList.cs">
+    <Compile Update="View\LogViewList.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Utility\UtilityView.cs" />
-    <Compile Include="View\ViewFactory.cs" />
     <Content Include="Devepress_Ref\DevExpress.BonusSkins.v20.2.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -567,95 +432,51 @@
     <Content Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Compile Include="View\ClientiListView.cs">
+    <Compile Update="View\ClientiListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Articoli\DettaglioArticoloView.cs">
+    <Compile Update="View\Articoli\DettaglioArticoloView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Articoli\DettaglioArticoloView.Designer.cs">
-      <DependentUpon>DettaglioArticoloView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Fatture\DettaglioFatturaView.cs">
+    <Compile Update="View\Fatture\DettaglioFatturaView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Fatture\DettaglioFatturaView.Designer.cs">
-      <DependentUpon>DettaglioFatturaView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Fatture\FattureListView.cs">
+    <Compile Update="View\Fatture\FattureListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Fatture\FattureListView.Designer.cs">
-      <DependentUpon>FattureListView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Interfaces\ICloseSave.cs" />
-    <Compile Include="View\MainView.cs">
+    <Compile Update="View\MainView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\MainView.Designer.cs">
-      <DependentUpon>MainView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\BaseControl\ElementiDettaglio\EDBase.cs">
+    <Compile Update="View\BaseControl\ElementiDettaglio\EDBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\BaseControl\ElementiDettaglio\EDBase.Designer.cs">
-      <DependentUpon>EDBase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\BaseControl\ElementiDettaglio\EDCheckBok.cs">
+    <Compile Update="View\BaseControl\ElementiDettaglio\EDCheckBok.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\BaseControl\ElementiDettaglio\EDCheckBok.Designer.cs">
-      <DependentUpon>EDCheckBok.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\BaseControl\ElementiDettaglio\EDTesto.cs">
+    <Compile Update="View\BaseControl\ElementiDettaglio\EDTesto.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\BaseControl\ElementiDettaglio\EDTesto.Designer.cs">
-      <DependentUpon>EDTesto.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Settings\GenericSettingView.cs">
+    <Compile Update="View\Settings\GenericSettingView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\BaseControl\BaseGridViewGeneric.cs">
+    <Compile Update="View\BaseControl\BaseGridViewGeneric.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\BaseControl\BaseGridViewGeneric.Designer.cs">
-      <DependentUpon>BaseGridViewGeneric.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Fatture\FattureRigheListView.cs">
+    <Compile Update="View\Fatture\FattureRigheListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Test.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\Test.Designer.cs">
-      <DependentUpon>Test.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Interfaces\IMenu.cs" />
-    <Compile Include="View\Articoli\ArticoliListView.cs">
+    <Compile Update="View\Articoli\ArticoliListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomComponents\AutoCompleteText.cs">
+    <Compile Update="CustomComponents\AutoCompleteText.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="View\BaseControl\BaseDataControl.cs">
+    <Compile Update="View\BaseControl\BaseDataControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\BaseControl\BaseDataControl.Designer.cs">
-      <DependentUpon>BaseDataControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\ScaricoMagazzinoView.cs">
+    <Compile Update="View\ScaricoMagazzinoView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\ScaricoMagazzinoView.Designer.cs">
-      <DependentUpon>ScaricoMagazzinoView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\GlobalAssemblyInfo.cs" />
-    <Compile Include="View\Utility\MySortableBindingList.cs" />
-    <Compile Include="View\Utility\OrdinaTab.cs" />
-    <None Include="Properties\app.manifest" />
-    <None Include="Resources\backGroudImageLogin1.jpg" />
     <Content Include="References\DevExpress_18\DevExpress.Charts.v18.1.Core.dll" />
     <Content Include="References\DevExpress_18\DevExpress.CodeParser.v18.1.dll" />
     <Content Include="References\DevExpress_18\DevExpress.Data.v18.1.dll" />
@@ -820,142 +641,15 @@
     <Content Include="References\DevExpress_8.3.x\DevExpress.XtraVerticalGrid.v8.3.xml" />
     <Content Include="References\DevExpress_8.3.x\DevExpress.XtraWizard.v8.3.dll" />
     <Content Include="References\DevExpress_8.3.x\DevExpress.XtraWizard.v8.3.xml" />
-    <None Include="Resources\BackGroundForm.jpg" />
-    <None Include="Resources\Payment.png" />
-    <None Include="Resources\Search_48.png" />
-    <None Include="Resources\Search.png" />
-    <None Include="Resources\Excel_export.png" />
-    <None Include="Resources\MantieniFiltro.png" />
-    <None Include="Resources\Libro_48.png" />
-    <None Include="Resources\Identity_48.png" />
-    <None Include="Resources\pdfIcon.png" />
-    <None Include="Resources\PreviewIcon.png" />
-    <None Include="Resources\PrintScontrino_48.png" />
-    <None Include="Resources\Sconto_64.png" />
-    <None Include="Resources\Cancella_Scontrino.png" />
-    <None Include="Resources\CancellaRiga_scontrino.png" />
-    <None Include="Resources\Cancella_scontrino_64.png" />
-    <None Include="Resources\RegistratoreDiCassa.png" />
-    <None Include="Resources\BackupDatabase.png" />
     <Content Include="Resources\StrumentoMusicale.ico" />
-    <None Include="Resources\WareHouse.png" />
     <Content Include="StrumentoMusicale.ico" />
-    <None Include="Resources\Close.png" />
-    <None Include="Resources\Add2.png" />
-    <None Include="Resources\View_all_48.png" />
-    <None Include="Resources\View_all_64.png" />
-    <None Include="Resources\Check_OK_48.png" />
-    <None Include="Resources\Sconta_Articoli.png" />
-    <None Include="Resources\Utenti.png" />
-    <None Include="Resources\Depositi.png" />
-    <None Include="Resources\Totali_Aggiorna_48.png" />
-    <None Include="Resources\Fattura_xml_48.png" />
-    <None Include="Resources\Close_48.png" />
-    <None Include="Resources\Save_Close.png" />
-    <None Include="Resources\Customer_48.png" />
-    <None Include="Resources\Print_48.png" />
-    <None Include="Resources\ImmagineMancante.png" />
-    <None Include="Resources\Warning_24.png" />
-    <None Include="Resources\Error_24.png" />
-    <None Include="Resources\Info_24.png" />
-    <None Include="Resources\StrumentoMusicale.png" />
-    <None Include="Resources\LogView_48.png" />
-    <None Include="Resources\Down.png" />
-    <None Include="Resources\Up.png" />
-    <EmbeddedResource Include="CustomComponents\TabCustom.resx">
-      <DependentUpon>TabCustom.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
-    <EmbeddedResource Include="View\Articoli\RicercaArticoliStyleView.resx">
-      <DependentUpon>RicercaArticoliStyleView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\EditorListImmagini.resx">
-      <DependentUpon>EditorListImmagini.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Singoli\ListViewCustom.resx">
-      <DependentUpon>ListViewCustom.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\PagamentiListView.resx">
-      <DependentUpon>PagamentiListView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Articoli\DettaglioArticoloView.resx">
-      <DependentUpon>DettaglioArticoloView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Articoli\ScontaArticoliView.resx">
-      <DependentUpon>ScontaArticoliView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\BaseControl\ElementiDettaglio\EDCombo.resx">
-      <DependentUpon>EDCombo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Fatture\DettaglioFatturaView.resx">
-      <DependentUpon>DettaglioFatturaView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Fatture\FattureListView.resx">
-      <DependentUpon>FattureListView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Login\CambioPassword.resx">
-      <DependentUpon>CambioPassword.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Login\LoginForm.resx">
-      <DependentUpon>LoginForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\MainView.resx">
-      <DependentUpon>MainView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\BaseControl\ElementiDettaglio\EDBase.resx">
-      <DependentUpon>EDBase.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\BaseControl\ElementiDettaglio\EDTesto.resx">
-      <DependentUpon>EDTesto.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Pagamenti\PagamentiDocumentiView.resx">
-      <DependentUpon>PagamentiDocumentiView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Settings\GenericSettingView.resx">
-      <DependentUpon>GenericSettingView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\BaseControl\BaseGridViewGeneric.resx">
-      <DependentUpon>BaseGridViewGeneric.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Articoli\ArticoliListView.resx">
-      <DependentUpon>ArticoliListView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\BaseControl\BaseDataControl.resx">
-      <DependentUpon>BaseDataControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\ScaricoMagazzinoView.resx">
-      <DependentUpon>ScaricoMagazzinoView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Test.resx">
-      <DependentUpon>Test.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <EmbeddedResource Include="TemplateExcel\ProtoFatt.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="TemplateExcel\ProtoPagamento.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
@@ -970,22 +664,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StrumentiMusicali.Core\StrumentiMusicali.Core.csproj">
-      <Project>{a1245fd2-f94b-4916-a0de-f192610f55c3}</Project>
-      <Name>StrumentiMusicali.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StrumentiMusicali.ftpBackup\StrumentiMusicali.ftpBackup.csproj">
-      <Project>{0e29b767-416d-421e-98f6-a8eed7c7cb6f}</Project>
-      <Name>StrumentiMusicali.ftpBackup</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StrumentiMusicali.PrestaShopSyncro\StrumentiMusicali.PrestaShopSyncro.csproj">
-      <Project>{CA69F008-CD76-4097-8670-F939E1FEE8F0}</Project>
-      <Name>StrumentiMusicali.PrestaShopSyncro</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StrumentiMusicaliSql\StrumentiMusicali.Library.csproj">
-      <Project>{114b9db5-6a31-4d89-bbb8-7ae7dd1a25c6}</Project>
-      <Name>StrumentiMusicali.Library</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\StrumentiMusicali.Core\StrumentiMusicali.Core.csproj" />
+    <ProjectReference Include="..\StrumentiMusicali.ftpBackup\StrumentiMusicali.ftpBackup.csproj" />
+    <ProjectReference Include="..\StrumentiMusicali.PrestaShopSyncro\StrumentiMusicali.PrestaShopSyncro.csproj" />
+    <ProjectReference Include="..\StrumentiMusicaliSql\StrumentiMusicali.Library.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\Manager\" />
@@ -995,29 +677,6 @@
     <Content Include="References\System.Windows.Forms.Ribbon.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\Apri_Fatturazione.png" />
-    <None Include="Resources\Fatture_48.png" />
-    <None Include="Resources\warning_64.png" />
-    <None Include="Resources\Magazzino.png" />
-    <None Include="Resources\Remove.png" />
-    <None Include="Resources\Add1.png" />
-    <None Include="Resources\Progress_Gif.gif" />
-    <None Include="Resources\Import.png" />
-    <None Include="Resources\Upload_64.png" />
-    <None Include="Resources\Upload.png" />
-    <None Include="Resources\error_64.png" />
-    <None Include="Resources\Save.png" />
-    <None Include="Resources\Settings.png" />
-    <None Include="Resources\pin_16.png" />
-    <None Include="Resources\Penna.png" />
-    <None Include="Resources\Info_64.png" />
-    <None Include="Resources\info_48.png" />
-    <None Include="Resources\Error.png" />
-    <None Include="Resources\Duplicate.png" />
-    <None Include="Resources\Delete.png" />
-    <None Include="Resources\Cerca.png" />
-    <None Include="Resources\Apri.png" />
-    <None Include="Resources\Add.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac">
@@ -1050,7 +709,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces">
-      <Version>1.1.0</Version>
+      <Version>10.0.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeQuality.Analyzers">
       <Version>2.9.8</Version>
@@ -1080,6 +739,7 @@
     </PackageReference>
     <PackageReference Include="PropertyChanged.Fody">
       <Version>3.4.0</Version>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.AppContext">
       <Version>4.3.0</Version>
@@ -1103,7 +763,7 @@
       <Version>4.3.0</Version>
     </PackageReference>
     <PackageReference Include="System.Diagnostics.DiagnosticSource">
-      <Version>5.0.1</Version>
+      <Version>10.0.0</Version>
     </PackageReference>
     <PackageReference Include="System.Diagnostics.Tools">
       <Version>4.3.0</Version>
@@ -1169,7 +829,7 @@
       <Version>4.3.1</Version>
     </PackageReference>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
-      <Version>5.0.0</Version>
+      <Version>6.1.2</Version>
     </PackageReference>
     <PackageReference Include="System.Runtime.Extensions">
       <Version>4.3.1</Version>
@@ -1217,7 +877,7 @@
       <Version>4.3.0</Version>
     </PackageReference>
     <PackageReference Include="System.Threading.Tasks.Extensions">
-      <Version>4.5.4</Version>
+      <Version>4.6.3</Version>
     </PackageReference>
     <PackageReference Include="System.Threading.Timer">
       <Version>4.3.0</Version>
@@ -1238,5 +898,19 @@
       <Version>1.1.38</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup Label="Compile items now included by globbing that were not in the original project file">
+    <Compile Remove="View\Fatture\FattureRigheDetailView.cs" />
+    <Compile Remove="View\BaseControl\SettingBaseView.cs" />
+    <Compile Remove="View\BaseControl\ElementiDettaglio\EDNumeric.Designer.cs" />
+    <Compile Remove="View\BaseControl\ElementiDettaglio\EDNumeric.cs" />
+    <Compile Remove="View\BaseControl\ElementiDettaglio\EDDateTime.Designer.cs" />
+    <Compile Remove="View\BaseControl\ElementiDettaglio\EDDateTime.cs" />
+    <Compile Remove="Core\Manager\MessageManager.cs" />
+    <Compile Remove="Core\Manager\ExceptionManager.cs" />
+  </ItemGroup>
+  <ItemGroup Label="EmbeddedResource items now included by globbing that were not in the original project file">
+    <EmbeddedResource Remove="View\Fatture\FattureRigheDetailView.resx" />
+    <EmbeddedResource Remove="View\BaseControl\SettingBaseView.resx" />
+    <EmbeddedResource Remove="View\BaseControl\ElementiDettaglio\EDNumeric.resx" />
+  </ItemGroup>
 </Project>

@@ -80,7 +80,7 @@ namespace StrumentiMusicali.ftpBackup.Ftp
             List<FileDirectoryFtp> retList = new List<FileDirectoryFtp>();
             foreach (var item in dato)
             {
-                if (item.Type == FtpFileSystemObjectType.File)
+                if (item.Type == FtpObjectType.File)
                 {
                     retList.Add(new FileDirectoryFtp()
                     {
@@ -133,7 +133,7 @@ namespace StrumentiMusicali.ftpBackup.Ftp
                 client.Connect();
 
                 // upload a file and retry 3 times before giving up
-                client.ConnectTimeout = 100;
+                client.Config.ConnectTimeout = 100;
                 if (!string.IsNullOrEmpty(setting.BaseFolder))
                     client.SetWorkingDirectory(setting.BaseFolder);
 

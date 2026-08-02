@@ -9,7 +9,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>SpostaBackupInFtp</RootNamespace>
     <AssemblyName>SpostaBackupInFtp</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>

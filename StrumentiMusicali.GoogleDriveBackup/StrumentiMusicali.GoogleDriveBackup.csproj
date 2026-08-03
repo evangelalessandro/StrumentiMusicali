@@ -9,9 +9,6 @@
 	<OutputPath>..\Bin\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Config\GoogleDriveBackup.config.json" />
-  </ItemGroup>
-  <ItemGroup>
 	<Reference Include="System.Configuration" />
 	<Reference Include="System.Net.Http" />
 	<Reference Include="System.Web" />
@@ -39,8 +36,6 @@
 	<PackageReference Include="NLog" Version="4.7.10" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\GoogleDriveBackup.config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Folder Include="Note\" />
   </ItemGroup>
 </Project>

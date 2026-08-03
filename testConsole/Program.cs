@@ -1,4 +1,5 @@
 ﻿using NLog;
+using NLog.Config;
 using NLog.Targets;
 using StrumentiMusicali.PrestaShopSyncro.Job;
 using System;
@@ -49,7 +50,9 @@ namespace testConsole
             //target.Parameters.Add(new MethodCallParameter("${stacktrace}"));
             //target.Parameters.Add(new MethodCallParameter("${callsite}"));
 
-            NLog.Config.SimpleConfigurator.ConfigureForTargetLogging(target, LogLevel.Debug);
+            var config = new LoggingConfiguration();
+            config.AddRuleForAllLevels(target);
+            LogManager.Configuration = config;
 
             //StrumentiMusicali.Core.Manager.ManagerLog.Logger.AddLogMessage("Avvio");
             //var ftpTest = new FtpManager();

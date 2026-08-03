@@ -22,7 +22,7 @@
     <ProjectReference Include="..\StrumentiMusicali.PrestaShopSyncro\StrumentiMusicali.PrestaShopSyncro.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.7.10" />
+    <PackageReference Include="NLog" Version="6.1.4" />
     <PackageReference Include="RestSharp" Version="106.15.0" />
   </ItemGroup>
 </Project>

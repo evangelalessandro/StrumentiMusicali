@@ -1,0 +1,14 @@
+﻿Select-String -Path "StrumentiMusicali.ftpBackup\StrumentiMusicali.ftpBackup.csproj" -Pattern "NLog|PackageReference" ; Write-Host "---CACHE obj---"; Select-String -Path "StrumentiMusicali.ftpBackup\obj\*.assets.json" -Pattern "NLog/4.7.10|NLog/6.1.4" 2>$null | Select-Object -First 5      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Rome"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    ignore:
+      # DevExpress viene referenziato via DLL locali e non via NuGet:
+      # gli eventuali package DevExpress da nuget.org vengono ignorati,
+      # la migrazione DevExpress va gestita manualmente.
+      - dependency-name: "DevExpress*"

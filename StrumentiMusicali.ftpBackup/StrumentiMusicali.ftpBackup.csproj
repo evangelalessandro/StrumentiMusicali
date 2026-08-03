@@ -42,7 +42,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="NLog">
-      <Version>4.7.10</Version>
+      <Version>6.1.4</Version>
     </PackageReference>
   </ItemGroup>
 </Project>

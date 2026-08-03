@@ -1,4 +1,5 @@
 ﻿using NLog;
+using NLog.Config;
 using NLog.Targets;
 using StrumentiMusicali.Library.Repo;
 using System;
@@ -44,16 +45,18 @@ namespace StrumentiMusicali.Core.Manager
             if (_configuret)
                 return;
             _configuret = true;
-            MethodCallTarget target = new MethodCallTarget();
+            var target = new MethodCallTarget();
             target.ClassName = typeof(ManagerLog).AssemblyQualifiedName;
             target.MethodName = "LogMethod";
             target.Parameters.Add(new MethodCallParameter("${level}"));
             target.Parameters.Add(new MethodCallParameter("${message}"));
             target.Parameters.Add(new MethodCallParameter("${exception:format=tostring,Data:maxInnerExceptionLevel=10}"));
-            target.Parameters.Add(new MethodCallParameter("${stacktrace}"));
+            target.Parameters.Add(new MethodCallParameter("${stack-trace:format=Raw}"));
             target.Parameters.Add(new MethodCallParameter("${callsite}"));
 
-            NLog.Config.SimpleConfigurator.ConfigureForTargetLogging(target, LogLevel.Debug);
+            var config = new LoggingConfiguration();
+            config.AddRuleForAllLevels(target);
+            LogManager.Configuration = config;
         }
         public static void AddLogObject(object obj, string message)
         {

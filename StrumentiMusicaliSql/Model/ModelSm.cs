@@ -1,4 +1,4 @@
-using StrumentiMusicali.Library.Entity;
+ï»¿using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Altro;
 using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Entity.Ecomm;
@@ -78,23 +78,6 @@ namespace StrumentiMusicali.Library.Model
                               "Occorre specificare la categoria "));
                 }
             }
-            else if (entityEntry.Entity is SettingBackupFtp)
-            {
-                if (entityEntry.State == EntityState.Modified)
-                {
-                    var newValue = entityEntry.Entity as SettingBackupFtp;
-
-                    var old = Core.Settings.SettingBackupFtpValidator.ReadSetting();
-                    /*se è cambiato il percorso locale del backup lo salvo nei device del db*/
-                    if (old != null
-                        && newValue.BackupSetting.FolderLocalServer != null
-                        && old.BackupSetting.FolderLocalServer != newValue.BackupSetting.FolderLocalServer
-                        && newValue.BackupSetting.FolderLocalServer.Length > 0)
-                    {
-                        CheckBackup(this.Database.Connection.ConnectionString);
-                    }
-                }
-            }
             if (result.ValidationErrors.Count > 0)
             {
                 return result;
@@ -105,13 +88,23 @@ namespace StrumentiMusicali.Library.Model
             }
         }
 
-        private static void CheckBackup(string connectionString)
+        public static void CheckBackup(string connectionString = null)
         {
-
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                using (var db = new ModelSm())
+                {
+                    connectionString = db.Database.Connection.ConnectionString;
+                }
+            }
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                return;
+            }
 
             using (var connection = new SqlConnection(connectionString))
             {
-
+                connection.Open();
                 var command1 = new SqlCommand(Properties.Resource1.SpCheckExists, connection);
                 if ((int)command1.ExecuteScalar() == 0)
                 {
@@ -137,7 +130,7 @@ namespace StrumentiMusicali.Library.Model
                 {
                     list.Add(
                            new System.Data.Entity.Validation.DbValidationError("NomeUtente",
-                           "Deve essere univoco il 'nome utente'. Questo Nome è già usato "));
+                           "Deve essere univoco il 'nome utente'. Questo Nome ï¿½ giï¿½ usato "));
                 }
 
                 count = uof.UtentiRepository.Find(a => a.ID != utente.ID && a.AdminUtenti == true).Count();
@@ -166,7 +159,7 @@ namespace StrumentiMusicali.Library.Model
                 {
                     result.ValidationErrors.Add(
                             new System.Data.Entity.Validation.DbValidationError("Codice",
-                            "Deve essere univoco il codice. Questo codice è già usato " + fattura.Codice));
+                            "Deve essere univoco il codice. Questo codice ï¿½ giï¿½ usato " + fattura.Codice));
                 }
                 var attr = Utility.EnumAttributi.GetAttribute<TipoDocFiscaleAttribute>(fattura.TipoDocumento);
 

@@ -15,123 +15,132 @@ using System.Linq;
 
 namespace StrumentiMusicali.App.Core.Controllers
 {
-    public class ControllerScheduler : BaseControllerGeneric<SchedulerJob, SchedulerItem>
-    {
-        public ControllerScheduler()
-            : base(enAmbiente.Scheduler, enAmbiente.SchedulerDetail)
-        {
-            AggiungiComandiMenu();
-            _subSave = EventAggregator.Instance().Subscribe<Save<SchedulerJob>>((a) =>
-            {
-                Save(null);
-            });
-        }
-        private Subscription<Save<SchedulerJob>> _subSave;
+	public class ControllerScheduler : BaseControllerGeneric<SchedulerJob, SchedulerItem>
+	{
+		public ControllerScheduler()
+			: base(enAmbiente.Scheduler, enAmbiente.SchedulerDetail)
+		{
+			AggiungiComandiMenu();
+			_subSave = EventAggregator.Instance().Subscribe<Save<SchedulerJob>>((a) =>
+			{
+				Save(null);
+			});
+		}
+		private Subscription<Save<SchedulerJob>> _subSave;
 
-        public override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                EventAggregator.Instance().UnSbscribe(_subSave);
-            }
-        }
-        private void Save(Save<SchedulerJob> obj)
-        {
-            using (var saveManager = new SaveEntityManager())
-            {
-                var uof = saveManager.UnitOfWork;
-                if (((EditItem).ID > 0))
-                {
-                    uof.SchedulerJobRepository.Update(EditItem);
-                }
-                else
-                {
-                    uof.SchedulerJobRepository.Add(EditItem);
-                }
+		public override void Dispose(bool disposing)
+		{
+			base.Dispose(disposing);
+			if (disposing)
+			{
+				EventAggregator.Instance().UnSbscribe(_subSave);
+			}
+		}
+		private void Save(Save<SchedulerJob> obj)
+		{
+			using (var saveManager = new SaveEntityManager())
+			{
+				var uof = saveManager.UnitOfWork;
+				if (((EditItem).ID > 0))
+				{
+					uof.SchedulerJobRepository.Update(EditItem);
+				}
+				else
+				{
+					uof.SchedulerJobRepository.Add(EditItem);
+				}
 
-                if (saveManager.SaveEntity(enSaveOperation.OpSave))
-                {
-                    RiselezionaSelezionato();
-                }
-            }
-        }
-        private void AggiungiComandiMenu()
-        {
-            GetMenu().Tabs[0].Pannelli[1].Visible=false;
-            var menu=GetMenu();
-            base.GetMenu().ItemByTag(MenuTab.TagAdd).ForEach(a => a.Visible = false);
-            base.GetMenu().ItemByTag(MenuTab.TagRemove).ForEach(a => a.Visible = false);
-            base.GetMenu().ItemByTag(MenuTab.TagEdit).ForEach(a => a.Visible = true);
-            base.GetMenu().ItemByTag(MenuTab.TagCerca).ForEach(a => a.Visible = false);
+				if (saveManager.SaveEntity(enSaveOperation.OpSave))
+				{
+					RiselezionaSelezionato();
+				}
+			}
+		}
+		private void AggiungiComandiMenu()
+		{
+			GetMenu().Tabs[0].Pannelli[1].Visible = false;
+			var menu = GetMenu();
+			base.GetMenu().ItemByTag(MenuTab.TagAdd).ForEach(a => a.Visible = false);
+			base.GetMenu().ItemByTag(MenuTab.TagRemove).ForEach(a => a.Visible = false);
+			base.GetMenu().ItemByTag(MenuTab.TagEdit).ForEach(a => a.Visible = true);
+			base.GetMenu().ItemByTag(MenuTab.TagCerca).ForEach(a => a.Visible = false);
 
-            menu.Tabs[0].Add("Backup").Add("Esegui Backup",Properties.Resources.BackupDatabase).Click += backup_Click;
+			menu.Tabs[0].Add("Backup").Add("Esegui Backup", Properties.Resources.BackupDatabase).Click += backup_Click;
 
-            //var rib1 = pnl.Add("Unisci", StrumentiMusicali.Core.Properties.ImageIcons.Merge_64, true);
-            //rib1.Click += (a, e) =>
-            //{
-            //    EventAggregator.Instance().Publish<ArticoloMerge>(new ArticoloMerge(this));
-            //};
+			// Aggiunge una nuova tab con un pulsante di prova per il backup (FTP + Google Drive)
+			menu.Add("Strumenti")
+				.Add("Backup")
+				.Add("Prova Backup", Properties.Resources.BackupDatabase)
+				.Click += backup_Click;
 
-        }
+			//var rib1 = pnl.Add("Unisci", StrumentiMusicali.Core.Properties.ImageIcons.Merge_64, true);
+			//rib1.Click += (a, e) =>
+			//{
+			//    EventAggregator.Instance().Publish<ArticoloMerge>(new ArticoloMerge(this));
+			//};
 
-        private void backup_Click(object sender, EventArgs e)
-        {
+		}
 
-            try
-            {
-                ManagerLog.Logger.Info("Backup manuale inizio");
+		private void backup_Click(object sender, EventArgs e)
+		{
+
+			try
+			{
+				ManagerLog.Logger.Info("Backup manuale inizio");
 
 
-                using (var uof = new UnitOfWork())
-                {
-                    uof.EseguiBackup();
+				using (var uof = new UnitOfWork())
+				{
+					uof.EseguiBackup();
 
-                    using (var ftpManager = new ftpBackup.Backup.BackupManager())
-                    {
-                        ftpManager.Manage();
 
-                        ManagerLog.Logger.Info("Backup Effettuato correttamente");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ManagerLog.Logger.Error(ex, "Nella fase di backup automatico");
-                if (Environment.UserInteractive)
-                {
-                    MessageManager.NotificaWarnig(ex.Message);
-                }
-            }
-        }
 
-        public override MenuTab GetMenu()
-        {
-            base.GetMenu().ItemByTag(MenuTab.TagAdd).ForEach(a => a.Visible = false);
-            base.GetMenu().ItemByTag(MenuTab.TagEdit).ForEach(a => a.Visible = false);
-            return base.GetMenu();
-        }
+					using (var driveManager = new StrumentiMusicali.GoogleDriveBackup.Backup.GoogleDriveBackupManager())
+					{
+						if (driveManager.Manage())
+						{
+							ManagerLog.Logger.Info("Backup Effettuato correttamente");
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ManagerLog.Logger.Error(ex, "Nella fase di backup automatico");
+				if (Environment.UserInteractive)
+				{
+					MessageManager.NotificaWarnig(ex.Message);
+				}
+			}
+		}
 
-        public override void RefreshList(UpdateList<SchedulerJob> obj)
-        {
-            try
-            {
-                var datoRicerca = TestoRicerca;
-                using (var uof = new UnitOfWork())
-                {
-                    var list = uof.SchedulerJobRepository.Find(a => a.Nome.Contains(TestoRicerca)).ToList()
-                        .Select(a => new SchedulerItem(a)).ToList();
+		public override MenuTab GetMenu()
+		{
+			base.GetMenu().ItemByTag(MenuTab.TagAdd).ForEach(a => a.Visible = false);
+			base.GetMenu().ItemByTag(MenuTab.TagEdit).ForEach(a => a.Visible = false);
+			return base.GetMenu();
+		}
 
-                    DataSource = new View.Utility.MySortableBindingList<SchedulerItem>(list);
+		public override void RefreshList(UpdateList<SchedulerJob> obj)
+		{
+			try
+			{
+				var datoRicerca = TestoRicerca;
+				using (var uof = new UnitOfWork())
+				{
+					var list = uof.SchedulerJobRepository.Find(a => a.Nome.Contains(TestoRicerca)).ToList()
+						.Select(a => new SchedulerItem(a)).ToList();
 
-                    base.RefreshList(obj);
-                }
-            }
-            catch (Exception ex)
-            {
-                new Action(() =>
-                { ExceptionManager.ManageError(ex); }).BeginInvoke(null, null);
-            }
-        }
-    }
+					DataSource = new View.Utility.MySortableBindingList<SchedulerItem>(list);
+
+					base.RefreshList(obj);
+				}
+			}
+			catch (Exception ex)
+			{
+				new Action(() =>
+				{ ExceptionManager.ManageError(ex); }).BeginInvoke(null, null);
+			}
+		}
+	}
 }

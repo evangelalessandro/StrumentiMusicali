@@ -1,0 +1,46 @@
+PROGETTO BACKUP SU GOOGLE DRIVE
+================================
+
+Questo progetto (StrumentiMusicali.GoogleDriveBackup) carica il file di backup del database
+(file .bak già rinominato, formato "Backup_yyyyMMdd.bak") su Google Drive utilizzando un
+Service Account di Google Cloud.
+
+PREREQUISITI
+------------
+1) Creare un progetto su Google Cloud Console (https://console.cloud.google.com).
+2) Abilitare l'API "Google Drive API" per il progetto.
+3) Creare un Service Account e scaricare il relativo file di credenziali JSON.
+   - In Google Cloud Console: IAM e amministrazione > Account di servizio > Crea account di servizio.
+   - Dopo la creazione, selezionare l'account > Chiavi > Aggiungi chiave > JSON.
+   - Scaricare il file .json e salvarlo in un percorso sicuro sul server.
+4) (Opzionale) Condividere la cartella di destinazione su Google Drive con l'e-mail
+   del Service Account (formato: nome-account@nome-progetto.iam.gserviceaccount.com),
+   dando permesso di "Editor". Se non si condivide nulla, i file finiranno nel Drive
+   del Service Account.
+
+CONFIGURAZIONE
+--------------
+Alla prima esecuzione, se non è presente, il progetto genera il file di configurazione
+"GoogleDriveBackup.config.json" nella stessa cartella dell'applicazione con questi campi:
+	- ServiceAccountCredentialFile : percorso completo del .json credenziali del Service Account.
+	- DestinationFolderId          : id della cartella Drive di destinazione (vuoto = root).
+	- LocalBackupFolder            : cartella locale dove si trova il file .bak da caricare.
+	- MaxMbInDrive                 : max Megabyte complessivi di backup da mantenere (0 = nessun limite).
+	- DeleteLocalAfterUpload       : true per eliminare il file locale dopo un upload riuscito.
+
+UTILIZZO DAL CODICE
+-------------------
+	using StrumentiMusicali.GoogleDriveBackup.Backup;
+	...
+	using (var manager = new GoogleDriveBackupManager())
+	{
+		// Carica l'ultimo file Backup_*.bak presente nella cartella configurata
+		manager.Manage();
+
+		// Oppure carica un file specifico
+		manager.Upload(@"C:\percorso\Backup_20250101.bak");
+	}
+
+Nota: la configurazione può essere passata esplicitamente al costruttore:
+	new GoogleDriveBackupManager(config)
+dove config è un'istanza di GoogleDriveBackupConfig.

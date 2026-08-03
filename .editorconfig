@@ -6,8 +6,10 @@
 
 #Core editorconfig formatting - indentation
 
-#use soft tabs (spaces) for indentation
-indent_style = space
+#use a tab for indentation (not spaces)
+indent_style = tab
+indent_size = 4
+tab_width = 4
 
 #Formatting - indentation options
 

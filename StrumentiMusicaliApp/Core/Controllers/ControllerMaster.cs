@@ -21,6 +21,7 @@ using StrumentiMusicali.Library.Entity;
 using StrumentiMusicali.Library.Entity.Altro;
 using StrumentiMusicali.Library.Entity.Articoli;
 using StrumentiMusicali.Library.Entity.RegistratoreDiCassa;
+using StrumentiMusicali.Library.Model;
 using StrumentiMusicali.Library.Repo;
 using StrumentiMusicali.Library.View.Enums;
 using System;
@@ -343,10 +344,19 @@ namespace StrumentiMusicali.App.Core.Controllers
                         using (var cur = new CursorManager())
                         {
                             view.Validate();
+                            var old = SettingBackupFtpValidator.ReadSetting();
+                            var percorsoCambiato = old != null
+                                && setItem.BackupSetting.FolderLocalServer != null
+                                && old.BackupSetting.FolderLocalServer != setItem.BackupSetting.FolderLocalServer
+                                && setItem.BackupSetting.FolderLocalServer.Length > 0;
                             using (var save = new SaveEntityManager())
                             {
                                 save.UnitOfWork.SettingBackupFtpRepository.Update(setItem);
                                 save.SaveEntity(enSaveOperation.OpSave);
+                            }
+                            if (percorsoCambiato)
+                            {
+                                ModelSm.CheckBackup();
                             }
                         }
                     };

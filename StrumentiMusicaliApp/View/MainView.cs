@@ -151,7 +151,7 @@ namespace StrumentiMusicali.App
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.SettingFtpBackup));
             };
-            var rib6 = panel1.Add("Scheduler", Properties.Resources.Settings);
+            var rib6 = panel1.Add("Scheduler", Properties.Resources.BackupDatabase);
             rib6.Click += (s, e) =>
             {
                 EventAggregator.Instance().Publish(new ApriAmbiente(enAmbiente.Scheduler));

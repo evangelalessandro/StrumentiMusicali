@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+	<TargetFramework>net481</TargetFramework>
+	<OutputType>Library</OutputType>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+	<OutputPath>..\Bin\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Config\GoogleDriveBackup.config.json" />
+  </ItemGroup>
+  <ItemGroup>
+	<Reference Include="System.Configuration" />
+	<Reference Include="System.Net.Http" />
+	<Reference Include="System.Web" />
+	<Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+	<Compile Include="..\StrumentiMusicaliApp\Properties\GlobalAssemblyInfo.cs">
+	  <Link>Properties\GlobalAssemblyInfo.cs</Link>
+	</Compile>
+  </ItemGroup>
+  <ItemGroup>
+	<ProjectReference Include="..\StrumentiMusicali.Core\StrumentiMusicali.Core.csproj" />
+	<ProjectReference Include="..\StrumentiMusicaliSql\StrumentiMusicali.Library.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+	<Content Include="Note\nota.txt">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
+  </ItemGroup>
+  <ItemGroup>
+	<PackageReference Include="Google.Apis" Version="1.69.0" />
+	<PackageReference Include="Google.Apis.Auth" Version="1.69.0" />
+	<PackageReference Include="Google.Apis.Drive.v3" Version="1.69.0.3682" />
+	<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	<PackageReference Include="NLog" Version="4.7.10" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\GoogleDriveBackup.config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

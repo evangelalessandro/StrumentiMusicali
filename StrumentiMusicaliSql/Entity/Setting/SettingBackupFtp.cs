@@ -43,5 +43,37 @@ namespace StrumentiMusicali.Library.Entity.Setting
 
         [MaxLength(200)]
         public string NetworkFolder { get; set; } = "";
+
+        /// <summary>
+        /// Percorso completo del file di credenziali del Service Account
+        /// (file .json generato da Google Cloud Console).
+        /// </summary>
+        [MaxLength(500)]
+        public string ServiceAccountCredentialFile { get; set; } = "";
+
+        /// <summary>
+        /// Id (o nome) della cartella di destinazione su Google Drive.
+        /// Se vuoto viene usata la root.
+        /// </summary>
+        [MaxLength(300)]
+        public string DestinationFolderId { get; set; } = "";
+
+        /// <summary>
+        /// Se true, elimina il file locale dopo un upload riuscito.
+        /// </summary>
+        public bool DeleteLocalAfterUpload { get; set; } = true;
+
+        /// <summary>
+        /// Client ID dell'app OAuth (OAuth 2.0 Client) creato su Google Cloud Console.
+        /// Usato per il login utente Google quando il Service Account non è configurato.
+        /// </summary>
+        [MaxLength(300)]
+        public string OAuthClientId { get; set; } = "";
+
+        /// <summary>
+        /// Client Secret dell'app OAuth (OAuth 2.0 Client) creato su Google Cloud Console.
+        /// </summary>
+        [MaxLength(300)]
+        public string OAuthClientSecret { get; set; } = "";
     }
 }

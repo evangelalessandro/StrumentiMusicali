@@ -665,6 +665,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StrumentiMusicali.Core\StrumentiMusicali.Core.csproj" />
+    <ProjectReference Include="..\StrumentiMusicali.GoogleDriveBackup\StrumentiMusicali.GoogleDriveBackup.csproj" />
     <ProjectReference Include="..\StrumentiMusicali.ftpBackup\StrumentiMusicali.ftpBackup.csproj" />
     <ProjectReference Include="..\StrumentiMusicali.PrestaShopSyncro\StrumentiMusicali.PrestaShopSyncro.csproj" />
     <ProjectReference Include="..\StrumentiMusicaliSql\StrumentiMusicali.Library.csproj" />
@@ -726,7 +727,7 @@
       <Version>2.0.3</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.1</Version>
+      <Version>13.0.3</Version>
     </PackageReference>
     <PackageReference Include="NLog">
       <Version>4.7.10</Version>

@@ -111,6 +111,7 @@ namespace StrumentiMusicali.Library.Model
 
             using (var connection = new SqlConnection(connectionString))
             {
+                connection.Open();
 
                 var command1 = new SqlCommand(Properties.Resource1.SpCheckExists, connection);
                 if ((int)command1.ExecuteScalar() == 0)

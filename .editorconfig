@@ -6,8 +6,9 @@
 
 #Core editorconfig formatting - indentation
 
-#use soft tabs (spaces) for indentation
-indent_style = space
+#use tabs for indentation
+indent_style = tab
+indent_size = tab
 
 #Formatting - indentation options
 
@@ -152,8 +153,9 @@ csharp_style_conditional_delegate_call = true:suggestion
 [*.{cs,vb}]
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
 end_of_line = crlf
-tab_width =4
-indent_style =tab
+tab_width = 4
+indent_style = tab
+indent_size = tab
 dotnet_style_coalesce_expression = true:suggestion
 dotnet_style_null_propagation = true:suggestion
 dotnet_style_prefer_is_null_check_over_reference_equality_method = true:suggestion

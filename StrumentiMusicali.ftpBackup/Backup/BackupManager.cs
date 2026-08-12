@@ -62,7 +62,7 @@ namespace StrumentiMusicali.ftpBackup.Backup
 						data = fileTest.LastWriteTime;
 					}
 					fileNewFile = Path.Combine(setting.BackupSetting.NetworkFolder,
-							"Backup_" + data.ToString("yyyyMMdd") + ".bak");
+							"Backup_" + data.ToString("yyyyMMdd_HHmm") + ".bak");
 					if (System.IO.File.Exists(fileNewFile))
 					{
 						System.IO.File.Delete(fileNewFile);

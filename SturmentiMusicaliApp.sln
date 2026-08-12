@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.8.12023.21 stable
+VisualStudioVersion = 18.8.12023.21
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.Library", "StrumentiMusicaliSql\StrumentiMusicali.Library.csproj", "{114B9DB5-6A31-4D89-BBB8-7AE7DD1A25C6}"
 EndProject
@@ -25,10 +25,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.Core", "StrumentiMusicali.Core\StrumentiMusicali.Core.csproj", "{A1245FD2-F94B-4916-A0DE-F192610F55C3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.Service", "StrumentiMusicali.Service\StrumentiMusicali.Service.csproj", "{6016358F-A0D4-4A4F-86C6-C62470544DBC}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WooCommerce.NET", "StrumentiMusicali.WooCommerce\WooCommerce.NET.csproj", "{AC30B506-1841-4002-B5FC-FF1F8DA183D2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.WooCommerceSyncro", "StrumentiMusicali.WoocCommerceSyncro\StrumentiMusicali.WooCommerceSyncro.csproj", "{E6A3FAAD-A1F0-40D8-8D90-DAC7752C243C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrumentiMusicali.EcommerceBaseSyncro", "StrumentiMusicali.EcommerceBaseSyncro\StrumentiMusicali.EcommerceBaseSyncro.csproj", "{F1DA812F-EA83-44F5-A6B7-B6410B109FE2}"
 EndProject
@@ -80,14 +76,6 @@ Global
 		{6016358F-A0D4-4A4F-86C6-C62470544DBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6016358F-A0D4-4A4F-86C6-C62470544DBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6016358F-A0D4-4A4F-86C6-C62470544DBC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AC30B506-1841-4002-B5FC-FF1F8DA183D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AC30B506-1841-4002-B5FC-FF1F8DA183D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AC30B506-1841-4002-B5FC-FF1F8DA183D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AC30B506-1841-4002-B5FC-FF1F8DA183D2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E6A3FAAD-A1F0-40D8-8D90-DAC7752C243C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6A3FAAD-A1F0-40D8-8D90-DAC7752C243C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6A3FAAD-A1F0-40D8-8D90-DAC7752C243C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E6A3FAAD-A1F0-40D8-8D90-DAC7752C243C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F1DA812F-EA83-44F5-A6B7-B6410B109FE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F1DA812F-EA83-44F5-A6B7-B6410B109FE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1DA812F-EA83-44F5-A6B7-B6410B109FE2}.Release|Any CPU.ActiveCfg = Release|Any CPU

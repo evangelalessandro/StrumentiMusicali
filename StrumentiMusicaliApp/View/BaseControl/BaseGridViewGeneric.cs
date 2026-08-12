@@ -190,7 +190,7 @@ namespace StrumentiMusicali.App.View.BaseControl
         }
         private string getLayoutFile()
         {
-            var dir = Application.StartupPath + @"\Layout\";
+            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) , @"\Layout\");
             if (!System.IO.Directory.Exists(dir))
                 System.IO.Directory.CreateDirectory(dir);
             return dir + "Layout_Grid_" + this.Name + ".xml";

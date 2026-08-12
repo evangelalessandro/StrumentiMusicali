@@ -71,10 +71,6 @@
       <Project>{f1da812f-ea83-44f5-a6b7-b6410b109fe2}</Project>
       <Name>StrumentiMusicali.EcommerceBaseSyncro</Name>
     </ProjectReference>
-    <ProjectReference Include="..\StrumentiMusicali.WooCommerce\WooCommerce.NET.csproj">
-      <Project>{ac30b506-1841-4002-b5fc-ff1f8da183d2}</Project>
-      <Name>WooCommerce.NET</Name>
-    </ProjectReference>
     <ProjectReference Include="..\StrumentiMusicaliSql\StrumentiMusicali.Library.csproj">
       <Project>{114b9db5-6a31-4d89-bbb8-7ae7dd1a25c6}</Project>
       <Name>StrumentiMusicali.Library</Name>

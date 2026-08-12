@@ -4,6 +4,7 @@ using StrumentiMusicali.Library.Entity.Setting;
 using StrumentiMusicali.Library.Repo;
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 
 namespace StrumentiMusicali.ftpBackup.Backup
@@ -87,8 +88,11 @@ namespace StrumentiMusicali.ftpBackup.Backup
 					/*cancella i file di backup sql locali più vecchi di 7 giorni*/
 					ClearOldLocalFiles(setting);
 
-					if (FtpSend(fileNewFile))
+					var fileZip = CreaZip(fileNewFile);
+
+					if (FtpSend(fileZip))
 					{
+						System.IO.File.Delete(fileNewFile);
 						ClearOldFile(setting);
 						return true;
 					}
@@ -120,11 +124,32 @@ namespace StrumentiMusicali.ftpBackup.Backup
 					}
 					else
 					{
-						_logger.Error("Upload riuscito del backup : " + fileNewFile);
+						_logger.Error("Upload non riuscito del backup : " + fileNewFile);
 					}
 				}
 			}
 			return false;
+		}
+
+		private string CreaZip(string fileBak)
+		{
+			var fileZip = Path.ChangeExtension(fileBak, ".zup");
+			if (System.IO.File.Exists(fileZip))
+				System.IO.File.Delete(fileZip);
+
+			using (var zipStream = new FileStream(fileZip, FileMode.Create))
+			using (var zip = new ZipArchive(zipStream, ZipArchiveMode.Create))
+			{
+				var entry = zip.CreateEntry(Path.GetFileName(fileBak));
+				using (var entryStream = entry.Open())
+				using (var fileStream = new FileStream(fileBak, FileMode.Open, FileAccess.Read))
+				{
+					fileStream.CopyTo(entryStream);
+				}
+			}
+
+			_logger.Info("Creato archivio zip del backup: " + fileZip);
+			return fileZip;
 		}
 
 		/// <summary>
@@ -150,7 +175,7 @@ namespace StrumentiMusicali.ftpBackup.Backup
 							return;
 						}
 						var backList = ftp.FileList().Where(a => a.IsDirectory == false && a.Name.Contains("Backup_")
-							  && a.Name.EndsWith(".bak")).ToList();
+							  && a.Name.EndsWith(".zip")).ToList();
 						var size = ConvertBytesToMegabytes(backList.Sum(a => a.Size));
 
 						if (size > setting.MaxMbFileInFtp && backList.Count > 1)

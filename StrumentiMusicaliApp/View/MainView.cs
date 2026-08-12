@@ -66,6 +66,9 @@ namespace StrumentiMusicali.App
 
 		private void TakeNewTab(GetNewTab obj)
 		{
+			if (!tab.IsHandleCreated)
+				tab.CreateControl();
+
 			obj.Tab = tab.TabPages.Add(obj.Text);
 
 			obj.Tab.Tag = obj.Ambiente;
